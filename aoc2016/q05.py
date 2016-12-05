@@ -2,14 +2,13 @@ from aocd import data
 from hashlib import md5
 
 
-data = data.strip()
-
+data = data.strip().encode('ascii')
 code1 = ''
 code2 = [None] * 8
 n = 0
 remaining = set('01234567')
 while True:
-    test = '{}{}'.format(data, n).encode('ascii')
+    test = b'%s%d' % (data, n)
     hash_ = md5(test).hexdigest()
     n += 1
     if not hash_.startswith('0'*5):
