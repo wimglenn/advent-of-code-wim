@@ -1,4 +1,5 @@
 from aocd import data
+from collections import deque
 
 
 def get_marker(iterator):
@@ -27,7 +28,7 @@ def part1(s):
 
 
 def parse(s):
-    parsed = []
+    parsed = deque()
     iterator = iter(s)
     while True:
         letter = next(iterator, None)
@@ -45,7 +46,7 @@ def part2(s):
     result = 0
     while True:
         try:
-            x = parsed.pop(0)
+            x = parsed.popleft()
         except IndexError:
             break
         if isinstance(x, int):
