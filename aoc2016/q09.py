@@ -64,18 +64,18 @@ def part2(s):
     return result
 
 
-assert(part1('ADVENT') == 6)
-assert(part1('A(1x5)BC') == 7)  # 1 + 5 + 1
-assert(part1('(3x3)XYZ') == 9)  # 3*3
-assert(part1('A(2x2)BCD(2x2)EFG') == 11)  # 1 + 2*2 + 1 + 2*2 + 1
-assert(part1('(6x1)(1x3)A') == 6)
-assert(part1('X(8x2)(3x3)ABCY') == 18)
+assert part1('ADVENT') == 6
+assert part1('A(1x5)BC') == 7  # 1 + 5 + 1
+assert part1('(3x3)XYZ') == 9  # 3*3
+assert part1('A(2x2)BCD(2x2)EFG') == 11  # 1 + 2*2 + 1 + 2*2 + 1
+assert part1('(6x1)(1x3)A') == 6
+assert part1('X(8x2)(3x3)ABCY') == 18
 
 
-assert(part2('(3x3)XYZ')) == len('XYZXYZXYZ') == 9  # 3x3
-assert(part2('X(8x2)(3x3)ABCY')) == len('XABCABCABCABCABCABCY') == 20  # 1 + 6x3 + 1
-assert(part2('(27x12)(20x12)(13x14)(7x10)(1x12)A')) == 241920  # 12 * 12 * 14 * 10 * 12
-assert(part2('(25x3)(3x3)ABC(2x3)XY(5x2)PQRSTX(18x9)(3x2)TWO(5x7)SEVEN')) == 445
+assert part2('(3x3)XYZ') == len('XYZXYZXYZ') == 9  # 3x3
+assert part2('X(8x2)(3x3)ABCY') == len('XABCABCABCABCABCABCY') == 20  # 1 + 6x3 + 1
+assert part2('(27x12)(20x12)(13x14)(7x10)(1x12)A') == 241920  # 12 * 12 * 14 * 10 * 12
+assert part2('(25x3)(3x3)ABC(2x3)XY(5x2)PQRSTX(18x9)(3x2)TWO(5x7)SEVEN') == 445
 
 
 data = data.strip()

@@ -34,6 +34,6 @@ def compute(data, c=0):
     return reg['a']
 
 
-assert(compute(test_data) == 42)
+assert compute(test_data) == 42
 print(compute(data))  # 318007
 print(compute(data, c=1))  # 9227661

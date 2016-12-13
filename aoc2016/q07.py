@@ -41,15 +41,15 @@ def support_ssl(s):
     return False
 
 
-assert(support_tls('abba[mnop]qrst'))
-assert(not support_tls('abcd[bddb]xyyx'))
-assert(not support_tls('aaaa[qwer]tyui'))
-assert(support_tls('ioxxoj[asdfgh]zxcvbn'))
+assert support_tls('abba[mnop]qrst')
+assert not support_tls('abcd[bddb]xyyx')
+assert not support_tls('aaaa[qwer]tyui')
+assert support_tls('ioxxoj[asdfgh]zxcvbn')
 
-assert(support_ssl('aba[bab]xyz'))
-assert(not support_ssl('xyx[xyx]xyx'))
-assert(support_ssl('aaa[kek]eke'))
-assert(support_ssl('zazbz[bzb]cdb'))
+assert support_ssl('aba[bab]xyz')
+assert not support_ssl('xyx[xyx]xyx')
+assert support_ssl('aaa[kek]eke')
+assert support_ssl('zazbz[bzb]cdb')
 
 
 tls = ssl = 0

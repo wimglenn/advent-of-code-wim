@@ -74,7 +74,7 @@ def bfs(state0, target):
         queue.extend((child, depth + 1) for child in children)
 
 
-assert(is_valid(state0) and is_valid(target))
+assert is_valid(state0) and is_valid(target)
 print(bfs(state0, target))
 
 # part1: 31
