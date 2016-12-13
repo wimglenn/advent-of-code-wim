@@ -1,5 +1,6 @@
 # coding: utf-8
 from __future__ import print_function, unicode_literals
+import sys
 from aocd import data
 from collections import deque
 from itertools import product, combinations, cycle
@@ -79,8 +80,10 @@ def get_valid_next_states(state, seen=()):
 
 def bfs(state0, target, verbose=True):
 
-    def progress_bar(msg, end='', spinner=cycle(r'\|/-')):
-        print(('\r{} '.format(next(spinner)) + msg).ljust(50), end=end)
+    def progress_bar(msg, spinner=cycle(r'\|/-')):
+        msg = ('\r{} '.format(next(spinner)) + msg).ljust(50)
+        sys.stdout.write(msg)
+        sys.stdout.flush()
 
     depth = 0
     queue = deque([(state0, depth)])
@@ -93,7 +96,8 @@ def bfs(state0, target, verbose=True):
             depth = new_depth
         if state == target:
             if verbose:
-                progress_bar('Target found at depth {}'.format(depth), end='\n', spinner=iter('✔'))
+                progress_bar('Target found at depth {}'.format(depth), spinner=iter('✔'))
+                sys.stdout.write('\n')
             return depth
         else:
             if verbose and (i%2000 == 0):
@@ -103,7 +107,7 @@ def bfs(state0, target, verbose=True):
         queue.extend((child, depth + 1) for child in children)
 
 
-assert bfs(*parse_data(test_data)) == 11
+assert bfs(*parse_data(test_data), verbose=False) == 11
 
 state0, target = parse_data(data)
 print(bfs(state0, target))  # part A: 31
