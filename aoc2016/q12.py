@@ -10,7 +10,7 @@ dec a'''
 
 
 def compute(data, c=0):
-    reg = dict.fromkeys('abcd', 0)
+    reg = {}.fromkeys('abcd', 0)
     reg['c'] = c
     i = 0
     lines = data.splitlines()
