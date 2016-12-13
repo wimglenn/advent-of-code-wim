@@ -1,25 +1,42 @@
+from aocd import data
 from collections import deque
 from itertools import product, combinations
 
 
-data = 'test'
-data = 'part1'
-data = 'part2'
+test_data = '''The first floor contains a hydrogen-compatible microchip and a lithium-compatible microchip.
+The second floor contains a hydrogen generator.
+The third floor contains a lithium generator.
+The fourth floor contains nothing relevant.'''
 
-# state vector structure: 3-tuple of (int, tuple, tuple) 
-# (elevator_floor, (chip1_floor, chip2_floor, ..., chipN_floor), (generator1_floor, generator2_floor, ..., generatorN_floor))
 
-if data == 'test':
-    state0 = (1, (1,1), (2,3))
-    target = (4, (4,4), (4,4))
-
-if data == 'part1':
-    state0 = (1, (1,2,2,3,3), (1,1,1,3,3))
-    target = (4, (4,4,4,4,4), (4,4,4,4,4))
-
-if data == 'part2':
-    state0 = (1, (1,2,2,3,3,1,1), (1,1,1,3,3,1,1))
-    target = (4, (4,4,4,4,4,4,4), (4,4,4,4,4,4,4))
+def parse_data(text):
+    '''
+    state vector structure: 3-tuple of (int, tuple, tuple) 
+    (
+        elevator_floor, 
+        (chip1_floor, chip2_floor, ... chipN_floor), 
+        (genr1_floor, genr2_floor, ... genrN_floor),
+    )
+    '''
+    chips = {}
+    generators = {}
+    for line_no, line in enumerate(text.splitlines(), 1):
+        words = line.split()
+        for i, word in enumerate(words, -1):
+            if word.startswith('generator'):
+                generator = words[i]
+                generators[generator] = line_no
+            elif word.startswith('microchip'):
+                chip, compatible = words[i].split('-')
+                chips[chip] = line_no
+    chip_names = sorted(chips)
+    if chip_names != sorted(generators):
+        raise Exception('chip and generators mismatched')
+    state0 = 1, tuple(chips[k] for k in chip_names), tuple(generators[k] for k in chip_names)
+    target = 4, tuple(4 for chip in chip_names), tuple(4 for generator in generators)
+    if not is_valid(state0) or not is_valid(target):
+        raise Exception('parsed state vector is invalid')
+    return state0, target
 
 
 def is_valid(state):
@@ -58,14 +75,15 @@ def get_valid_next_states(state, seen=()):
             yield new_state
 
 
-def bfs(state0, target):
+def bfs(state0, target, verbose=True):
     depth = 0
     queue = deque([(state0, depth)])
     seen = {state0}
     while queue:
         state, new_depth = queue.popleft()
         if new_depth > depth:
-            print('search depth {}, queue length {}'.format(new_depth, len(queue)))
+            if verbose:
+                print('search depth {}, queue length {}'.format(new_depth, len(queue)))
             depth = new_depth
         if state == target:
             return depth
@@ -74,8 +92,12 @@ def bfs(state0, target):
         queue.extend((child, depth + 1) for child in children)
 
 
-assert is_valid(state0) and is_valid(target)
-print(bfs(state0, target))
+assert bfs(*parse_data(test_data)) == 11
 
-# part1: 31
-# part2: 55
+state0, target = parse_data(data)
+print(bfs(state0, target))  # part A: 31
+
+# put two new items on ground floor for part B
+state0 = state0[0], state0[1] + (1, 1), state0[2] + (1, 1)
+target = target[0], target[1] + (4, 4), target[2] + (4, 4)
+print(bfs(state0, target))  # part B: 55
