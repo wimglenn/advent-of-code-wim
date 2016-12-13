@@ -1,84 +1,33 @@
 # coding: utf-8
-from __future__ import print_function, unicode_literals
-import sys
+from __future__ import unicode_literals
 from aocd import data
 from collections import deque
-from itertools import product, combinations, cycle
+from itertools import cycle
+import sys
 
 
-test_data = '''The first floor contains a hydrogen-compatible microchip and a lithium-compatible microchip.
-The second floor contains a hydrogen generator.
-The third floor contains a lithium generator.
-The fourth floor contains nothing relevant.'''
+def wall(x, y, n):
+    w = x*x + 3*x + 2*x*y + y + y*y + n
+    return '.#'[bin(w).count('1')%2]
 
 
-def parse_data(text):
-    '''
-    state vector structure: 3-tuple of (int, tuple, tuple) 
-    (
-        elevator_floor, 
-        (chip1_floor, chip2_floor, ... chipN_floor), 
-        (genr1_floor, genr2_floor, ... genrN_floor),
-    )
-    '''
-    chips = {}
-    generators = {}
-    for line_no, line in enumerate(text.splitlines(), 1):
-        words = line.split()
-        for i, word in enumerate(words, -1):
-            if word.startswith('generator'):
-                generator = words[i]
-                generators[generator] = line_no
-            elif word.startswith('microchip'):
-                chip, compatible = words[i].split('-')
-                chips[chip] = line_no
-    chip_names = sorted(chips)
-    if chip_names != sorted(generators):
-        raise Exception('chip and generators mismatched')
-    state0 = 1, tuple(chips[k] for k in chip_names), tuple(generators[k] for k in chip_names)
-    target = 4, tuple(4 for chip in chip_names), tuple(4 for generator in generators)
-    if not is_valid(state0) or not is_valid(target):
-        raise Exception('parsed state vector is invalid')
-    return state0, target
+def generate_office_space(h=50, w=50, fav_number=int(data)):
+    office = [[0]*w for i in range(h)]
+    for row in range(h):
+        for col in range(w):
+            office[row][col] = wall(x=col, y=row, n=fav_number)
+    return office
 
 
-def is_valid(state):
-    elevator, chips, generators = state
-    for chip, generator in zip(chips, generators):
-        if chip != generator:  # if the chip and the matching generator are on different floors
-            if chip in generators:  # and there is some other generator on the same floor as the chip
-                return False  # then this chip gets fried
-    if not {elevator}.union(chips, generators) < {1, 2, 3, 4}:
-        return False  # everything must be on a floor 1-4
-    if elevator not in set().union(chips, generators):
-        return False  # it's impossible for the elevator to be on an empty floor
-    return True
+def print_office(office):
+    h = len(office)
+    [w] = {len(row) for row in office}
+    print('   ' + ' '.join([str(x)[-1] for x in range(w)]))
+    for row in range(h):
+        print(str(row).rjust(2).ljust(3) + ' '.join(office[row]))
 
 
-def get_valid_next_states(state, seen=()):
-    elevator, chips, generators = state
-    items = list(chips + generators)
-    # indices of stuff on the same floor as the elevator:
-    indices = [i for i, item_pos in enumerate(items) if elevator == item_pos]
-    # we can take 1 or 2 things with us when changing floors
-    indices_choices = list(combinations(indices, 1)) + list(combinations(indices, 2))
-    # we can go up or down a floor
-    directions = -1, +1
-    for direction, indices in product(directions, indices_choices):
-        new_elevator = elevator + direction
-        new_items = items[:]
-        for index in indices:
-            new_items[index] += direction
-        new_chips = new_items[:len(chips)]
-        new_generators = new_items[len(chips):]
-        assert len(new_chips) == len(chips)
-        assert len(new_generators) == len(generators)
-        new_state = new_elevator, tuple(new_chips), tuple(new_generators)
-        if is_valid(new_state) and new_state not in seen:
-            yield new_state
-
-
-def bfs(state0, target, verbose=True):
+def bfs(state0, target, office, verbose=True, max_depth=None):
 
     def progress_bar(msg, spinner=cycle(r'\|/-')):
         msg = ('\r{} '.format(next(spinner)) + msg).ljust(50)
@@ -92,6 +41,15 @@ def bfs(state0, target, verbose=True):
     while queue:
         state, new_depth = queue.popleft()
         i += 1
+        if max_depth is not None:
+            if new_depth > max_depth:
+                msg = 'Aborting at depth {}'.format(max_depth)
+                if verbose:
+                    progress_bar(msg, spinner=iter('✖'))
+                    sys.stdout.write('\n')
+                err = Exception(msg)
+                err.n_visited = len(seen) - 1
+                raise err
         if new_depth > depth:
             depth = new_depth
         if state == target:
@@ -100,19 +58,52 @@ def bfs(state0, target, verbose=True):
                 sys.stdout.write('\n')
             return depth
         else:
-            if verbose and (i%2000 == 0):
+            if verbose and (i%200 == 1):
                 progress_bar('search depth {}, queue length {}'.format(new_depth, len(queue)))
-        children = list(get_valid_next_states(state, seen))
+        children = list(get_valid_next_states(state, office, seen=seen))
         seen.update(children)
         queue.extend((child, depth + 1) for child in children)
 
 
-assert bfs(*parse_data(test_data), verbose=False) == 11
+def get_valid_next_states(state, office, seen=()):
+    directions = -1, 1, -1j, 1j  # left, right, up, down
+    h = len(office)
+    [w] = {len(row) for row in office}
+    for direction in directions:
+        new_state = state + direction
+        row, col = int(new_state.imag), int(new_state.real)
+        if 0 <= row < h and 0 <= col < w:  # we aren't stepping off the edge
+            if office[row][col] != '#':  # we aren't walking into a wall
+                if new_state not in seen:  # we haven't already been here
+                    yield new_state
 
-state0, target = parse_data(data)
-print(bfs(state0, target))  # part A: 31
 
-# put two new items on ground floor for part B
-state0 = state0[0], state0[1] + (1, 1), state0[2] + (1, 1)
-target = target[0], target[1] + (4, 4), target[2] + (4, 4)
-print(bfs(state0, target))  # part B: 55
+def n_points_within_distance(state0, office, d=50, verbose=True):
+    target = -1  # just any impossible-to-find state
+    try:
+        bfs(state0, target, office, max_depth=d, verbose=verbose)
+    except Exception as err:
+        return err.n_visited
+
+
+# state: complex number with (x, y) == (row, col) == (state.imag, state.real)
+state0 = 1 + 1j
+target = 7 + 4j
+office = generate_office_space(h=7, w=10, fav_number=10)
+assert bfs(state0, target, office, verbose=False) == 11
+
+target = 31 + 39j
+office = generate_office_space()
+print(bfs(state0, target, office))  # part A: 92
+print(n_points_within_distance(state0, office))  # part B: 124
+
+others_data = {
+    'kevin': (1362, 82, 138),
+    'davidism': (1350, 92, 124),
+    'dsm': (1358, 96, 141),
+    'andras': (1364, 86, 127),
+}
+for name, (fav_number, partA, partB) in others_data.items():
+    other_office = generate_office_space(fav_number=fav_number)
+    assert bfs(state0, target, other_office, verbose=False) == partA
+    assert n_points_within_distance(state0, other_office, verbose=False) == partB
