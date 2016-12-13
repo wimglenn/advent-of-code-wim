@@ -1,6 +1,8 @@
+# coding: utf-8
+from __future__ import print_function, unicode_literals
 from aocd import data
 from collections import deque
-from itertools import product, combinations
+from itertools import product, combinations, cycle
 
 
 test_data = '''The first floor contains a hydrogen-compatible microchip and a lithium-compatible microchip.
@@ -76,17 +78,26 @@ def get_valid_next_states(state, seen=()):
 
 
 def bfs(state0, target, verbose=True):
+
+    def progress_bar(msg, end='', spinner=cycle(r'\|/-')):
+        print(('\r{} '.format(next(spinner)) + msg).ljust(50), end=end)
+
     depth = 0
     queue = deque([(state0, depth)])
     seen = {state0}
+    i = 0
     while queue:
         state, new_depth = queue.popleft()
+        i += 1
         if new_depth > depth:
-            if verbose:
-                print('search depth {}, queue length {}'.format(new_depth, len(queue)))
             depth = new_depth
         if state == target:
+            if verbose:
+                progress_bar('Target found at depth {}'.format(depth), end='\n', spinner=iter('✔'))
             return depth
+        else:
+            if verbose and (i%2000 == 0):
+                progress_bar('search depth {}, queue length {}'.format(new_depth, len(queue)))
         children = list(get_valid_next_states(state, seen))
         seen.update(children)
         queue.extend((child, depth + 1) for child in children)
