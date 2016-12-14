@@ -6,6 +6,32 @@ from itertools import cycle
 import sys
 
 
+data = 1350
+
+'━┃'
+
+'┣┫'
+
+'┳'
+'┻'
+
+'┏┓'
+'┗┛'
+
+
+class Office(object):
+
+    def __init__(self, fav_number):
+        self.fav_number = fav_number
+        self.memo = {}
+
+    def get(state):
+        if state not in self.memo:
+            col, row = int(state.image), int(state.real)
+            
+
+
+
 def wall(x, y, n):
     w = x*x + 3*x + 2*x*y + y + y*y + n
     return '.#'[bin(w).count('1')%2]
@@ -24,7 +50,8 @@ def print_office(office):
     [w] = {len(row) for row in office}
     print('   ' + ' '.join([str(x)[-1] for x in range(w)]))
     for row in range(h):
-        print(str(row).rjust(2).ljust(3) + ' '.join(office[row]))
+        line = ' '.join(office[row])
+        print(str(row).rjust(2).ljust(3) + line)
 
 
 def bfs(state0, target, office, verbose=True, max_depth=None):
@@ -90,20 +117,23 @@ def n_points_within_distance(state0, office, d=50, verbose=True):
 state0 = 1 + 1j
 target = 7 + 4j
 office = generate_office_space(h=7, w=10, fav_number=10)
+print_office(office)
 assert bfs(state0, target, office, verbose=False) == 11
 
 target = 31 + 39j
 office = generate_office_space()
-print(bfs(state0, target, office))  # part A: 92
+# print(bfs(state0, target, office))  # part A: 92
 print(n_points_within_distance(state0, office))  # part B: 124
 
-others_data = {
-    'kevin': (1362, 82, 138),
-    'davidism': (1350, 92, 124),
-    'dsm': (1358, 96, 141),
-    'andras': (1364, 86, 127),
-}
-for name, (fav_number, partA, partB) in others_data.items():
-    other_office = generate_office_space(fav_number=fav_number)
-    assert bfs(state0, target, other_office, verbose=False) == partA
-    assert n_points_within_distance(state0, other_office, verbose=False) == partB
+print_office(office)
+
+# others_data = {
+#     'kevin': (1362, 82, 138),
+#     'davidism': (1350, 92, 124),
+#     'dsm': (1358, 96, 141),
+#     'andras': (1364, 86, 127),
+# }
+# for name, (fav_number, partA, partB) in others_data.items():
+#     other_office = generate_office_space(fav_number=fav_number)
+#     assert bfs(state0, target, other_office, verbose=False) == partA
+#     assert n_points_within_distance(state0, other_office, verbose=False) == partB
