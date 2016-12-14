@@ -11,7 +11,7 @@ def wall(x, y, n):
     return '.#'[bin(w).count('1')%2]
 
 
-def generate_office_space(h, w, fav_number=int(data)):
+def generate_office_space(h=50, w=50, fav_number=int(data)):
     office = [[0]*w for i in range(h)]
     for row in range(h):
         for col in range(w):
@@ -58,7 +58,7 @@ def bfs(state0, target, office, verbose=True, max_depth=None):
                 sys.stdout.write('\n')
             return depth
         else:
-            if verbose and (i%2000 == 0):
+            if verbose and (i%200 == 1):
                 progress_bar('search depth {}, queue length {}'.format(new_depth, len(queue)))
         children = list(get_valid_next_states(state, office, seen=seen))
         seen.update(children)
@@ -78,6 +78,13 @@ def get_valid_next_states(state, office, seen=()):
                     yield new_state
 
 
+def n_points_within_distance(state0, office, d=50, verbose=True):
+    target = -1  # just any impossible-to-find state
+    try:
+        bfs(state0, target, office, max_depth=d, verbose=verbose)
+    except Exception as err:
+        return err.n_visited
+
 
 # state: complex number with (x, y) == (row, col) == (state.imag, state.real)
 state0 = 1 + 1j
@@ -86,12 +93,17 @@ office = generate_office_space(h=7, w=10, fav_number=10)
 assert bfs(state0, target, office, verbose=False) == 11
 
 target = 31 + 39j
-office = generate_office_space(h=50, w=50)
+office = generate_office_space()
 print(bfs(state0, target, office))  # part A: 92
+print(n_points_within_distance(state0, office))  # part B: 124
 
-try:
-    bfs(state0, target, office, max_depth=50)
-except Exception as err:
-    n_locations = err.n_visited
-
-print(n_locations)  # part B: 124
+others_data = {
+    'kevin': (1362, 82, 138),
+    'davidism': (1350, 92, 124),
+    'dsm': (1358, 96, 141),
+    'andras': (1364, 86, 127),
+}
+for name, (fav_number, partA, partB) in others_data.items():
+    other_office = generate_office_space(fav_number=fav_number)
+    assert bfs(state0, target, other_office, verbose=False) == partA
+    assert n_points_within_distance(state0, other_office, verbose=False) == partB
