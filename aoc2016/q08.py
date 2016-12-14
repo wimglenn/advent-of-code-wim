@@ -1,7 +1,7 @@
+# coding: utf-8
+from __future__ import print_function, unicode_literals
 from aocd import data
-from collections import deque
 import numpy as np 
-import matplotlib.pyplot as plt
 
 
 W, H = 50, 6
@@ -14,14 +14,14 @@ for line in data.splitlines():
     elif line.startswith('rotate'):
         i, shift = [int(x) for x in line.split('=')[1].split(' by ')]
         item = (i, slice(None)) if 'row' in line else (slice(None), i)
-        d = deque(A[item])
-        d.rotate(shift)
-        A[item] = d
+        A[item] = np.roll(A[item], shift)
     else:
         print(line)
         raise Exception
 
 print(A.sum())
-plt.imshow(~A, interpolation='nearest')
-plt.gray()
-plt.show()
+
+print('\n')
+for row in A:
+    print(''.join([' █'[x] for x in row]))
+print('\n')
