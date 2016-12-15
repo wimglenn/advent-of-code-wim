@@ -1,60 +1,81 @@
 # coding: utf-8
 from __future__ import unicode_literals
 from aocd import data
-from collections import deque
+from collections import deque, defaultdict
 from itertools import cycle
+from operator import attrgetter
 import sys
 
 
-data = 1350
+class Maze(object):
 
-'━┃'
+    # up, down, left, right
+    wallmap = {
+        (0, 0, 0, 0): '■',
+        (0, 0, 0, 1): '╺',
+        (0, 0, 1, 0): '╸',
+        (0, 0, 1, 1): '━',
+        (0, 1, 0, 0): '╻',
+        (0, 1, 0, 1): '┏',
+        (0, 1, 1, 0): '┓',
+        (0, 1, 1, 1): '┳',
+        (1, 0, 0, 0): '╹',
+        (1, 0, 0, 1): '┗',
+        (1, 0, 1, 0): '┛',
+        (1, 0, 1, 1): '┻',
+        (1, 1, 0, 0): '┃',
+        (1, 1, 0, 1): '┣',
+        (1, 1, 1, 0): '┫',
+        (1, 1, 1, 1): '╋',
+        None: '.',  # empty space character
+    }
+    wallmap = defaultdict(lambda: '#')
+    wallmap[None] = '.'
 
-'┣┫'
-
-'┳'
-'┻'
-
-'┏┓'
-'┗┛'
-
-
-class Office(object):
-
-    def __init__(self, fav_number):
+    def __init__(self, fav_number=int(data)):
         self.fav_number = fav_number
         self.memo = {}
 
-    def get(state):
+    def is_wall(self, state):
         if state not in self.memo:
-            col, row = int(state.image), int(state.real)
-            
+            y, x = int(state.imag), int(state.real)
+            if x < 0 or y < 0:
+                self.memo[state] = 1
+            else:
+                z = (x+y)**2 + 3*x + y
+                self.memo[state] = bin(z + self.fav_number).count('1') % 2
+        return self.memo[state]
+
+    def valid_next_states(self, state, seen=()):
+        deltas = -1j, +1j, -1, +1
+        neighbours = [state + delta for delta in deltas]
+        for z in neighbours:
+            if not self.is_wall(z) and z not in seen:
+                yield z
+
+    def get_char(self, x, y):
+        if not self.is_wall(complex(x,y)):
+            return self.wallmap[None]
+        # up, down, left, right
+        deltas = (0, -1), (0, +1), (-1, 0), (+1, 0)
+        walls = [self.is_wall(complex(x+dx, y+dy)) for dx, dy in deltas]
+        return self.wallmap[tuple(walls)]
+
+    def display(self, w=None, h=None):
+        if not self.memo:
+            # prevents max on an empty sequence
+            self.is_wall(complex(50, 50))
+        if w is None:
+            w = max([int(x.real) for x in self.memo]) + 1
+        if h is None:
+            h = max([int(x.imag) for x in self.memo]) + 1
+        for y in range(h):
+            row = [self.get_char(x, y) for x in range(w)]
+            line = ''.join(row)
+            print(line)
 
 
-
-def wall(x, y, n):
-    w = x*x + 3*x + 2*x*y + y + y*y + n
-    return '.#'[bin(w).count('1')%2]
-
-
-def generate_office_space(h=50, w=50, fav_number=int(data)):
-    office = [[0]*w for i in range(h)]
-    for row in range(h):
-        for col in range(w):
-            office[row][col] = wall(x=col, y=row, n=fav_number)
-    return office
-
-
-def print_office(office):
-    h = len(office)
-    [w] = {len(row) for row in office}
-    print('   ' + ' '.join([str(x)[-1] for x in range(w)]))
-    for row in range(h):
-        line = ' '.join(office[row])
-        print(str(row).rjust(2).ljust(3) + line)
-
-
-def bfs(state0, target, office, verbose=True, max_depth=None):
+def bfs(state0, target, maze, verbose=False, max_depth=None):
 
     def progress_bar(msg, spinner=cycle(r'\|/-')):
         msg = ('\r{} '.format(next(spinner)) + msg).ljust(50)
@@ -87,53 +108,39 @@ def bfs(state0, target, office, verbose=True, max_depth=None):
         else:
             if verbose and (i%200 == 1):
                 progress_bar('search depth {}, queue length {}'.format(new_depth, len(queue)))
-        children = list(get_valid_next_states(state, office, seen=seen))
+        children = list(maze.valid_next_states(state, seen=seen))
         seen.update(children)
         queue.extend((child, depth + 1) for child in children)
 
 
-def get_valid_next_states(state, office, seen=()):
-    directions = -1, 1, -1j, 1j  # left, right, up, down
-    h = len(office)
-    [w] = {len(row) for row in office}
-    for direction in directions:
-        new_state = state + direction
-        row, col = int(new_state.imag), int(new_state.real)
-        if 0 <= row < h and 0 <= col < w:  # we aren't stepping off the edge
-            if office[row][col] != '#':  # we aren't walking into a wall
-                if new_state not in seen:  # we haven't already been here
-                    yield new_state
-
-
-def n_points_within_distance(state0, office, d=50, verbose=True):
+def n_points_within_distance(state0, maze, d=50, verbose=False):
     target = -1  # just any impossible-to-find state
     try:
-        bfs(state0, target, office, max_depth=d, verbose=verbose)
+        bfs(state0, target, maze, max_depth=d, verbose=verbose)
     except Exception as err:
         return err.n_visited
 
 
 # state: complex number with (x, y) == (row, col) == (state.imag, state.real)
-state0 = 1 + 1j
-target = 7 + 4j
-office = generate_office_space(h=7, w=10, fav_number=10)
-print_office(office)
-assert bfs(state0, target, office, verbose=False) == 11
+state0 = 1+1j
+
+test_maze = Maze(fav_number=10)
+# test_maze.display(h=7, w=10)
+assert bfs(state0, target=7+4j, maze=test_maze) == 11
 
 target = 31 + 39j
-office = generate_office_space()
-# print(bfs(state0, target, office))  # part A: 92
-print(n_points_within_distance(state0, office))  # part B: 124
+maze = Maze()
+print(bfs(state0, target, maze))  # part A: 92
+print(n_points_within_distance(state0, maze))  # part B: 124
 
-print_office(office)
 
-# others_data = {
-#     'kevin': (1362, 82, 138),
-#     'davidism': (1350, 92, 124),
-#     'dsm': (1358, 96, 141),
-#     'andras': (1364, 86, 127),
-# }
-# for name, (fav_number, partA, partB) in others_data.items():
-#     other_office = generate_office_space(fav_number=fav_number)
-#     assert bfs(state0, target, other_office, verbose=False) == partA
-#     assert n_points_within_distance(state0, other_office, verbose=False) == partB
+others_data = {
+    'kevin': (1362, 82, 138),
+    'davidism': (1350, 92, 124),
+    # 'dsm': (1358, 96, 141),
+    # 'andras': (1364, 86, 127),
+}
+for name, (fav_number, partA, partB) in others_data.items():
+    other_maze = Maze(fav_number=fav_number)
+    assert bfs(state0, target, other_maze, verbose=False) == partA
+    assert n_points_within_distance(state0, other_maze, verbose=False) == partB
