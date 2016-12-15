@@ -9,32 +9,13 @@ import sys
 
 class Maze(object):
 
-    # up, down, left, right
     wallmap = {
-        (0, 0, 0, 0): '■',
-        (0, 0, 0, 1): '╺',
-        (0, 0, 1, 0): '╸',
-        (0, 0, 1, 1): '━',
-        (0, 1, 0, 0): '╻',
-        (0, 1, 0, 1): '┏',
-        (0, 1, 1, 0): '┓',
-        (0, 1, 1, 1): '┳',
-        (1, 0, 0, 0): '╹',
-        (1, 0, 0, 1): '┗',
-        (1, 0, 1, 0): '┛',
-        (1, 0, 1, 1): '┻',
-        (1, 1, 0, 0): '┃',
-        (1, 1, 0, 1): '┣',
-        (1, 1, 1, 0): '┫',
-        (1, 1, 1, 1): '╋',
-    }
-    # wallmap = defaultdict(lambda: '#')
-    wallmap.update({
-        'open space': ' ',
-        'place seen': '.',
-        'start spot': 'o',
+        'wall block': '#',
+        'open space': '.',
+        'place seen': 'O',
+        'start spot': 'S',
         'the target': 'X',
-    })
+    }
 
     def __init__(self, fav_number=int(data)):
         self.fav_number = fav_number
@@ -57,23 +38,21 @@ class Maze(object):
             if not self.is_wall(z) and z not in seen:
                 yield z
 
-    def get_char(self, x, y, visited=(), start=None, end=None):
-        state = complex(x, y)
-        if state == start:
-            # assert 0
-            return self.wallmap['start spot']
-        elif state == end:
-            return self.wallmap['the target']
-        elif state in visited:
-            return self.wallmap['place seen']
-        elif not self.is_wall(state):
-            return self.wallmap['open space']
-        # up, down, left, right
-        deltas = -1j, +1j, -1, +1
-        walls = [self.is_wall(state+d) for d in deltas]
-        return self.wallmap[tuple(walls)]
-
     def display(self, w=None, h=None, visited=(), start=None, end=None):
+
+        def get_char(x, y):
+            state = complex(x, y)
+            if state == start:
+                return self.wallmap['start spot']
+            elif state == end:
+                return self.wallmap['the target']
+            elif state in visited:
+                return self.wallmap['place seen']
+            elif self.is_wall(state):
+                return self.wallmap['wall block']
+            else:
+                return self.wallmap['open space']
+
         if not self.memo:
             # prevents max on an empty sequence
             self.is_wall(complex(50, 50))
@@ -82,13 +61,9 @@ class Maze(object):
         if h is None:
             h = max([int(x.imag) for x in self.memo]) + 1
         for y in range(h):
-            row = [self.get_char(x, y, visited=visited, start=start, end=end) for x in range(w)]
+            row = [get_char(x, y) for x in range(w)]
             line = ''.join(row)
             print(line)
-
-
-class MaxDepth(Exception):
-    pass
 
 
 def bfs(state0, target, maze, max_depth=None):
@@ -99,35 +74,28 @@ def bfs(state0, target, maze, max_depth=None):
     while queue:
         state, new_depth = queue.popleft()
         i += 1
-        if max_depth is not None:
-            if new_depth > max_depth:
-                msg = 'Aborting at depth {}'.format(max_depth)
-                err = MaxDepth(msg)
-                err.n_visited = len(seen) - len(queue) - 1
-                err.seen = seen
-                raise err
         if new_depth > depth:
             depth = new_depth
         if state == target:
             return depth
         children = list(maze.valid_next_states(state, seen=seen))
-        seen.update(children)
-        queue.extend((child, depth + 1) for child in children)
+        if max_depth is None or depth < max_depth:
+            queue.extend((child, depth + 1) for child in children)
+            seen.update(children)
+    bfs.n_visited = len(seen)
 
 
 def n_points_within_distance(state0, maze, d=50):
     target = -1  # just any impossible-to-find state
-    try:
-        bfs(state0, target, maze, max_depth=d)
-    except MaxDepth as err:
-        return err.n_visited
+    bfs(state0, target, maze, max_depth=d)
+    return bfs.n_visited
 
 
 # state: complex number with (x, y) == (row, col) == (state.imag, state.real)
-state0 = 1+1j
+state0, target = 1+1j, 7+4j
 test_maze = Maze(fav_number=10)
-# test_maze.display(h=7, w=10)
-assert bfs(state0, target=7+4j, maze=test_maze) == 11
+# test_maze.display(h=7, w=10, start=state0, end=target)
+assert bfs(state0, target, maze=test_maze) == 11
 
 target = 31 + 39j
 maze = Maze()
