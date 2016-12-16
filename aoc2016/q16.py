@@ -6,28 +6,20 @@ test_len = 20
 
 
 def dragon(a):
-    b = a[::-1]
-    tr = {'0': '1', '1': '0'}
-    b = ''.join([tr[x] for x in b])
-    result = a + '0' + b
-    return result
+    return a + '0' + ''.join([{'0':'1', '1':'0'}[x] for x in a[::-1]])
 
-def pad(s, target_len):
-    while len(s) < target_len:
-        s = dragon(s)
-    return s[:target_len]
+def pad(s, n):
+    return pad(dragon(s), n) if len(s) < n else s[:n]
 
 def checksum(s):
     return ''.join(['01'[a==b] for a, b in zip(s[0::2], s[1::2])])
 
-def n_checksum(s):
+def r_checksum(s):
     s = checksum(s)
-    while len(s) % 2 == 0:
-        s = checksum(s)
-    return s
+    return s if len(s)%2 else r_checksum(s)
 
-def f(data, len_):
-    return n_checksum(pad(data.strip(), len_))
+def f(data, n):
+    return r_checksum(pad(data.strip(), n))
 
 
 assert f(test_data, test_len) == '01100'
