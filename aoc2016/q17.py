@@ -1,27 +1,27 @@
+from __future__ import unicode_literals
 from aocd import data
 from collections import deque
 from hashlib import md5
 
 
 def bfs(state0, target, next_states, max_depth=None, mode='shortest'):
-    key = state0[1]
+    z0, key = state0
     depth = 0
     queue = deque([(state0, depth)])
     best_depth = None
     i = 0
     while queue:
-        state, new_depth = queue.popleft()
+        (z, path), new_depth = queue.popleft()
         i += 1
         if new_depth > depth:
             depth = new_depth
-        if state[0] == target:
+        if z == target:
             if mode == 'shortest':
-                path = state[1][len(key):]
-                return path
+                return path[len(key):]
             else:
                 assert mode == 'longest'
                 best_depth = new_depth if best_depth is None else max(best_depth, new_depth)
-        children = list(next_states(state))
+        children = list(next_states((z, path)))
         if max_depth is None or depth < max_depth:
             queue.extend((child, depth + 1) for child in children)
     return best_depth
@@ -32,7 +32,7 @@ def next_states(state):
     z0, path = state
     if z0 == 3 - 3j:
         return
-    directions = zip('UDLR', md5(path).hexdigest()[:4])
+    directions = zip('UDLR', md5(path.encode()).hexdigest())
     for dir_, s in directions:
         if s in 'bcdef':
             z1 = z0 + offsets[dir_]
