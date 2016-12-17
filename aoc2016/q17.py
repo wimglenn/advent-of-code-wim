@@ -6,21 +6,18 @@ from hashlib import md5
 
 def bfs(state0, target, next_states, max_depth=None, mode='shortest'):
     z0, key = state0
-    depth = 0
+    depth, best_depth = 0, None
     queue = deque([(state0, depth)])
-    best_depth = None
     i = 0
     while queue:
-        (z, path), new_depth = queue.popleft()
+        (z, path), depth = queue.popleft()
         i += 1
-        if new_depth > depth:
-            depth = new_depth
         if z == target:
             if mode == 'shortest':
                 return path[len(key):]
             else:
                 assert mode == 'longest'
-                best_depth = new_depth if best_depth is None else max(best_depth, new_depth)
+                best_depth = depth
         children = list(next_states((z, path)))
         if max_depth is None or depth < max_depth:
             queue.extend((child, depth + 1) for child in children)
