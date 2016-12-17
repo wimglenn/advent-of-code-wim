@@ -26,61 +26,36 @@ def bfs(state0, target, next_states, max_depth=None, mode='shortest'):
             queue.extend((child, depth + 1) for child in children)
     return best_depth
 
-'''
- 0  1  2  3
- 4  5  6  7
- 8  9 10 11
-12 13 14 15
-'''
-
-candidates = {
-    0: 'RD',
-    1: 'RDL',
-    2: 'RDL',
-    3: 'DL',
-    4: 'URD',
-    5: 'URDL',
-    6: 'URDL',
-    7: 'UDL',
-    8: 'URD',
-    9: 'URDL',
-    10: 'URDL',
-    11: 'UDL',
-    12: 'UR',
-    13: 'URL',
-    14: 'URL',
-    15: '',
-}
-
-offsets = {
-    'U': -4,
-    'D': +4,
-    'L': -1,
-    'R': +1,
-}
-
 
 def next_states(state):
-    pos, path = state
-    choices = candidates[pos]
+    offsets = {'U': 1j, 'D': -1j, 'L': -1, 'R': 1}
+    z0, path = state
+    if z0 == 3 - 3j:
+        return
     directions = zip('UDLR', md5(path).hexdigest()[:4])
     for dir_, s in directions:
-        if s in 'bcdef' and dir_ in choices:
-            yield pos + offsets[dir_], path + dir_
+        if s in 'bcdef':
+            z1 = z0 + offsets[dir_]
+            if -3 <= z1.imag <= 0 <= z1.real <= 3:
+                yield z1, path + dir_
 
 
-pos = 0
-target = 15
+# state vector: tuple of (z, str_)
+#   z: a complex number representing position
+#   str_: a string representing the passcode + the path so far
+z0 = 0
+target = 3 - 3j
+state0 = z0, data
 
 
-assert bfs((pos, 'hijkl'), target, next_states, mode='shortest') is None
-assert bfs((pos, 'ihgpwlah'), target, next_states, mode='shortest') == 'DDRRRD'
-assert bfs((pos, 'kglvqrro'), target, next_states, mode='shortest') == 'DDUDRLRRUDRD'
-assert bfs((pos, 'ulqzkmiv'), target, next_states, mode='shortest') == 'DRURDRUDDLLDLUURRDULRLDUUDDDRR'
-print(bfs((0, data), target, next_states, mode='shortest'))  # part a: RDURRDDLRD
+assert bfs((z0, 'hijkl'),    target, next_states, mode='shortest') is None
+assert bfs((z0, 'ihgpwlah'), target, next_states, mode='shortest') == 'DDRRRD'
+assert bfs((z0, 'kglvqrro'), target, next_states, mode='shortest') == 'DDUDRLRRUDRD'
+assert bfs((z0, 'ulqzkmiv'), target, next_states, mode='shortest') == 'DRURDRUDDLLDLUURRDULRLDUUDDDRR'
+print(bfs(state0, target, next_states, mode='shortest'))  # part a: RDURRDDLRD
 
-assert bfs((pos, 'hijkl'), target, next_states, mode='longest') is None
-assert bfs((pos, 'ihgpwlah'), target, next_states, mode='longest') == 370
-assert bfs((pos, 'kglvqrro'), target, next_states, mode='longest') == 492
-assert bfs((pos, 'ulqzkmiv'), target, next_states, mode='longest') == 830
-print(bfs((0, data), target, next_states, mode='longest'))  # part b: 526
+assert bfs((z0, 'hijkl'),    target, next_states, mode='longest') is None
+assert bfs((z0, 'ihgpwlah'), target, next_states, mode='longest') == 370
+assert bfs((z0, 'kglvqrro'), target, next_states, mode='longest') == 492
+assert bfs((z0, 'ulqzkmiv'), target, next_states, mode='longest') == 830
+print(bfs(state0, target, next_states, mode='longest'))  # part b: 526
