@@ -1,37 +1,11 @@
 from aocd import data
+from operator import attrgetter
 
 
 test_data = '''
 Comet can fly 14 km/s for 10 seconds, but then must rest for 127 seconds.
 Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds.
 '''.strip()
-
-
-def parse_data(data):
-    d = {}
-    for line in data.splitlines():
-        words = line.split()
-        name = words[0]
-        speed = int(words[3])
-        time = int(words[6])
-        rest = int(words[-2])
-        d[name] = speed, time, rest
-    return d
-
-
-def race(data, max_t):
-    reindeers = parse_data(data)
-    distances = {}
-    for name, (speed, time, rest) in reindeers.items():
-        t = max_t
-        distance = 0
-        while t > 0:
-            dt = min(time, t)
-            distance += dt * speed
-            t -= dt
-            t -= rest
-        distances[name] = distance
-    return max(distances.values())
 
 
 class Reindeer(object):
@@ -59,12 +33,7 @@ class Reindeer(object):
                 self.dt = self.rest_time
 
 
-
-assert race(test_data, max_t=1000) == 1120
-print(race(data, max_t=2503))  # part a: 2655
-
-
-def race2(data, max_t):
+def race(data, max_t, measure):
     deers = [Reindeer(line) for line in data.splitlines()]
     for t in range(max_t):
         for deer in deers:
@@ -73,10 +42,11 @@ def race2(data, max_t):
         for deer in deers:
             if deer.distance == max_distance:
                 deer.points += 1
-    print [deer.points for deer in deers]
-    return max([deer.points for deer in deers])
+    return max([getattr(deer, measure) for deer in deers])
 
 
-assert race2(test_data, max_t=1000) == 689
-print(race2(data, max_t=2503))  # part b: 1059
+assert race(test_data, max_t=1000, measure='distance') == 1120
+print(race(data, max_t=2503, measure='distance'))  # part a: 2655
 
+assert race(test_data, max_t=1000, measure='points') == 689
+print(race(data, max_t=2503, measure='points'))  # part b: 1059
