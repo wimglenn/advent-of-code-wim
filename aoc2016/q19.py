@@ -1,44 +1,55 @@
 from aocd import data
-from itertools import cycle
-from collections import deque, OrderedDict
-import numpy as np
-import sys
+from collections import deque
 
 
-'''
-elves = np.array(list(enumerate([1]*n, 1)), dtype=int)
+def part_a(n):
+    elves = deque(range(1, int(n)+1))
+    while elves:
+        elves.rotate(-1)
+        elf = elves.popleft()
+    return elf
 
-while len(elves) > 1:
-    busted_elves = elves[1::2]
-    busted_elves[:,0] = 0
-    elves[0::2][:len(busted_elves)] += busted_elves
-    roll = len(elves)%2
-    elves = elves[elves[:,0].astype(bool)]
-    if roll:
-        elves = np.roll(elves, 1, axis=0)
 
-assert elves[0][1] == n
-print(elves)[0][0]  # part a: 1842613 
-'''
+def part_b(n):
+    n = int(n)
+    elves = deque(range(1, n+1))
+    while elves:
+        elves.rotate(-(n//2))
+        elf = elves.popleft()
+        elves.rotate(n//2 - 1)
+        n -= 1
+    return elf
 
-n = int(data)
-n = 33
 
-elves = [(i, 1) for i in range(1, n+1)]
+assert part_a(5) == 3
+assert part_b(5) == 2
 
-k = 0
-i = 0
-while len(elves) > 1:
-    victim = i + len(elves)//2
-    victim %= len(elves)
-    print(elves[i][0], elves[victim][0])
-    elves[i] = elves[i][0], elves[i][1] + elves[victim][1]
-    elves.pop(victim)
-    if victim >= i:
-        i += 1
-    if i == len(elves):
-        i = 0
-        # print(elves)
+assert part_a(9) == 3
+assert part_b(9) == 9
 
-print elves
+assert part_a(10) == 5
+assert part_b(10) == 1
 
+assert part_a(27) == 23
+assert part_b(27) == 27
+
+assert part_a(81) == 35
+assert part_b(81) == 81
+
+assert part_a(243) == 231
+assert part_b(243) == 243
+
+assert part_a(98) == 69
+assert part_b(98) == 17
+
+assert part_a(99) == 71
+assert part_b(99) == 18
+
+assert part_a(100) == 73
+assert part_b(100) == 19
+
+assert part_a(101) == 75
+assert part_b(101) == 20
+
+print(part_a(data))
+# print(part_b(data))
