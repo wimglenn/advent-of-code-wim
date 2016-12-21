@@ -67,7 +67,7 @@ def scramble(data, original):
     for line in data.splitlines():
         line = line.replace(' ', '_', 1)
         func_name, *words = line.split()
-        f = globals()[func_name](list_, words)
+        globals()[func_name](list_, words)
     return ''.join(list_)
 
 def descramble(data, scrambled):
