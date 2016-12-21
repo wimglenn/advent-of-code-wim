@@ -25,6 +25,12 @@ def score(R, A):
     return score
 
 
+def get_perturbations(R, calories_target=None):
+    n = len(R)
+    for up, down in permutations(range(n), 2):
+        yield R + np.eye(n, 1, -up, dtype=int) - np.eye(n, 1, -down, dtype=int)
+
+
 def get_best_score(data, calories_target=None):
     ingredients = parse_data(data)
     A = np.vstack(ingredients.values())
@@ -34,10 +40,7 @@ def get_best_score(data, calories_target=None):
 
     best_score = 0
     while True:
-        for up, down in permutations(range(len(R)), 2):
-            R_ = R.copy()
-            R_[up] += 1
-            R_[down] -= 1
+        for R_ in get_perturbations(R, calories_target=calories_target):
             this_score = score(R_, A)
             if this_score > best_score:
                 R = R_
@@ -49,8 +52,10 @@ def get_best_score(data, calories_target=None):
 
 assert get_best_score(test_data) == 62842880
 # print(get_best_score(data))  # part a: 18965440
+assert get_best_score(data) == 18965440
 
-print get_best_score(test_data, calories_target=500)
+print(get_best_score(test_data, calories_target=500))
 # assert get_best_score(test_data, calories_target=500) == 57600000
 
-print(test_data)
+# print(test_data)
+print(data)
