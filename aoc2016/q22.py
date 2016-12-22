@@ -54,6 +54,6 @@ def part_b(data):
     return steps
 
 
-assert(part_b(test_data))
+assert part_b(test_data) == 7
 print(part_a(data))  # 976
 print(part_b(data))  # 209
