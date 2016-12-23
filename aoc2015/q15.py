@@ -1,5 +1,7 @@
 from aocd import data
 from itertools import permutations
+from collections import Counter, defaultdict
+from copy import deepcopy
 import numpy as np
 
 
@@ -59,3 +61,35 @@ print(get_best_score(test_data, calories_target=500))
 
 # print(test_data)
 print(data)
+
+
+def change_making(coins, n):
+    h = len(coins) + 1
+    w = n + 1
+
+    m = np.zeros((h,w), dtype=int)
+    m[0] = np.arange(0,w)
+    M = defaultdict(list)
+
+    for row, coin in enumerate(coins, 1):
+        for amount in range(1, w):
+            # Just use the coin
+            if coin == amount:
+                m[row,amount] = 1
+                M[row,amount].append(Counter({coin:1}))
+
+            # coin cannot be included.
+            # use the previous solution for making amount, excluding coin.
+            elif coin > amount:
+                m[row,amount] = m[row-1,amount]
+                M[row,amount] = deepcopy(M[row-1,amount])
+
+            # We can use coin:
+            # - Using the previous solution for making amount (without using coin).
+            # - Using the previous solution for making amount - coin (without using coin) plus this 1 extra coin.
+            else:
+                m[row,amount] = min(m[row-1,amount], 1 + m[row,amount-coin])
+                M[row,amount].extend(M[row-1,amount])
+                M[row,amount].extend([counter + Counter({coin:1}) for counter in M[row,amount-coin]])
+
+    return M[h-1,w-1]
