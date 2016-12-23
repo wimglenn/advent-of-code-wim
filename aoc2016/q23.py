@@ -49,12 +49,14 @@ def compute(reg, lines, lineno=0, original_data=data, patched_area=()):
             if a:
                 i += b - 1
                 if i in patched_area:
+                    assert 0
                     lines[:] = original_data.splitlines()
         elif line.startswith('tgl'):
             a = line.split()[1]
             a = reg[a] if a in reg else int(a)
             if 0 <= i + a < len(lines):
                 if i + a in patched_area:
+                    assert 0
                     lines[:] = original_data.splitlines()
                 lines[i + a] = toggle(lines[i + a])
         elif line.startswith('pass'):
@@ -63,7 +65,7 @@ def compute(reg, lines, lineno=0, original_data=data, patched_area=()):
             a, b, c = line.split()[1:]
             a = reg[a] if a in reg else int(a)
             b = reg[b] if b in reg else int(b)
-            reg[c] = a * b
+            reg[c] += a * b
         else:
             raise Exception
         i += 1
@@ -78,7 +80,6 @@ def part_a(data):
 def part_b(data):
     registers = {}.fromkeys('abcd', 12)
     patch_target = dedent('''\
-        cpy 0 a
         cpy b c
         inc a
         dec c
@@ -89,7 +90,6 @@ def part_b(data):
         mul b d a
         cpy 0 c
         cpy 0 d
-        pass
         pass
         pass
         pass''')
