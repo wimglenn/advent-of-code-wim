@@ -93,11 +93,11 @@ def part_b(data):
         pass''')
     patch_length = len(patch.splitlines())
     assert patch_length == len(patch_target.splitlines())
-    patch_line_no = len(data[:data.find(patch_target)].splitlines())
-    patched_line_numbers = range(patch_line_no, patch_line_no + patch_length)
+    patch_start = len(data[:data.find(patch_target)].splitlines())
+    patched_area = range(patch_start + 1, patch_start + 1 + patch_length)
     patched_data = data.replace(patch_target, patch, 1)
     lines = patched_data.splitlines()
-    registers = compute(reg=registers, lines=lines, original_data=data, patched_area=patched_line_numbers)
+    registers = compute(reg=registers, lines=lines, original_data=data, patched_area=patched_area)
     return registers['a']
 
 
