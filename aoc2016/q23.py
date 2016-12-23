@@ -29,7 +29,7 @@ def toggle(line):
     return line
 
 
-def compute(reg, lineno, lines):
+def compute(reg, lines, lineno=0, original_data=data, patched_area=()):
     i = lineno
     while i < len(lines):
         line = lines[i]
@@ -48,6 +48,8 @@ def compute(reg, lineno, lines):
             b = reg[b] if b in reg else int(b)
             if a:
                 i += b - 1
+                if i in patched_area:
+                    lines[:] = original_data.splitlines()
         elif line.startswith('tgl'):
             a = line.split()[1]
             a = reg[a] if a in reg else int(a)
@@ -60,37 +62,42 @@ def compute(reg, lineno, lines):
             a = reg[a] if a in reg else int(a)
             b = reg[b] if b in reg else int(b)
             reg[c] = a * b
+        elif line.startswith('unpatch'):
+            lines[:] = data.splitlines()
         i += 1
     return reg
 
 
 def part_a(data):
     registers = {}.fromkeys('abcd', 7)
-    registers = compute(reg=registers, lineno=0, lines=data.splitlines())
+    registers = compute(reg=registers, lines=data.splitlines())
     return registers['a']
 
 def part_b(data):
     registers = {}.fromkeys('abcd', 12)
-    data = data.replace(
-        dedent('''\
-            cpy 0 a
-            cpy b c
-            inc a
-            dec c
-            jnz c -2
-            dec d
-            jnz d -5'''),
-        dedent('''\
-            mul b d a
-            cpy 0 c
-            cpy 0 d
-            pass
-            pass
-            pass
-            pass''')
-    )
-    lines = data.splitlines()
-    registers = compute(reg=registers, lineno=0, lines=data.splitlines())
+    patch_target = dedent('''\
+        cpy 0 a
+        cpy b c
+        inc a
+        dec c
+        jnz c -2
+        dec d
+        jnz d -5''')
+    patch = dedent('''\
+        mul b d a
+        cpy 0 c
+        cpy 0 d
+        pass
+        pass
+        pass
+        pass''')
+    patch_length = len(patch.splitlines())
+    assert patch_length == len(patch_target.splitlines())
+    patch_line_no = len(data[:data.find(patch_target)].splitlines())
+    patched_line_numbers = range(patch_line_no, patch_line_no + patch_length)
+    patched_data = data.replace(patch_target, patch, 1)
+    lines = patched_data.splitlines()
+    registers = compute(reg=registers, lines=lines, original_data=data, patched_area=patched_line_numbers)
     return registers['a']
 
 
