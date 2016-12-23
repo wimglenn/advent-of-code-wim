@@ -49,14 +49,14 @@ def compute(reg, lines, lineno=0, original_data=data, patched_area=()):
             if a:
                 i += b - 1
                 if i in patched_area:
-                    assert 0
+                    print('unpatching due to jump in patched area (line {})...'.format(i))
                     lines[:] = original_data.splitlines()
         elif line.startswith('tgl'):
             a = line.split()[1]
             a = reg[a] if a in reg else int(a)
             if 0 <= i + a < len(lines):
                 if i + a in patched_area:
-                    assert 0
+                    print('unpatching due to toggle in patched area (line {})...'.format(i + a))
                     lines[:] = original_data.splitlines()
                 lines[i + a] = toggle(lines[i + a])
         elif line.startswith('pass'):
