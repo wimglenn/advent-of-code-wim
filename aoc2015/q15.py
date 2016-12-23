@@ -55,7 +55,7 @@ assert get_best_score(test_data) == 62842880
 # print(get_best_score(data))  # part a: 18965440
 assert get_best_score(data) == 18965440
 
-print(get_best_score(test_data, calories_target=500))
+# print(get_best_score(test_data, calories_target=500))
 # assert get_best_score(test_data, calories_target=500) == 57600000
 
 # print(test_data)
@@ -63,23 +63,15 @@ print(data)
 
 
 def change(total, coins=(1,5,10,25,50)):
+    if not total:
+        return [Counter()]
     M = defaultdict(list)
+    coins = sorted(coins)
     for row, coin in enumerate(coins, 1):
         for amount in range(1, total + 1):
-            # Just use the coin
             if coin == amount:
                 M[row,amount].append(Counter({coin:1}))
-
-            # coin cannot be included.
-            # use the previous solution for making amount, excluding coin.
-            elif coin > amount:
-                M[row,amount].extend(M[row-1,amount])
-
-            # We can use coin:
-            # - Using the previous solution for making amount (without using coin).
-            # - Using the previous solution for making amount - coin (without using coin) plus this 1 extra coin.
-            else:
-                M[row,amount].extend(M[row-1,amount])
+            M[row,amount].extend(M[row-1,amount])
+            if coin < amount:
                 M[row,amount].extend([counter + Counter({coin:1}) for counter in M[row,amount-coin]])
-
-    return M[len(coins)-1,total]
+    return M[len(coins),total]
