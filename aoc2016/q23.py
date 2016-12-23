@@ -54,6 +54,8 @@ def compute(reg, lines, lineno=0, original_data=data, patched_area=()):
             a = line.split()[1]
             a = reg[a] if a in reg else int(a)
             if 0 <= i + a < len(lines):
+                if i + a in patched_area:
+                    lines[:] = original_data.splitlines()
                 lines[i + a] = toggle(lines[i + a])
         elif line.startswith('pass'):
             pass
