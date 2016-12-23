@@ -62,8 +62,8 @@ def compute(reg, lines, lineno=0, original_data=data, patched_area=()):
             a = reg[a] if a in reg else int(a)
             b = reg[b] if b in reg else int(b)
             reg[c] = a * b
-        elif line.startswith('unpatch'):
-            lines[:] = data.splitlines()
+        else:
+            raise Exception
         i += 1
     return reg
 
