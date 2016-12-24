@@ -55,15 +55,11 @@ def get_distance_matrix(data):
 
 
 def solve(d, return_home=False):
-    d_min = float('inf')
-    n = len(d)
-    for order in permutations(range(1, n)):
-        order = (0,) + order
-        if return_home:
-            order += (0,)
-        d_total = sum(d[a,b] for a,b in zip(order, order[1:]))
-        d_min = min(d_total, d_min)
-    return d_min
+    distance = {}
+    for path in permutations(range(1, len(d))):
+        path = (0,) + path + ((0,) if return_home else ())
+        distance[path] = sum(d[a,b] for a,b in zip(path, path[1:]))
+    return min(distance.values())
 
 
 test_d = get_distance_matrix(test_data)
