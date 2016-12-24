@@ -27,15 +27,13 @@ def bfs(state0, target, maze):
     queue = deque([(state0, depth)])
     seen = {state0}
     while queue:
-        state, new_depth = queue.popleft()
-        if new_depth > depth:
-            depth = new_depth
+        state, this_depth = queue.popleft()
+        depth = max(depth, this_depth)
         if state == target:
             return depth
         children = list(valid_next_states(state, maze, seen=seen))
         queue.extend((child, depth + 1) for child in children)
         seen.update(children)
-    bfs.n_visited = len(seen)
 
 
 def get_distance_matrix(data):
