@@ -1,6 +1,6 @@
 from aocd import data
 from itertools import permutations
-from collections import Counter, defaultdict
+from collections import Counter
 import numpy as np
 import sys
 
@@ -9,20 +9,12 @@ test_data = '''Butterscotch: capacity -1, durability -2, flavor 6, texture 3, ca
 Cinnamon: capacity 2, durability 3, flavor -2, texture -1, calories 3'''
 
 
-def change(total, coins=(1,5,10,25,50)):
-    if not total:
-        return [Counter()]
-    M = defaultdict(list)
-    coins = sorted(coins)
-    for row, coin in enumerate(coins, 1):
-        for amount in range(1, total + 1):
-            # progress bar here?
-            if coin == amount:
-                M[row,amount].append(Counter({coin:1}))
-            M[row,amount].extend(M[row-1,amount])
-            if coin < amount:
-                M[row,amount].extend([counter + Counter({coin:1}) for counter in M[row,amount-coin]])
-    return M[len(coins),total]
+def ways(total, coins=(1,2,5,10,20,50,100)):
+    ways = [[Counter()]] + [[] for _ in range(total)]
+    for coin in coins:
+        for i in range(coin, total + 1):
+            ways[i] += [way + Counter({coin: 1}) for way in ways[i-coin]]
+    return ways[total]
 
 
 def parse_data(data):
@@ -73,7 +65,7 @@ def get_best_score_for_calories(data, n_teaspoons=100, calories=500):
     n = len(A)
     cals = A[:,-1]
     best_score = 0
-    for combo in change(total=calories, coins=cals):
+    for combo in ways(total=calories, coins=cals):
         R = np.array([combo.get(x, 0) for x in cals]).reshape(n,1)
         if R.sum() == n_teaspoons:
             this_score = score(R, A)
