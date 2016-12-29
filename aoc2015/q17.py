@@ -35,6 +35,8 @@ def rsubset_sum(vals, target=0):
 def subset_sum(vals, target=0):
     # dynamic programming impl
     sums = {0: [()]}  # key=sum, value=list of subsets for the sum
+    if target in sums:
+        yield from sums[target]  # annoying base case
     for val in vals:
         items = sums.items()  # don't change dict size during iteration
         sums = dict(items)
