@@ -22,7 +22,7 @@ def subset_sum(vals, target=0):
 
 
 def parse_data(data, n_groups):
-    vals = [int(n)for n in data.strip().splitlines()]
+    vals = [int(n)for n in data.strip().split()]
     total = sum(vals)
     if total % n_groups != 0:
         raise Exception
@@ -39,11 +39,10 @@ def bag_sub(list_big, sublist):
     return result
 
 
-def get_partitions(vals, target):
-    vals.sort()
+def partitions(vals, target):
     for group in subset_sum(vals, target):
         remaining = bag_sub(vals, group)
-        groups = get_partitions(remaining, target) if sum(remaining) > target else (remaining,)
+        groups = partitions(remaining, target) if sum(remaining) > target else (remaining,)
         yield from ((group, group_) for group_ in groups)
 
 
@@ -69,27 +68,15 @@ def solve(data, n_groups):
 
     for group1 in group1s:
         remaining = bag_sub(vals, group1)
-        partitions = get_partitions(remaining, target)
+        gen = partitions(remaining, target)
         try:
-            next(partitions)
+            next(gen)
         except StopIteration:
             continue
         return prod(group1)
 
 
-test_data = '''
-1
-2
-3
-4
-5
-7
-8
-9
-10
-11
-'''
-
+test_data = '1 2 3 4 5 7 8 9 10 11'
 
 assert solve(test_data, n_groups=3) == 99
 assert solve(test_data, n_groups=4) == 44
