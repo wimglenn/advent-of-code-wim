@@ -43,11 +43,8 @@ def get_partitions(vals, target):
     vals.sort()
     for group in subset_sum(vals, target):
         remaining = bag_sub(vals, group)
-        if sum(remaining) > target:
-            for partition in get_partitions(remaining, target):
-                yield (group, *partition)
-        else:
-            yield group, remaining
+        groups = get_partitions(remaining, target) if sum(remaining) > target else (remaining,)
+        yield from ((group, group_) for group_ in groups)
 
 
 def prod(vals):
