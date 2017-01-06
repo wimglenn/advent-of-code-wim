@@ -2,6 +2,7 @@ from aocd import data
 from functools import reduce
 from operator import mul
 from itertools import combinations
+from collections import Counter
 
 
 def subset_sum(vals, target=0):
@@ -29,9 +30,12 @@ def parse_data(data, n_groups):
 
 
 def bag_sub(list_big, sublist):
-    result = list_big[:]
-    for n in sublist:
-        result.remove(n)
+    counter = Counter(sublist)
+    result = []
+    for k in list_big:
+        counter[k] -= 1
+        if counter[k] < 0:
+            result.append(k)
     return result
 
 
