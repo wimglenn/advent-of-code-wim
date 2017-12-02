@@ -26,7 +26,7 @@ def checksum_b(data):
             quotient, remainder = divmod(numerator, denominator)
             if not remainder:
                 result += quotient
-                continue
+                break
     return result
 
 assert checksum_a(test_a) == 18
