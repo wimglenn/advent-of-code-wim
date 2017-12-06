@@ -14,10 +14,7 @@ def run(data):
         max_pos = a.argmax()
         q, r = divmod(a[max_pos], n)
         a[max_pos] = 0
-        a += q
-        a = np.roll(a, -max_pos-1)
-        a[:r] += 1
-        a = np.roll(a, max_pos+1)
+        a += np.roll([q+1]*r + [q]*(n-r), max_pos+1)
 
 test_data = '0 2 7 0'
 assert run(test_data) == (5, 4)
