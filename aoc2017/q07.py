@@ -65,8 +65,6 @@ def find_bad_node_correct_weight(tree):
     while d:
         node = d.pop()
         c = Counter(x.rweight for x in node.children)
-        if len(c) == 1:
-            break
         for child in node.children:
             if c[child.rweight] == 1:
                 d.append(child)
