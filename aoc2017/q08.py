@@ -1,6 +1,7 @@
 from aocd import data
 from collections import defaultdict
 from parse import parse
+from types import SimpleNamespace
 import operator as op
 
 ops = {
@@ -14,15 +15,15 @@ ops = {
     'dec': op.isub,
 }
 
-template = '{x} {iop} {m:d} if {y} {cmp} {n:d}'
+template = '{x} {i:op} {m:d} if {y} {cmp:op} {n:d}'
 
 def run(data):
     b = 0
     d = defaultdict(int)
     for line in data.splitlines():
-        r = parse(template, line).named
-        d[r['x']] = ops[r['iop']](d[r['x']], ops[r['cmp']](d[r['y']], r['n']) and r['m'])
-        b = max(b, d[r['x']])
+        r = SimpleNamespace(**parse(template, line, {'op': ops.get}).named)
+        d[r.x] = r.i(d[r.x], r.cmp(d[r.y], r.n) and r.m)
+        b = max(b, d[r.x])
     return max(d.values()), b
 
 test_data = '''b inc 5 if a > 1
