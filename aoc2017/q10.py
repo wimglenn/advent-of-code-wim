@@ -24,8 +24,8 @@ def knot_hash(data, n=256):
     state = list(range(n))
     lengths = [ord(x) for x in data] + [17, 31, 73, 47, 23]
     munge(state, lengths, n)
-    b = ''.join(format(reduce(xor, state[16*i:16*(i+1)]), '02x') for i in range(16))
-    return b
+    reduced = [reduce(xor, state[16*i:16*(i+1)]) for i in range(16)]
+    return bytes(reduced).hex()
 
 test_a = '3,4,1,5'
 assert part_a(test_a, n=5) == 12
