@@ -5,7 +5,7 @@ def walk(s):
     n_removed = 0
     while '!!' in s:
         s = s.replace('!!', '')
-    s = re.sub(r'\!.', '', s)
+    s = re.sub('!.', '', s)
     n_removed += len(s) - len(re.sub('<.*?>', '', s))
     n_removed -= 2 * len(re.findall('<.*?>', s))
     s = re.sub('<.*?>', '', s)
