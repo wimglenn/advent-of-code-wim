@@ -2,7 +2,6 @@ from aocd import data
 from itertools import permutations
 from collections import Counter
 import numpy as np
-import sys
 
 
 test_data = '''Butterscotch: capacity -1, durability -2, flavor 6, texture 3, calories 8

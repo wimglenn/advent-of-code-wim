@@ -1,5 +1,4 @@
 from aocd import data
-from collections import *
 
 
 test_data = '''5-8

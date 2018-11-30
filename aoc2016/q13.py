@@ -1,10 +1,7 @@
 # coding: utf-8
 from __future__ import unicode_literals
 from aocd import data
-from collections import deque, defaultdict
-from itertools import cycle
-from operator import attrgetter
-import sys
+from collections import deque
 
 
 class Maze(object):

@@ -1,5 +1,4 @@
 from aocd import data
-import numpy as np
 import re
 
 

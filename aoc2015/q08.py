@@ -1,5 +1,4 @@
 from aocd import data
-import ast
 
 
 test_data = r'''""

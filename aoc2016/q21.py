@@ -1,8 +1,5 @@
 from aocd import data
-from collections import deque
 from itertools import permutations
-import re
-import string 
 
 
 test_data = '''swap position 4 with position 0

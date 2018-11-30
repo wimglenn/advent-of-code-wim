@@ -1,7 +1,6 @@
 from aocd import data
 from collections import defaultdict
 from parse import parse
-from itertools import count
 import numpy as np
 
 test_data_a = '''\
