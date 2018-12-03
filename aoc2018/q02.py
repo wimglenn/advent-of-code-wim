@@ -7,12 +7,12 @@ def part_a(data):
     counters = [Counter(s) for s in data.split()]
     doubles = sum(1 for c in counters if 2 in c.values())
     triples = sum(1 for c in counters if 3 in c.values())
-    return doubles*triples
+    return doubles * triples
 
 
 def part_b(data):
     for a, b in combinations(data.split(), 2):
-        s = ''.join([x for x, y in zip(a, b) if x == y])
+        s = "".join([x for x, y in zip(a, b) if x == y])
         if len(s) == len(a) - 1:
             return s
 
