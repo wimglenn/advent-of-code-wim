@@ -13,24 +13,19 @@ test_data = """1, 1
 
 def part_ab(data, d_max=10000):
     vs = np.loadtxt(StringIO(data), dtype=int, delimiter=',')
-    shape = vs.max(axis=0) + 1
-    A = np.zeros(shape, dtype=int) - 1
-    B = np.zeros(shape, dtype=bool)
-    py, px = np.mgrid[:shape[0],:shape[1]]
+    w, h = vs.max(axis=0) + 1
+    n = len(vs)
+    py, px = np.mgrid[:w,:h]
     ps = np.c_[py.ravel(), px.ravel()]
-    for p in ps:
-        distances = np.abs(vs - p).sum(axis=1)
-        min_d = distances.min()
-        if (distances == min_d).sum() == 1:
-            A[tuple(p)] = np.argmin(distances)
-        if distances.sum() < d_max:
-            B[tuple(p)] = True
-    borders = {*A[0], *A[-1], *A.T[0], *A.T[-1]}
-    choices = set(range(len(vs))) - borders
-    areas = [(A==c).sum() for c in choices]
-    a = max(areas)
-    b = B.sum()
-    return a, b
+    ds = np.abs(ps[:,None] - vs).sum(axis=2)
+    d = ds.argmin(axis=1)
+    ties = d != n - 1 - np.fliplr(ds).argmin(axis=1)
+    d[ties] = -1
+    border = {*d[:w], *d[-w:], *d[::h], *d[::-h]}
+    areas = [(d==c).sum() for c in range(n) if c not in border]
+    part_a = max(areas)
+    part_b = (ds.sum(axis=1) < d_max).sum()
+    return part_a, part_b
 
 
 assert part_ab(test_data, d_max=32) == (17, 16)
