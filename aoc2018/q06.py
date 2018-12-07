@@ -15,9 +15,8 @@ def part_ab(data, d_max=10000):
     vs = np.loadtxt(StringIO(data), dtype=int, delimiter=',')
     w, h = vs.max(axis=0) + 1
     n = len(vs)
-    py, px = np.mgrid[:w,:h]
-    ps = np.c_[py.ravel(), px.ravel()]
-    ds = np.abs(ps[:,None] - vs).sum(axis=2)
+    ps = np.mgrid[:w, :h].transpose(1,2,0).reshape(-1, 1, 2)
+    ds = np.abs(ps - vs).sum(axis=2)
     d = ds.argmin(axis=1)
     ties = d != n - 1 - np.fliplr(ds).argmin(axis=1)
     d[ties] = -1
