@@ -43,15 +43,14 @@ def varianceish(a):
 def draw(a):
     ps = a[:2].copy()
     ps -= ps.min(axis=1).reshape(-1, 1)
-    h, w = ps.max(axis=1)
-    img = np.empty((w + 1, h + 1), dtype='U1')
+    w, h = ps.max(axis=1) + 1
+    img = np.empty((h, w), dtype='U1')
     img[:] = "."
     for col, row in ps.T:
         img[row, col] = '#'
-    print()
     for row in img:
         print(*row, sep='')
-    print()
+    print('\n')
 
 
 def run(data):
@@ -64,13 +63,14 @@ def run(data):
         v = varianceish(a)
         minv = min(v, minv)
         if v > minv:
-            a[:2] -= a[2:]
+            a[:2] -= a[2:]  # back up one step
             draw(a)
             return t
         t += 1
 
 
-assert run(test_data) == 3
-b = run(data)
+assert run(test_data) == 3  # HI
+print(run(data))
+
 # part a: BLGNHPJC
-print(b)  # part b: 10476
+# part b: 10476
