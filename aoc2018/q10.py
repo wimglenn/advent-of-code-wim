@@ -44,10 +44,9 @@ def draw(a):
     ps = a[:2].copy()
     ps -= ps.min(axis=1).reshape(-1, 1)
     w, h = ps.max(axis=1) + 1
-    img = np.empty((h, w), dtype='U1')
-    img[:] = "."
-    for col, row in ps.T:
-        img[row, col] = '#'
+    img = np.full((h, w), ".")
+    col, row = ps
+    img[row, col] = "#"
     for row in img:
         print(*row, sep='')
     print('\n')
