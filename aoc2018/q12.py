@@ -24,14 +24,14 @@ def parsed(data):
     s0 = initial.split()[-1]
     p0 = s0.index("#")
     s0 = s0.strip(".")
-    rules = {r.split()[0] for r in rest if r.endswith("#")}
+    rules = dict(r.split(' => ') for r in rest)
     return s0, p0, rules
 
 
 def mutate(s, p0, rules):
     s = '....' + s + '....'
     chunks = [s[i:i+5] for i in range(len(s))]
-    full = ''.join(["#" if c in rules else "." for c in chunks])
+    full = ''.join([rules.get(c, ".") for c in chunks])
     p0 += full.index("#") - 2
     return full.strip("."), p0
 
