@@ -120,11 +120,10 @@ def dump(grid, carts):
 
 
 def find_collision(carts):
-    counter = Counter([(c.y, c.x) for c in carts])
+    counter = Counter([c.coordinates for c in carts])
     pos = max(counter, key=counter.get)
     if counter[pos] > 1:
-        coordinates = f"{pos[1]},{pos[0]}"
-        raise CartCollision(coordinates)
+        raise CartCollision(pos)
 
 
 def run(data, part_b=False):
@@ -139,7 +138,10 @@ def run(data, part_b=False):
             except CartCollision as err:
                 if not part_b:
                     return err.coordinates
-                # remove crashed carts
+                # remove exactly 2 crashed carts. there can not be more than
+                # one collision at a time because we only moved 1 cart at a
+                # time. this is not strictly correct approach because 3 or 4
+                # carts could theoretically crash together at an intersection
                 carts = [c for c in carts if c.coordinates != err.coordinates]
         if len(carts) == 1:
             [cart] = carts
@@ -163,8 +165,18 @@ test_data2 = r"""/->-\
   \------/   """
 
 
+test_data3 = r"""/>-<\  
+|   |  
+| /<+-\
+| | | v
+\>+</ |
+  |   ^
+  \<->/"""
+
+
 assert run(test_data1) == "0,3"
 assert run(test_data2) == "7,3"
+assert run(test_data3, part_b=True) == "6,4"
 
 print(run(data, part_b=False))  # 113,136
 print(run(data, part_b=True))   # 114,136
