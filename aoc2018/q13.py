@@ -1,7 +1,10 @@
 from aocd import data, submit1
+import random
 import numpy as np
 from itertools import cycle
 from collections import Counter
+from bidict import bidict
+from termcolor import colored, COLORS
 
 
 class CartCollision(Exception):
@@ -15,125 +18,119 @@ class CartCollision(Exception):
 
 class Cart:
 
-    def __init__(self, row, col, glyph):
-        self.row = row
-        self.col = col
+    vs = bidict(zip('^>v<', [-1j, 1, 1j, -1]))
+
+    def __init__(self, x, y, glyph, color=None):
         self.glyph = glyph
-        self.turns = cycle('LSR')
+        self._position = complex(x, y)
+        self._turns = cycle([-1j, 1, 1j])  # left, straight, right
+        self.color = color
+
+    def __repr__(self):
+        return f"<Cart {self.pretty_glyph} at {self.coordinates}>"
+
+    def __lt__(self, other):
+        if not isinstance(other, Cart):
+            return NotImplemented
+        return (self.y, self.x) < (other.y, other.x)
+
+    @property
+    def pretty_glyph(self):
+        return colored(self.glyph, self.color, attrs=["bold"])
+
+    @property
+    def velocity(self):
+        return self.vs[self.glyph]
+
+    @property
+    def y(self):
+        # row
+        return int(self._position.imag)
+
+    @property
+    def x(self):
+        # column
+        return int(self._position.real)
 
     @property
     def coordinates(self):
-        return f"{self.col},{self.row}"  # x,y
+        return f"{self.x},{self.y}"
 
-    @property
-    def v_row(self):
-        if self.glyph == 'v':
-            return 1
-        elif self.glyph == '>':
-            return 0
-        elif self.glyph == '^':
-            return -1
+    def turn(self, direction=None):
+        if direction is None:
+            direction = next(self._turns)
+        v = self.velocity * direction
+        self.glyph = self.vs.inv[v]
+
+    def tick(self, grid):
+        # dump(grid, carts=[self])
+        self._position += self.velocity
+        track = grid[self.y, self.x]
+        assert track in r"+/-\|", f"WTF: {self} ran off the rails"
+        if track == "+":
+            direction = None
+        elif track == "\\":
+            direction = -1j if self.glyph in 'v^' else 1j
+        elif track == "/":
+            direction = -1j if self.glyph in '><' else 1j
         else:
-            assert self.glyph == '<'
-            return 0
-
-    @property
-    def v_col(self):
-        if self.glyph == 'v':
-            return 0
-        elif self.glyph == '>':
-            return 1
-        elif self.glyph == '^':
-            return 0
-        else:
-            assert self.glyph == '<'
-            return -1
-
-    def turn_left(self):
-        self.glyph = {
-            ">": "^",
-            "^": "<",
-            "<": "v",
-            "v": ">",
-        }[self.glyph]
-
-    def turn_right(self):
-        self.glyph = {
-            ">": "v",
-            "v": "<",
-            "<": "^",
-            "^": ">",
-        }[self.glyph]
-
-    def step(self, grid):
-        self.row += self.v_row
-        self.col += self.v_col
-        x = grid[self.row, self.col]
-        assert x in r"+/-\|"
-        if x == "+":
-            turn = next(self.turns)
-            if turn == "L":
-                self.turn_left()
-            elif turn == "R":
-                self.turn_right()
-        elif x == "\\":
-            if self.glyph in "><":
-                self.turn_right()
-            else:
-                assert self.glyph in "v^"
-                self.turn_left()
-        elif x == "/":
-            if self.glyph in "><":
-                self.turn_left()
-            else:
-                assert self.glyph in "v^"
-                self.turn_right()
+            return
+        self.turn(direction)
 
 
 def parsed(data):
-    a = np.array([list(line) for line in data.splitlines()], dtype="|U1")
+    a = np.array([list(line) for line in data.splitlines()], dtype="<U20")
     carts = []
     for glyph in "v>^<":
-        rows, cols = np.where(a==glyph)
-        for row, col in zip(rows, cols):
-            cart = Cart(row, col, glyph)
+        ys, xs = np.where(a==glyph)
+        for y, x in zip(ys, xs):
+            cart = Cart(x, y, glyph, color=random.choice(list(COLORS)))
             carts.append(cart)
             if cart.glyph in "<>":
-                a[cart.row, cart.col] = '-'
+                a[cart.y, cart.x] = '-'
             else:
                 assert cart.glyph in '^v'
-                a[cart.row, cart.col] = '|'
+                a[cart.y, cart.x] = '|'
     return a, carts
 
 
 def dump(a, carts):
     a = a.copy()
+    seen = set()
     for cart in carts:
-        a[cart.row, cart.col] = cart.glyph
+        if cart.coordinates in seen:
+            # collision
+            val = colored("X", "red", attrs=["bold"])
+        else:
+            val = cart.pretty_glyph
+        a[cart.y, cart.x] = val
+        seen.add(cart.coordinates)
     print()
     for row in a:
         print(*row, sep='')
     print()
+    return a
 
 
 def find_collision(carts):
-    counter = Counter([(c.row, c.col) for c in carts])
+    counter = Counter([(c.y, c.x) for c in carts])
     pos = max(counter, key=counter.get)
     if counter[pos] > 1:
         coordinates = f"{pos[1]},{pos[0]}"
         raise CartCollision(coordinates)
 
 
-def run(data, part):
+def run(data, part_b=False):
     a0, carts = parsed(data)
     while True:
-        carts.sort(key=lambda c: (c.row, c.col))
+        # dump(a0, carts)
+        carts.sort()
         for cart in carts:
-            cart.step(grid=a0)
+            cart.tick(grid=a0)
             try:
                 find_collision(carts)
             except CartCollision as err:
-                if part == "a":
+                if not part_b:
                     return err.coordinates
                 # remove crashed carts
                 carts = [c for c in carts if c.coordinates != err.coordinates]
@@ -159,11 +156,8 @@ test_data2 = r"""/->-\
   \------/   """
 
 
-assert run(test_data1, part="a") == "0,3"
-assert run(test_data2, part="a") == "7,3"
+assert run(test_data1) == "0,3"
+assert run(test_data2) == "7,3"
 
-assert run(data, part="a") == "113,136"
-assert run(data, part="b") == "114,136"
-
-# print(run(data, part="a"))  # 113,136
-# print(run(data, part="b"))  # 114,136
+print(run(data, part_b=False))  # 113,136
+print(run(data, part_b=True))   # 114,136
