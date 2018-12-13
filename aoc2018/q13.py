@@ -7,7 +7,6 @@ from termcolor import colored, COLORS
 
 
 class CartCollision(Exception):
-
     def __init__(self, coordinates, submit=False):
         self.coordinates = coordinates
         if submit:
@@ -17,7 +16,7 @@ class CartCollision(Exception):
 
 class Cart:
 
-    vs = bidict(zip('^>v<', [-1j, 1, 1j, -1]))
+    vs = bidict(zip("^>v<", [-1j, 1, 1j, -1]))
 
     def __init__(self, x, y, glyph, color=None):
         self.glyph = glyph
@@ -69,9 +68,9 @@ class Cart:
         if track == "+":
             direction = None
         elif track == "\\":
-            direction = -1j if self.glyph in 'v^' else 1j
+            direction = -1j if self.glyph in "v^" else 1j
         elif track == "/":
-            direction = -1j if self.glyph in '><' else 1j
+            direction = -1j if self.glyph in "><" else 1j
         else:
             return
         self.turn(direction)
@@ -116,7 +115,7 @@ def dump(grid, carts):
                 line.append(carts_on_grid[pos])
             else:
                 line.append(grid.get(pos, " "))
-        print(*line, sep='')
+        print(*line, sep="")
 
 
 def find_collision(carts):
@@ -126,10 +125,13 @@ def find_collision(carts):
         raise CartCollision(pos)
 
 
-def run(data, part_b=False):
+def run(data, part_b=False, debug=False):
     a0, carts = parsed(data)
     while True:
-        # dump(a0, carts)
+        if debug:
+            dump(a0, carts)
+            input("press enter to continue...")
+            print("\33c")
         carts.sort()
         for cart in carts:
             cart.tick(grid=a0)
@@ -178,5 +180,5 @@ assert run(test_data1) == "0,3"
 assert run(test_data2) == "7,3"
 assert run(test_data3, part_b=True) == "6,4"
 
-print(run(data, part_b=False))  # 113,136
-print(run(data, part_b=True))   # 114,136
+print(run(data))  # 113,136
+print(run(data, part_b=True))  # 114,136
