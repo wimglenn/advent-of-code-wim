@@ -98,9 +98,11 @@ def parsed(data):
 def dump(grid, carts):
     seen = set()
     carts_on_grid = {}
+    prompt = ""
     for cart in carts:
         if cart.coordinates in seen:
             # collision
+            prompt = "Collision detected! "
             val = colored("X", "red", attrs=["bold"])
         else:
             val = cart.pretty_glyph
@@ -116,6 +118,9 @@ def dump(grid, carts):
             else:
                 line.append(grid.get(pos, " "))
         print(*line, sep="")
+    prompt += "Press enter to continue..."
+    input(prompt)
+    print("\33c")
 
 
 def find_collision(carts):
@@ -130,14 +135,14 @@ def run(data, part_b=False, debug=False):
     while True:
         if debug:
             dump(a0, carts)
-            input("press enter to continue...")
-            print("\33c")
         carts.sort()
         for cart in carts:
             cart.tick(grid=a0)
             try:
                 find_collision(carts)
             except CartCollision as err:
+                if debug:
+                    dump(a0, carts)
                 if not part_b:
                     return err.coordinates
                 # remove exactly 2 crashed carts. there can not be more than
@@ -176,9 +181,9 @@ test_data3 = r"""/>-<\
   \<->/"""
 
 
-assert run(test_data1) == "0,3"
-assert run(test_data2) == "7,3"
-assert run(test_data3, part_b=True) == "6,4"
+assert run(test_data1, debug=True) == "0,3"
+assert run(test_data2, debug=True) == "7,3"
+assert run(test_data3, part_b=True, debug=True) == "6,4"
 
 print(run(data))  # 113,136
 print(run(data, part_b=True))  # 114,136
