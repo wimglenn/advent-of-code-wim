@@ -1,6 +1,5 @@
 from aocd import data, submit1
 import random
-import numpy as np
 from itertools import cycle
 from collections import Counter
 from bidict import bidict
@@ -79,37 +78,45 @@ class Cart:
 
 
 def parsed(data):
-    a = np.array([list(line) for line in data.splitlines()], dtype="<U20")
+    grid = {}
     carts = []
-    for glyph in "v>^<":
-        ys, xs = np.where(a==glyph)
-        for y, x in zip(ys, xs):
-            cart = Cart(x, y, glyph, color=random.choice(list(COLORS)))
-            carts.append(cart)
-            if cart.glyph in "<>":
-                a[cart.y, cart.x] = '-'
-            else:
-                assert cart.glyph in '^v'
-                a[cart.y, cart.x] = '|'
-    return a, carts
+    lines = data.splitlines()
+    h = len(lines)
+    [w] = {len(line) for line in lines}
+    for y, line in enumerate(lines):
+        for x, char in enumerate(line):
+            if char in "v>^<":
+                grid[y, x] = "|" if char in "v^" else "-"
+                cart = Cart(x, y, glyph=char, color=random.choice(list(COLORS)))
+                carts.append(cart)
+            elif char != " ":
+                grid[y, x] = char
+    grid["y-axis"] = range(h)
+    grid["x-axis"] = range(w)
+    return grid, carts
 
 
-def dump(a, carts):
-    a = a.copy()
+def dump(grid, carts):
     seen = set()
+    carts_on_grid = {}
     for cart in carts:
         if cart.coordinates in seen:
             # collision
             val = colored("X", "red", attrs=["bold"])
         else:
             val = cart.pretty_glyph
-        a[cart.y, cart.x] = val
+        carts_on_grid[cart.y, cart.x] = val
         seen.add(cart.coordinates)
     print()
-    for row in a:
-        print(*row, sep='')
-    print()
-    return a
+    for y in grid["y-axis"]:
+        line = []
+        for x in grid["x-axis"]:
+            pos = (y, x)
+            if pos in carts_on_grid:
+                line.append(carts_on_grid[pos])
+            else:
+                line.append(grid.get(pos, " "))
+        print(*line, sep='')
 
 
 def find_collision(carts):
