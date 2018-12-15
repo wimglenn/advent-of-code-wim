@@ -1,7 +1,8 @@
-from aocd import data, submit1, submit2
-from collections import *
+from aocd import data
+from collections import deque
 from termcolor import colored
 from operator import attrgetter
+from time import sleep
 
 
 class CombatEnds(Exception):
@@ -11,7 +12,6 @@ class CombatEnds(Exception):
 class Unit:
     grid = None
     ap = None
-    hp = None
     glyph = 'U'
 
     def __init__(self, pos, id):
@@ -124,7 +124,7 @@ class Goblin(Unit):
     ap = 3
 
 
-def dump(grid, round=0):
+def dump(grid, round=0, interactive=False, dt=0.1):
     print("\33c")
     units = grid["units"]
     units_on_grid = {}
@@ -134,7 +134,7 @@ def dump(grid, round=0):
             units_on_grid[unit.pos] = unit
     print()
     if round:
-        print(f"After {round} round{'s' if round > 1 else ''}")
+        print(f"After {round} round{'s' if round > 1 else ''}:")
     else:
         print("Initially:")
     for y in grid["y-axis"]:
@@ -148,13 +148,16 @@ def dump(grid, round=0):
                 units_on_line.append(unit)
             else:
                 line.append(grid[pos])
+        print(*line, sep="", end='')
         if units_on_line:
             units_str = ', '.join([f'{u.cglyph}({u.hp})' for u in units_on_line])
-            line.extend('   ' + units_str)
-        print(*line, sep="")
-    prompt += "Press enter to continue..."
-    print()
-    input(prompt)
+            print("   " + units_str)
+        else:
+            print()
+    if interactive:
+        input("Press enter to continue ...")
+    else:
+        sleep(dt)
 
 
 def parsed(data):
