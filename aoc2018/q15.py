@@ -237,6 +237,7 @@ def part_a(data, debug=False):
 
 
 def part_b(data, debug=False):
+    Elf.ap = 3
     while True:
         Elf.ap += 1
         outcome = part_a(data, debug=debug)
@@ -244,16 +245,81 @@ def part_b(data, debug=False):
             return outcome
 
 
-test_data = """#######
+part_a_tests = """#######
 #.G...#
 #...EG#
 #.#.#G#
 #..G#E#
 #.....#
-#######"""
+#######
+
+27730
+
+#######
+#G..#E#
+#E#E.E#
+#G.##.#
+#...#E#
+#...E.#
+#######
+
+36334
+
+#######
+#E..EG#
+#.#G.E#
+#E.##E#
+#G..#.#
+#..E#.#
+#######
+
+39514
+
+#######
+#E.G#.#
+#.#G..#
+#G.#.G#
+#G..#.#
+#...E.#
+#######
+
+27755
+
+#######
+#.E...#
+#.#..G#
+#.###.#
+#E#G#G#
+#...#G#
+#######
+
+28944
+
+#########
+#G......#
+#.E.#...#
+#..##..G#
+#...##..#
+#...#...#
+#.G...G.#
+#.....G.#
+#########
+
+18740"""
+
 
 debug = True
-assert part_a(test_data, debug=debug) == 27730
+tests = part_a_tests.split('\n\n')
+grids = tests[0::2]
+outcomes = [int(line) for line in tests[1::2]]
+for grid, outcome in zip(grids, outcomes):
+    assert part_a(grid, debug=debug) == outcome
+
+part_b_tests = [4988, 31284, 3478, 6474, 1140]
+del grids[1]  # wtf eric
+for grid, outcome in zip(grids, part_b_tests):
+    assert part_b(grid, debug=debug) == outcome
+
 
 a = part_a(data, debug=debug)
 print(a)  # 237490
