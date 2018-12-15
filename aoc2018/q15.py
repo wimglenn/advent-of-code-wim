@@ -128,7 +128,6 @@ def dump(grid, round=0, interactive=False, dt=0.1):
     print("\33c")
     units = grid["units"]
     units_on_grid = {}
-    prompt = ""
     for unit in units:
         if unit.alive:
             units_on_grid[unit.pos] = unit
