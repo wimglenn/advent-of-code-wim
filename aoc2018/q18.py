@@ -1,6 +1,7 @@
 from aocd import data
 import numpy as np
 from scipy.signal import convolve2d
+import time
 
 
 test_data = """.#.#...|#.
@@ -22,11 +23,14 @@ def parsed(data):
     return A
 
 
-def dump(A):
-    d = {0: ".", 1: "|", 1j: "#"}
+def dump(A, dt=0.1):
+    # d = {0: ".", 1: "|", 1j: "#"}
+    d = {0: "  ", 1: "🌲", 1j: " ⛏"}
+    print("\33c")
     for row in A:
         print(*[d[c] for c in row], sep='')
     print()
+    time.sleep(dt)
 
 
 def mutate(A0):
@@ -39,13 +43,15 @@ def mutate(A0):
     return A1
 
 
-def run(data, minutes=10):
+def run(data, minutes=10, debug=False):
     A = parsed(data)
     m = minutes
     seen = {A.tostring(): m}
     while m > 0:
         m -= 1
         A = mutate(A)
+        if debug:
+            dump(A)
         s = A.tostring()
         if s in seen:
             delta = seen[s] - m
@@ -54,10 +60,11 @@ def run(data, minutes=10):
     return (A==1).sum() * (A==1j).sum()
 
 
-assert run(test_data, minutes=10) == 1147
+debug = True
+assert run(test_data, minutes=10, debug=debug) == 1147
 
-a = run(data, minutes=10)
+a = run(data, minutes=10, debug=debug)
 print(a)  # 603098
 
-b = run(data, minutes=1000000000)
+b = run(data, minutes=1000000000, debug=debug)
 print(b)  # 210000
