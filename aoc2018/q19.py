@@ -93,8 +93,6 @@ funcs = all_ops()
 
 class Comp:
 
-    dbg = True
-
     def __init__(self, ip, d, r0, hacked):
         self.hacked = hacked
         self.ip = ip
