@@ -50,12 +50,12 @@ def part_a(data):
     graph = nx.Graph()
     graph.add_nodes_from(nodes)
     for node1, node2 in combinations(nodes, 2):
-        if sum(abs(node1[i] - node2[i]) for i in range(4)) <= 3:
+        if sum(abs(x - y) for x, y in zip(node1, node2)) <= 3:
             graph.add_edge(node1, node2)
-    return len(list(nx.connected_components(graph)))
+    return nx.number_connected_components(graph)
 
 
-for text, n in tests.items():
-    assert part_a(text) == n
+for test_data, expected in tests.items():
+    assert part_a(test_data) == expected
 
 print(part_a(data))  # 375
