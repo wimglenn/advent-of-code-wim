@@ -40,5 +40,7 @@ wvxyz
 assert part_a(test_a) == 12
 assert part_b(test_b) == "fgij"
 
-print(part_a(data))  # 7657
-print(part_b(data))  # ivjhcadokeltwgsfsmqwrbnuy
+
+if __name__ == "__main__":
+    print(part_a(data))  # 7657
+    print(part_b(data))  # ivjhcadokeltwgsfsmqwrbnuy

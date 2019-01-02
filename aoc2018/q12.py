@@ -40,7 +40,7 @@ def score(s, p0=0):
     return sum(i for i,v in  enumerate(s, start=p0) if v == "#")
 
 
-def run(data, n=20):
+def part_a(data, n=20):
     s0, p0, rules = parsed(data)
     for i in range(n):
         s1, p1 = mutate(s0, p0, rules)
@@ -50,9 +50,13 @@ def run(data, n=20):
     return score(s0, p0)
 
 
-assert run(test_data) == 325
-part_a = run(data)
-print(part_a)  # 2040
+def part_b(data):
+    return part_a(data, n=50000000000)
 
-part_b = run(data, n=50000000000)
-print(part_b)  # 1700000000011
+
+assert part_a(test_data) == 325
+
+
+if __name__ == "__main__":
+    print(part_a(data))  # 2040
+    print(part_b(data))  # 1700000000011

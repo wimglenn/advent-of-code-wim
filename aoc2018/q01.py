@@ -31,5 +31,6 @@ for test_data, result in b_tests.items():
     assert part_b(test_data) == result
 
 
-print(part_a(data))  # 454
-print(part_b(data))  # 566
+if __name__ == "__main__":
+    print(part_a(data))  # 454
+    print(part_b(data))  # 566

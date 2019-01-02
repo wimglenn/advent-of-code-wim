@@ -131,6 +131,9 @@ def part_ab(data):
 
 sys.setrecursionlimit(3000)
 assert part_ab(test_data) == (57, 29)
-a, b = part_ab(data)
-print(a)  # 31953
-print(b)  # 26410
+
+
+if __name__ == "__main__":
+    a, b = part_ab(data)
+    print(a)  # 31953
+    print(b)  # 26410

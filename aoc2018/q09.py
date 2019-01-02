@@ -51,10 +51,18 @@ for n_players, n_marbles, high_score in tests:
     assert get_high_score(n_players, n_marbles) == high_score
 
 template = "{:d} players; last marble is worth {:d} points"
-n_players, n_marbles = parse(template, data)
 
-part_a = get_high_score(n_players, n_marbles)
-print(part_a)  # 386151
 
-part_b = get_high_score(n_players, n_marbles*100)
-print(part_b)  # 3211264152
+def part_a(data):
+    n_players, n_marbles = parse(template, data)
+    return get_high_score(n_players, n_marbles)
+
+
+def part_b(data):
+    n_players, n_marbles = parse(template, data)
+    return get_high_score(n_players, n_marbles*100)
+
+
+if __name__ == "__main__":
+    print(part_a(data))  # 386151
+    print(part_b(data))  # 3211264152

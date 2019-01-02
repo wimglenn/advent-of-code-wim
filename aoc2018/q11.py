@@ -29,10 +29,7 @@ assert gpl(39, 217, 196) == 0
 assert gpl(71, 101, 153) == 4
 
 
-mygrid = gen_grid(data)
-
-
-def max_power(grid=mygrid, kernels=(3,)):
+def max_power(grid, kernels=(3,)):
     maxs = []
     for k in kernels:
         kernel = np.ones((k, k), dtype=int)
@@ -42,26 +39,24 @@ def max_power(grid=mygrid, kernels=(3,)):
     return max(maxs)
 
 
-def part_a(grid=mygrid):
+def part_a(data):
+    grid = gen_grid(data)
     m, x, y, k = max_power(grid)
     return f"{x},{y}"
 
 
-def part_b(grid=mygrid, search_limit=20):
+def part_b(data, search_limit=20):
+    grid = gen_grid(data)
     m, x, y, k = max_power(grid, kernels=range(1, search_limit))
     return f"{x},{y},{k}"
 
 
-grid18 = gen_grid(18)
-grid42 = gen_grid(42)
-assert max_power(grid18) == (29, 33, 45, 3)
-assert max_power(grid42) == (30, 21, 61, 3)
-assert part_b(grid18) == "90,269,16"
-assert part_b(grid42) == "232,251,12"
+assert max_power(gen_grid(18)) == (29, 33, 45, 3)
+assert max_power(gen_grid(42)) == (30, 21, 61, 3)
+assert part_b(18) == "90,269,16"
+assert part_b(42) == "232,251,12"
 
 
-a = part_a()
-print(a)  # part a: 20,46
-
-b = part_b()
-print(b)  # part b: 231,65,14
+if __name__ == "__main__":
+    print(part_a(data))  # 20,46
+    print(part_b(data))  # 231,65,14

@@ -1,4 +1,5 @@
 from aocd import data
+from aoc2018.q16 import all_ops
 import math
 
 
@@ -10,74 +11,6 @@ addr 1 2 3
 setr 1 0 0
 seti 8 0 4
 seti 9 0 5"""
-
-
-def all_ops():
-
-    def addr(R, a, b, c):
-        R[c] = R[a] + R[b]
-
-
-    def addi(R, a, b, c):
-        R[c] = R[a] + b
-
-
-    def mulr(R, a, b, c):
-        R[c] = R[a] * R[b]
-
-
-    def muli(R, a, b, c):
-        R[c] = R[a] * b
-
-
-    def banr(R, a, b, c):
-        R[c] = R[a] & R[b]
-
-
-    def bani(R, a, b, c):
-        R[c] = R[a] & b
-
-
-    def borr(R, a, b, c):
-        R[c] = R[a] | R[b]
-
-
-    def bori(R, a, b, c):
-        R[c] = R[a] | b
-
-
-    def setr(R, a, b, c):
-        R[c] = R[a]
-
-
-    def seti(R, a, b, c):
-        R[c] = a
-
-
-    def gtir(R, a, b, c):
-        R[c] = int(a > R[b])
-
-
-    def gtri(R, a, b, c):
-        R[c] = int(R[a] > b)
-
-
-    def gtrr(R, a, b, c):
-        R[c] = int(R[a] > R[b])
-
-
-    def eqir(R, a, b, c):
-        R[c] = int(a == R[b])
-
-
-    def eqri(R, a, b, c):
-        R[c] = int(R[a] == b)
-
-
-    def eqrr(R, a, b, c):
-        R[c] = int(R[a] == R[b])
-
-    return locals()
 
 
 def parsed(data):
@@ -134,8 +67,15 @@ def divisors(n):
 
 assert run(test_data) == 7
 
-a = run(data, r0=0, hack=True)
-print(a)  # 1152
 
-b = run(data, r0=1, hack=True)
-print(b)  # 12690000
+def part_a(data):
+    return run(data, r0=0, hack=True)
+
+
+def part_b(data):
+    return run(data, r0=1, hack=True)
+
+
+if __name__ == "__main__":
+    print(part_a(data))  # 1152
+    print(part_b(data))  # 12690000

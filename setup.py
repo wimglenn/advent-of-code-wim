@@ -22,7 +22,7 @@ setup(
         "networkx",
         "wimpy",
         "pytz",
-        "setuptools",  # or entrypoints.. ?
+        "setuptools",
     ],
     packages=find_packages(),
     entry_points={

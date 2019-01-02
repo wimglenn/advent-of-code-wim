@@ -320,8 +320,6 @@ for grid, outcome in zip(grids, part_b_tests):
     assert part_b(grid, debug=debug) == outcome
 
 
-a = part_a(data, debug=debug)
-print(a)  # 237490
-
-b = part_b(data, debug=debug)
-print(b)  # 38424
+if __name__ == "__main__":
+    print(part_a(data, debug=debug))  # 237490
+    print(part_b(data, debug=debug))  # 38424

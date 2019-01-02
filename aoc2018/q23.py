@@ -68,7 +68,9 @@ pos=<10,10,10>, r=5"""
 
 
 assert part_a(test_data_a) == 7
-print(part_a(data))  # 933
-
 assert part_b(test_data_b) == 36
-print(part_b(data))  # 70887840
+
+
+if __name__ == "__main__":
+    print(part_a(data))  # 933
+    print(part_b(data))  # 70887840

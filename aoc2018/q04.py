@@ -85,6 +85,9 @@ def part_ab(data):
 
 
 assert part_ab(test_data) == (240, 4455)
-a, b = part_ab(data)
-print(a)  # 39584
-print(b)  # 55053
+
+
+if __name__ == "__main__":
+    a, b = part_ab(data)
+    print(a)  # 39584
+    print(b)  # 55053

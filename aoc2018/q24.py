@@ -159,6 +159,10 @@ class Battle:
         return winner.n
 
 
+def part_a(data):
+    return Battle(data).part_a()
+
+
 def part_b(data, boost0=0):
     boost = boost0
     while True:
@@ -181,8 +185,10 @@ Infection:
 4485 units each with 2961 hit points (immune to radiation; weak to fire, cold) with an attack that does 12 slashing damage at initiative 4"""
 
 
-assert Battle(test_data).part_a() == 5216
-print(Battle(data).part_a())  # 24318
-
+assert part_a(test_data) == 5216
 assert part_b(test_data, boost0=1570) == 51
-print(part_b(data))  # 1083
+
+
+if __name__ == "__main__":
+    print(part_a(data))  # 24318
+    print(part_b(data))  # 1083

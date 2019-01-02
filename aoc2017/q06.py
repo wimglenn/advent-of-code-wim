@@ -2,7 +2,7 @@ from aocd import data
 from itertools import count
 import numpy as np
 
-def run(data):
+def part_ab(data):
     a = np.fromstring(data, sep=' ', dtype=int)
     n = len(a)
     seen = {}
@@ -17,8 +17,10 @@ def run(data):
         a += np.roll([q+1]*r + [q]*(n-r), max_pos+1)
 
 test_data = '0 2 7 0'
-assert run(test_data) == (5, 4)
+assert part_ab(test_data) == (5, 4)
 
-a, b = run(data)
-print(a)  # part a: 14029
-print(b)  # part b: 2765
+
+if __name__ == "__main__":
+    a, b = part_ab(data)
+    print(a)  # 14029
+    print(b)  # 2765

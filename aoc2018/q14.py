@@ -51,8 +51,6 @@ for n_recipes, scores in tests:
     assert part_b(scores[:5]) == n_recipes
 
 
-a = part_a(data)
-print(a)  # 7861362411
-
-b = part_b(data)
-print(b)  # 20203532
+if __name__ == "__main__":
+    print(part_a(data))  # 7861362411
+    print(part_b(data))  # 20203532

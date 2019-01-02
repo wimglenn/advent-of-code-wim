@@ -27,5 +27,8 @@ def part_b(data):
 test_data = "dabAcCaCBAcCcaDA"
 assert part_a(test_data) == 10
 assert part_b(test_data) == 4
-print(part_a(data))  # 9370
-print(part_b(data))  # 6390
+
+
+if __name__ == "__main__":
+    print(part_a(data))  # 9370
+    print(part_b(data))  # 6390

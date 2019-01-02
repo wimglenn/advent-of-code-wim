@@ -191,9 +191,9 @@ target: 10,10"""
 
 
 assert part_a(test_data) == 114
-a = part_a(data)  # 7380
-print(a)
-
 assert part_b(test_data) == 45
-b = part_b(data)
-print(b)  # 1013
+
+
+if __name__ == "__main__":
+    print(part_a(data))  # 7380
+    print(part_b(data))  # 1013

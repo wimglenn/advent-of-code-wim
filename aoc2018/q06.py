@@ -28,6 +28,9 @@ def part_ab(data, d_max=10000):
 
 
 assert part_ab(test_data, d_max=32) == (17, 16)
-a, b = part_ab(data)
-print(a)  # 3293
-print(b)  # 45176
+
+
+if __name__ == "__main__":
+    a, b = part_ab(data)
+    print(a)  # 3293
+    print(b)  # 45176
