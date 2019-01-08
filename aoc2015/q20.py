@@ -16,5 +16,5 @@ def part_b(data):
     return np.argmax(A>int(data))
 
 
-print(part_a(data))  # 831600
-print(part_b(data))  # 884520
+print(part_a(data))
+print(part_b(data))

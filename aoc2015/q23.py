@@ -60,9 +60,9 @@ assert computer.registers['a'] == 2
 
 computer.reset(instructions=data)
 computer.compute()
-print(computer.registers['b'])  # part a: 184
+print(computer.registers['b'])
 
 computer.reset(instructions=data)
 computer.registers['a'] = 1
 computer.compute()
-print(computer.registers['b'])  # part b: 231
+print(computer.registers['b'])

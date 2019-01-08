@@ -35,5 +35,5 @@ def find_sue(**kwargs):
             return int(sue.split()[1])
 
 
-print(find_sue())  # part a: 103
-print(find_sue(cats=operator.gt, trees=operator.gt, pomeranians=operator.lt, goldfish=operator.lt))  # part b: 405
+print(find_sue())
+print(find_sue(cats=operator.gt, trees=operator.gt, pomeranians=operator.lt, goldfish=operator.lt))

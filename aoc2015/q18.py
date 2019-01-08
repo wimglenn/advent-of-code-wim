@@ -31,5 +31,5 @@ def animate(data, iterations=100, corners_on=False):
 assert animate(test_data, iterations=4) == 4
 assert animate(test_data, iterations=5, corners_on=True) == 17
 
-print(animate(data))  # part a: 768
-print(animate(data, corners_on=True))  # part b: 781
+print(animate(data))
+print(animate(data, corners_on=True))

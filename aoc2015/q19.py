@@ -20,6 +20,7 @@ def parse_tr(data):
         tri[r].append(s)
     return tr, tri
 
+
 def gen(tr, element):
     for s, rs in tr.items():
         splitted = element.split(s)
@@ -30,9 +31,11 @@ def gen(tr, element):
                 new = s.join(new)
                 yield new
 
+
 def part_a(data, element):
     tr, tri = parse_tr(data)
     return len({word for word in gen(tr, element)})
+
 
 def part_b(data, element, element0='e'):
     tr, tri = parse_tr(data)
@@ -55,5 +58,5 @@ assert part_b(test_data, 'HOHOHO') == 6
 element_pos = data.rfind('\n')
 data_, element = data[:element_pos], data[element_pos:].strip()
 
-print(part_a(data_, element))  # 518
-print(part_b(data_, element))  # 200
+print(part_a(data_, element))
+print(part_b(data_, element))
