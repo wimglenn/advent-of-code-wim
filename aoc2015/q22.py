@@ -153,5 +153,5 @@ def bfs(state0, hard_mode=False):
 min_spent = bfs(GameState())
 min_spent_hard = bfs(GameState(), hard_mode=True)
 
-print(min_spent)  # part a: 1269
-print(min_spent_hard)  # part b: 1309
+print(min_spent)
+print(min_spent_hard)

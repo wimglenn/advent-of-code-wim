@@ -7,7 +7,7 @@ def s2a(s):
 def a2s(a):
     return '/'.join(''.join('.#'[n] for n in row) for row in a)
 
-def parse_data(data):
+def parsed(data):
     rules = {}
     for line in data.splitlines():
         a, _sep, b = line.partition(' => ')
@@ -18,7 +18,7 @@ def parse_data(data):
     return rules
 
 def run(data, iterations):
-    rules = parse_data(data)
+    rules = parsed(data)
     grid = s2a('.#./..#/###')
     for i in range(iterations):
         n = len(grid)
@@ -35,10 +35,10 @@ def run(data, iterations):
         grid = np.vstack(rows)
     return grid.sum()
 
-test_data = '''\
+test_data = """\
 ../.# => ##./#../...
-.#./..#/### => #..#/..../..../#..#'''
+.#./..#/### => #..#/..../..../#..#"""
 
 assert run(test_data, 2) == 12
-print(run(data, 5))  # part a: 188
-print(run(data, 18))  # part b: 2758764
+print(run(data, 5))
+print(run(data, 18))

@@ -23,5 +23,5 @@ def f(data, n):
 
 
 assert f(test_data, test_len) == '01100'
-print(f(data, 272))  # part A: 11100111011101111
-print(f(data, 35651584))  # part B: 10001110010000110
+print(f(data, 272))
+print(f(data, 35651584))

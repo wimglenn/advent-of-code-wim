@@ -5,7 +5,8 @@ from operator import attrgetter
 from parse import parse
 
 
-test_data = """[1518-11-01 00:00] Guard #10 begins shift
+test_data = """\
+[1518-11-01 00:00] Guard #10 begins shift
 [1518-11-01 00:05] falls asleep
 [1518-11-01 00:25] wakes up
 [1518-11-01 00:30] falls asleep
@@ -87,7 +88,6 @@ def part_ab(data):
 assert part_ab(test_data) == (240, 4455)
 
 
-if __name__ == "__main__":
-    a, b = part_ab(data)
-    print(a)  # 39584
-    print(b)  # 55053
+a, b = part_ab(data)
+print(a)
+print(b)

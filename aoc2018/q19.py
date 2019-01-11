@@ -3,7 +3,8 @@ from aoc2018.q16 import all_ops
 import math
 
 
-test_data = """#ip 0
+test_data = """\
+#ip 0
 seti 5 0 1
 seti 6 0 2
 addi 0 1 0
@@ -76,6 +77,5 @@ def part_b(data):
     return run(data, r0=1, hack=True)
 
 
-if __name__ == "__main__":
-    print(part_a(data))  # 1152
-    print(part_b(data))  # 12690000
+print(part_a(data))
+print(part_b(data))

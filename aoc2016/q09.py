@@ -77,6 +77,10 @@ assert part2('X(8x2)(3x3)ABCY') == len('XABCABCABCABCABCABCY') == 20  # 1 + 6x3 
 assert part2('(27x12)(20x12)(13x14)(7x10)(1x12)A') == 241920  # 12 * 12 * 14 * 10 * 12
 assert part2('(25x3)(3x3)ABC(2x3)XY(5x2)PQRSTX(18x9)(3x2)TWO(5x7)SEVEN') == 445
 
+# Additional test cases from AoC author:
+# https://www.reddit.com/r/adventofcode/comments/5hh56d/help_dont_understand_puzzle_9_part_b/db0aggl
+# assert part2('AAA(4x3)BBB') == len('AAABBBBBBBBB') == 12
+# assert part2('(7x2)A(3x2)BCD') == len('ABA(BABCDBCD') == 12
 
 data = data.strip()
 print(part1(data))  # 138735

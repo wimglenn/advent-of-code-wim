@@ -2,13 +2,13 @@ from aocd import data
 from collections import defaultdict
 
 
-test_data = '''
+test_data = """\
 e => H
 e => O
 H => HO
 H => OH
 O => HH
-'''.strip()
+"""
 
 
 def parse_tr(data):

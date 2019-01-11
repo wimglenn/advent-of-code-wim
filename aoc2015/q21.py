@@ -4,7 +4,7 @@ from itertools import combinations
 from fields import Fields, Tuple
 
 
-shop_data = '''
+shop_data = """\
 Weapons:    Cost  Damage  Armor
 Dagger        8     4       0
 Shortsword   10     5       0
@@ -26,7 +26,7 @@ Damage +3   100     3       0
 Defense +1   20     0       1
 Defense +2   40     0       2
 Defense +3   80     0       3
-'''.strip()
+"""
 
 
 class Item(Tuple.name.cost.damage.armor):

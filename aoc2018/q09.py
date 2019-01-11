@@ -63,6 +63,5 @@ def part_b(data):
     return get_high_score(n_players, n_marbles*100)
 
 
-if __name__ == "__main__":
-    print(part_a(data))  # 386151
-    print(part_b(data))  # 3211264152
+print(part_a(data))
+print(part_b(data))

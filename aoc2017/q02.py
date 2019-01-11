@@ -1,10 +1,10 @@
 from aocd import data
 from itertools import combinations
 
-test_a = '''5 1 9 5
+test_a = """5 1 9 5
 7 5 3
 2 4 6 8
-'''
+"""
 
 def part_a(data):
     result = 0
@@ -13,9 +13,9 @@ def part_a(data):
         result += max(row) - min(row)
     return result
 
-test_b = '''5 9 2 8
+test_b = """5 9 2 8
 9 4 7 3
-3 8 6 5'''
+3 8 6 5"""
 
 def part_b(data):
     result = 0
@@ -32,7 +32,5 @@ def part_b(data):
 assert part_a(test_a) == 18
 assert part_b(test_b) == 9
 
-
-if __name__ == "__main__":
-    print(part_a(data))  # 45972
-    print(part_b(data))  # 326
+print(part_a(data))
+print(part_b(data))

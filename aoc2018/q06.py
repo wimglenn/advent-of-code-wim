@@ -3,7 +3,8 @@ from io import StringIO
 import numpy as np
 
 
-test_data = """1, 1
+test_data = """\
+1, 1
 1, 6
 8, 3
 3, 4
@@ -30,7 +31,6 @@ def part_ab(data, d_max=10000):
 assert part_ab(test_data, d_max=32) == (17, 16)
 
 
-if __name__ == "__main__":
-    a, b = part_ab(data)
-    print(a)  # 3293
-    print(b)  # 45176
+a, b = part_ab(data)
+print(a)
+print(b)

@@ -129,5 +129,5 @@ def part_b(data):
 
 
 if __name__ == "__main__":
-    print(part_a(data))  # 614
-    print(part_b(data))  # 656
+    print(part_a(data))
+    print(part_b(data))

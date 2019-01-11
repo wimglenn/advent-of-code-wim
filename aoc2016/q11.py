@@ -1,26 +1,25 @@
-# coding: utf-8
-from __future__ import print_function, unicode_literals
 import sys
 from aocd import data
 from collections import deque
 from itertools import product, combinations, cycle
 
 
-test_data = '''The first floor contains a hydrogen-compatible microchip and a lithium-compatible microchip.
+test_data = """\
+The first floor contains a hydrogen-compatible microchip and a lithium-compatible microchip.
 The second floor contains a hydrogen generator.
 The third floor contains a lithium generator.
-The fourth floor contains nothing relevant.'''
+The fourth floor contains nothing relevant."""
 
 
-def parse_data(text):
-    '''
+def parsed(text):
+    """
     state vector structure: 3-tuple of (int, tuple, tuple) 
     (
         elevator_floor, 
         (chip1_floor, chip2_floor, ... chipN_floor), 
         (genr1_floor, genr2_floor, ... genrN_floor),
     )
-    '''
+    """
     chips = {}
     generators = {}
     for line_no, line in enumerate(text.splitlines(), 1):
@@ -107,12 +106,12 @@ def bfs(state0, target, verbose=True):
         queue.extend((child, depth + 1) for child in children)
 
 
-assert bfs(*parse_data(test_data), verbose=False) == 11
+assert bfs(*parsed(test_data), verbose=False) == 11
 
-state0, target = parse_data(data)
-print(bfs(state0, target))  # part A: 31
+state0, target = parsed(data)
+print(bfs(state0, target))
 
 # put two new items on ground floor for part B
 state0 = state0[0], state0[1] + (1, 1), state0[2] + (1, 1)
 target = target[0], target[1] + (4, 4), target[2] + (4, 4)
-print(bfs(state0, target))  # part B: 55
+print(bfs(state0, target))

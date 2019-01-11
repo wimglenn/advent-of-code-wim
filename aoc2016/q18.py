@@ -18,13 +18,13 @@ def n_safe_tiles(row0, nrows):
     return sum(next(gen).count('.') for i in range(nrows))
 
 
-assert make_grid('..^^.', nrows=3) == '''
+assert make_grid('..^^.', nrows=3) == """\
 ..^^.
 .^^^^
 ^^..^
-'''.strip()
+"""
 
-test_grid = '''
+test_grid = """\
 .^^.^.^^^^
 ^^^...^..^
 ^.^^.^.^^.
@@ -35,11 +35,11 @@ test_grid = '''
 ^..^^^^.^^
 .^^^..^.^^
 ^^.^^^..^^
-'''.strip()
+"""
 
 row0 = test_grid.splitlines()[0]
 assert make_grid(row0, nrows=10) == test_grid
 assert n_safe_tiles(row0, nrows=10) == 38
 
-print(n_safe_tiles(data, nrows=40))  # part a: 1987
-print(n_safe_tiles(data, nrows=400000))  # part b: 19984714
+print(n_safe_tiles(data, nrows=40))
+print(n_safe_tiles(data, nrows=400000))

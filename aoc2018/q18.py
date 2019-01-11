@@ -4,7 +4,8 @@ from scipy.signal import convolve2d
 import time
 
 
-test_data = """.#.#...|#.
+test_data = """\
+.#.#...|#.
 .....#|##|
 .|..|...#.
 ..|#.....#
@@ -64,10 +65,7 @@ def part_b(data, debug=False):
     return part_a(data, minutes=1000000000, debug=debug)
 
 
-debug = True
-assert part_a(test_data, minutes=10, debug=debug) == 1147
+assert part_a(test_data, minutes=10) == 1147
 
-
-if __name__ == "__main__":
-    print(part_a(data, debug=debug))  # 603098
-    print(part_b(data, debug=debug))  # 210000
+print(part_a(data))
+print(part_b(data))

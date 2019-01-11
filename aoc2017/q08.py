@@ -26,12 +26,14 @@ def run(data):
         b = max(b, d[r.x])
     return max(d.values()), b
 
-test_data = '''b inc 5 if a > 1
+test_data = """\
+b inc 5 if a > 1
 a inc 1 if b < 5
 c dec -10 if a >= 1
-c inc -20 if c == 10'''
+c inc -20 if c == 10"""
 
 assert run(test_data) == (1, 10)
+
 a, b = run(data)
-print(a)  # part a: 4448
-print(b)  # part b: 6582
+print(a)
+print(b)

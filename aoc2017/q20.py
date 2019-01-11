@@ -3,17 +3,17 @@ from collections import defaultdict
 from parse import parse
 import numpy as np
 
-test_data_a = '''\
+test_data_a = """\
 p=<3,0,0>, v=<2,0,0>, a=<-1,0,0>
 p=<4,0,0>, v=<0,0,0>, a=<-2,0,0>
-'''
+"""
 
-test_data_b = '''\
+test_data_b = """\
 p=<-6,0,0>, v=<3,0,0>, a=<0,0,0>
 p=<-4,0,0>, v=<2,0,0>, a=<0,0,0>
 p=<-2,0,0>, v=<1,0,0>, a=<0,0,0>
 p=<3,0,0>, v=<-1,0,0>, a=<0,0,0>
-'''
+"""
 
 def get_particles(data):
     particles = {}
@@ -50,5 +50,5 @@ def part_b(data):
 assert part_a(test_data_a) == 0
 assert part_b(test_data_b) == 1
 
-print(part_a(data))  # part a: 258
-print(part_b(data))  # part b: 707
+print(part_a(data))
+print(part_b(data))

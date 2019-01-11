@@ -19,5 +19,5 @@ def norm(data, steps=None):
 for k,v in tests.items():
     assert norm(k) == v
 
-print(norm(data))  # part a: 794
-print(max(norm(data, steps=i) for i in range(data.count(','))))  # part b: 1524
+print(norm(data))
+print(max(norm(data, steps=i) for i in range(data.count(','))))

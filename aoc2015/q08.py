@@ -41,8 +41,7 @@ def encoded_diff(data):
 
 
 assert length_diff(test_data) == 12
-print(length_diff(data))
-
-
 assert encoded_diff(test_data) == 19
+
+print(length_diff(data))
 print(encoded_diff(data))

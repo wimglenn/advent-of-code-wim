@@ -45,8 +45,8 @@ def search(data=data, hash_function=normal_hash):
     return sorted(keys)[:64][-1]
 
 assert search(data='abc') == 22728
-print(search())  # part A: 25427
+print(search())
 
 assert stretched_hash(b'abc0').startswith('a107ff')
 assert search(data='abc', hash_function=stretched_hash) == 22551
-print(search(hash_function=stretched_hash))  # part B: 22045
+print(search(hash_function=stretched_hash))

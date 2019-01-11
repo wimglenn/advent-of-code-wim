@@ -176,7 +176,8 @@ def part_b(data, boost0=0):
         boost += 1
 
 
-test_data = """Immune System:
+test_data = """\
+Immune System:
 17 units each with 5390 hit points (weak to radiation, bludgeoning) with an attack that does 4507 fire damage at initiative 2
 989 units each with 1274 hit points (immune to fire; weak to bludgeoning, slashing) with an attack that does 25 slashing damage at initiative 3
 
@@ -189,6 +190,5 @@ assert part_a(test_data) == 5216
 assert part_b(test_data, boost0=1570) == 51
 
 
-if __name__ == "__main__":
-    print(part_a(data))  # 24318
-    print(part_b(data))  # 1083
+print(part_a(data))
+print(part_b(data))

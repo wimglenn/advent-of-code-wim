@@ -18,14 +18,14 @@ def part_ab(data):
             return part_a, c.id
 
 
-test_data = """#1 @ 1,3: 4x4
+test_data = """\
+#1 @ 1,3: 4x4
 #2 @ 3,1: 4x4
 #3 @ 5,5: 2x2"""
 
 assert part_ab(test_data) == (4, 3)
 
 
-if __name__ == "__main__":
-    a, b = part_ab(data)
-    print(a)  # 97218
-    print(b)  # 717
+a, b = part_ab(data)
+print(a)
+print(b)

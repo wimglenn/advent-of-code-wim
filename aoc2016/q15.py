@@ -3,11 +3,12 @@ from collections import deque
 from itertools import count
 
 
-test_data = '''Disc #1 has 5 positions; at time=0, it is at position 4.
+test_data = """\
+Disc #1 has 5 positions; at time=0, it is at position 4.
 Disc #2 has 2 positions; at time=0, it is at position 1.
-'''
+"""
 
-def parse_data(text):
+def parsed(text):
     discs = []
     for line in text.splitlines():
         words = line.split()
@@ -31,10 +32,10 @@ def find_time(discs):
             disc.rotate(1)
 
 
-assert find_time(parse_data(test_data)) == 5
+assert find_time(parsed(test_data)) == 5
 
-discs_a = parse_data(data)
-discs_b = parse_data(data + 'Bonus disc has 11 positions; at time=0, it is at position 0.')
+discs_a = parsed(data)
+discs_b = parsed(data + 'Bonus disc has 11 positions; at time=0, it is at position 0.')
 
-print(find_time(discs_a))  # part A: 317371
-print(find_time(discs_b))  # part B: 2080951
+print(find_time(discs_a))
+print(find_time(discs_b))

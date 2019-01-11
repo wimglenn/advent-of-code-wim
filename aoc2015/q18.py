@@ -3,14 +3,14 @@ import numpy as np
 from scipy.signal import convolve2d
 
 
-test_data = '''
+test_data = """\
 .#.#.#
 ...##.
 #....#
 ..#...
 #.#..#
 ####..
-'''.strip()
+"""
 
 
 def animate(data, iterations=100, corners_on=False):

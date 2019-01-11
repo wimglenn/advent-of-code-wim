@@ -1,5 +1,5 @@
 from aocd import data
-from q10 import knot_hash
+from aoc2017.q10 import knot_hash
 import numpy as np
 from scipy.ndimage.measurements import label
 
@@ -10,5 +10,5 @@ def f(data):
 assert f('flqrgnkx') == (8108, 1242)
 
 a, b = f(data)
-print(a)  # part a: 8222
-print(b)  # part b: 1086
+print(a)
+print(b)

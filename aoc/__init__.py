@@ -5,7 +5,6 @@ import os
 import runpy
 import sys
 from argparse import ArgumentParser
-from contextlib import redirect_stderr
 from contextlib import redirect_stdout
 from datetime import datetime
 from io import StringIO
@@ -156,8 +155,7 @@ def wim(year, day, data):
     mod_name = f"aoc{year}.q{day:02d}"
     sys.modules.pop(mod_name, None)
     out = StringIO()
-    err = StringIO()
-    with redirect_stdout(out), redirect_stderr(err):
+    with redirect_stdout(out):
         runpy.run_module(mod_name, run_name="__main__")
     output_lines = [x for x in out.getvalue().splitlines() if x]
     if day == 25:

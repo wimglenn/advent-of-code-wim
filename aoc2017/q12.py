@@ -1,41 +1,35 @@
 from aocd import data
+import networkx as nx
 
-test_data = '''0 <-> 2
+
+def parsed(data):
+    graph = nx.Graph()
+    for line in data.replace(' <->', ',').splitlines():
+        n0, *nodes = [int(n) for n in line.split(', ')]
+        graph.add_node(n0)
+        for node in nodes:
+            graph.add_edge(n0, node)
+    return graph
+
+
+def part_ab(data):
+    graph = parsed(data)
+    [a] = [len(g) for g in nx.connected_components(graph) if 0 in g]
+    b = nx.number_connected_components(graph)
+    return a, b
+
+
+test_data = """\
+0 <-> 2
 1 <-> 1
 2 <-> 0, 3, 4
 3 <-> 2, 4
 4 <-> 2, 3, 6
 5 <-> 6
-6 <-> 4, 5'''
+6 <-> 4, 5"""
 
-def run(data):
-    d = {}
-    for line in data.replace(' <->', ',').splitlines():
-        xs = [int(x) for x in line.split(', ')]
-        d[tuple(xs)] = set(xs)
+assert part_ab(test_data) == (6, 2)
 
-    while True:
-        for tuple_, set1 in d.items():
-            try:
-                match = next(k for k, set2 in d.items() if k != tuple_ and set1 & set2)
-            except StopIteration:
-                # no match for this key - keep looking
-                continue
-            else:
-                # merging match and set1
-                d[tuple_] = set1 | d.pop(match)
-                break
-        else:
-            # no match for any key - we are done!
-            break
-
-    [set0] = [v for v in d.values() if 0 in v]
-    a = len(set0)
-    b = len(d)
-    return a, b
-
-assert run(test_data) == (6, 2)
-
-a, b = run(data)
-print(a)  # part a: 152
-print(b)  # part b: 186
+a, b = part_ab(data)
+print(a)
+print(b)

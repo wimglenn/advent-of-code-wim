@@ -57,6 +57,5 @@ assert part_b(18) == "90,269,16"
 assert part_b(42) == "232,251,12"
 
 
-if __name__ == "__main__":
-    print(part_a(data))  # 20,46
-    print(part_b(data))  # 231,65,14
+print(part_a(data))
+print(part_b(data))

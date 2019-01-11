@@ -19,5 +19,5 @@ while True:
     r3 = r5 | 0x10000
     r5 = 733884
 
-print(part_a)  # 2884703
-print(part_b)  # 15400966
+print(part_a)
+print(part_b)

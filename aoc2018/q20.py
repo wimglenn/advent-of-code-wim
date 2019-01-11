@@ -89,7 +89,6 @@ for test, expected in tests.items():
     assert a == expected
 
 
-if __name__ == "__main__":
-    a, b = part_ab(data)
-    print(a)  # 3465
-    print(b)  # 7956
+a, b = part_ab(data)
+print(a)
+print(b)

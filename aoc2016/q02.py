@@ -17,8 +17,8 @@ keypad2 = {
     -2j: 'D'
 }
 
-def decode(keypad):
-    pos = 0
+def decode(keypad, data, pos0):
+    pos = pos0
     code = ''
     for line in data.splitlines():
         for step in line:
@@ -28,5 +28,22 @@ def decode(keypad):
         code += keypad[pos]
     return code
 
-print(decode(keypad1))
-print(decode(keypad2))
+
+def part_a(data):
+    return decode(keypad1, data, pos0=0)
+
+
+def part_b(data):
+    return decode(keypad2, data, pos0=-2)
+
+
+test_data = """\
+ULL
+RRDDD
+LURDL
+UUUUD"""
+assert part_a(test_data) == "1985"
+assert part_b(test_data) == "5DB3"
+
+print(part_a(data))
+print(part_b(data))

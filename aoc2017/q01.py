@@ -31,7 +31,5 @@ tests_b = {
 for test_data, expected in tests_b.items():
     assert part_b(test_data) == expected
 
-
-if __name__ == "__main__":
-    print(part_a(data))  # 1119
-    print(part_b(data))  # 1420
+print(part_a(data))
+print(part_b(data))

@@ -18,5 +18,5 @@ def part_b(n):
     return i1
 
 assert part_a(3) == 638
-print(part_a(int(data)))  # part a: 1311
-print(part_b(int(data)))  # part b: 39170601
+print(part_a(int(data)))
+print(part_b(int(data)))

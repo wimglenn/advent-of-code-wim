@@ -1,11 +1,11 @@
 from aocd import data
 
-test_data = '''\
+test_data = """\
 ..#
 #..
-...'''
+..."""
 
-def parse_data(data):
+def parsed(data):
     lines = data.splitlines()
     s = len(lines)//2
     grid = {}
@@ -19,19 +19,13 @@ def run(data, n_iterations, mutation=1):
         1: {'#': '.', '.': '#'},
         2: {'#': 'F', 'F': '.', '.': 'W', 'W': '#'},
     }[mutation]
-    grid = parse_data(data)
+    factors = {".": 1j, "W": 1, "F": -1, "#": -1j}
+    grid = parsed(data)
     p, v = 0, 1j
     n_infected = 0
     for i in range(n_iterations):
         s = grid.get(p, '.')
-        if s == '.':
-            v *= 1j
-        elif s == 'W':
-            pass
-        elif s == 'F':
-            v *= -1
-        else:
-            v *= -1j
+        v *= factors[s]
         grid[p] = mutation[s]
         if grid[p] == '#':
             n_infected += 1
@@ -44,5 +38,5 @@ assert run(test_data, n_iterations=10000) == 5587
 assert run(test_data, n_iterations=100, mutation=2) == 26
 assert run(test_data, n_iterations=10000000, mutation=2) == 2511944
 
-print(run(data, n_iterations=10000))  # part a: 5259
-print(run(data, n_iterations=10000000, mutation=2))  # part b: 2511722
+print(run(data, n_iterations=10000))
+print(run(data, n_iterations=10000000, mutation=2))

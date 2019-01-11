@@ -184,11 +184,10 @@ test_data3 = r"""/>-<\
   \<->/"""
 
 
-assert part_a(test_data1, debug=True) == "0,3"
-assert part_a(test_data2, debug=True) == "7,3"
-assert part_b(test_data3, debug=True) == "6,4"
+assert part_a(test_data1) == "0,3"
+assert part_a(test_data2) == "7,3"
+assert part_b(test_data3) == "6,4"
 
 
-if __name__ == "__main__":
-    print(part_a(data))  # 113,136
-    print(part_b(data))  # 114,136
+print(part_a(data))
+print(part_b(data))

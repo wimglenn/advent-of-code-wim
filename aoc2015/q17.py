@@ -3,13 +3,13 @@ from collections import Counter
 from functools import lru_cache
 
 
-test_data = '''
+test_data = """\
 20
 15
 10
 5
 5
-'''.strip()
+"""
 
 
 def rsubset_sum(vals, target=0):

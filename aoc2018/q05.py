@@ -29,6 +29,5 @@ assert part_a(test_data) == 10
 assert part_b(test_data) == 4
 
 
-if __name__ == "__main__":
-    print(part_a(data))  # 9370
-    print(part_b(data))  # 6390
+print(part_a(data))
+print(part_b(data))

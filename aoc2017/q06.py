@@ -20,7 +20,6 @@ test_data = '0 2 7 0'
 assert part_ab(test_data) == (5, 4)
 
 
-if __name__ == "__main__":
-    a, b = part_ab(data)
-    print(a)  # 14029
-    print(b)  # 2765
+a, b = part_ab(data)
+print(a)
+print(b)

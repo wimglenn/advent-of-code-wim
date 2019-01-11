@@ -1,7 +1,7 @@
 from aocd import data
 from collections import deque
 
-test_data_a = '''set a 1
+test_data_a = """set a 1
 add a 2
 mul a a
 mod a 5
@@ -10,15 +10,15 @@ set a 0
 rcv a
 jgz a -1
 set a 1
-jgz a -2'''
+jgz a -2"""
 
-test_data_b = '''snd 1
+test_data_b = """snd 1
 snd 2
 snd p
 rcv a
 rcv b
 rcv c
-rcv d'''
+rcv d"""
 
 def run_a(data):
     snd = None
@@ -104,5 +104,5 @@ def part_b(data):
 assert run_a(test_data_a) == 4
 assert part_b(test_data_b) == 3
 
-print(run_a(data))  # part a: 7071
-print(part_b(data))  # part b: 8001
+print(run_a(data))
+print(part_b(data))

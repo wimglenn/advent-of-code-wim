@@ -49,14 +49,15 @@ def compute(data):
     return result
 
 
-test_data = '''123 -> x
+test_data = """\
+123 -> x
 456 -> y
 x AND y -> d
 x OR y -> e
 x LSHIFT 2 -> f
 y RSHIFT 2 -> g
 NOT x -> h
-NOT y -> i'''
+NOT y -> i"""
 
 test_result = {
     'd': 72,

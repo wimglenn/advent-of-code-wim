@@ -2,14 +2,14 @@ from aocd import data
 from itertools import count
 import numpy as np
 
-test_data = '''\
+test_data = """\
      |          
      |  +--+    
      A  |  C    
  F---|----E|--+ 
      |  |  |  D 
      +B-+  +--+ 
-                '''
+                """
 
 def tubemaze(data):
     A = np.fromiter(data.replace('\n', ''), dtype='U1').reshape(len(data.splitlines()), -1)
@@ -29,7 +29,7 @@ def tubemaze(data):
             return letters, i
 
 assert tubemaze(test_data) == ('ABCDEF', 38)
-a, b = tubemaze(data)
 
-print(a)  # part a: BPDKCZWHGT
-print(b)  # part b: 17728
+a, b = tubemaze(data)
+print(a)
+print(b)

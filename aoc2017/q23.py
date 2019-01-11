@@ -25,6 +25,6 @@ def run(a0=0):
     return d['h'] if a0 else n_mul
 
 lines = data.splitlines()
-print(run())  # part a: 5929
+print(run())
 lines[8:10] = ['wtf f b', 'jnz 1 15']
-print(run(a0=1))  # part b: 907
+print(run(a0=1))

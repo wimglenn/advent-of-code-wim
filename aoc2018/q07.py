@@ -8,7 +8,8 @@ log = logging.getLogger(__name__)
 # logging.basicConfig(format='%(message)s', level=logging.DEBUG)
 
 
-test_data = """Step C must be finished before step A can begin.
+test_data = """\
+Step C must be finished before step A can begin.
 Step C must be finished before step F can begin.
 Step A must be finished before step B can begin.
 Step A must be finished before step D can begin.
@@ -78,6 +79,5 @@ assert run(test_data, n_workers=1, delay=0).text == "CABDFE"
 assert run(test_data, n_workers=2, delay=0).n_iterations == 15
 
 
-if __name__ == "__main__":
-    print(part_a(data))  # GKRVWBESYAMZDPTIUCFXQJLHNO
-    print(part_b(data))  # 903
+print(part_a(data))
+print(part_b(data))

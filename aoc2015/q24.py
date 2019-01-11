@@ -1,9 +1,8 @@
 from aocd import data
-from functools import reduce
-from operator import mul
 from itertools import combinations
 from collections import Counter
 from aoc2015.q17 import subset_sum
+from aoc2016 import prod
 
 
 def parsed(data, n_groups):
@@ -29,10 +28,6 @@ def partitions(vals, target):
         remaining = bag_sub(vals, group)
         groups = partitions(remaining, target) if sum(remaining) > target else (remaining,)
         yield from ((group, group_) for group_ in groups)
-
-
-def prod(vals):
-    return reduce(mul, vals)
 
 
 def get_shortest_sums(vals, target):

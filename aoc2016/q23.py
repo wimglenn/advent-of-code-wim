@@ -2,13 +2,14 @@ from aocd import data
 from textwrap import dedent
 
 
-test_data = '''cpy 2 a
+test_data = """\
+cpy 2 a
 tgl a
 tgl a
 tgl a
 cpy 1 a
 dec a
-dec a'''
+dec a"""
 
 
 def toggle(line):
@@ -79,20 +80,20 @@ def part_a(data):
 
 def part_b(data):
     registers = {}.fromkeys('abcd', 12)
-    patch_target = dedent('''\
+    patch_target = dedent("""\
         cpy b c
         inc a
         dec c
         jnz c -2
         dec d
-        jnz d -5''')
-    patch = dedent('''\
+        jnz d -5""")
+    patch = dedent("""\
         mul b d a
         cpy 0 c
         cpy 0 d
         pass
         pass
-        pass''')
+        pass""")
     patch_length = len(patch.splitlines())
     assert patch_length == len(patch_target.splitlines())
     patch_start = len(data[:data.find(patch_target)].splitlines())

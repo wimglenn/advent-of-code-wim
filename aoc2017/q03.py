@@ -39,7 +39,6 @@ def part_ab(data):
             return a, b
 
 
-if  __name__ == "__main__":
-    a, b = part_ab(data)
-    print(a)  # part a: 480
-    print(b)  # part b: 349975
+a, b = part_ab(data)
+print(a)
+print(b)

@@ -1,7 +1,8 @@
 from aocd import data
 
 
-test_data = """initial state: #..#.#..##......###...###
+test_data = """\
+initial state: #..#.#..##......###...###
 
 ...## => #
 ..#.. => #
@@ -57,6 +58,5 @@ def part_b(data):
 assert part_a(test_data) == 325
 
 
-if __name__ == "__main__":
-    print(part_a(data))  # 2040
-    print(part_b(data))  # 1700000000011
+print(part_a(data))
+print(part_b(data))

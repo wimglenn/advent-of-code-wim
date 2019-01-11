@@ -4,13 +4,13 @@ from collections import deque
 from itertools import permutations, combinations
 
 
-test_data = '''
+test_data = """\
 ###########
 #0.1.....2#
 #.#######.#
 #4.......3#
 ###########
-'''.strip()
+"""
 
 
 def valid_next_states(state, maze, seen=()):
@@ -67,5 +67,5 @@ assert solve(test_d, return_home=0) == 14
 assert solve(test_d, return_home=1) == 20
 
 d = get_distance_matrix(data)
-print(solve(d, return_home=0))  # part a: 518
-print(solve(d, return_home=1))  # part b: 716
+print(solve(d, return_home=0))
+print(solve(d, return_home=1))

@@ -3,7 +3,7 @@ from collections import defaultdict
 import operator
 
 
-message = '''
+message = """\
 children: 3
 cats: 7
 samoyeds: 2
@@ -14,7 +14,7 @@ goldfish: 5
 trees: 3
 cars: 2
 perfumes: 1
-'''.strip()
+"""
 
 
 d_message = {k: int(v) for k,v in (pair.split(': ') for pair in message.splitlines())}

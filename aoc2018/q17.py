@@ -3,7 +3,8 @@ from operator import attrgetter
 import sys
 
 
-test_data = """x=495, y=2..7
+test_data = """\
+x=495, y=2..7
 y=7, x=495..501
 x=501, y=3..7
 x=498, y=2..4
@@ -132,8 +133,6 @@ def part_ab(data):
 sys.setrecursionlimit(3000)
 assert part_ab(test_data) == (57, 29)
 
-
-if __name__ == "__main__":
-    a, b = part_ab(data)
-    print(a)  # 31953
-    print(b)  # 26410
+a, b = part_ab(data)
+print(a)
+print(b)

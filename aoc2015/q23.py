@@ -46,12 +46,12 @@ class Computer:
             self.jmp(offset)
 
 
-test_data = '''
+test_data = """\
 inc a
 jio a, +2
 tpl a
 inc a
-'''.strip()
+"""
 
 
 computer = Computer(instructions=test_data)
