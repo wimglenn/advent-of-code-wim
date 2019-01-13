@@ -11,7 +11,7 @@ def generate_rows(row):
 
 def make_grid(row0, nrows):
     gen = generate_rows(row0)
-    return '\n'.join(next(gen) for i in range(nrows))
+    return ''.join(next(gen) + '\n' for i in range(nrows))
 
 def n_safe_tiles(row0, nrows):
     gen = generate_rows(row0)

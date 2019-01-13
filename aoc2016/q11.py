@@ -77,7 +77,7 @@ def get_valid_next_states(state, seen=()):
             yield new_state
 
 
-def bfs(state0, target, verbose=True):
+def bfs(state0, target, verbose=False):
 
     def progress_bar(msg, spinner=cycle(r'\|/-')):
         msg = ('\r{} '.format(next(spinner)) + msg).ljust(50)

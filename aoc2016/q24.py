@@ -37,8 +37,7 @@ def bfs(state0, target, maze):
 
 
 def get_distance_matrix(data):
-    n_rows = 1 + data.count('\n')
-    maze = np.fromstring(data.replace('\n',''), dtype='S1').reshape(n_rows, -1).astype('U1')
+    maze = np.array([list(line) for line in data.splitlines()], dtype="<U1")
     targets = sorted([x for x in data if x.isdigit()])
     n = len(targets)
 

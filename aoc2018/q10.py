@@ -72,7 +72,4 @@ def run(data):
 assert run(test_data) == 3  # HI
 print(run(data))
 
-
-
-
 # TODO: OCR
