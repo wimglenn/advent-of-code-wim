@@ -60,7 +60,7 @@ def call_with_timeout(func, timeout, **kwargs):
 
 def run_for(users, years, days, timeout=60, autosubmit=True):
     aoc_now = datetime.now(tz=AOC_TZ)
-    path = Path("~/.config/aocd/tokens.json").expanduser()
+    path = Path("~/.config/aocd/tokens.json").expanduser()  # TODO: move tokens choice up to CLI
     try:
         all_datasets = json.loads(path.read_text())
     except FileNotFoundError:

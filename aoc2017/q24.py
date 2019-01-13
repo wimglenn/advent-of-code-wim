@@ -8,7 +8,8 @@ test_data = """\
 3/5
 0/1
 10/1
-9/10"""
+9/10
+"""
 
 def get_segments(data):
     return [tuple(int(x) for x in line.split('/')) for line in data.splitlines()]

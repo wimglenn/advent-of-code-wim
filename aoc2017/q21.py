@@ -17,7 +17,7 @@ def parsed(data):
             a = np.rot90(a)
     return rules
 
-def run(data, iterations):
+def evolve(data, iterations):
     rules = parsed(data)
     grid = s2a('.#./..#/###')
     for i in range(iterations):
@@ -37,8 +37,9 @@ def run(data, iterations):
 
 test_data = """\
 ../.# => ##./#../...
-.#./..#/### => #..#/..../..../#..#"""
+.#./..#/### => #..#/..../..../#..#
+"""
 
-assert run(test_data, 2) == 12
-print(run(data, 5))
-print(run(data, 18))
+assert evolve(test_data, 2) == 12
+print(evolve(data, 5))
+print(evolve(data, 18))

@@ -3,7 +3,8 @@ from aocd import data
 test_data = """\
 ..#
 #..
-..."""
+...
+"""
 
 def parsed(data):
     lines = data.splitlines()

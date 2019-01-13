@@ -4,7 +4,7 @@ def prod(vals, n=1):
     return n
 
 
-AOCR = """\
+AOCR = """
 .##..
 #..#.
 #..#.
@@ -95,6 +95,6 @@ AOCR = """\
 #.##.
 #..#.
 .###.
-""".split("\n\n")
+""".strip().split("\n\n")
 
 AOCR = dict(zip(AOCR, "AFBUPZBJPSHOG"))
