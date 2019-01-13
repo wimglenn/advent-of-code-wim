@@ -35,7 +35,7 @@ def find_time(discs):
 assert find_time(parsed(test_data)) == 5
 
 discs_a = parsed(data)
-discs_b = parsed(data + 'Bonus disc has 11 positions; at time=0, it is at position 0.')
+discs_b = parsed(data + '\nBonus disc has 11 positions; at time=0, it is at position 0.')
 
 print(find_time(discs_a))
 print(find_time(discs_b))
