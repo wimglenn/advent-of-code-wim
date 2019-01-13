@@ -241,6 +241,7 @@ def part_b(data, debug=False):
         Elf.ap += 1
         outcome = part_a(data, debug=debug)
         if part_a.all_elves_alive:
+            Elf.ap = 3
             return outcome
 
 
