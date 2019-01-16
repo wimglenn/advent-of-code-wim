@@ -43,11 +43,11 @@ class Comp:
         self.r[self.ip] += 1
         self.i = self.r[self.ip]
         if self.hacked and self.i == 1:
-            self.r[0] = sum(divisors(self.r[-1]))
+            self.r[0] = sum(divisors(max(self.r)))
             [][0]
 
 
-def run(data, r0=0, hack=False):
+def compute(data, r0=0, hack=False):
     ip, lines = parsed(data)
     comp = Comp(ip, lines, r0=r0, hacked=hack)
     while True:
@@ -59,23 +59,13 @@ def run(data, r0=0, hack=False):
 
 
 def divisors(n):
-    divs = [1, n]
+    divs = {1, n}
     for i in range(2, int(math.sqrt(n)) + 1):
         if not n % i:
-            divs.extend([i, n//i])
-    return sorted(set(divs))
+            divs |= {i, n//i}
+    return divs
 
 
-assert run(test_data) == 7
-
-
-def part_a(data):
-    return run(data, r0=0, hack=True)
-
-
-def part_b(data):
-    return run(data, r0=1, hack=True)
-
-
-print(part_a(data))
-print(part_b(data))
+assert compute(test_data) == 7
+print(compute(data, r0=0, hack=True))
+print(compute(data, r0=1, hack=True))

@@ -41,7 +41,7 @@ def main():
     parser.add_argument("-y", "--years", type=int, nargs="+", choices=all_years)
     parser.add_argument("-d", "--days", type=int, nargs="+", choices=all_days)
     parser.add_argument("-D", "--data", nargs="+", choices=all_datasets)
-    parser.add_argument("-t", "--timeout", type=int, default=180)
+    parser.add_argument("-t", "--timeout", type=int, default=300)
     parser.add_argument("--log-level", default="WARNING", choices=["DEBUG", "INFO", "WARNING", "ERROR"])
     # parser.add_argument("--data")  # TODO: allow custom data for 1 endpoint
     args = parser.parse_args()
@@ -62,7 +62,7 @@ def call_with_timeout(func, timeout, **kwargs):
         return future.result()
 
 
-def run_for(users, years, days, datasets, timeout=180, autosubmit=True):
+def run_for(users, years, days, datasets, timeout=300, autosubmit=True):
     aoc_now = datetime.now(tz=AOC_TZ)
     entry_points = {ep.name: ep for ep in iter_entry_points(group='aoc') if ep.name in users}
     it = itertools.product(years, days, users, datasets)
