@@ -52,7 +52,7 @@ def dump(grid):
             line.append(grid.get(complex(x, y), "."))
         line = ''.join(line)
         print(line)
-        if set(line) & set("|~+"):
+        if not set(line).intersection("|+"):
             break
     print()
 
