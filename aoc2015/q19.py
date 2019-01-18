@@ -12,13 +12,14 @@ O => HH
 
 
 def parsed(data):
+    reactions, element = data.split('\n\n')
     tr = defaultdict(list)
     tri = defaultdict(list)
-    for line in data.strip().splitlines():
+    for line in reactions.splitlines():
         s, r = line.split(' => ')
         tr[s].append(r)
         tri[r].append(s)
-    return tr, tri
+    return tr, tri, element
 
 
 def gen(tr, element):
@@ -32,28 +33,34 @@ def gen(tr, element):
                 yield new
 
 
-def part_a(data, element):
-    tr, tri = parsed(data)
+def part_a(data):
+    tr, tri, element = parsed(data)
     return len({word for word in gen(tr, element)})
 
 
-def part_b(data, element, element0='e'):
-    tr, tri = parsed(data)
-    i = 0
-    while element != element0:
-        subs = [k for k in tri if k in element]
-        subs.sort(key=len)
-        sub = subs[-1]
-        element = element.replace(sub, tri[sub][0], 1)
-        i += 1
-    return i
+def part_b(data):
+    tr, tri, element = parsed(data)
+    tri = {k: v for k, [v] in tri.items()}
+    replacements = 0
+    while element != "e":
+        pos = {}
+        for k, v in tri.items():
+            delta = len(k) - len(v)
+            if k in element:
+                if v != "e" or len(element) - delta == 1:
+                    pos[k] = (element.rfind(k) + len(k), delta)
+        k = max(pos, key=pos.get)
+        v = tri[k]
+        # replace from right
+        element = element[::-1].replace(k[::-1], v[::-1], 1)[::-1]
+        replacements += 1
+    return replacements
 
 
-assert part_a(test_data, 'HOH') == 4
-assert part_a(test_data, 'HOHOHO') == 7
-assert part_b(test_data, 'HOH') == 3
-assert part_b(test_data, 'HOHOHO') == 6
+assert part_a(test_data + '\nHOH') == 4
+assert part_a(test_data + '\nHOHOHO') == 7
+assert part_b(test_data + '\nHOH') == 3
+assert part_b(test_data + '\nHOHOHO') == 6
 
-data_, element = data.split('\n\n')
-print(part_a(data_, element))
-print(part_b(data_, element))
+print(part_a(data))
+print(part_b(data))

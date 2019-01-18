@@ -1,6 +1,6 @@
 from aocd import data
 from parse import parse
-from aoc2016 import prod
+from aoc.stuff import prod
 
 
 class Bot(object):

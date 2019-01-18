@@ -1,6 +1,6 @@
 from aocd import data
 import numpy as np
-from aoc2016 import AOCR
+from aoc.ocr import AOCR
 
 
 def parsed(data):

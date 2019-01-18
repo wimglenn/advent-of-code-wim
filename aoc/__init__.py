@@ -56,6 +56,7 @@ def main():
 
 
 def call_with_timeout(func, timeout, **kwargs):
+    # TODO : multi-process over the different tokens
     pool = pebble.ProcessPool(max_workers=1)
     with pool:
         future = pool.schedule(func, kwargs=kwargs, timeout=timeout)
@@ -157,6 +158,7 @@ def wim(year, day, data):
     with redirect_stdout(out):
         runpy.run_module(mod_name, run_name="__main__")
     output_lines = [x for x in out.getvalue().splitlines() if x]
+    # TODO: parse for "part a: ", "part b: "
     if day == 25:
         output_lines.append("")
     if len(output_lines) != 2:
