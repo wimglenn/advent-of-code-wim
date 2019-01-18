@@ -14,15 +14,17 @@ O => HH
 def parsed(data):
     reactions, element = data.split('\n\n')
     tr = defaultdict(list)
-    tri = defaultdict(list)
+    tri = {}
     for line in reactions.splitlines():
         s, r = line.split(' => ')
         tr[s].append(r)
-        tri[r].append(s)
+        tri[r] = s
     return tr, tri, element
 
 
-def gen(tr, element):
+def part_a(data):
+    tr, tri, element = parsed(data)
+    seen = set()
     for s, rs in tr.items():
         splitted = element.split(s)
         for i, (left, right) in enumerate(zip(splitted, splitted[1:])):
@@ -30,17 +32,12 @@ def gen(tr, element):
                 new = splitted[:]
                 new[i:i+2] = [left + r + right]
                 new = s.join(new)
-                yield new
-
-
-def part_a(data):
-    tr, tri, element = parsed(data)
-    return len({word for word in gen(tr, element)})
+                seen.add(new)
+    return len(seen)
 
 
 def part_b(data):
     tr, tri, element = parsed(data)
-    tri = {k: v for k, [v] in tri.items()}
     replacements = 0
     while element != "e":
         pos = {}
