@@ -29,6 +29,7 @@ setup(
     packages=find_packages(),
     entry_points={
         "console_scripts": ["aoc = aoc:main"],
+        # TODO: better names - aocr?  advent-of-code-user
         "aoc": ["wim = aoc:wim"],
     },
 )
