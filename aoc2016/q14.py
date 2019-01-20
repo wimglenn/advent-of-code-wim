@@ -43,6 +43,7 @@ def search(data=data, hash_function=normal_hash):
         i += 1
     return sorted(keys)[:64][-1]
 
+
 assert search(data='abc') == 22728
 print("part a:", search())
 
