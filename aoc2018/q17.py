@@ -31,24 +31,23 @@ def parsed(data):
         for y in ys:
             for x in xs:
                 grid[complex(x, y)] = '#'
-    xs = [int(z.real) for z in grid]
-    ys = [int(z.imag) for z in grid]
-    w0 = min(xs) - 1
-    w1 = max(xs) + 2
-    h0 = min(ys)
-    h1 = max(ys) + 1
-    grid["y-min"] = h0
-    grid["y-axis"] = range(0, h1)
-    grid["x-axis"] = range(w0, w1)
     grid[0j + 500] = "+"
     return grid
 
 
 def dump(grid, pause=False):
     print("\33c")
-    for y in grid["y-axis"]:
+
+    xs = [int(z.real) for z in grid]
+    ys = [int(z.imag) for z in grid]
+    w0 = min(xs) - 1
+    w1 = max(xs) + 2
+    h0 = min(ys)
+    h1 = max(ys) + 1
+
+    for y in range(0, h1):
         line = []
-        for x in grid["x-axis"]:
+        for x in range(w0, w1):
             line.append(grid.get(complex(x, y), "."))
         line = ''.join(line)
         print(line)
