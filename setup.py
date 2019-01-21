@@ -28,6 +28,6 @@ setup(
     ],
     packages=find_packages(),
     entry_points={
-        "adentofcode.user": ["wim = aoc:wim"],
+        "adventofcode.user": ["wim = aoc:wim"],
     },
 )
