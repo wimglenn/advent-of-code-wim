@@ -1,3 +1,4 @@
+from collections import Counter
 from functools import lru_cache
 
 
@@ -41,3 +42,11 @@ def subset_sum(vals, target=0):
             sums[sum_] = sums.get(sum_, []) + subsets
             if sum_ == target:
                 yield from subsets
+
+
+def ways(total, coins=(1,2,5,10,20,50,100)):
+    ways = [[Counter()]] + [[] for _ in range(total)]
+    for coin in coins:
+        for i in range(coin, total + 1):
+            ways[i] += [way + Counter({coin: 1}) for way in ways[i-coin]]
+    return ways[total]
