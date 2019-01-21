@@ -1,6 +1,5 @@
 from aocd import data
 from operator import attrgetter
-import sys
 
 
 test_data = """\
@@ -44,7 +43,7 @@ def parsed(data):
     return grid
 
 
-def dump(grid):
+def dump(grid, pause=False):
     print("\33c")
     for y in grid["y-axis"]:
         line = []
@@ -52,68 +51,81 @@ def dump(grid):
             line.append(grid.get(complex(x, y), "."))
         line = ''.join(line)
         print(line)
-        if not set(line).intersection("|+"):
+        if not set(line).intersection("|+~"):
             break
     print()
+    if pause:
+        input("Press enter to continue...")
 
 
-class Ystream:
-
-    def __init__(self, grid, pos):
-        while pos not in grid:
-            if pos.imag >= grid["y-axis"].stop:
-                return
-            grid[pos] = "|"
-            pos += 1j
-        if grid[pos] in "#~":
-            Xstream(grid, pos - 1j)
-
-
-class Xstream:
-
-    def __init__(self, grid, pos):
-        if grid[pos] == "~":
-            return
-        left_wall = right_wall = False
-        left_fall = right_fall = False
-        filled = [pos]
-        dx = 1
+def xflow(grid, pos0):
+    # find bounds left and right
+    pos = pos0
+    boundL = boundR = None
+    next_flow = set()
+    while True:
+        if grid.get(pos - 1) == "#":
+            boundL = pos
+            break
+        if grid.get(pos - 1 + 1j) == "|":
+            break
+        if grid.get(pos - 1) == "|" and grid.get(pos - 1 + 1j) is None:
+            next_flow.add(pos - 1)
+            break
+        if pos - 1 not in grid and pos - 1 +1j not in grid:
+            next_flow.add(pos - 1)
+            break
+        pos -= 1
+        grid[pos] = "|"
+    pos = pos0
+    while True:
+        if grid.get(pos + 1) == "#":
+            boundR = pos
+            break
+        if grid.get(pos + 1 + 1j) == "|":
+            break
+        if grid.get(pos + 1) == "|" and grid.get(pos + 1 + 1j) is None:
+            next_flow.add(pos + 1)
+            break
+        if pos + 1 not in grid and pos + 1 +1j not in grid:
+            next_flow.add(pos + 1)
+            break
+        pos += 1
+        grid[pos] = "|"
+    if boundL is not None and boundR is not None:
+        assert not next_flow
+        pos = boundL
         while True:
-            if not right_wall and not right_fall:
-                if pos + dx not in grid or grid[pos + dx] == "|":
-                    grid[pos + dx] = "|"
-                    filled.append(pos + dx)
-                    if pos + dx + 1j not in grid:
-                        right_fall = pos + dx + 1j
-                elif grid[pos + dx] == "#":
-                    right_wall = True
-            if not left_wall and not left_fall:
-                if pos - dx not in grid  or grid[pos - dx] == "|":
-                    grid[pos - dx] = "|"
-                    filled.append(pos - dx)
-                    if pos - dx + 1j not in grid:
-                        left_fall = pos - dx + 1j
-                elif grid[pos - dx] == "#":
-                    left_wall = True
-            if (left_wall or left_fall) and (right_wall or right_fall):
+            grid[pos] = "~"
+            pos += 1
+            if pos.real > boundR.real:
                 break
-            dx += 1
-        if left_wall and right_wall:
-            for pos in filled:
-                grid[pos] = "~"
-            for pos in filled:
-                if grid.get(pos - 1j) == "|":
-                    Xstream(grid, pos - 1j)
-                    break
-        if left_fall:
-            Ystream(grid, left_fall)
-        if right_fall:
-            Ystream(grid, right_fall)
+        next_flow.add(pos0 - 1j)
+    assert len(next_flow) in {0, 1, 2}
+    return next_flow
+
+
+def wet(grid, tap=1j+500):
+    flow = {tap}
+    while flow:
+        next_flow = set()
+        for c in flow:
+            grid[c] = "|"
+            if c.imag >= grid["y-axis"].stop:
+                continue
+            if c + 1j not in grid:
+                next_flow |= {c + 1j}
+            elif grid[c+1j] == "|":
+                continue
+            else:
+                assert grid[c+1j] in "~#"
+                next_flow |= xflow(grid, c)
+        flow = next_flow
 
 
 def part_ab(data):
     grid = parsed(data)
-    Ystream(grid, 1j + 500)
+    wet(grid)
     result_a = 0
     result_b = 0
     for y in grid["y-axis"]:
@@ -130,9 +142,8 @@ def part_ab(data):
     return result_a, result_b
 
 
-sys.setrecursionlimit(3000)
 assert part_ab(test_data) == (57, 29)
 
 a, b = part_ab(data)
-print(a)
-print(b)
+print("part a:", a)
+print("part b:", b)
