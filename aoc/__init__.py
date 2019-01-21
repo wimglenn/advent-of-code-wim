@@ -69,7 +69,7 @@ def run_for(users, years, days, datasets, timeout=300, autosubmit=True):
     entry_points = {ep.name: ep for ep in iter_entry_points(group='aoc') if ep.name in users}
     it = itertools.product(years, days, users, datasets)
     template = (
-        "{runtime}   {year}/{day:<2d}   {user}/{dataset}   "
+        "{runtime}   {year}/{day:<2d}   {user}/{dataset:<7}   "
         "{a_icon} part a: {part_a_answer} "
         "{b_icon} part b: {part_b_answer}"
     )

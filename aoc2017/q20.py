@@ -23,7 +23,7 @@ def parsed(data):
 
 
 def key(p):
-    return [x**2 + y**2 + z**2 for x, y, z in chunks(reversed(p), 3)]
+    return [abs(x) + abs(y) + abs(z) for x, y, z in chunks(reversed(p), 3)]
 
 
 def part_a(data):
