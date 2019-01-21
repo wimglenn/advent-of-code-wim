@@ -1,5 +1,4 @@
 from aocd import data
-from operator import attrgetter
 
 
 test_data = """\
@@ -31,23 +30,20 @@ def parsed(data):
         for y in ys:
             for x in xs:
                 grid[complex(x, y)] = '#'
+    ys = [z.imag for z in grid]
+    ymin, ymax = int(min(ys)), int(max(ys))
     grid[0j + 500] = "+"
-    return grid
+    return grid, ymin, ymax
 
 
 def dump(grid, pause=False):
     print("\33c")
-
     xs = [int(z.real) for z in grid]
-    ys = [int(z.imag) for z in grid]
-    w0 = min(xs) - 1
-    w1 = max(xs) + 2
-    h0 = min(ys)
-    h1 = max(ys) + 1
-
-    for y in range(0, h1):
+    xrange = range(min(xs) - 1, max(xs) + 2)
+    yrange = range(0, int(max(z.imag for z in grid)) + 1)
+    for y in yrange:
         line = []
-        for x in range(w0, w1):
+        for x in xrange:
             line.append(grid.get(complex(x, y), "."))
         line = ''.join(line)
         print(line)
@@ -97,14 +93,13 @@ def xflow(grid, pos0):
     return next_flow
 
 
-def wet(grid, tap=1j+500):
-    # ymax = max([int(z.imag) for z in grid]) + 1
+def wet(grid, ymax, tap=1j+500):
     flow = {tap}
     while flow:
         next_flow = set()
         for c in flow:
             grid[c] = "|"
-            if c.imag >= grid["y-axis"].stop:
+            if c.imag >= ymax:
                 continue
             if c + 1j not in grid:
                 next_flow |= {c + 1j}
@@ -116,22 +111,12 @@ def wet(grid, tap=1j+500):
 
 
 def part_ab(data):
-    grid = parsed(data)
-    wet(grid)
-    result_a = 0
-    result_b = 0
-    for y in grid["y-axis"]:
-        if y < grid["y-min"]:
-            continue
-        for x in grid["x-axis"]:
-            v = grid.get(complex(x, y))
-            if v == "~":
-                result_a += 1
-                result_b += 1
-            elif v == "|":
-                result_a += 1
-    part_ab.grid = grid
-    return result_a, result_b
+    grid, ymin, ymax = parsed(data)
+    wet(grid, ymax)
+    s = "".join(grid.values())
+    b = s.count("~")
+    a = s.count("|") + b - ymin + 1
+    return a, b
 
 
 assert part_ab(test_data) == (57, 29)
