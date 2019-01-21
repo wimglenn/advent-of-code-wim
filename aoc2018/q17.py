@@ -31,11 +31,12 @@ def parsed(data):
         for y in ys:
             for x in xs:
                 grid[complex(x, y)] = '#'
-
-    w0 = int(min(grid, key=attrgetter("real")).real) - 1
-    w1 = int(max(grid, key=attrgetter("real")).real) + 2
-    h0 = int(min(grid, key=attrgetter("imag")).imag)
-    h1 = int(max(grid, key=attrgetter("imag")).imag) + 1
+    xs = [int(z.real) for z in grid]
+    ys = [int(z.imag) for z in grid]
+    w0 = min(xs) - 1
+    w1 = max(xs) + 2
+    h0 = min(ys)
+    h1 = max(ys) + 1
     grid["y-min"] = h0
     grid["y-axis"] = range(0, h1)
     grid["x-axis"] = range(w0, w1)
@@ -69,10 +70,7 @@ def xflow(grid, pos0):
             break
         if grid.get(pos - 1 + 1j) == "|":
             break
-        if grid.get(pos - 1) == "|" and grid.get(pos - 1 + 1j) is None:
-            next_flow.add(pos - 1)
-            break
-        if pos - 1 not in grid and pos - 1 +1j not in grid:
+        if grid.get(pos - 1, "|") == "|" and pos - 1 + 1j not in grid:
             next_flow.add(pos - 1)
             break
         pos -= 1
@@ -84,16 +82,12 @@ def xflow(grid, pos0):
             break
         if grid.get(pos + 1 + 1j) == "|":
             break
-        if grid.get(pos + 1) == "|" and grid.get(pos + 1 + 1j) is None:
-            next_flow.add(pos + 1)
-            break
-        if pos + 1 not in grid and pos + 1 +1j not in grid:
+        if grid.get(pos + 1, "|") == "|" and pos + 1 + 1j not in grid:
             next_flow.add(pos + 1)
             break
         pos += 1
         grid[pos] = "|"
     if boundL is not None and boundR is not None:
-        assert not next_flow
         pos = boundL
         while True:
             grid[pos] = "~"
@@ -101,11 +95,11 @@ def xflow(grid, pos0):
             if pos.real > boundR.real:
                 break
         next_flow.add(pos0 - 1j)
-    assert len(next_flow) in {0, 1, 2}
     return next_flow
 
 
 def wet(grid, tap=1j+500):
+    # ymax = max([int(z.imag) for z in grid]) + 1
     flow = {tap}
     while flow:
         next_flow = set()
@@ -118,7 +112,6 @@ def wet(grid, tap=1j+500):
             elif grid[c+1j] == "|":
                 continue
             else:
-                assert grid[c+1j] in "~#"
                 next_flow |= xflow(grid, c)
         flow = next_flow
 
