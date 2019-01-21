@@ -11,7 +11,7 @@ The third floor contains a lithium generator.
 The fourth floor contains nothing relevant."""
 
 
-def parsed(text):
+def parsed(data):
     """
     state vector structure: 3-tuple of (int, tuple, tuple) 
     (
@@ -22,7 +22,7 @@ def parsed(text):
     """
     chips = {}
     generators = {}
-    for line_no, line in enumerate(text.splitlines(), 1):
+    for line_no, line in enumerate(data.splitlines(), 1):
         words = line.split()
         for i, word in enumerate(words, -1):
             if word.startswith('generator'):

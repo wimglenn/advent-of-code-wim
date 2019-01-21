@@ -105,5 +105,5 @@ def part_b(data):
 
 
 assert part_a(test_data) == 3
-print(part_a(data))  # 10584
-print(part_b(data))  # 479007144
+print(part_a(data))
+print(part_b(data))

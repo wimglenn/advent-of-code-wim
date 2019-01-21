@@ -3,14 +3,9 @@ from collections import deque
 from itertools import count
 
 
-test_data = """\
-Disc #1 has 5 positions; at time=0, it is at position 4.
-Disc #2 has 2 positions; at time=0, it is at position 1.
-"""
-
-def parsed(text):
+def parsed(data):
     discs = []
-    for line in text.splitlines():
+    for line in data.splitlines():
         words = line.split()
         n_pos, pos_t0 = int(words[3]), int(words[-1].rstrip('.'))
         disc = deque(range(n_pos))
@@ -24,7 +19,8 @@ def parsed(text):
     return discs
 
 
-def find_time(discs):
+def find_time(data):
+    discs = parsed(data)
     for t in count():
         if not any(disc[0] for disc in discs): 
             return t
@@ -32,10 +28,12 @@ def find_time(discs):
             disc.rotate(1)
 
 
-assert find_time(parsed(test_data)) == 5
+test_data = """\
+Disc #1 has 5 positions; at time=0, it is at position 4.
+Disc #2 has 2 positions; at time=0, it is at position 1.
+"""
 
-discs_a = parsed(data)
-discs_b = parsed(data + '\nBonus disc has 11 positions; at time=0, it is at position 0.')
-
-print(find_time(discs_a))
-print(find_time(discs_b))
+assert find_time(test_data) == 5
+print(find_time(data))
+data += '\nBonus disc has 11 positions; at time=0, it is at position 0.'
+print(find_time(data))

@@ -13,7 +13,7 @@ def get_marker(iterator):
     return [duration, multiplier, length]
 
 
-def part1(s):
+def part_a(s):
     result = 0
     iterator = iter(s)
     for c in iterator:
@@ -27,26 +27,26 @@ def part1(s):
     return result
 
 
-def parse(s):
-    parsed = deque()
-    iterator = iter(s)
+def parsed(data):
+    d = deque()
+    iterator = iter(data.strip())
     while True:
         letter = next(iterator, None)
         if letter is None:
             break
         if letter == '(':
-            parsed.append(get_marker(iterator))
+            d.append(get_marker(iterator))
         else:
-            parsed.append(1)
-    return parsed
+            d.append(1)
+    return d
 
 
-def part2(s):
-    parsed = parse(s)
+def part_b(data):
+    d = parsed(data)
     result = 0
     while True:
         try:
-            x = parsed.popleft()
+            x = d.popleft()
         except IndexError:
             break
         if isinstance(x, int):
@@ -55,33 +55,33 @@ def part2(s):
             duration, multiplier, length = x
             i = 0
             while duration > 0:
-                if isinstance(parsed[i], int):
+                if isinstance(d[i], int):
                     duration -= 1
-                    parsed[i] *= multiplier
+                    d[i] *= multiplier
                 else:
-                    duration -= parsed[i][2]
+                    duration -= d[i][2]
                 i += 1
     return result
 
 
-assert part1('ADVENT') == 6
-assert part1('A(1x5)BC') == 7  # 1 + 5 + 1
-assert part1('(3x3)XYZ') == 9  # 3*3
-assert part1('A(2x2)BCD(2x2)EFG') == 11  # 1 + 2*2 + 1 + 2*2 + 1
-assert part1('(6x1)(1x3)A') == 6
-assert part1('X(8x2)(3x3)ABCY') == 18
+assert part_a('ADVENT') == 6
+assert part_a('A(1x5)BC') == 7  # 1 + 5 + 1
+assert part_a('(3x3)XYZ') == 9  # 3*3
+assert part_a('A(2x2)BCD(2x2)EFG') == 11  # 1 + 2*2 + 1 + 2*2 + 1
+assert part_a('(6x1)(1x3)A') == 6
+assert part_a('X(8x2)(3x3)ABCY') == 18
 
 
-assert part2('(3x3)XYZ') == len('XYZXYZXYZ') == 9  # 3x3
-assert part2('X(8x2)(3x3)ABCY') == len('XABCABCABCABCABCABCY') == 20  # 1 + 6x3 + 1
-assert part2('(27x12)(20x12)(13x14)(7x10)(1x12)A') == 241920  # 12 * 12 * 14 * 10 * 12
-assert part2('(25x3)(3x3)ABC(2x3)XY(5x2)PQRSTX(18x9)(3x2)TWO(5x7)SEVEN') == 445
+assert part_b('(3x3)XYZ') == len('XYZXYZXYZ') == 9  # 3x3
+assert part_b('X(8x2)(3x3)ABCY') == len('XABCABCABCABCABCABCY') == 20  # 1 + 6x3 + 1
+assert part_b('(27x12)(20x12)(13x14)(7x10)(1x12)A') == 241920  # 12 * 12 * 14 * 10 * 12
+assert part_b('(25x3)(3x3)ABC(2x3)XY(5x2)PQRSTX(18x9)(3x2)TWO(5x7)SEVEN') == 445
 
+# TODO:
 # Additional test cases from AoC author:
 # https://www.reddit.com/r/adventofcode/comments/5hh56d/help_dont_understand_puzzle_9_part_b/db0aggl
-# assert part2('AAA(4x3)BBB') == len('AAABBBBBBBBB') == 12
-# assert part2('(7x2)A(3x2)BCD') == len('ABA(BABCDBCD') == 12
+# assert part_b('AAA(4x3)BBB') == len('AAABBBBBBBBB') == 12
+# assert part_b('(7x2)A(3x2)BCD') == len('ABA(BABCDBCD') == 12
 
-data = data.strip()
-print(part1(data))  # 138735
-print(part2(data))  # 11125026826
+print(part_a(data))
+print(part_b(data))
