@@ -14,7 +14,7 @@ test_data = """\
 
 
 def animate(data, iterations=100, corners_on=False):
-    A = np.vstack(np.array([{'.':0, '#':1}[x] for x in row], dtype=int) for row in data.splitlines())
+    A = np.vstack([np.array([{'.':0, '#':1}[x] for x in row], dtype=int) for row in data.splitlines()])
     if corners_on:
         A[0,0] = A[0,-1] = A[-1,0] = A[-1,-1] = 1
     kernel = np.ones((3,3), dtype=int)
