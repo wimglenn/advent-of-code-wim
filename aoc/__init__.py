@@ -20,7 +20,6 @@ from aocd import PuzzleUnsolvedError
 from aocd import submit
 from termcolor import colored
 from time import time
-from wimpy import strip_prefix
 
 
 # from https://adventofcode.com/about
@@ -100,7 +99,7 @@ def run_for(users, years, days, datasets, timeout=300, autosubmit=True):
             expected_a = get_answer(day=day, year=year, session=token, level=1)
         except PuzzleUnsolvedError:
             pass
-        if expected_a is None and autosubmit and not crashed:
+        if expected_a is None and autosubmit and not crashed and a:
             submit(a, day=day, year=year, session=token, reopen=False, quiet=True, level=1)
             try:
                 expected_a = get_answer(day=day, year=year, session=token, level=1)
@@ -110,7 +109,7 @@ def run_for(users, years, days, datasets, timeout=300, autosubmit=True):
             expected_b = get_answer(day=day, year=year, session=token, level=2)
         except PuzzleUnsolvedError:
             pass
-        if expected_b is None and autosubmit and not crashed:
+        if expected_b is None and autosubmit and not crashed and b:
             submit(b, day=day, year=year, session=token, reopen=False, quiet=True, level=2)
             try:
                 expected_b = get_answer(day=day, year=year, session=token, level=2)
@@ -159,7 +158,6 @@ def wim(year, day, data):
     with redirect_stdout(out):
         runpy.run_module(mod_name, run_name="__main__")
     output_lines = [x for x in out.getvalue().splitlines() if x]
-    # TODO: parse for "part a: ", "part b: "
     if len(output_lines) == 2:
         part_a, part_b = output_lines
     elif day == 25 and len(output_lines) == 1:
