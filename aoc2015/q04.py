@@ -13,21 +13,13 @@ def mine(data, difficulty):
         i += 1
 
 
-def part_a(data):
-    return mine(data, difficulty=5)
-
-
-def part_b(data):
-    return mine(data, difficulty=6)
-
-
 a_tests = {
     "abcdef": 609043,
     "pqrstuv": 1048970,
 }
 for test_data, expected in a_tests.items():
-    assert part_a(test_data) == expected
+    assert mine(test_data, difficulty=5) == expected
 
 
-print("part a:", part_a(data))
-print("part b:", part_b(data))
+print("part a:", mine(data, difficulty=5))
+print("part b:", mine(data, difficulty=6))
