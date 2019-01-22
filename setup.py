@@ -16,6 +16,8 @@ setup(
     ],
     install_requires=[
         "advent-of-code-data >= 0.8.0",
+        "anytree",
+        "bidict",
         "numpy",
         "parse",
         "pebble",
