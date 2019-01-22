@@ -54,6 +54,7 @@ test_a, test_b = part_ab(test_data)
 assert test_a == 138
 assert test_b == 66
 
+
 a, b = part_ab(data)
-print(a)  # 46829
-print(b)  # 37450
+print("part a:", a)
+print("part b:", b)

@@ -4,7 +4,8 @@ from scipy.signal import convolve2d
 import time
 
 
-test_data = """.#.#...|#.
+test_data = """\
+.#.#...|#.
 .....#|##|
 .|..|...#.
 ..|#.....#
@@ -43,7 +44,7 @@ def mutate(A0):
     return A1
 
 
-def run(data, minutes=10, debug=False):
+def part_a(data, minutes=10, debug=False):
     A = parsed(data)
     m = minutes
     seen = {A.tostring(): m}
@@ -60,11 +61,11 @@ def run(data, minutes=10, debug=False):
     return (A==1).sum() * (A==1j).sum()
 
 
-debug = True
-assert run(test_data, minutes=10, debug=debug) == 1147
+def part_b(data, debug=False):
+    return part_a(data, minutes=1000000000, debug=debug)
 
-a = run(data, minutes=10, debug=debug)
-print(a)  # 603098
 
-b = run(data, minutes=1000000000, debug=debug)
-print(b)  # 210000
+assert part_a(test_data, minutes=10) == 1147
+
+print("part a:", part_a(data))
+print("part b:", part_b(data))

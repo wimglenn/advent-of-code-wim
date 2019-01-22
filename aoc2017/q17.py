@@ -1,5 +1,6 @@
 from aocd import data
 
+
 def part_a(n):
     L = [0]
     pos = 0
@@ -7,6 +8,7 @@ def part_a(n):
         pos = 1 + (pos + n) % i
         L.insert(pos, i)
     return L[pos+1]
+
 
 def part_b(n):
     pos = 0
@@ -17,6 +19,7 @@ def part_b(n):
             i1 = i
     return i1
 
+
 assert part_a(3) == 638
-print(part_a(int(data)))  # part a: 1311
-print(part_b(int(data)))  # part b: 39170601
+print("part a:", part_a(int(data)))
+print("part b:", part_b(int(data)))

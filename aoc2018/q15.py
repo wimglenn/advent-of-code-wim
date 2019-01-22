@@ -241,10 +241,12 @@ def part_b(data, debug=False):
         Elf.ap += 1
         outcome = part_a(data, debug=debug)
         if part_a.all_elves_alive:
+            Elf.ap = 3
             return outcome
 
 
-part_a_tests = """#######
+part_a_tests = """\
+#######
 #.G...#
 #...EG#
 #.#.#G#
@@ -307,21 +309,17 @@ part_a_tests = """#######
 18740"""
 
 
-debug = True
 tests = part_a_tests.split('\n\n')
 grids = tests[0::2]
 outcomes = [int(line) for line in tests[1::2]]
 for grid, outcome in zip(grids, outcomes):
-    assert part_a(grid, debug=debug) == outcome
+    assert part_a(grid) == outcome
 
 part_b_tests = [4988, 31284, 3478, 6474, 1140]
 del grids[1]  # wtf eric
 for grid, outcome in zip(grids, part_b_tests):
-    assert part_b(grid, debug=debug) == outcome
+    assert part_b(grid) == outcome
 
 
-a = part_a(data, debug=debug)
-print(a)  # 237490
-
-b = part_b(data, debug=debug)
-print(b)  # 38424
+print("part a:", part_a(data))
+print("part b:", part_b(data))

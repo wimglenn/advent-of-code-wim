@@ -28,18 +28,19 @@ def knot_hash(data, n=256):
     return bytes(reduced).hex()
 
 
+test_a = '3,4,1,5'
+assert part_a(test_a, n=5) == 12
+
+tests_b = {
+    '': 'a2582a3a0e66e6e86e3812dcb672a272',
+    'AoC 2017': '33efeb34ea91902bb2f59c9920caa6cd',
+    '1,2,3': '3efbe78a8d82f29979031a4aa0b16a9d',
+    '1,2,4': '63960835bcdc130f0b66d7ff4f6a5a8e',
+}
+for k, v in tests_b.items():
+    assert knot_hash(k) == v
+
+
 if __name__ == '__main__':
-    test_a = '3,4,1,5'
-    assert part_a(test_a, n=5) == 12
-
-    tests_b = {
-        '': 'a2582a3a0e66e6e86e3812dcb672a272',
-        'AoC 2017': '33efeb34ea91902bb2f59c9920caa6cd',
-        '1,2,3': '3efbe78a8d82f29979031a4aa0b16a9d',
-        '1,2,4': '63960835bcdc130f0b66d7ff4f6a5a8e',
-    }
-    for k, v in tests_b.items():
-        assert knot_hash(k) == v
-
-    print(part_a(data))  # part a: 23874
-    print(knot_hash(data))  # part b: e1a65bfb5a5ce396025fab5528c25a87
+    print("part a:", part_a(data))
+    print(knot_hash(data))

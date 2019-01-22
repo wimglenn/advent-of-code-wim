@@ -1,9 +1,11 @@
 from aocd import data
 import re
 import numpy as np
+from aoc.ocr import AOCR
 
 
-test_data = """position=< 9,  1> velocity=< 0,  2>
+test_data = """\
+position=< 9,  1> velocity=< 0,  2>
 position=< 7,  0> velocity=<-1,  0>
 position=< 3, -2> velocity=<-1,  1>
 position=< 6, 10> velocity=<-2, -1>
@@ -40,19 +42,39 @@ def varianceish(a):
     return a.std(axis=1)[:2].sum()
 
 
-def draw(a):
+def ocr(a, lettersize, draw=False):
     ps = a[:2].copy()
     ps -= ps.min(axis=1).reshape(-1, 1)
-    w, h = ps.max(axis=1) + 1
-    img = np.full((h, w), ".")
+    W, H = ps.max(axis=1) + 1
+    img = np.full((H, W), ".")
+    h, w = lettersize
+    assert h == H
     col, row = ps
     img[row, col] = "#"
-    for row in img:
-        print(*row, sep='')
-    print('\n')
+    img = np.pad(img, ((0, 0), (1, 0)), mode='constant', constant_values=".")
+    W += 1
+    while W % w:
+        img = np.pad(img, ((0, 0), (0, 1)), mode='constant', constant_values=".")
+        W += 1
+    n = W // w
+    if draw:
+        for row in img:
+            print(*row, sep='')
+        print("\n")
+    letters = []
+    for i in range(n):
+        chunk = img[:, w*i:w*i+w]
+        key = '\n'.join(''.join(row) for row in chunk)
+        try:
+            letter = AOCR[key]
+        except KeyError:
+            print(key)
+            raise
+        letters.append(letter)
+    return ''.join(letters)
 
 
-def run(data):
+def part_ab(data, debug=False, lettersize=(10, 8)):
     numbers = [int(x) for x in re.findall("-?\d+", data)]
     a = np.array(numbers).reshape(-1, 4).T
     t = 0
@@ -63,13 +85,12 @@ def run(data):
         minv = min(v, minv)
         if v > minv:
             a[:2] -= a[2:]  # back up one step
-            draw(a)
-            return t
+            text = ocr(a, lettersize=lettersize, draw=debug)
+            return text, t
         t += 1
 
 
-assert run(test_data) == 3  # HI
-print(run(data))
-
-# part a: BLGNHPJC
-# part b: 10476
+assert part_ab(test_data, lettersize=(8, 7)) == ("HI", 3)
+a, b = part_ab(data)
+print("part a:", a)
+print("part b:", b)

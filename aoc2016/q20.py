@@ -1,9 +1,10 @@
 from aocd import data
 
 
-test_data = '''5-8
+test_data = """\
+5-8
 0-2
-4-7'''
+4-7"""
 
 
 def cleanup_data(data):
@@ -43,5 +44,5 @@ assert part_a(clean_test_data) == 3
 assert part_b(clean_test_data, n_min=0, n_max=9) == 2
 
 clean_data = cleanup_data(data)
-print(part_a(clean_data))  # part a: 17348574
-print(part_b(clean_data))  # part b: 104
+print(part_a(clean_data))
+print(part_b(clean_data))

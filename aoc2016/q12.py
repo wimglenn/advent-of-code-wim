@@ -1,12 +1,13 @@
 from aocd import data
 
 
-test_data = '''cpy 41 a
+test_data = """\
+cpy 41 a
 inc a
 inc a
 dec a
 jnz a 2
-dec a'''
+dec a"""
 
 
 def compute(data, c=0):

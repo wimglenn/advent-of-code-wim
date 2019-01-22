@@ -31,5 +31,5 @@ for test_data, result in b_tests.items():
     assert part_b(test_data) == result
 
 
-print(part_a(data))  # 454
-print(part_b(data))  # 566
+print("part a:", part_a(data))
+print("part b:", part_b(data))

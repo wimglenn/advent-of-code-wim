@@ -3,7 +3,7 @@ from collections import defaultdict
 import operator
 
 
-message = '''
+message = """\
 children: 3
 cats: 7
 samoyeds: 2
@@ -14,7 +14,7 @@ goldfish: 5
 trees: 3
 cars: 2
 perfumes: 1
-'''.strip()
+"""
 
 
 d_message = {k: int(v) for k,v in (pair.split(': ') for pair in message.splitlines())}
@@ -35,5 +35,5 @@ def find_sue(**kwargs):
             return int(sue.split()[1])
 
 
-print(find_sue())  # part a: 103
-print(find_sue(cats=operator.gt, trees=operator.gt, pomeranians=operator.lt, goldfish=operator.lt))  # part b: 405
+print(find_sue())
+print(find_sue(cats=operator.gt, trees=operator.gt, pomeranians=operator.lt, goldfish=operator.lt))

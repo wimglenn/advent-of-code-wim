@@ -5,10 +5,11 @@ from types import SimpleNamespace
 
 
 log = logging.getLogger(__name__)
-logging.basicConfig(format='%(message)s', level=logging.WARNING)
+# logging.basicConfig(format='%(message)s', level=logging.DEBUG)
 
 
-test_data = """Step C must be finished before step A can begin.
+test_data = """\
+Step C must be finished before step A can begin.
 Step C must be finished before step F can begin.
 Step A must be finished before step B can begin.
 Step A must be finished before step D can begin.
@@ -31,7 +32,7 @@ class Worker:
             return val
 
 
-def run(data, n_workers=4, delay=60):
+def work(data, n_workers=4, delay=60):
     template = "Step {} must be finished before step {} can begin."
     pairs = [parse(template, s).fixed for s in data.splitlines()]
     remaining = {x for pair in pairs for x in pair}
@@ -60,16 +61,14 @@ def run(data, n_workers=4, delay=60):
                     w.t = 1
                 else:
                     w.t = ord(x) - ord('A') + 1 + delay
-        log.info('%3d: %s   %s', t, ' '.join(w.has for w in workers), text)
+        log.debug('%3d: %s   %s', t, ' '.join(w.has for w in workers), text)
         t += 1
     result = SimpleNamespace(text=text, n_iterations=t)
     return result
 
 
-assert run(test_data, n_workers=1, delay=0).text == "CABDFE"
-part_a = run(data, n_workers=1)
-print(part_a.text)  # GKRVWBESYAMZDPTIUCFXQJLHNO
+assert work(test_data, n_workers=1, delay=0).text == "CABDFE"
+assert work(test_data, n_workers=2, delay=0).n_iterations == 15
 
-assert run(test_data, n_workers=2, delay=0).n_iterations == 15
-part_b = run(data)
-print(part_b.n_iterations)  # 903
+print("part a:", work(data, n_workers=1).text)
+print("part b:", work(data).n_iterations)

@@ -25,28 +25,28 @@ def part_b(data):
     x0 = xs.min(axis=0)
     priority_queue = [(0, xs.ptp(axis=0).max(), abs(x0).sum(), *x0)]
     while priority_queue:
-        # print(len(priority_queue), priority_queue[0])
         n_out_of_range, s, d, *x = heappop(priority_queue)
         x = np.array(x)
         s //= 2
         if not s:
-            assert abs(x).sum() == d
-            # print("best location:", x)
-            # print("bots in range:", len(rs) - n_out_of_range)
-            # print("distance from origin:", d)
-            return d
+            x0 = x
+            # return d
+            break
         dx = np.array(list(product([0, 1], repeat=3))) * s
         # divide this 3D space into 8 evenly sized subspaces
         for row in x + dx:
-            # maximize bots in range is same as minimizing bots out of range.
+            # maximize number in range = minimizing number out of range
             n_out = ((np.clip(row-xs, 0, None) + np.clip(xs-row-s+1, 0, None)).sum(axis=1) > rs).sum()
             if n_out < len(rs):
-                # enqueue in priority:
-                #   1) number out of range
-                #   2) partition side length
-                #   3) distance from origin
-                # this drills-down into space where there's highest density overlap
                 heappush(priority_queue, (n_out, s, abs(row).sum(), *row))
+    # search around neighborhood of x0
+    r = 8
+    for dx in product(range(-r, r+1), repeat=3):
+        dx = np.array(dx)
+        x = x0 + dx
+        n_out = (abs(xs - x).sum(axis=1) > rs).sum()
+        n_out_of_range, d = min((n_out_of_range, d), (n_out, abs(x).sum()))
+    return d
 
 
 test_data_a = """pos=<0,0,0>, r=4
@@ -68,7 +68,8 @@ pos=<10,10,10>, r=5"""
 
 
 assert part_a(test_data_a) == 7
-print(part_a(data))  # 933
-
 assert part_b(test_data_b) == 36
-print(part_b(data))  # 70887840
+
+
+print("part a:", part_a(data))
+print("part b:", part_b(data))

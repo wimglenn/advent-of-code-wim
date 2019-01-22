@@ -1,13 +1,15 @@
 from aocd import data
 
-test_data = '''0/2
+test_data = """\
+0/2
 2/2
 2/3
 3/4
 3/5
 0/1
 10/1
-9/10'''
+9/10
+"""
 
 def get_segments(data):
     return [tuple(int(x) for x in line.split('/')) for line in data.splitlines()]
@@ -31,5 +33,5 @@ def strongest_and_longest(data):
 
 assert strongest_and_longest(test_data) == (31, 19)
 strongest, longest = strongest_and_longest(data)
-print(strongest)  # part a: 1940
-print(longest)  # part b: 1928
+print(strongest)
+print(longest)

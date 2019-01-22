@@ -1,6 +1,7 @@
 from aocd import data
 
-def parse_data(data, mod=16):
+
+def parsed(data, mod=16):
     S = 0
     ops = []
     for op in data.split(','):
@@ -18,9 +19,10 @@ def parse_data(data, mod=16):
     ops.append(('s', S % mod, S % mod))
     return ops
 
-def run(data, d, n=1):
+
+def dance(data, d, n=1):
     mod = len(d)
-    ops = parse_data(data, mod=mod)
+    ops = parsed(data, mod=mod)
     seen = {}
     while n:
         s = ''.join(d)
@@ -42,9 +44,10 @@ def run(data, d, n=1):
         n -= 1
     return ''.join(d)
 
-assert run(data='s1,x3/4,pe/b', d=list('abcde')) == 'baedc'
-assert run(data='s1,x3/4,pe/b', d=list('abcde'), n=2) == 'ceadb'
+
+assert dance(data='s1,x3/4,pe/b', d=list('abcde')) == 'baedc'
+assert dance(data='s1,x3/4,pe/b', d=list('abcde'), n=2) == 'ceadb'
 
 d = list('abcdefghijklmnop')
-print(run(data, d))  # part a: fgmobeaijhdpkcln
-print(run(data, d, n=1000000000-1))  # part b: lgmkacfjbopednhi
+print("part a:", dance(data, d))
+print("part b:", dance(data, d, n=1000000000-1))

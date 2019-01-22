@@ -28,25 +28,25 @@ def search(data=data, hash_function=normal_hash):
     template = data.strip().encode('ascii') + b'%d'
     keys = []
     triples = defaultdict(list)
-    i, max_i = 0, float('inf')
-    while i < max_i:
+    i = 0
+    stop = None
+    while stop is None or i < stop:
         hash_ = hash_function(template % i)
         for k in get_all_quintuples(hash_):
-            indices = triples[k]
-            for index in indices:
-                if i - index < 1000:
-                    keys.append(index)
-                    if len(keys) == 64:
-                        max_i = i + 1000
+            keys.extend([x for x in triples[k] if i - x <= 1000])
+            triples[k].clear()  # avoid to count same key twice
+            if len(keys) >= 64 and stop is None:
+                stop = i + 1001
         triple = get_first_triple(hash_)
         if triple is not None:
             triples[triple].append(i)
         i += 1
     return sorted(keys)[:64][-1]
 
-assert search(data='abc') == 22728
-print(search())  # part A: 25427
 
-assert stretched_hash(b'abc0').startswith('a107ff')
+assert search(data='abc') == 22728
+print("part a:", search())
+
+assert stretched_hash(b'abc0') == "a107ff634856bb300138cac6568c0f24"
 assert search(data='abc', hash_function=stretched_hash) == 22551
-print(search(hash_function=stretched_hash))  # part B: 22045
+print("part b:", search(hash_function=stretched_hash))

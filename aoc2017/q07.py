@@ -3,7 +3,8 @@ from collections import Counter
 from collections import deque
 from wimpy import cached_property
 
-test_data = '''pbga (66)
+test_data = """\
+pbga (66)
 xhth (57)
 ebii (61)
 havc (66)
@@ -15,7 +16,7 @@ tknk (41) -> ugml, padx, fwft
 jptl (61)
 ugml (68) -> gyxo, ebii, jptl
 gyxo (61)
-cntj (57)'''
+cntj (57)"""
 
 nodes = {}
 
@@ -79,5 +80,5 @@ assert find_bad_node_correct_weight(test_tree) == 60
 
 nodes.clear()
 tree = make_tree(data)
-print(tree.name)  # part a: vvsvez
-print(find_bad_node_correct_weight(tree))  # part b: 362
+print(tree.name)
+print(find_bad_node_correct_weight(tree))

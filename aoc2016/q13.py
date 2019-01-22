@@ -1,5 +1,3 @@
-# coding: utf-8
-from __future__ import unicode_literals
 from aocd import data
 from collections import deque
 
@@ -96,8 +94,8 @@ assert bfs(state0, target, maze=test_maze) == 11
 
 target = 31 + 39j
 maze = Maze()
-print(bfs(state0, target, maze))  # part A: 92
-print(n_points_within_distance(state0, maze))  # part B: 124
+print(bfs(state0, target, maze))
+print(n_points_within_distance(state0, maze))
 
 
 others_data = {

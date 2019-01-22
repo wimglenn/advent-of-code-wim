@@ -4,27 +4,6 @@ from numpy import uint16
 import re
 
 
-test_data = '''123 -> x
-456 -> y
-x AND y -> d
-x OR y -> e
-x LSHIFT 2 -> f
-y RSHIFT 2 -> g
-NOT x -> h
-NOT y -> i'''
-
-test_result = {
-    'd': 72,
-    'e': 507,
-    'f': 492,
-    'g': 114,
-    'h': 65412,
-    'i': 65079,
-    'x': 123,
-    'y': 456,
-}
-
-
 opmap = {
     'AND': operator.and_,
     'OR': operator.or_,
@@ -70,13 +49,32 @@ def compute(data):
     return result
 
 
+test_data = """\
+123 -> x
+456 -> y
+x AND y -> d
+x OR y -> e
+x LSHIFT 2 -> f
+y RSHIFT 2 -> g
+NOT x -> h
+NOT y -> i"""
+
+test_result = {
+    'd': 72,
+    'e': 507,
+    'f': 492,
+    'g': 114,
+    'h': 65412,
+    'i': 65079,
+    'x': 123,
+    'y': 456,
+}
+
 assert compute(test_data) == test_result
 
 result = compute(data)
 result_a = result['a']
-print(result_a)  # part a: 956
+print("part a:", result_a)
 
 new_data = re.sub(r'\n([0-9]+) -> b\n', '\n{} -> b\n'.format(result_a), data)
-result = compute(new_data)
-result_a = result['a']
-print(result_a)  # part b: 40149
+print("part b:", compute(new_data)["a"])

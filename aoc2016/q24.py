@@ -4,13 +4,13 @@ from collections import deque
 from itertools import permutations, combinations
 
 
-test_data = '''
+test_data = """\
 ###########
 #0.1.....2#
 #.#######.#
 #4.......3#
 ###########
-'''.strip()
+"""
 
 
 def valid_next_states(state, maze, seen=()):
@@ -37,8 +37,7 @@ def bfs(state0, target, maze):
 
 
 def get_distance_matrix(data):
-    n_rows = 1 + data.count('\n')
-    maze = np.fromstring(data.replace('\n',''), dtype='S1').reshape(n_rows, -1).astype('U1')
+    maze = np.array([list(line) for line in data.splitlines()], dtype="<U1")
     targets = sorted([x for x in data if x.isdigit()])
     n = len(targets)
 
@@ -67,5 +66,5 @@ assert solve(test_d, return_home=0) == 14
 assert solve(test_d, return_home=1) == 20
 
 d = get_distance_matrix(data)
-print(solve(d, return_home=0))  # part a: 518
-print(solve(d, return_home=1))  # part b: 716
+print(solve(d, return_home=0))
+print(solve(d, return_home=1))

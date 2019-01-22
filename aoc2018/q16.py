@@ -128,7 +128,6 @@ def part_b(data):
     return R[0]
 
 
-a = part_a(data)
-print(a)  # 614
-b = part_b(data)
-print(b)  # 656
+if __name__ == "__main__":
+    print("part a:", part_a(data))
+    print("part b:", part_b(data))

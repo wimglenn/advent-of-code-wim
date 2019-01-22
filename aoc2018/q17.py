@@ -1,9 +1,8 @@
 from aocd import data
-from operator import attrgetter
-import sys
 
 
-test_data = """x=495, y=2..7
+test_data = """\
+x=495, y=2..7
 y=7, x=495..501
 x=501, y=3..7
 x=498, y=2..4
@@ -31,106 +30,97 @@ def parsed(data):
         for y in ys:
             for x in xs:
                 grid[complex(x, y)] = '#'
-
-    w0 = int(min(grid, key=attrgetter("real")).real) - 1
-    w1 = int(max(grid, key=attrgetter("real")).real) + 2
-    h0 = int(min(grid, key=attrgetter("imag")).imag)
-    h1 = int(max(grid, key=attrgetter("imag")).imag) + 1
-    grid["y-min"] = h0
-    grid["y-axis"] = range(0, h1)
-    grid["x-axis"] = range(w0, w1)
+    ys = [z.imag for z in grid]
+    ymin, ymax = int(min(ys)), int(max(ys))
     grid[0j + 500] = "+"
-    return grid
+    return grid, ymin, ymax
 
 
-def dump(grid):
+def dump(grid, pause=False):
     print("\33c")
-    for y in grid["y-axis"]:
+    xs = [int(z.real) for z in grid]
+    xrange = range(min(xs) - 1, max(xs) + 2)
+    yrange = range(0, int(max(z.imag for z in grid)) + 1)
+    for y in yrange:
         line = []
-        for x in grid["x-axis"]:
+        for x in xrange:
             line.append(grid.get(complex(x, y), "."))
         line = ''.join(line)
         print(line)
-        if set(line) & set("|~+"):
+        if not set(line).intersection("|+~"):
             break
     print()
+    if pause:
+        input("Press enter to continue...")
 
 
-class Ystream:
-
-    def __init__(self, grid, pos):
-        while pos not in grid:
-            if pos.imag >= grid["y-axis"].stop:
-                return
-            grid[pos] = "|"
-            pos += 1j
-        if grid[pos] in "#~":
-            Xstream(grid, pos - 1j)
-
-
-class Xstream:
-
-    def __init__(self, grid, pos):
-        if grid[pos] == "~":
-            return
-        left_wall = right_wall = False
-        left_fall = right_fall = False
-        filled = [pos]
-        dx = 1
+def xflow(grid, pos0):
+    # find bounds left and right
+    pos = pos0
+    boundL = boundR = None
+    next_flow = set()
+    while True:
+        if grid.get(pos - 1) == "#":
+            boundL = pos
+            break
+        if grid.get(pos - 1 + 1j) == "|":
+            break
+        if grid.get(pos - 1, "|") == "|" and pos - 1 + 1j not in grid:
+            next_flow.add(pos - 1)
+            break
+        pos -= 1
+        grid[pos] = "|"
+    pos = pos0
+    while True:
+        if grid.get(pos + 1) == "#":
+            boundR = pos
+            break
+        if grid.get(pos + 1 + 1j) == "|":
+            break
+        if grid.get(pos + 1, "|") == "|" and pos + 1 + 1j not in grid:
+            next_flow.add(pos + 1)
+            break
+        pos += 1
+        grid[pos] = "|"
+    if boundL is not None and boundR is not None:
+        pos = boundL
         while True:
-            if not right_wall and not right_fall:
-                if pos + dx not in grid or grid[pos + dx] == "|":
-                    grid[pos + dx] = "|"
-                    filled.append(pos + dx)
-                    if pos + dx + 1j not in grid:
-                        right_fall = pos + dx + 1j
-                elif grid[pos + dx] == "#":
-                    right_wall = True
-            if not left_wall and not left_fall:
-                if pos - dx not in grid  or grid[pos - dx] == "|":
-                    grid[pos - dx] = "|"
-                    filled.append(pos - dx)
-                    if pos - dx + 1j not in grid:
-                        left_fall = pos - dx + 1j
-                elif grid[pos - dx] == "#":
-                    left_wall = True
-            if (left_wall or left_fall) and (right_wall or right_fall):
+            grid[pos] = "~"
+            pos += 1
+            if pos.real > boundR.real:
                 break
-            dx += 1
-        if left_wall and right_wall:
-            for pos in filled:
-                grid[pos] = "~"
-            for pos in filled:
-                if grid.get(pos - 1j) == "|":
-                    Xstream(grid, pos - 1j)
-                    break
-        if left_fall:
-            Ystream(grid, left_fall)
-        if right_fall:
-            Ystream(grid, right_fall)
+        next_flow.add(pos0 - 1j)
+    return next_flow
+
+
+def wet(grid, ymax, tap=1j+500):
+    flow = {tap}
+    while flow:
+        next_flow = set()
+        for c in flow:
+            grid[c] = "|"
+            if c.imag >= ymax:
+                continue
+            if c + 1j not in grid:
+                next_flow |= {c + 1j}
+            elif grid[c+1j] == "|":
+                continue
+            else:
+                next_flow |= xflow(grid, c)
+        flow = next_flow
 
 
 def part_ab(data):
-    grid = parsed(data)
-    Ystream(grid, 1j + 500)
-    result_a = 0
-    result_b = 0
-    for y in grid["y-axis"]:
-        if y < grid["y-min"]:
-            continue
-        for x in grid["x-axis"]:
-            v = grid.get(complex(x, y))
-            if v == "~":
-                result_a += 1
-                result_b += 1
-            elif v == "|":
-                result_a += 1
-    part_ab.grid = grid
-    return result_a, result_b
+    grid, ymin, ymax = parsed(data)
+    wet(grid, ymax)
+    s = "".join(grid.values())
+    b = s.count("~")
+    a = s.count("|") + b - ymin + 1
+    return a, b
 
 
-sys.setrecursionlimit(3000)
 assert part_ab(test_data) == (57, 29)
+
 a, b = part_ab(data)
-print(a)  # 31953
-print(b)  # 26410
+print("part a:", a)
+print("part b:", b)

@@ -1,10 +1,16 @@
 from aocd import data
 import numpy as np
 
-def f(data, roll=1):
+
+def part_a(data, roll=1):
     a = np.fromiter(data, dtype=int)
     b = np.roll(a, roll)
     return a[a==b].sum()
+
+
+def part_b(data):
+    return part_a(data, roll=len(data)//2)
+
 
 tests_a = {
     '1122': 3,
@@ -13,7 +19,7 @@ tests_a = {
     '91212129': 9,
 }
 for test_data, expected in tests_a.items():
-    assert f(test_data) == expected
+    assert part_a(test_data) == expected
 
 tests_b = {
     '1212': 6,
@@ -23,7 +29,7 @@ tests_b = {
     '12131415': 4,
 }
 for test_data, expected in tests_b.items():
-    assert f(test_data, roll=len(test_data)//2) == expected
+    assert part_b(test_data) == expected
 
-print(f(data))  # part a: 1119
-print(f(data, roll=len(data)//2))  # part b: 1420
+print("part a:", part_a(data))
+print("part b:", part_b(data))

@@ -1,7 +1,6 @@
+import heapq
 from aocd import data
-from collections import deque
 from fields import Fields
-from copy import deepcopy
 
 
 class Spell(Fields.name.cost.duration[0].damage[0].healing[0].armor[0].mana[0]):
@@ -18,21 +17,21 @@ cheapest_spell_cost = min(s.cost for s in spells)
 spells = {s.name: s for s in spells}
 
 
-def parse_data(data):
+def parsed(data):
     data = {k: int(v) for k,v in (line.split(': ') for line in data.splitlines())}
     return data['Hit Points'], data['Damage']
 
 
 class GameState:
 
-    boss_hp0, boss_damage = parse_data(data)
+    boss_hp0, boss_damage = parsed(data)
 
     def __init__(self, player_hp=50, mana=500, boss_hp=boss_hp0, to_move='player', history=(), spent=0):
         self.player_hp = player_hp
         self.mana = mana
         self.boss_hp = boss_hp
         self.to_move = to_move
-        self.history = list(history)
+        self.history = history
         self.spent = spent
 
     def __repr__(self):
@@ -57,6 +56,9 @@ class GameState:
             if 'Poison' in self.active_spells and self.boss_hp <= spells['Poison'].damage:
                 return 'player'
 
+    def __lt__(self, other):  # needed for min-heap
+        return self.spent < other.spent
+
     @property
     def active_spells(self):
         return {move for move, duration_left in self.history if duration_left > 0}
@@ -69,6 +71,7 @@ class GameState:
         boss_hp = self.boss_hp
         mana = self.mana
 
+        new_history = []
         for h in self.history:
             move, duration_left = h
             if duration_left > 0:
@@ -76,7 +79,10 @@ class GameState:
                     boss_hp -= spells['Poison'].damage
                 elif move == 'Recharge':
                     mana += spells['Recharge'].mana
-                h[1] -= 1
+                if duration_left > 1:
+                    new_history.append((move, duration_left - 1))
+
+        self.history = new_history
 
         if self.to_move == 'boss':
             if 'Shield' in self.active_spells:
@@ -89,7 +95,7 @@ class GameState:
                     mana=mana, 
                     boss_hp=boss_hp, 
                     to_move='player', 
-                    history=deepcopy(self.history),
+                    history=self.history,
                     spent=self.spent,
                 )
             ]
@@ -102,7 +108,6 @@ class GameState:
             if player_hp <= 0:
                 return moves
 
-
         for spell_name in 'Shield', 'Poison', 'Recharge':
             spell = spells[spell_name]
             if mana - spell.cost >= 0 and spell.name not in self.active_spells:
@@ -112,7 +117,7 @@ class GameState:
                         mana=mana - spell.cost,
                         boss_hp=boss_hp,
                         to_move='boss',
-                        history=deepcopy(self.history) + [[spell.name, spell.duration]],
+                        history=self.history + [(spell.name, spell.duration)],
                         spent=self.spent + spell.cost
                     )
                 )
@@ -126,7 +131,7 @@ class GameState:
                         mana=mana - spell.cost,
                         boss_hp=boss_hp - spell.damage,
                         to_move='boss',
-                        history=deepcopy(self.history) + [[spell.name, 0]],
+                        history=self.history + [(spell.name, 0)],
                         spent=self.spent + spell.cost,
                     )
                 )
@@ -135,33 +140,18 @@ class GameState:
 
 
 def bfs(state0, hard_mode=False):
-    depth = 0
-    queue = deque([(state0, depth)])
-    min_spent = float('inf')
-    best_fight = None
-    i = 0
-    print()
+    queue = [(state0.spent, state0)]  # min-heap
     while queue:
-        i += 1
-        if i % 10000 == 1:
-            print('\rqueue length: {}       '.format(len(queue)), end='')
-        state, this_depth = queue.popleft()
-        if state.spent >= min_spent:
-            continue
-        depth = max(depth, this_depth)
+        spent, state = heapq.heappop(queue)
         if state.winner == 'player':
-            if state.spent < min_spent:
-                best_fight = state
-            min_spent = min(state.spent, min_spent)
-        elif state.winner is None:
-            children = state.next_states(hard_mode=hard_mode)
-            queue.extend((child, depth + 1) for child in children)
-    print()
-    return min_spent, best_fight
+            return spent
+        if state.winner is None:
+            for child in state.next_states(hard_mode=hard_mode):
+                heapq.heappush(queue, (child.spent, child))
 
 
-min_spent, final_state = bfs(GameState())
-min_spent_hard, final_state_hard = bfs(GameState(), hard_mode=True)
+min_spent = bfs(GameState())
+min_spent_hard = bfs(GameState(), hard_mode=True)
 
-print(min_spent)  # part a: 1269
-print(min_spent_hard)  # part b: 1309
+print(min_spent)
+print(min_spent_hard)

@@ -1,13 +1,12 @@
 from aocd import data
 from parse import parse
 
-a = 16807
-b = 48271
-d = 2147483647
+a = 16807  # 7 ** 5
+b = 48271  # prime
+d = 2147483647  # prime
 
-parsed = parse('Generator A starts with {a0:d}\nGenerator B starts with {b0:d}', data)
-a0 = parsed.named['a0']
-b0 = parsed.named['b0']
+template = 'Generator A starts with {:d}\nGenerator B starts with {:d}'
+a0, b0 = parse(template, data).fixed  # note: a0 is 2**n, b0 is prime
 
 def gen(m, x0):
     x = x0
@@ -30,5 +29,5 @@ def score(gena, genb, n=40000000):
 assert score(gen(a, 65), gen(b, 8921)) == 588
 assert score(gen2(a, 65, 4), gen2(b, 8921, 8), n=5000000) == 309
 
-print(score(gen(a, a0), gen(b, b0)))  # part a: 650
-print(score(gen2(a, a0, 4), gen2(b, b0, 8), n=5000000))  # part b: 336
+print(score(gen(a, a0), gen(b, b0)))
+print(score(gen2(a, a0, 4), gen2(b, b0, 8), n=5000000))

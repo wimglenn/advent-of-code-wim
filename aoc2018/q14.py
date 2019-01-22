@@ -51,8 +51,5 @@ for n_recipes, scores in tests:
     assert part_b(scores[:5]) == n_recipes
 
 
-a = part_a(data)
-print(a)  # 7861362411
-
-b = part_b(data)
-print(b)  # 20203532
+print("part a:", part_a(data))
+print("part b:", part_b(data))

@@ -76,7 +76,7 @@ def graph(data, z0=0):
     return g
 
 
-def solve(data):
+def part_ab(data):
     g = graph(data)
     distances = [nx.shortest_path_length(g, 0, x) for x in g.nodes]
     part_a = max(distances)
@@ -85,10 +85,10 @@ def solve(data):
 
 
 for test, expected in tests.items():
-    part_a, _part_b = solve(test)
-    assert part_a == expected
+    a, _b = part_ab(test)
+    assert a == expected
 
 
-a, b = solve(data)
-print(a)  # 3465
-print(b)  # 7956
+a, b = part_ab(data)
+print("part a:", a)
+print("part b:", b)

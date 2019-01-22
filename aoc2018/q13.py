@@ -1,4 +1,4 @@
-from aocd import data, submit1
+from aocd import data
 import random
 from itertools import cycle
 from collections import Counter
@@ -7,10 +7,8 @@ from termcolor import colored, COLORS
 
 
 class CartCollision(Exception):
-    def __init__(self, coordinates, submit=False):
+    def __init__(self, coordinates):
         self.coordinates = coordinates
-        if submit:
-            submit1(coordinates)
         super().__init__(coordinates)
 
 
@@ -130,7 +128,7 @@ def find_collision(carts):
         raise CartCollision(pos)
 
 
-def run(data, part_b=False, debug=False):
+def part_a(data, first_crash=True, debug=False):
     a0, carts = parsed(data)
     while True:
         if debug:
@@ -143,7 +141,7 @@ def run(data, part_b=False, debug=False):
             except CartCollision as err:
                 if debug:
                     dump(a0, carts)
-                if not part_b:
+                if first_crash:
                     return err.coordinates
                 # remove exactly 2 crashed carts. there can not be more than
                 # one collision at a time because we only moved 1 cart at a
@@ -153,6 +151,11 @@ def run(data, part_b=False, debug=False):
         if len(carts) == 1:
             [cart] = carts
             return cart.coordinates
+
+
+def part_b(data, debug=False):
+    return part_a(data, first_crash=False, debug=debug)
+
 
 
 test_data1 = """|
@@ -181,9 +184,10 @@ test_data3 = r"""/>-<\
   \<->/"""
 
 
-assert run(test_data1, debug=True) == "0,3"
-assert run(test_data2, debug=True) == "7,3"
-assert run(test_data3, part_b=True, debug=True) == "6,4"
+assert part_a(test_data1) == "0,3"
+assert part_a(test_data2) == "7,3"
+assert part_b(test_data3) == "6,4"
 
-print(run(data))  # 113,136
-print(run(data, part_b=True))  # 114,136
+
+print("part a:", part_a(data))
+print("part b:", part_b(data))

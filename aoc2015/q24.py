@@ -1,27 +1,11 @@
 from aocd import data
-from functools import reduce
-from operator import mul
 from itertools import combinations
 from collections import Counter
+from aoc.stuff import subset_sum
+from aoc.stuff import prod
 
 
-def subset_sum(vals, target=0):
-    # dynamic programming impl
-    sums = {0: [()]}  # key=sum, value=list of subsets for the sum
-    if target in sums:
-        yield from sums[target]  # annoying base case
-    for val in vals:
-        items = sums.items()  # don't change dict size during iteration
-        sums = dict(items)
-        for prev_sum, prev_subsets in items:
-            sum_ = prev_sum + val
-            subsets = [s + (val,) for s in prev_subsets]
-            sums[sum_] = sums.get(sum_, []) + subsets
-            if sum_ == target:
-                yield from subsets
-
-
-def parse_data(data, n_groups):
+def parsed(data, n_groups):
     vals = [int(n)for n in data.strip().split()]
     total = sum(vals)
     if total % n_groups != 0:
@@ -46,10 +30,6 @@ def partitions(vals, target):
         yield from ((group, group_) for group_ in groups)
 
 
-def prod(vals):
-    return reduce(mul, vals)
-
-
 def get_shortest_sums(vals, target):
     results = []
     for i in range(len(vals)):
@@ -62,7 +42,7 @@ def get_shortest_sums(vals, target):
 
 
 def solve(data, n_groups):
-    vals, target = parse_data(data, n_groups=n_groups)
+    vals, target = parsed(data, n_groups=n_groups)
     group1s = get_shortest_sums(vals, target)
     group1s.sort(key=prod)
 
@@ -81,5 +61,5 @@ test_data = '1 2 3 4 5 7 8 9 10 11'
 assert solve(test_data, n_groups=3) == 99
 assert solve(test_data, n_groups=4) == 44
 
-print(solve(data, n_groups=3))  # part a: 11846773891
-print(solve(data, n_groups=4))  # part b: 80393059
+print(solve(data, n_groups=3))
+print(solve(data, n_groups=4))

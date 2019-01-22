@@ -1,4 +1,3 @@
-from __future__ import unicode_literals
 from aocd import data
 from collections import deque
 from hashlib import md5
@@ -49,10 +48,10 @@ assert bfs((z0, 'hijkl'),    target, next_states, mode='shortest') is None
 assert bfs((z0, 'ihgpwlah'), target, next_states, mode='shortest') == 'DDRRRD'
 assert bfs((z0, 'kglvqrro'), target, next_states, mode='shortest') == 'DDUDRLRRUDRD'
 assert bfs((z0, 'ulqzkmiv'), target, next_states, mode='shortest') == 'DRURDRUDDLLDLUURRDULRLDUUDDDRR'
-print(bfs(state0, target, next_states, mode='shortest'))  # part a: RDURRDDLRD
+print(bfs(state0, target, next_states, mode='shortest'))
 
 assert bfs((z0, 'hijkl'),    target, next_states, mode='longest') is None
 assert bfs((z0, 'ihgpwlah'), target, next_states, mode='longest') == 370
 assert bfs((z0, 'kglvqrro'), target, next_states, mode='longest') == 492
 assert bfs((z0, 'ulqzkmiv'), target, next_states, mode='longest') == 830
-print(bfs(state0, target, next_states, mode='longest'))  # part b: 526
+print(bfs(state0, target, next_states, mode='longest'))

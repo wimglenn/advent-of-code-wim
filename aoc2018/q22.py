@@ -1,56 +1,6 @@
 from aocd import data
 from parse import parse
-from collections import defaultdict
-
-
-class AStar:
-
-    def __init__(self, state0, target):
-        self.state0 = state0
-        self.target = target
-        self.closed = set()
-        self.open = {state0}
-        self.came_from = {}
-        self.fscore = defaultdict(lambda: float("inf"), {target: self.heuristic(state0, target)})
-        self.gscore = defaultdict(lambda: float("inf"), {state0: 0})
-
-    def heuristic(self, state0, state1):
-        """estimate of distance (cost) to get from state0 to state1"""
-        return abs(state0 - state1)
-
-    def cost(self, current_state, next_state):
-        """actual delta to get from current state to an adjacent state"""
-        return abs(current_state - next_state)
-
-    def adjacent(self, state):
-        """other states reachable from given state"""
-        return []
-
-    def reconstruct_path(self, current):
-        path = [current]
-        while current in self.came_from:
-            current = self.came_from[current]
-            path.append(current)
-        return path
-
-    def run(self):
-        while self.open:
-            current_state = min(self.open, key=self.fscore.get)
-            if current_state == self.target:
-                return self.reconstruct_path(current_state)
-            self.open.remove(current_state)
-            self.closed.add(current_state)
-            for next_state in self.adjacent(current_state):
-                if next_state in self.closed:
-                    continue
-                tentative_gscore = self.gscore[current_state] + self.cost(current_state, next_state)
-                if next_state not in self.open:
-                    self.open.add(next_state)
-                elif tentative_gscore >= self.gscore[next_state]:
-                    continue
-                self.came_from[next_state] = current_state
-                self.gscore[next_state] = tentative_gscore
-                self.fscore[next_state] = tentative_gscore + self.heuristic(next_state, self.target)
+from aoc.astar import AStar
 
 
 def zrange(*args):
@@ -186,14 +136,13 @@ def part_b(data):
     return result
 
 
-test_data = """depth: 510
+test_data = """\
+depth: 510
 target: 10,10"""
 
 
 assert part_a(test_data) == 114
-a = part_a(data)  # 7380
-print(a)
-
 assert part_b(test_data) == 45
-b = part_b(data)
-print(b)  # 1013
+
+print("part a:", part_a(data))
+print("part b:", part_b(data))

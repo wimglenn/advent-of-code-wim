@@ -1,7 +1,7 @@
 from aocd import data
 
 
-def parse_data(data):
+def parsed(data):
     words = data.split()
     row = int(words[-3].rstrip(','))
     col = int(words[-1].rstrip('.'))
@@ -21,5 +21,5 @@ def code(row, col, code0=20151125, m=252533, d=33554393):
     return code
 
 
-row, col = parse_data(data)
-print(code(row, col))  # 2650453
+row, col = parsed(data)
+print(code(row, col))
