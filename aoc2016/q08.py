@@ -25,22 +25,22 @@ def part_a(data):
 def part_b(data, dump=False):
     A = parsed(data)
     if dump:
-        print('\n')
+        print("\n")
         for row in A.astype(int):
-            print(''.join([' █'[x] for x in row]))
-        print('\n')
+            print("".join([" █"[x] for x in row]))
+        print("\n")
     w = 5  # letter column width
     n = A.shape[1] // w  # number of chars
     msg = []
     for i in range(n):
         chunk = A[:, w*i:w*i+w]
-        txt = "\n".join([''.join(['.#'[int(i)] for i in row]) for row in chunk])
+        txt = "\n".join(["".join([".#"[int(i)] for i in row]) for row in chunk])
         try:
             msg.append(AOCR[txt])
         except KeyError:
             print(txt)
             raise
-    return ''.join(msg)
+    return "".join(msg)
 
 
 print("part a:", part_a(data))

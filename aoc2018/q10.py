@@ -60,7 +60,7 @@ def ocr(a, lettersize, draw=False):
     if draw:
         for row in img:
             print(*row, sep='')
-        print('\n')
+        print("\n")
     letters = []
     for i in range(n):
         chunk = img[:, w*i:w*i+w]

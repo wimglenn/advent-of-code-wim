@@ -50,14 +50,14 @@ def compute(reg, lines, lineno=0, original_data=data, patched_area=()):
             if a:
                 i += b - 1
                 if i in patched_area:
-                    print('unpatching due to jump in patched area (line {})...'.format(i))
+                    print(f"unpatching due to jump in patched area (line {i})...")
                     lines[:] = original_data.splitlines()
         elif line.startswith('tgl'):
             a = line.split()[1]
             a = reg[a] if a in reg else int(a)
             if 0 <= i + a < len(lines):
                 if i + a in patched_area:
-                    print('unpatching due to toggle in patched area (line {})...'.format(i + a))
+                    print(f"unpatching due to toggle in patched area (line {i+a})...")
                     lines[:] = original_data.splitlines()
                 lines[i + a] = toggle(lines[i + a])
         elif line.startswith('pass'):
@@ -77,6 +77,7 @@ def part_a(data):
     registers = {}.fromkeys('abcd', 7)
     registers = compute(reg=registers, lines=data.splitlines())
     return registers['a']
+
 
 def part_b(data):
     registers = {}.fromkeys('abcd', 12)

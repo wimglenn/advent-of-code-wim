@@ -20,7 +20,7 @@ def parsed(data, mod=16):
     return ops
 
 
-def run(data, d, n=1):
+def dance(data, d, n=1):
     mod = len(d)
     ops = parsed(data, mod=mod)
     seen = {}
@@ -45,9 +45,9 @@ def run(data, d, n=1):
     return ''.join(d)
 
 
-assert run(data='s1,x3/4,pe/b', d=list('abcde')) == 'baedc'
-assert run(data='s1,x3/4,pe/b', d=list('abcde'), n=2) == 'ceadb'
+assert dance(data='s1,x3/4,pe/b', d=list('abcde')) == 'baedc'
+assert dance(data='s1,x3/4,pe/b', d=list('abcde'), n=2) == 'ceadb'
 
 d = list('abcdefghijklmnop')
-print(run(data, d))
-print(run(data, d, n=1000000000-1))
+print("part a:", dance(data, d))
+print("part b:", dance(data, d, n=1000000000-1))

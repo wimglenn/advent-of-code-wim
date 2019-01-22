@@ -107,5 +107,5 @@ def part_b(data):
 assert run_a(test_data_a) == 4
 assert part_b(test_data_b) == 3
 
-print(run_a(data))
+print("part a:", run_a(data))
 print("part b:", part_b(data))

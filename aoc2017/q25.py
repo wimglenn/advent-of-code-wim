@@ -2,6 +2,7 @@ from aocd import data
 from parse import parse
 from collections import defaultdict
 
+
 test_data = """\
 Begin in state A.
 Perform a diagnostic checksum after 6 steps.
@@ -26,9 +27,11 @@ In state B:
     - Move one slot to the right.
     - Continue with state A."""
 
+
 template_first = """\
 Begin in state {state0}.
 Perform a diagnostic checksum after {n:d} steps."""
+
 
 template_rest = """\
 In state {state_current}:
@@ -40,6 +43,7 @@ In state {state_current}:
     - Write the value {val1:d}.
     - Move one slot to the {direction1}.
     - Continue with state {state1}."""
+
 
 def parsed(data):
     first, *rest = data.split('\n\n')
@@ -53,7 +57,8 @@ def parsed(data):
         }
     return parsed
 
-def run(data):
+
+def exe(data):
     prog = parsed(data)
     tape = defaultdict(int)
     cursor = 0
@@ -65,5 +70,6 @@ def run(data):
         cursor += direction
     return sum(tape.values())
 
-assert run(test_data) == 3
-print(run(data))
+
+assert exe(test_data) == 3
+print("part a:", exe(data))

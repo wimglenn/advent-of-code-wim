@@ -74,9 +74,7 @@ assert compute(test_data) == test_result
 
 result = compute(data)
 result_a = result['a']
-print(result_a)
+print("part a:", result_a)
 
 new_data = re.sub(r'\n([0-9]+) -> b\n', '\n{} -> b\n'.format(result_a), data)
-result = compute(new_data)
-result_a = result['a']
-print(result_a)
+print("part b:", compute(new_data)["a"])

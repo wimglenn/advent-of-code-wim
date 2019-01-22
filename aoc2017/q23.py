@@ -1,6 +1,7 @@
 from aocd import data
 
-def run(a0=0):
+
+def exe(a0=0):
     d = dict.fromkeys('abcdefgh', 0)
     d['a'] = a0
     i = 0
@@ -24,7 +25,8 @@ def run(a0=0):
         i += 1
     return d['h'] if a0 else n_mul
 
+
 lines = data.splitlines()
-print(run())
+print("part a:", exe())
 lines[8:10] = ['wtf f b', 'jnz 1 15']
-print(run(a0=1))
+print("part b:", exe(a0=1))
