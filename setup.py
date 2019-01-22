@@ -26,7 +26,6 @@ setup(
         "networkx",
         "wimpy",
         "pytz",
-        "setuptools",
     ],
     packages=find_packages(),
     entry_points={
