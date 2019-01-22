@@ -20,6 +20,7 @@ rcv b
 rcv c
 rcv d"""
 
+
 def run_a(data):
     snd = None
     lines = data.splitlines()
@@ -50,8 +51,8 @@ def run_a(data):
                 i += n - 1 if k > 0 else 0
         i += 1
 
+
 def run_b(data, p, q):
-    snd = None
     lines = data.splitlines()
     d = {line[4:5]: 0 for line in lines if not line[4:5].isdigit()}
     d['p'] = p
@@ -85,6 +86,7 @@ def run_b(data, p, q):
                 i += n - 1 if k > 0 else 0
         i += 1
 
+
 def part_b(data):
     q0 = deque()
     q1 = deque()
@@ -100,6 +102,7 @@ def part_b(data):
             p1_sent += 1
         if n0 is n1 is None:
             return p1_sent
+
 
 assert run_a(test_data_a) == 4
 assert part_b(test_data_b) == 3

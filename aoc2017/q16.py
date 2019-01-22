@@ -1,5 +1,6 @@
 from aocd import data
 
+
 def parsed(data, mod=16):
     S = 0
     ops = []
@@ -17,6 +18,7 @@ def parsed(data, mod=16):
             ops.append(('p', a, b))
     ops.append(('s', S % mod, S % mod))
     return ops
+
 
 def run(data, d, n=1):
     mod = len(d)
@@ -41,6 +43,7 @@ def run(data, d, n=1):
                 d[:] = d[(mod-a):] + d[:(mod-a)]
         n -= 1
     return ''.join(d)
+
 
 assert run(data='s1,x3/4,pe/b', d=list('abcde')) == 'baedc'
 assert run(data='s1,x3/4,pe/b', d=list('abcde'), n=2) == 'ceadb'
