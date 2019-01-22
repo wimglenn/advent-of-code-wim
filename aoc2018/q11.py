@@ -57,5 +57,5 @@ assert part_b(18) == "90,269,16"
 assert part_b(42) == "232,251,12"
 
 
-print(part_a(data))
-print(part_b(data))
+print("part a:", part_a(data))
+print("part b:", part_b(data))

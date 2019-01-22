@@ -66,5 +66,5 @@ value 2 goes to bot 2"""
 assert part_ab(test_data, lh=(2, 5))[0] == 2
 
 a, b = part_ab(data)
-print(a)
-print(b)
+print("part a:", a)
+print("part b:", b)

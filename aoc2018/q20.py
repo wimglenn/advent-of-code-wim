@@ -90,5 +90,5 @@ for test, expected in tests.items():
 
 
 a, b = part_ab(data)
-print(a)
-print(b)
+print("part a:", a)
+print("part b:", b)

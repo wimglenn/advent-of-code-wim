@@ -29,5 +29,5 @@ for test_data, expected in a_tests.items():
     assert part_a(test_data) == expected
 
 
-print(part_a(data))
-print(part_b(data))
+print("part a:", part_a(data))
+print("part b:", part_b(data))

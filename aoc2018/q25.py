@@ -59,4 +59,4 @@ for test_data, expected in tests.items():
     assert part_a(test_data) == expected
 
 
-print(part_a(data))
+print("part a:", part_a(data))

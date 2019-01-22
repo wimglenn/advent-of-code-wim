@@ -21,5 +21,5 @@ def part_b(n):
 
 
 assert part_a(3) == 638
-print(part_a(int(data)))
-print(part_b(int(data)))
+print("part a:", part_a(int(data)))
+print("part b:", part_b(int(data)))

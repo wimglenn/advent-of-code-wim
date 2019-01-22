@@ -10,5 +10,5 @@ def f(data):
 assert f('flqrgnkx') == (8108, 1242)
 
 a, b = f(data)
-print(a)
-print(b)
+print("part a:", a)
+print("part b:", b)

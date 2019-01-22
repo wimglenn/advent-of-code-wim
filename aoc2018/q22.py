@@ -144,5 +144,5 @@ target: 10,10"""
 assert part_a(test_data) == 114
 assert part_b(test_data) == 45
 
-print(part_a(data))
-print(part_b(data))
+print("part a:", part_a(data))
+print("part b:", part_b(data))

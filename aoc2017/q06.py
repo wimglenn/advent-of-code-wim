@@ -21,5 +21,5 @@ assert part_ab(test_data) == (5, 4)
 
 
 a, b = part_ab(data)
-print(a)
-print(b)
+print("part a:", a)
+print("part b:", b)

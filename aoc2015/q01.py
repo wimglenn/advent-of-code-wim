@@ -36,5 +36,5 @@ for test_data, expected in b_tests.items():
 
 
 a, b = part_ab(data)
-print(a)
-print(b)
+print("part a:", a)
+print("part b:", b)

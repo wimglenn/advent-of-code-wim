@@ -108,4 +108,4 @@ assert run_a(test_data_a) == 4
 assert part_b(test_data_b) == 3
 
 print(run_a(data))
-print(part_b(data))
+print("part b:", part_b(data))

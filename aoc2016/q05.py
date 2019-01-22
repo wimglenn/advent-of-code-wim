@@ -29,5 +29,5 @@ def part_ab(data):
 assert part_ab("abc") == ("18f47a30", "05ace8e3")
 
 a, b = part_ab(data)
-print(a)
-print(b)
+print("part a:", a)
+print("part b:", b)

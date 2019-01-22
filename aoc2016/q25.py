@@ -6,4 +6,4 @@ def part_a(data):
     return 0b101010101010 - int(x)*int(y)
 
 
-print(part_a(data))
+print("part a:", part_a(data))

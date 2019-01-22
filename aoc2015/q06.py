@@ -35,5 +35,5 @@ assert part_ab("toggle 0,0 through 999,999")[1] == 2000000
 
 
 a, b = part_ab(data)
-print(a)
-print(b)
+print("part a:", a)
+print("part b:", b)

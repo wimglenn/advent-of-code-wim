@@ -42,5 +42,5 @@ assert decrypt_name("qzmt-zixmtkozy-ivhz", 343) == "very encrypted name"
 
 
 a, b = part_ab(data)
-print(a)
-print(b)
+print("part a:", a)
+print("part b:", b)

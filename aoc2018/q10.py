@@ -92,5 +92,5 @@ def part_ab(data, debug=False, lettersize=(10, 8)):
 
 assert part_ab(test_data, lettersize=(8, 7)) == ("HI", 3)
 a, b = part_ab(data)
-print(a)
-print(b)
+print("part a:", a)
+print("part b:", b)

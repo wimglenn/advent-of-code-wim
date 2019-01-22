@@ -190,5 +190,5 @@ assert part_a(test_data) == 5216
 assert part_b(test_data, boost0=1570) == 51
 
 
-print(part_a(data))
-print(part_b(data))
+print("part a:", part_a(data))
+print("part b:", part_b(data))

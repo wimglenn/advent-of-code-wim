@@ -31,5 +31,5 @@ def tubemaze(data):
 assert tubemaze(test_data) == ('ABCDEF', 38)
 
 a, b = tubemaze(data)
-print(a)
-print(b)
+print("part a:", a)
+print("part b:", b)

@@ -32,5 +32,5 @@ assert part_ab(test_data, d_max=32) == (17, 16)
 
 
 a, b = part_ab(data)
-print(a)
-print(b)
+print("part a:", a)
+print("part b:", b)

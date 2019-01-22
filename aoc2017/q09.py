@@ -44,5 +44,5 @@ for k, v in tests_b.items():
     assert walk(k)[1] == v
 
 a, b = walk(data)
-print(a)
-print(b)
+print("part a:", a)
+print("part b:", b)

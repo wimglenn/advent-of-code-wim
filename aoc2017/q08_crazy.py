@@ -26,5 +26,5 @@ c inc -20 if c == 10"""
 
 assert run(test_data) == (1, 10)
 a, b = run(data)
-print(a)
-print(b)
+print("part a:", a)
+print("part b:", b)

@@ -89,5 +89,5 @@ assert part_ab(test_data) == (240, 4455)
 
 
 a, b = part_ab(data)
-print(a)
-print(b)
+print("part a:", a)
+print("part b:", b)

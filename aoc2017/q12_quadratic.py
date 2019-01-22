@@ -37,5 +37,5 @@ test_data = """\
 assert part_ab(test_data) == (6, 2)
 
 a, b = part_ab(data)
-print(a)
-print(b)
+print("part a:", a)
+print("part b:", b)

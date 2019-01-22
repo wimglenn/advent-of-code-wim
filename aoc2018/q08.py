@@ -56,5 +56,5 @@ assert test_b == 66
 
 
 a, b = part_ab(data)
-print(a)
-print(b)
+print("part a:", a)
+print("part b:", b)

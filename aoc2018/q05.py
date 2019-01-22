@@ -29,5 +29,5 @@ assert part_a(test_data) == 10
 assert part_b(test_data) == 4
 
 
-print(part_a(data))
-print(part_b(data))
+print("part a:", part_a(data))
+print("part b:", part_b(data))

@@ -321,5 +321,5 @@ for grid, outcome in zip(grids, part_b_tests):
     assert part_b(grid) == outcome
 
 
-print(part_a(data))
-print(part_b(data))
+print("part a:", part_a(data))
+print("part b:", part_b(data))
