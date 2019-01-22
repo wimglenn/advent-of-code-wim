@@ -32,7 +32,7 @@ class Worker:
             return val
 
 
-def run(data, n_workers=4, delay=60):
+def work(data, n_workers=4, delay=60):
     template = "Step {} must be finished before step {} can begin."
     pairs = [parse(template, s).fixed for s in data.splitlines()]
     remaining = {x for pair in pairs for x in pair}
@@ -61,23 +61,14 @@ def run(data, n_workers=4, delay=60):
                     w.t = 1
                 else:
                     w.t = ord(x) - ord('A') + 1 + delay
-        log.info('%3d: %s   %s', t, ' '.join(w.has for w in workers), text)
+        log.debug('%3d: %s   %s', t, ' '.join(w.has for w in workers), text)
         t += 1
     result = SimpleNamespace(text=text, n_iterations=t)
     return result
 
 
-def part_a(data):
-    return run(data, n_workers=1).text
+assert work(test_data, n_workers=1, delay=0).text == "CABDFE"
+assert work(test_data, n_workers=2, delay=0).n_iterations == 15
 
-
-def part_b(data):
-    return run(data).n_iterations
-
-
-assert run(test_data, n_workers=1, delay=0).text == "CABDFE"
-assert run(test_data, n_workers=2, delay=0).n_iterations == 15
-
-
-print(part_a(data))
-print(part_b(data))
+print("part a:", work(data, n_workers=1).text)
+print("part b:", work(data).n_iterations)
