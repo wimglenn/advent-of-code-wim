@@ -20,12 +20,10 @@ setup(
         "bidict",
         "numpy",
         "parse",
-        "pebble",
         "scipy",
         "fields",
         "networkx",
         "wimpy",
-        "pytz",
     ],
     packages=find_packages(),
     entry_points={
