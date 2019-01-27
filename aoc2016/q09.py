@@ -54,7 +54,7 @@ def part_b(data):
         else:
             duration, multiplier, length = x
             i = 0
-            while duration > 0:
+            while duration > 0 and i < len(d):
                 if isinstance(d[i], int):
                     duration -= 1
                     d[i] *= multiplier
@@ -80,8 +80,8 @@ assert part_b('(25x3)(3x3)ABC(2x3)XY(5x2)PQRSTX(18x9)(3x2)TWO(5x7)SEVEN') == 445
 # TODO:
 # Additional test cases from AoC author:
 # https://www.reddit.com/r/adventofcode/comments/5hh56d/help_dont_understand_puzzle_9_part_b/db0aggl
-# assert part_b('AAA(4x3)BBB') == len('AAABBBBBBBBB') == 12
-# assert part_b('(7x2)A(3x2)BCD') == len('ABA(BABCDBCD') == 12
+assert part_b('AAA(4x3)BBB') == len('AAABBBBBBBBB') == 12
+# assert part_b('(7x2)A(3x2)BCD') == len('ABA(BABCDBCD') == 12, part_b('(7x2)A(3x2)BCD')
 
 print("part a:", part_a(data))
 print("part b:", part_b(data))
