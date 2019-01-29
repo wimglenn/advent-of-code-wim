@@ -2,7 +2,8 @@ import io
 import runpy
 import sys
 
-from aocd.post import AocdError
+from aocd.exceptions import AocdError
+from aocd.exceptions import PuzzleUnsolvedError
 from aocd.post import get_answer
 from aocd.post import submit
 
@@ -31,7 +32,10 @@ def wim(year, day, data, autosubmit=True):
         part_b = part_b[7:].strip()
     if autosubmit:
         for (answer, level) in [(part_a, 1), (part_b, 2)]:
-            expected = get_answer(day=day, year=year, level=level)
+            try:
+                expected = get_answer(day=day, year=year, level=level)
+            except PuzzleUnsolvedError:
+                expected = None
             if answer and expected is None:
                 try:
                     submit(answer, day=day, year=year, reopen=False, quiet=True, level=level)
