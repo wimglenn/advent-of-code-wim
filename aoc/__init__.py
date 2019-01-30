@@ -2,13 +2,8 @@ import io
 import runpy
 import sys
 
-from aocd.exceptions import AocdError
-from aocd.exceptions import PuzzleUnsolvedError
-from aocd.post import get_answer
-from aocd.post import submit
 
-
-def wim(year, day, data, autosubmit=True):
+def wim(year, day, data):
     mod_name = "aoc{}.q{:02d}".format(year, day)
     sys.modules.pop(mod_name, None)
     old_stdout = sys.stdout
@@ -30,15 +25,4 @@ def wim(year, day, data, autosubmit=True):
         part_a = part_a[7:].strip()
     if part_b and part_b.lower().startswith("part b:"):
         part_b = part_b[7:].strip()
-    if autosubmit:
-        for (answer, level) in [(part_a, 1), (part_b, 2)]:
-            try:
-                expected = get_answer(day=day, year=year, level=level)
-            except PuzzleUnsolvedError:
-                expected = None
-            if answer and expected is None:
-                try:
-                    submit(answer, day=day, year=year, reopen=False, quiet=True, level=level)
-                except AocdError:
-                    pass
     return part_a, part_b
