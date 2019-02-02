@@ -1,9 +1,12 @@
 from setuptools import setup, find_packages
 
+from aoc_wim import __version__, __doc__
+
+
 setup(
     name="advent-of-code-wim",
-    version="0.1",
-    description="Wim's solutions for https://adventofcode.com/",
+    version=__version__,
+    description=__doc__,
     url="https://github.com/wimglenn/advent-of-code",
     author="Wim Glenn",
     author_email="hey@wimglenn.com",
@@ -26,7 +29,5 @@ setup(
         "wimpy",
     ],
     packages=find_packages(),
-    entry_points={
-        "adventofcode.user": ["wim = aoc_wim:plugin"],
-    },
+    entry_points={"adventofcode.user": ["wim = aoc_wim:plugin"]},
 )

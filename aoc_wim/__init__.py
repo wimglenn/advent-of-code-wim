@@ -1,6 +1,10 @@
+"""Wim's solutions for https://adventofcode.com/"""
 import io
 import runpy
 import sys
+
+
+__version__ = "2019.1"
 
 
 def plugin(year, day, data):

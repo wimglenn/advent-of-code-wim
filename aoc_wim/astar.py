@@ -4,7 +4,6 @@ from itertools import count
 
 
 class AStar:
-
     def __init__(self, state0, target):
         self.state0 = state0
         self.target = target
