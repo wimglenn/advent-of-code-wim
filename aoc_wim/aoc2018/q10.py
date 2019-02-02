@@ -1,7 +1,7 @@
 from aocd import data
 import re
 import numpy as np
-from aoc.ocr import AOCR
+from aoc_wim.ocr import AOCR
 
 
 test_data = """\

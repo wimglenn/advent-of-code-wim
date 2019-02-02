@@ -1,7 +1,7 @@
 from aocd import data
 from collections import Counter
-from aoc.stuff import rsubset_sum
-from aoc.stuff import subset_sum
+from aoc_wim.stuff import rsubset_sum
+from aoc_wim.stuff import subset_sum
 
 
 test_data = """\
