@@ -3,8 +3,8 @@ import runpy
 import sys
 
 
-def wim(year, day, data):
-    mod_name = "aoc{}.q{:02d}".format(year, day)
+def plugin(year, day, data):
+    mod_name = "aoc_wim.aoc{}.q{:02d}".format(year, day)
     sys.modules.pop(mod_name, None)
     old_stdout = sys.stdout
     sys.stdout = out = io.StringIO()
