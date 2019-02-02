@@ -1,8 +1,8 @@
 from aocd import data
 from itertools import combinations
 from collections import Counter
-from aoc_wim.stuff import subset_sum
-from aoc_wim.stuff import prod
+from ..stuff import subset_sum
+from ..stuff import prod
 
 
 def parsed(data, n_groups):

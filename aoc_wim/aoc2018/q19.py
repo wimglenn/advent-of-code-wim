@@ -1,6 +1,6 @@
 from aocd import data
-from aoc2018.q16 import all_ops
 import math
+from .q16 import all_ops
 
 
 test_data = """\

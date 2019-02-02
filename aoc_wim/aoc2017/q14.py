@@ -1,7 +1,7 @@
 from aocd import data
-from aoc2017.q10 import knot_hash
 import numpy as np
 from scipy.ndimage.measurements import label
+from .q10 import knot_hash
 
 def f(data):
     s = ''.join(f"{int(knot_hash(f'{data}-{i}'), 16):0128b}" for i in range(128))
