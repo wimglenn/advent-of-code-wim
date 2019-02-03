@@ -15,7 +15,7 @@ p=<-2,0,0>, v=<1,0,0>, a=<0,0,0>
 p=<3,0,0>, v=<-1,0,0>, a=<0,0,0>
 """
 
-template = 'p=<{:d},{:d},{:d}>, v=<{:d},{:d},{:d}>, a=<{:d},{:d},{:d}>'
+template = "p=<{:d},{:d},{:d}>, v=<{:d},{:d},{:d}>, a=<{:d},{:d},{:d}>"
 
 
 def parsed(data):
@@ -26,10 +26,27 @@ def key(p):
     return [abs(x) + abs(y) + abs(z) for x, y, z in chunks(reversed(p), 3)]
 
 
+def abs_accel(p):
+    px, py, pz, vx, vy, vz, ax, ay, az = p
+    a = abs(ax) + abs(ay) + abs(az)
+    return a
+
+
+def pos(p0, t):
+    px0, py0, pz0, vx0, vy0, vz0, ax0, ay0, az0 = p0
+    px1 = px0 + vx0 * t + (ax0 * t ** 2) // 2
+    py1 = py0 + vy0 * t + (ay0 * t ** 2) // 2
+    pz1 = pz0 + vz0 * t + (az0 * t ** 2) // 2
+    d = abs(px1) + abs(py1) + abs(pz1)
+    return d
+
+
 def part_a(data):
     particles = parsed(data)
     p_min = min(particles, key=key)
-    return particles.index(p_min)
+    a_min = abs_accel(p_min)
+    d = {i: pos(p, 100) for i, p in enumerate(particles) if abs_accel(p) == a_min}
+    return min(d, key=d.get)
 
 
 def part_b(data):
