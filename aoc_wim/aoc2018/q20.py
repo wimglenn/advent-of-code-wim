@@ -89,6 +89,7 @@ for test, expected in tests.items():
     assert a == expected
 
 
+render(data)
 a, b = part_ab(data)
 print("part a:", a)
 print("part b:", b)

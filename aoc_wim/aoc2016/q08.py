@@ -22,7 +22,7 @@ def part_a(data):
     return A.sum()
 
 
-def part_b(data, dump=False):
+def part_b(data, dump=True):
     A = parsed(data)
     if dump:
         print("\n")

@@ -29,5 +29,8 @@ setup(
         "wimpy",
     ],
     packages=find_packages(),
-    entry_points={"adventofcode.user": ["wim = aoc_wim:plugin"]},
+    entry_points={
+        "adventofcode.user": ["wim = aoc_wim:plugin"],
+        "console_scripts": ["aocw = aoc_wim.cli:run_one"],
+    },
 )

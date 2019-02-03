@@ -42,7 +42,7 @@ def varianceish(a):
     return a.std(axis=1)[:2].sum()
 
 
-def ocr(a, lettersize, draw=False):
+def ocr(a, lettersize, draw=True):
     ps = a[:2].copy()
     ps -= ps.min(axis=1).reshape(-1, 1)
     W, H = ps.max(axis=1) + 1
@@ -74,7 +74,7 @@ def ocr(a, lettersize, draw=False):
     return ''.join(letters)
 
 
-def part_ab(data, debug=False, lettersize=(10, 8)):
+def part_ab(data, debug=True, lettersize=(10, 8)):
     numbers = [int(x) for x in re.findall("-?\d+", data)]
     a = np.array(numbers).reshape(-1, 4).T
     t = 0

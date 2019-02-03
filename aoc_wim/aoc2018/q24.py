@@ -76,7 +76,7 @@ class Group:
         kills = self.damage(self.target) // self.target.hp
         kills = min(kills, self.target.n)
         self.target.n -= kills
-        log.debug(
+        log.info(
             "%s group %d attacks defending group %d, killing %d units",
             self.system.name, self.id, self.target.id, kills,
         )
@@ -94,7 +94,7 @@ class Group:
         for other_group in other_groups:
             damage = self.damage(other_group)
             if damage > 0:
-                log.debug(
+                log.info(
                     "%s group %d would deal defending group %d %d damage",
                     self.system.name, self.id, other_group.id, damage,
                 )
@@ -126,22 +126,22 @@ class Battle:
 
     def tick(self):
         for system in self.immune, self.infection:
-            log.debug(system.name + ":")
+            log.info(system.name + ":")
             if system.alive:
                 for group in system.groups:
                     if group.alive:
-                        log.debug("Group %d contains %d units", group.id, group.n)
+                        log.info("Group %d contains %d units", group.id, group.n)
             else:
-                log.debug("No groups remain.")
-        log.debug("")
+                log.info("No groups remain.")
+        log.info("")
         self.target_selection_phase()
-        log.debug("")
+        log.info("")
         n_before = self.immune.n + self.infection.n
         self.attacking_phase()
         n_after = self.immune.n + self.infection.n
         if n_after == n_before:
             raise StaleMate
-        log.debug("")
+        log.info("")
         self.ticks += 1
 
     def run_until_complete(self):

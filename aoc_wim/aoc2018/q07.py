@@ -61,8 +61,8 @@ def work(data, n_workers=4, delay=60):
                     w.t = 1
                 else:
                     w.t = ord(x) - ord('A') + 1 + delay
-        log.debug('%3d: %s   %s', t, ' '.join(w.has for w in workers), text)
         t += 1
+        log.info('%4d: %s   %s', t, ' '.join(w.has for w in workers), text)
     result = SimpleNamespace(text=text, n_iterations=t)
     return result
 
