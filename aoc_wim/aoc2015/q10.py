@@ -1,5 +1,6 @@
-from aocd import data
 from itertools import groupby
+
+from aocd import data
 
 
 def look_and_say(s, n=1):

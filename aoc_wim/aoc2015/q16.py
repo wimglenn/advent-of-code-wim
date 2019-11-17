@@ -1,6 +1,7 @@
-from aocd import data
-from collections import defaultdict
 import operator
+from collections import defaultdict
+
+from aocd import data
 
 
 message = """\

@@ -1,6 +1,7 @@
+from itertools import count
+
 from aocd import data
 from parse import parse
-from itertools import count
 
 test_data = """\
 0: 3

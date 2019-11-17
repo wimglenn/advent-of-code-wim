@@ -1,5 +1,6 @@
-from aocd import data
 from itertools import combinations
+
+from aocd import data
 
 test_a = """5 1 9 5
 7 5 3

@@ -1,7 +1,8 @@
-from aocd import data
 import operator
-from numpy import uint16
 import re
+
+from aocd import data
+from numpy import uint16
 
 
 opmap = {

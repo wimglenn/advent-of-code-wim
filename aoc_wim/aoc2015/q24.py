@@ -1,8 +1,10 @@
-from aocd import data
-from itertools import combinations
 from collections import Counter
-from ..stuff import subset_sum
+from itertools import combinations
+
+from aocd import data
+
 from ..stuff import prod
+from ..stuff import subset_sum
 
 
 def parsed(data, n_groups):

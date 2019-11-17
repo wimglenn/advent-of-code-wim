@@ -1,8 +1,10 @@
+from heapq import heappop
+from heapq import heappush
+from itertools import product
+
+import numpy as np
 from aocd import data
 from parse import parse
-from heapq import heappush, heappop
-from itertools import product
-import numpy as np
 
 
 def parsed(data):

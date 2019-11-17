@@ -1,6 +1,7 @@
-from aocd import data
 from collections import deque
 from hashlib import md5
+
+from aocd import data
 
 
 def bfs(state0, target, next_states, max_depth=None, mode='shortest'):

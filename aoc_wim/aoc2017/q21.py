@@ -1,5 +1,5 @@
-from aocd import data
 import numpy as np
+from aocd import data
 
 def s2a(s):
     return np.array([[{'.': 0, '#': 1}[c] for c in row] for row in s.split('/')])

@@ -1,5 +1,5 @@
-from aocd import data
 from anytree import NodeMixin
+from aocd import data
 
 
 class MyNode(NodeMixin):

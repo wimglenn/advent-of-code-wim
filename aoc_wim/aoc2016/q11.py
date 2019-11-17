@@ -1,7 +1,10 @@
 import sys
-from aocd import data
 from collections import deque
-from itertools import product, combinations, cycle
+from itertools import combinations
+from itertools import cycle
+from itertools import product
+
+from aocd import data
 
 
 test_data = """\

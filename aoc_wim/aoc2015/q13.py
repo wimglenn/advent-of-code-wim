@@ -1,6 +1,7 @@
-from aocd import data
-from itertools import permutations
 from collections import defaultdict
+from itertools import permutations
+
+from aocd import data
 
 
 test_data = """\

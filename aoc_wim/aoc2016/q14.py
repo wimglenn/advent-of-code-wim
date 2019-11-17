@@ -1,7 +1,8 @@
-from aocd import data
+import re
 from collections import defaultdict
 from hashlib import md5
-import re
+
+from aocd import data
 
 
 def get_first_triple(hash_):

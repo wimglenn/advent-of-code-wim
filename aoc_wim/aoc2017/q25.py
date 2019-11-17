@@ -1,6 +1,7 @@
+from collections import defaultdict
+
 from aocd import data
 from parse import parse
-from collections import defaultdict
 
 
 test_data = """\

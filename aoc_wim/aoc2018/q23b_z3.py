@@ -1,6 +1,6 @@
-from parse import parse
-from aocd import get_data
 import z3
+from aocd import get_data
+from parse import parse
 
 
 def z3_abs(x):

@@ -1,7 +1,9 @@
-from aocd import data
 from collections import defaultdict
 from itertools import combinations
-from fields import Fields, Tuple
+
+from aocd import data
+from fields import Fields
+from fields import Tuple
 
 
 shop_data = """\

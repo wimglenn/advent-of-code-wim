@@ -1,6 +1,7 @@
-from aocd import data
 import json
 import re
+
+from aocd import data
 
 
 def sum_of_numbers_in_text(s):

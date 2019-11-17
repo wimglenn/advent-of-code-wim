@@ -1,5 +1,6 @@
-from aocd import data
 import re
+
+from aocd import data
 
 def walk(s):
     n_removed = 0

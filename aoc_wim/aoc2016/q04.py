@@ -1,6 +1,8 @@
-from aocd import data
-from collections import Counter, deque
+from collections import Counter
+from collections import deque
 from string import ascii_lowercase
+
+from aocd import data
 from parse import parse
 
 

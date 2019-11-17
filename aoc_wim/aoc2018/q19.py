@@ -1,5 +1,7 @@
-from aocd import data
 import math
+
+from aocd import data
+
 from .q16 import all_ops
 
 

@@ -1,5 +1,6 @@
-from aocd import data
 from itertools import cycle
+
+from aocd import data
 
 
 def part_a(data):

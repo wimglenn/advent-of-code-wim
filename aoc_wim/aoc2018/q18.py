@@ -1,7 +1,8 @@
-from aocd import data
-import numpy as np
-from scipy.signal import convolve2d
 import time
+
+import numpy as np
+from aocd import data
+from scipy.signal import convolve2d
 
 
 test_data = """\

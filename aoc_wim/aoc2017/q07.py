@@ -1,6 +1,7 @@
-from aocd import data
 from collections import Counter
 from collections import deque
+
+from aocd import data
 from wimpy import cached_property
 
 test_data = """\

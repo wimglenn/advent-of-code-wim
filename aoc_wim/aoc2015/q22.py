@@ -1,4 +1,5 @@
 import heapq
+
 from aocd import data
 from fields import Fields
 

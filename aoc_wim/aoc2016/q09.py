@@ -1,5 +1,6 @@
-from aocd import data
 from collections import deque
+
+from aocd import data
 
 
 def get_marker(iterator):

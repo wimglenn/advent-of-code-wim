@@ -1,7 +1,8 @@
 from itertools import product
+
+import pulp
 from aocd import data
 from parse import parse
-import pulp
 
 
 template = "pos=<{:d},{:d},{:d}>, r={:d}"

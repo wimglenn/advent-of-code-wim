@@ -1,6 +1,8 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages
+from setuptools import setup
 
-from aoc_wim import __version__, __doc__
+from aoc_wim import __doc__
+from aoc_wim import __version__
 
 
 setup(

@@ -1,6 +1,7 @@
-from aocd import data
 from collections import Counter
 from itertools import combinations
+
+from aocd import data
 
 
 def part_a(data):

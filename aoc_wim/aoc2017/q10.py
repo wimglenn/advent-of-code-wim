@@ -1,6 +1,7 @@
-from aocd import data
 from functools import reduce
 from operator import xor
+
+from aocd import data
 
 def munge(state, lengths, n=256, iterations=64):
     skip_size = 0

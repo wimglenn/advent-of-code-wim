@@ -1,7 +1,8 @@
 import logging
+from types import SimpleNamespace
+
 from aocd import data
 from parse import parse
-from types import SimpleNamespace
 
 
 log = logging.getLogger(__name__)

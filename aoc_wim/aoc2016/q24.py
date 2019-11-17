@@ -1,7 +1,9 @@
-from aocd import data
-import numpy as np
 from collections import deque
-from itertools import permutations, combinations
+from itertools import combinations
+from itertools import permutations
+
+import numpy as np
+from aocd import data
 
 
 test_data = """\

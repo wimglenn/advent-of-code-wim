@@ -1,5 +1,6 @@
 from aocd import data
 from parse import parse
+
 from ..astar import AStar
 
 

@@ -1,6 +1,7 @@
-from aocd import data
 from collections import deque
 from itertools import count
+
+from aocd import data
 
 
 def parsed(data):

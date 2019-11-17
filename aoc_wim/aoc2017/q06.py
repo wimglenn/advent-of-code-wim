@@ -1,6 +1,7 @@
-from aocd import data
 from itertools import count
+
 import numpy as np
+from aocd import data
 
 def part_ab(data):
     a = np.fromstring(data, sep=' ', dtype=int)

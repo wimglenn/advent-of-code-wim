@@ -1,5 +1,6 @@
-from aocd import data
 from hashlib import md5
+
+from aocd import data
 
 
 def part_ab(data):

@@ -1,5 +1,5 @@
-from aocd import data
 import numpy as np
+from aocd import data
 
 
 turn_left = np.array([[0, -1], [1, 0]], dtype=int)  # pi/2 counter-clockwise rotation

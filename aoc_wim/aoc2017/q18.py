@@ -1,5 +1,6 @@
-from aocd import data
 from collections import deque
+
+from aocd import data
 
 test_data_a = """set a 1
 add a 2

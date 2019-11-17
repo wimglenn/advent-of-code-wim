@@ -1,5 +1,5 @@
-from aocd import data
 import networkx as nx
+from aocd import data
 
 
 tests = {

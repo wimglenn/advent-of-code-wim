@@ -1,5 +1,6 @@
-from aocd import data
 from collections import Counter
+
+from aocd import data
 
 tests ={
     'ne,ne,ne': 3,

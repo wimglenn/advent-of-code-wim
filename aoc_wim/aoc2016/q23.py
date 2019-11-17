@@ -1,5 +1,6 @@
-from aocd import data
 from textwrap import dedent
+
+from aocd import data
 
 
 test_data = """\

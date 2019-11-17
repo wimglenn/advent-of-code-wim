@@ -1,8 +1,9 @@
-from aocd import data
-from collections import defaultdict
-from parse import parse
-from types import SimpleNamespace
 import operator as op
+from collections import defaultdict
+from types import SimpleNamespace
+
+from aocd import data
+from parse import parse
 
 
 ops = {

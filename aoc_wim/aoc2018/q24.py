@@ -1,8 +1,9 @@
+import logging
+from operator import attrgetter
+
 from aocd import data
 from parse import parse
 from wimpy import strip_prefix
-from operator import attrgetter
-import logging
 
 
 log = logging.getLogger(__name__)

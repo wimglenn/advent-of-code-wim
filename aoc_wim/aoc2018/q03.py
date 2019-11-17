@@ -1,7 +1,8 @@
+from types import SimpleNamespace
+
+import numpy as np
 from aocd import data
 from parse import parse
-from types import SimpleNamespace
-import numpy as np
 
 
 def part_ab(data):

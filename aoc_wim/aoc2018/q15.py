@@ -1,8 +1,9 @@
-from aocd import data
 from collections import deque
-from termcolor import colored
 from operator import attrgetter
 from time import sleep
+
+from aocd import data
+from termcolor import colored
 
 
 class CombatEnds(Exception):

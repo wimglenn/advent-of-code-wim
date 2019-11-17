@@ -1,5 +1,6 @@
-from aocd import data
 import re
+
+from aocd import data
 
 
 def req1(s):

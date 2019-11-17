@@ -1,5 +1,5 @@
-from aocd import data
 import numpy as np
+from aocd import data
 
 
 test_data = """\

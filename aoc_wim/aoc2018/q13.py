@@ -1,9 +1,11 @@
-from aocd import data
 import random
-from itertools import cycle
 from collections import Counter
+from itertools import cycle
+
+from aocd import data
 from bidict import bidict
-from termcolor import colored, COLORS
+from termcolor import colored
+from termcolor import COLORS
 
 
 class CartCollision(Exception):
