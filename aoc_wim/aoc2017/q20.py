@@ -45,7 +45,7 @@ def part_a(data):
     particles = parsed(data)
     p_min = min(particles, key=key)
     a_min = abs_accel(p_min)
-    d = {i: pos(p, 100) for i, p in enumerate(particles) if abs_accel(p) == a_min}
+    d = {i: pos(p, 1000) for i, p in enumerate(particles) if abs_accel(p) == a_min}
     return min(d, key=d.get)
 
 
