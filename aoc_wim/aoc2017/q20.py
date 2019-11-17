@@ -1,5 +1,6 @@
-from aocd import data
 from collections import defaultdict
+
+from aocd import data
 from parse import parse
 from wimpy import chunks
 

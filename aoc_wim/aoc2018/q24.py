@@ -1,8 +1,9 @@
+import logging
+from operator import attrgetter
+
 from aocd import data
 from parse import parse
 from wimpy import strip_prefix
-from operator import attrgetter
-import logging
 
 
 log = logging.getLogger(__name__)
@@ -14,7 +15,6 @@ class StaleMate(Exception):
 
 
 class System:
-
     def __init__(self, name, text, boost=0):
         self.name = name
         self.groups = []
@@ -23,11 +23,12 @@ class System:
 
     def select_targets_from(self, other_system):
         taken = set()
-        groups = sorted(self.groups, key=attrgetter("effective_power", "initiative"), reverse=True)
+        key = attrgetter("power", "initiative")
+        groups = sorted(self.groups, key=key, reverse=True)
         groups = [g for g in groups if g.alive]
         for group in groups:
-            other_groups = [g for g in other_system.groups if g.id not in taken and g.alive]
-            group.select_target_from(other_groups)
+            other = [g for g in other_system.groups if g.id not in taken and g.alive]
+            group.select_target_from(other)
             if group.target is not None:
                 assert group.target not in taken, "group ids must be unique"
                 taken.add(group.target.id)
@@ -48,18 +49,20 @@ class Group:
     def __init__(self, id, text, system, boost=0):
         self.id = id
         self.system = system
-        self.n, self.hp, props, self.ap, self.atype, self.initiative = parse(self.template, text).fixed
+        parsed = parse(self.template, text).fixed
+        self.n, self.hp, props, self.ap, self.atype, self.initiative = parsed
         self.ap += boost
         self.weak = []
         self.immune = []
-        for prop in props.strip(' ()').split('; '):
+        for prop in props.strip(" ()").split("; "):
             if not prop:
                 continue
             if prop.startswith("immune to "):
-                self.immune.extend(strip_prefix(prop, "immune to ", strict=True).split(", "))
+                prop = strip_prefix(prop, "immune to ", strict=True)
+                self.immune.extend(prop.split(", "))
             else:
-                assert prop.startswith("weak to ")
-                self.weak.extend(strip_prefix(prop, "weak to ", strict=True).split(", "))
+                prop = strip_prefix(prop, "weak to ", strict=True)
+                self.weak.extend(prop.split(", "))
         self.target = None
 
     @property
@@ -67,7 +70,7 @@ class Group:
         return self.n > 0
 
     @property
-    def effective_power(self):
+    def power(self):
         return self.n * self.ap
 
     def attack(self):
@@ -78,7 +81,10 @@ class Group:
         self.target.n -= kills
         log.info(
             "%s group %d attacks defending group %d, killing %d units",
-            self.system.name, self.id, self.target.id, kills,
+            self.system.name,
+            self.id,
+            self.target.id,
+            kills,
         )
 
     def damage(self, other_group):
@@ -87,7 +93,7 @@ class Group:
             multiplier = 0
         elif self.atype in other_group.weak:
             multiplier = 2
-        return self.effective_power * multiplier
+        return self.power * multiplier
 
     def select_target_from(self, other_groups):
         targets = []
@@ -96,12 +102,18 @@ class Group:
             if damage > 0:
                 log.info(
                     "%s group %d would deal defending group %d %d damage",
-                    self.system.name, self.id, other_group.id, damage,
+                    self.system.name,
+                    self.id,
+                    other_group.id,
+                    damage,
                 )
                 targets.append(other_group)
-        self.target = None
-        if targets:
-            self.target = max(targets, key=lambda t: (self.damage(t), t.effective_power, t.initiative))
+        if not targets:
+            self.target = None
+            return
+        self.target = max(
+            targets, key=lambda t: (self.damage(t), t.power, t.initiative)
+        )
 
 
 class Battle:
@@ -110,7 +122,9 @@ class Battle:
     def __init__(self, data, immuno_boost=0):
         self.ticks = 0
         result = parse(self.template, data)
-        self.immune = System(name=result.named["s1"], text=result.named["txt1"], boost=immuno_boost)
+        name = result.named["s1"]
+        text = result.named["txt1"]
+        self.immune = System(name, text, boost=immuno_boost)
         self.infection = System(name=result.named["s2"], text=result.named["txt2"])
 
     def target_selection_phase(self):
@@ -119,8 +133,9 @@ class Battle:
 
     def attacking_phase(self):
         all_groups = self.infection.groups + self.immune.groups
-        all_groups_in_attacking_order = sorted(all_groups, key=attrgetter("initiative"), reverse=True)
-        for group in all_groups_in_attacking_order:
+        # sort in attacking order
+        all_groups.sort(key=attrgetter("initiative"), reverse=True)
+        for group in all_groups:
             if group.target is not None and group.target.alive:
                 group.attack()
 

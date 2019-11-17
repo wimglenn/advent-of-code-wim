@@ -2,7 +2,7 @@ from aocd import data
 
 
 def vowel_count(s):
-    vowels = set('aeiou')
+    vowels = set("aeiou")
     return sum(1 for c in s if c in vowels)
 
 
@@ -13,7 +13,7 @@ def has_double(s):
 
 
 def blacklisted(s):
-    for substring in 'ab', 'cd', 'pq', 'xy':
+    for substring in "ab", "cd", "pq", "xy":
         if substring in s:
             return True
 

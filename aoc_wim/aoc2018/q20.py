@@ -1,5 +1,5 @@
-from aocd import data
 import networkx as nx
+from aocd import data
 
 
 tests = {
@@ -19,9 +19,14 @@ tests = {
 }
 steps = dict(zip("NSEW", [-2j, 2j, 2, -2]))
 dzs = [
-    -1j-1, -1j, -1j+1,
-    -1,             1,
-    +1j-1, +1j, +1j+1,
+    -1j - 1,
+    -1j,
+    -1j + 1,
+    -1,
+    1,
+    +1j - 1,
+    +1j,
+    +1j + 1,
 ]
 
 
@@ -40,14 +45,14 @@ def render(g):
                 line += "X"
             elif z in g.nodes:
                 line += "."
-            elif (z-1, z+1) in g.edges:
+            elif (z - 1, z + 1) in g.edges:
                 line += "|"
-            elif (z-1j, z+1j) in g.edges:
-                line += '-'
+            elif (z - 1j, z + 1j) in g.edges:
+                line += "-"
             elif any(z + dz in g.nodes for dz in dzs):
-                line += '#'
+                line += "#"
             else:
-                line += ' '
+                line += " "
         print(line)
     print()
 

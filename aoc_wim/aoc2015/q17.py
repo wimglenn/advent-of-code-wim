@@ -1,5 +1,7 @@
-from aocd import data
 from collections import Counter
+
+from aocd import data
+
 from ..stuff import rsubset_sum
 from ..stuff import subset_sum
 

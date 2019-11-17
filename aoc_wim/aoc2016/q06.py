@@ -1,4 +1,5 @@
 from collections import Counter
+
 from aocd import data
 
 
@@ -23,7 +24,7 @@ enarar"""
 
 def decode(data, f):
     counters = [Counter(x) for x in zip(*data.splitlines())]
-    return ''.join(f(c, key=c.get) for c in counters)
+    return "".join(f(c, key=c.get) for c in counters)
 
 
 assert decode(test_data, f=max) == "easter"

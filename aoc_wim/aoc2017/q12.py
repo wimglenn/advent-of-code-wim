@@ -1,11 +1,11 @@
-from aocd import data
 import networkx as nx
+from aocd import data
 
 
 def parsed(data):
     graph = nx.Graph()
-    for line in data.replace(' <->', ',').splitlines():
-        n0, *nodes = [int(n) for n in line.split(', ')]
+    for line in data.replace(" <->", ",").splitlines():
+        n0, *nodes = [int(n) for n in line.split(", ")]
         graph.add_node(n0)
         for node in nodes:
             graph.add_edge(n0, node)

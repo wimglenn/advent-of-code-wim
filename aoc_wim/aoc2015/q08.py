@@ -10,9 +10,9 @@ test_data = r'''""
 def tokens(s):
     iterator = iter(s)
     for char in iterator:
-        if char == '\\':
+        if char == "\\":
             char += next(iterator)
-            if char.endswith('x'):
+            if char.endswith("x"):
                 char += next(iterator)
                 char += next(iterator)
         yield char
@@ -22,8 +22,8 @@ def encoder(s):
     iterator = iter(s)
     yield '"'
     for char in iterator:
-        if char == '"' or char == '\\':
-            yield '\\'
+        if char == '"' or char == "\\":
+            yield "\\"
         yield char
     yield '"'
 
@@ -37,7 +37,7 @@ def length_diff(data):
 
 
 def encoded_diff(data):
-    return sum(len(''.join(encoder(line))) - len(line) for line in data.splitlines())
+    return sum(len("".join(encoder(line))) - len(line) for line in data.splitlines())
 
 
 assert length_diff(test_data) == 12

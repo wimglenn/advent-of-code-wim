@@ -9,8 +9,9 @@ class AStar:
         self.target = target
         self.closed = set()
         self.came_from = {}
-        self.fscore = defaultdict(lambda: float("inf"), {target: self.heuristic(state0, target)})
-        self.gscore = defaultdict(lambda: float("inf"), {state0: 0})
+        inf = float("inf")
+        self.fscore = defaultdict(lambda: inf, {target: self.heuristic(state0, target)})
+        self.gscore = defaultdict(lambda: inf, {state0: 0})
 
     def heuristic(self, state0, state1):
         """estimate of distance (cost) to get from state0 to state1
@@ -48,7 +49,8 @@ class AStar:
             for next_state in self.adjacent(current_state):
                 if next_state in self.closed:
                     continue
-                tentative_gscore = self.gscore[current_state] + self.cost(current_state, next_state)
+                tentative_gscore = self.gscore[current_state]
+                tentative_gscore += self.cost(current_state, next_state)
                 if tentative_gscore >= self.gscore[next_state]:
                     continue
                 self.came_from[next_state] = current_state

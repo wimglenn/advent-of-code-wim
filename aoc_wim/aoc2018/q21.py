@@ -42,10 +42,10 @@ seen = set()
 r3 = 0x10000
 r5 = parsed.named["bignum"]
 while True:
-    r5 += r3 & 0xff
-    r5 &= 0xffffff
+    r5 += r3 & 0xFF
+    r5 &= 0xFFFFFF
     r5 *= parsed.named["prime"]
-    r5 &= 0xffffff
+    r5 &= 0xFFFFFF
     if r3 >= 256:
         r3 //= 256
         continue

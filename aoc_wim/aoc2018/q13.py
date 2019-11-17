@@ -1,9 +1,11 @@
-from aocd import data
 import random
-from itertools import cycle
 from collections import Counter
+from itertools import cycle
+
+from aocd import data
 from bidict import bidict
-from termcolor import colored, COLORS
+from termcolor import colored
+from termcolor import COLORS
 
 
 class CartCollision(Exception):
@@ -155,7 +157,6 @@ def part_a(data, first_crash=True, debug=False):
 
 def part_b(data, debug=False):
     return part_a(data, first_crash=False, debug=debug)
-
 
 
 test_data1 = """|

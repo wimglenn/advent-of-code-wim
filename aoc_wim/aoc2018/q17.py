@@ -15,21 +15,21 @@ y=13, x=498..504"""
 def parsed(data):
     grid = {}
     for line in data.splitlines():
-        a, b = line.split(', ')
-        a, n = a.split('=')
+        a, b = line.split(", ")
+        a, n = a.split("=")
         if a == "x":
             xs = [int(n)]
-            y, start_stop = b.split('=')
-            start, stop = start_stop.split('..')
+            y, start_stop = b.split("=")
+            start, stop = start_stop.split("..")
             ys = range(int(start), int(stop) + 1)
         else:
             ys = [int(n)]
-            x, start_stop = b.split('=')
-            start, stop = start_stop.split('..')
+            x, start_stop = b.split("=")
+            start, stop = start_stop.split("..")
             xs = range(int(start), int(stop) + 1)
         for y in ys:
             for x in xs:
-                grid[complex(x, y)] = '#'
+                grid[complex(x, y)] = "#"
     ys = [z.imag for z in grid]
     ymin, ymax = int(min(ys)), int(max(ys))
     grid[0j + 500] = "+"
@@ -45,7 +45,7 @@ def dump(grid, pause=False):
         line = []
         for x in xrange:
             line.append(grid.get(complex(x, y), "."))
-        line = ''.join(line)
+        line = "".join(line)
         print(line)
         if not set(line).intersection("|+~"):
             break
@@ -93,7 +93,7 @@ def xflow(grid, pos0):
     return next_flow
 
 
-def wet(grid, ymax, tap=1j+500):
+def wet(grid, ymax, tap=1j + 500):
     flow = {tap}
     while flow:
         next_flow = set()
@@ -103,7 +103,7 @@ def wet(grid, ymax, tap=1j+500):
                 continue
             if c + 1j not in grid:
                 next_flow |= {c + 1j}
-            elif grid[c+1j] == "|":
+            elif grid[c + 1j] == "|":
                 continue
             else:
                 next_flow |= xflow(grid, c)

@@ -2,7 +2,7 @@ from aocd import data
 
 
 def part_ab(data):
-    direction = {'(': +1, ')': -1}
+    direction = {"(": +1, ")": -1}
     basement = None
     floor = 0
     for i, c in enumerate(data, 1):

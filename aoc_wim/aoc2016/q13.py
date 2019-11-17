@@ -1,15 +1,16 @@
-from aocd import data
 from collections import deque
+
+from aocd import data
 
 
 class Maze(object):
 
     wallmap = {
-        'wall block': '#',
-        'open space': '.',
-        'place seen': 'O',
-        'start spot': 'S',
-        'the target': 'X',
+        "wall block": "#",
+        "open space": ".",
+        "place seen": "O",
+        "start spot": "S",
+        "the target": "X",
     }
 
     def __init__(self, fav_number=int(data)):
@@ -22,8 +23,8 @@ class Maze(object):
             if x < 0 or y < 0:
                 self.memo[state] = 1
             else:
-                z = (x+y)**2 + 3*x + y
-                self.memo[state] = bin(z + self.fav_number).count('1') % 2
+                z = (x + y) ** 2 + 3 * x + y
+                self.memo[state] = bin(z + self.fav_number).count("1") % 2
         return self.memo[state]
 
     def valid_next_states(self, state, seen=()):
@@ -34,19 +35,18 @@ class Maze(object):
                 yield z
 
     def display(self, w=None, h=None, visited=(), start=None, end=None):
-
         def get_char(x, y):
             state = complex(x, y)
             if state == start:
-                return self.wallmap['start spot']
+                return self.wallmap["start spot"]
             elif state == end:
-                return self.wallmap['the target']
+                return self.wallmap["the target"]
             elif state in visited:
-                return self.wallmap['place seen']
+                return self.wallmap["place seen"]
             elif self.is_wall(state):
-                return self.wallmap['wall block']
+                return self.wallmap["wall block"]
             else:
-                return self.wallmap['open space']
+                return self.wallmap["open space"]
 
         if not self.memo:
             # prevents max on an empty sequence
@@ -57,7 +57,7 @@ class Maze(object):
             h = max([int(x.imag) for x in self.memo]) + 1
         for y in range(h):
             row = [get_char(x, y) for x in range(w)]
-            line = ''.join(row)
+            line = "".join(row)
             print(line)
 
 
@@ -87,7 +87,7 @@ def n_points_within_distance(state0, maze, d=50):
 
 
 # state: complex number with (x, y) == (row, col) == (state.imag, state.real)
-state0, target = 1+1j, 7+4j
+state0, target = 1 + 1j, 7 + 4j
 test_maze = Maze(fav_number=10)
 # test_maze.display(h=7, w=10, start=state0, end=target)
 assert bfs(state0, target, maze=test_maze) == 11
@@ -99,10 +99,10 @@ print(n_points_within_distance(state0, maze))
 
 
 others_data = {
-    'kevin': (1362, 82, 138),
-    'davidism': (1350, 92, 124),
-    'dsm': (1358, 96, 141),
-    'andras': (1364, 86, 127),
+    "kevin": (1362, 82, 138),
+    "davidism": (1350, 92, 124),
+    "dsm": (1358, 96, 141),
+    "andras": (1364, 86, 127),
 }
 for name, (fav_number, partA, partB) in others_data.items():
     other_maze = Maze(fav_number=fav_number)

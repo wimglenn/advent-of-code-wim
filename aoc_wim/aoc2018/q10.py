@@ -1,6 +1,8 @@
-from aocd import data
 import re
+
 import numpy as np
+from aocd import data
+
 from ..ocr import AOCR
 
 
@@ -51,27 +53,27 @@ def ocr(a, lettersize, draw=True):
     assert h == H
     col, row = ps
     img[row, col] = "#"
-    img = np.pad(img, ((0, 0), (1, 0)), mode='constant', constant_values=".")
+    img = np.pad(img, ((0, 0), (1, 0)), mode="constant", constant_values=".")
     W += 1
     while W % w:
-        img = np.pad(img, ((0, 0), (0, 1)), mode='constant', constant_values=".")
+        img = np.pad(img, ((0, 0), (0, 1)), mode="constant", constant_values=".")
         W += 1
     n = W // w
     if draw:
         for row in img:
-            print(*row, sep='')
+            print(*row, sep="")
         print("\n")
     letters = []
     for i in range(n):
-        chunk = img[:, w*i:w*i+w]
-        key = '\n'.join(''.join(row) for row in chunk)
+        chunk = img[:, w * i : w * i + w]
+        key = "\n".join("".join(row) for row in chunk)
         try:
             letter = AOCR[key]
         except KeyError:
             print(key)
             raise
         letters.append(letter)
-    return ''.join(letters)
+    return "".join(letters)
 
 
 def part_ab(data, debug=True, lettersize=(10, 8)):

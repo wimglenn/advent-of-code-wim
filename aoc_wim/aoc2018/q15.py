@@ -1,8 +1,9 @@
-from aocd import data
 from collections import deque
-from termcolor import colored
 from operator import attrgetter
 from time import sleep
+
+from aocd import data
+from termcolor import colored
 
 
 class CombatEnds(Exception):
@@ -12,7 +13,7 @@ class CombatEnds(Exception):
 class Unit:
     grid = None
     ap = None
-    glyph = 'U'
+    glyph = "U"
 
     def __init__(self, pos, id):
         self.id = id
@@ -46,7 +47,7 @@ class Unit:
     @property
     def available_squares(self):
         units = self.grid["units"]
-        candidates = [self.pos - 1j, self.pos -1, self.pos + 1, self.pos + 1j]
+        candidates = [self.pos - 1j, self.pos - 1, self.pos + 1, self.pos + 1j]
         not_wall = [c for c in candidates if self.grid.get(c, "#") != "#"]
         unit_positions = {u.pos for u in units if u.alive}
         avail = [c for c in not_wall if c not in unit_positions]
@@ -68,7 +69,12 @@ class Unit:
         units = self.grid["units"]
         others_positions = {o.pos for o in units if o.alive and o is not self}
         state0 = self.pos
-        found = bfs(state0, targets=target_positions, grid=self.grid, others_positions=others_positions)
+        found = bfs(
+            state0,
+            targets=target_positions,
+            grid=self.grid,
+            others_positions=others_positions,
+        )
         if not found:
             return
         [shortest_path] = {d for (pos, d) in found}
@@ -77,7 +83,12 @@ class Unit:
         target_pos = target_positions[0]
         distances = {}
         for choice in new_pos_choices:
-            found = bfs(choice, targets={target_pos}, grid=self.grid, others_positions=others_positions)
+            found = bfs(
+                choice,
+                targets={target_pos},
+                grid=self.grid,
+                others_positions=others_positions,
+            )
             [(t, distances[choice])] = found
             assert t == target_pos
         min_dist = min(distances.values())
@@ -94,7 +105,7 @@ class Unit:
         if ops:
             min_hp = min([o.hp for o in ops])
             ops = [o for o in ops if o.hp == min_hp]
-            ops.sort(key=attrgetter('yx'))
+            ops.sort(key=attrgetter("yx"))
             return ops[0]
 
     def act(self):
@@ -113,14 +124,14 @@ class Unit:
 
 
 class Elf(Unit):
-    glyph = 'E'
-    cglyph = colored(glyph, 'green', attrs=["bold"])
+    glyph = "E"
+    cglyph = colored(glyph, "green", attrs=["bold"])
     ap = 3
 
 
 class Goblin(Unit):
-    glyph = 'G'
-    cglyph = colored(glyph, 'red', attrs=["bold"])
+    glyph = "G"
+    cglyph = colored(glyph, "red", attrs=["bold"])
     ap = 3
 
 
@@ -147,9 +158,9 @@ def dump(grid, round=0, interactive=False, dt=0.1):
                 units_on_line.append(unit)
             else:
                 line.append(grid[pos])
-        print(*line, sep="", end='')
+        print(*line, sep="", end="")
         if units_on_line:
-            units_str = ', '.join([f'{u.cglyph}({u.hp})' for u in units_on_line])
+            units_str = ", ".join([f"{u.cglyph}({u.hp})" for u in units_on_line])
             print("   " + units_str)
         else:
             print()
@@ -164,8 +175,8 @@ def parsed(data):
     lines = data.splitlines()
     h = len(lines)
     [w] = {len(x) for x in lines}
-    grid['y-axis'] = range(h)
-    grid['x-axis'] = range(w)
+    grid["y-axis"] = range(h)
+    grid["x-axis"] = range(w)
     uid = 0
     units = []
     for y, line in enumerate(lines):
@@ -183,7 +194,7 @@ def parsed(data):
                 units.append(e)
                 grid[pos] = "."
                 uid += 1
-    grid['units'] = units
+    grid["units"] = units
     return grid
 
 
@@ -207,8 +218,12 @@ def bfs(state0, targets, grid, others_positions):
                 assert shortest_path == depth
             shortest_path = depth
             found.add((state, depth))
-        candidates = [state - 1j, state -1, state + 1, state + 1j]
-        ok = [c for c in candidates if grid.get(c, "#") != "#" and c not in others_positions and c not in seen]
+        candidates = [state - 1j, state - 1, state + 1, state + 1j]
+        ok = [
+            c
+            for c in candidates
+            if grid.get(c, "#") != "#" and c not in others_positions and c not in seen
+        ]
         queue.extend((child, depth + 1) for child in ok)
         seen.update(ok)
     return found
@@ -229,8 +244,8 @@ def part_a(data, debug=False):
                     unit.act()
                 except CombatEnds:
                     score = sum(u.hp for u in units if u.alive)
-                    n_elves_alive = sum(1 for u in units if isinstance(u, Elf) and u.alive)
-                    part_a.all_elves_alive = n_elves == n_elves_alive
+                    elves_alive = [u for u in units if isinstance(u, Elf) and u.alive]
+                    part_a.all_elves_alive = n_elves == len(elves_alive)
                     return round * score
         round += 1
 
@@ -309,7 +324,7 @@ part_a_tests = """\
 18740"""
 
 
-tests = part_a_tests.split('\n\n')
+tests = part_a_tests.split("\n\n")
 grids = tests[0::2]
 outcomes = [int(line) for line in tests[1::2]]
 for grid, outcome in zip(grids, outcomes):

@@ -1,7 +1,8 @@
-from aocd import data
-import numpy as np
-from scipy.signal import convolve2d
 import time
+
+import numpy as np
+from aocd import data
+from scipy.signal import convolve2d
 
 
 test_data = """\
@@ -19,8 +20,8 @@ test_data = """\
 
 def parsed(data):
     h = len(data.splitlines())
-    A = np.fromiter(data.replace('\n', ''), dtype='<U1').reshape(h, -1)
-    A = (A=="|").astype(complex) + (A=="#").astype(complex)*1j
+    A = np.fromiter(data.replace("\n", ""), dtype="<U1").reshape(h, -1)
+    A = (A == "|").astype(complex) + (A == "#").astype(complex) * 1j
     return A
 
 
@@ -29,18 +30,18 @@ def dump(A, dt=0.1):
     d = {0: "  ", 1: "🌲", 1j: " ⛏"}
     print("\33c")
     for row in A:
-        print(*[d[c] for c in row], sep='')
+        print(*[d[c] for c in row], sep="")
     print()
     time.sleep(dt)
 
 
 def mutate(A0):
     k = np.ones((3, 3), dtype=complex)
-    B = convolve2d(A0, k, mode='same')
+    B = convolve2d(A0, k, mode="same")
     A1 = A0.copy()
-    A1[(A0==0) & (B.real>=3)] = 1
-    A1[(A0==1) & (B.imag>=3)] = 1j
-    A1[(A0==1j) & ((B.imag < 2) | (B.real==0))] = 0
+    A1[(A0 == 0) & (B.real >= 3)] = 1
+    A1[(A0 == 1) & (B.imag >= 3)] = 1j
+    A1[(A0 == 1j) & ((B.imag < 2) | (B.real == 0))] = 0
     return A1
 
 
@@ -58,7 +59,7 @@ def part_a(data, minutes=10, debug=False):
             delta = seen[s] - m
             m %= delta
         seen[s] = m
-    return (A==1).sum() * (A==1j).sum()
+    return (A == 1).sum() * (A == 1j).sum()
 
 
 def part_b(data, debug=False):

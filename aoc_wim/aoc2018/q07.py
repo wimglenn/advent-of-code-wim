@@ -1,7 +1,8 @@
 import logging
+from types import SimpleNamespace
+
 from aocd import data
 from parse import parse
-from types import SimpleNamespace
 
 
 log = logging.getLogger(__name__)
@@ -60,9 +61,9 @@ def work(data, n_workers=4, delay=60):
                 if n_workers == 1:
                     w.t = 1
                 else:
-                    w.t = ord(x) - ord('A') + 1 + delay
+                    w.t = ord(x) - ord("A") + 1 + delay
         t += 1
-        log.info('%4d: %s   %s', t, ' '.join(w.has for w in workers), text)
+        log.info("%4d: %s   %s", t, " ".join(w.has for w in workers), text)
     result = SimpleNamespace(text=text, n_iterations=t)
     return result
 

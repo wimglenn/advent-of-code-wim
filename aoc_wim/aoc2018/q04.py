@@ -1,7 +1,8 @@
-from aocd import data
 from collections import Counter
 from datetime import timedelta
 from operator import attrgetter
+
+from aocd import data
 from parse import parse
 
 

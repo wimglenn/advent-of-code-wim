@@ -1,16 +1,18 @@
-from aocd import data
-from itertools import combinations
 from collections import Counter
-from ..stuff import subset_sum
+from itertools import combinations
+
+from aocd import data
+
 from ..stuff import prod
+from ..stuff import subset_sum
 
 
 def parsed(data, n_groups):
-    vals = [int(n)for n in data.strip().split()]
+    vals = [int(n) for n in data.strip().split()]
     total = sum(vals)
     if total % n_groups != 0:
         raise Exception
-    return vals, total//n_groups
+    return vals, total // n_groups
 
 
 def bag_sub(list_big, sublist):
@@ -25,8 +27,8 @@ def bag_sub(list_big, sublist):
 
 def partitions(vals, target):
     for group in subset_sum(vals, target):
-        remaining = bag_sub(vals, group)
-        groups = partitions(remaining, target) if sum(remaining) > target else (remaining,)
+        rem = bag_sub(vals, group)
+        groups = partitions(rem, target) if sum(rem) > target else (rem,)
         yield from ((group, group_) for group_ in groups)
 
 
@@ -47,8 +49,8 @@ def solve(data, n_groups):
     group1s.sort(key=prod)
 
     for group1 in group1s:
-        remaining = bag_sub(vals, group1)
-        gen = partitions(remaining, target)
+        rem = bag_sub(vals, group1)
+        gen = partitions(rem, target)
         try:
             next(gen)
         except StopIteration:
@@ -56,7 +58,7 @@ def solve(data, n_groups):
         return prod(group1)
 
 
-test_data = '1 2 3 4 5 7 8 9 10 11'
+test_data = "1 2 3 4 5 7 8 9 10 11"
 
 assert solve(test_data, n_groups=3) == 99
 assert solve(test_data, n_groups=4) == 44

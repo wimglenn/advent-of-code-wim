@@ -1,4 +1,5 @@
 import hashlib
+
 from aocd import data
 
 
@@ -6,9 +7,9 @@ def mine(data, difficulty):
     secret_key = data.strip()
     i = 1
     while True:
-        text = u'{}{}'.format(secret_key, i)
-        hash_ = hashlib.md5(text.encode('ascii')).hexdigest()
-        if hash_.startswith('0'*difficulty):
+        text = u"{}{}".format(secret_key, i)
+        hash_ = hashlib.md5(text.encode("ascii")).hexdigest()
+        if hash_.startswith("0" * difficulty):
             return i
         i += 1
 

@@ -10,7 +10,7 @@ test_data = """\
 def cleanup_data(data):
     ranges = []
     for line in data.splitlines():
-        ranges.append(tuple([int(n) for n in line.split('-')]))
+        ranges.append(tuple([int(n) for n in line.split("-")]))
 
     ranges.sort()
 
@@ -31,6 +31,7 @@ def cleanup_data(data):
 
 def part_a(clean_data):
     return clean_data[0][1] + 1
+
 
 def part_b(clean_data, n_min=0, n_max=4294967295):
     n = n_max - n_min + 1

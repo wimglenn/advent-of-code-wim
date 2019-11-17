@@ -1,5 +1,6 @@
 from aocd import data
 from parse import parse
+
 from ..stuff import prod
 
 
@@ -30,7 +31,7 @@ def parsed(data, lh=(17, 61)):
     receives = []
     receivers = {}
     for line in data.splitlines():
-        if line.startswith('value'):
+        if line.startswith("value"):
             tup = parse("value {:d} goes to {}", line).fixed
             receives.append(tup)
         else:

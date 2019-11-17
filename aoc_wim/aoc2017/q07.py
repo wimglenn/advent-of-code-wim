@@ -1,6 +1,7 @@
-from aocd import data
 from collections import Counter
 from collections import deque
+
+from aocd import data
 from wimpy import cached_property
 
 test_data = """\
@@ -20,8 +21,8 @@ cntj (57)"""
 
 nodes = {}
 
-class Node:
 
+class Node:
     def __init__(self, name):
         self.name = name
         self.weight = None
@@ -47,7 +48,7 @@ class Node:
 
 def make_tree(data):
     for line in data.splitlines():
-        line = line.translate(str.maketrans('','','()->,'))
+        line = line.translate(str.maketrans("", "", "()->,"))
         name, weight, *child_names = line.split()
         node = Node.get_or_create(name)
         node.weight = int(weight)
@@ -75,7 +76,7 @@ def find_bad_node_correct_weight(tree):
 
 
 test_tree = make_tree(test_data)
-assert test_tree.name == 'tknk'
+assert test_tree.name == "tknk"
 assert find_bad_node_correct_weight(test_tree) == 60
 
 nodes.clear()

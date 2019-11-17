@@ -1,6 +1,9 @@
-from aocd import data
 from collections import defaultdict
-import operator
+from operator import eq
+from operator import gt
+from operator import lt
+
+from aocd import data
 
 
 message = """\
@@ -17,17 +20,17 @@ perfumes: 1
 """
 
 
-d_message = {k: int(v) for k,v in (pair.split(': ') for pair in message.splitlines())}
+d_message = {k: int(v) for k, v in (pair.split(": ") for pair in message.splitlines())}
 
 sues = {}
 for line in data.splitlines():
-    sue, stats = line.split(': ', 1)
-    stats = {k: int(v) for k,v in (pair.split(': ') for pair in stats.split(', '))}
+    sue, stats = line.split(": ", 1)
+    stats = {k: int(v) for k, v in (pair.split(": ") for pair in stats.split(", "))}
     sues[sue] = stats
 
 
 def find_sue(**kwargs):
-    opmap = defaultdict(lambda: operator.eq)
+    opmap = defaultdict(lambda: eq)
     opmap.update(kwargs)
     for sue, stats in sues.items():
         common_keys = d_message.keys() & stats.keys()
@@ -36,4 +39,4 @@ def find_sue(**kwargs):
 
 
 print(find_sue())
-print(find_sue(cats=operator.gt, trees=operator.gt, pomeranians=operator.lt, goldfish=operator.lt))
+print(find_sue(cats=gt, trees=gt, pomeranians=lt, goldfish=lt,))

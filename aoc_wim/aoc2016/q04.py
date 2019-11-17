@@ -1,15 +1,17 @@
-from aocd import data
-from collections import Counter, deque
+from collections import Counter
+from collections import deque
 from string import ascii_lowercase
+
+from aocd import data
 from parse import parse
 
 
 def decrypt_name(encrypted_name, sector_id):
     d = deque(ascii_lowercase)
     d.rotate(-sector_id)
-    lookup = {'-': ' '}
+    lookup = {"-": " "}
     lookup.update(zip(ascii_lowercase, d))
-    decrypted_name = ''.join(lookup[k] for k in encrypted_name)
+    decrypted_name = "".join(lookup[k] for k in encrypted_name)
     return decrypted_name
 
 
@@ -19,13 +21,13 @@ def part_ab(data):
     template = "{}-{:d}[{}]"
     for line in data.splitlines():
         encrypted_name, sector_id, checksum = parse(template, line)
-        counter = Counter(encrypted_name.replace('-', ''))
+        counter = Counter(encrypted_name.replace("-", ""))
         most_common = sorted(counter, key=lambda k: (-counter[k], k))
-        check = ''.join(most_common[:5])
+        check = "".join(most_common[:5])
         if check == checksum:
             sector_id_sum += sector_id
         decrypted_name = decrypt_name(encrypted_name, sector_id)
-        if 'pole' in decrypted_name:
+        if "pole" in decrypted_name:
             northpole_room = sector_id
     return sector_id_sum, northpole_room
 

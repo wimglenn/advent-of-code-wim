@@ -1,7 +1,9 @@
-from aocd import data
 from collections import defaultdict
 from itertools import combinations
-from fields import Fields, Tuple
+
+from aocd import data
+from fields import Fields
+from fields import Tuple
 
 
 shop_data = """\
@@ -30,7 +32,6 @@ Defense +3   80     0       3
 
 
 class Item(Tuple.name.cost.damage.armor):
-
     @classmethod
     def fromline(cls, line):
         name, cost, damage, armor = line.rsplit(None, 3)
@@ -40,15 +41,15 @@ class Item(Tuple.name.cost.damage.armor):
 
 shop = defaultdict(list)
 for line in shop_data.splitlines():
-    if ':' in line:
-        itemtype = line.split(':')[0].lower().rstrip('s')
+    if ":" in line:
+        itemtype = line.split(":")[0].lower().rstrip("s")
     else:
         if line:
             item = Item.fromline(line)
             shop[itemtype].append(item)
 
 
-class Player(Fields.damage.armor.name['player'].hp[100]):
+class Player(Fields.damage.armor.name["player"].hp[100]):
     ...
 
 
@@ -59,28 +60,28 @@ def battle_winner(attacker, defender):
     return defender
 
 
-test_player = Player(name='player', hp=8, damage=5, armor=5)
-test_boss = Player(name='boss', hp=12, damage=7, armor=2)
+test_player = Player(name="player", hp=8, damage=5, armor=5)
+test_boss = Player(name="boss", hp=12, damage=7, armor=2)
 
 winner = battle_winner(attacker=test_player, defender=test_boss)
 assert winner is test_player and winner.hp == 2
 
 
 def parsed(data):
-    d = {k.lower(): int(v) for k,v in (line.split(': ') for line in data.splitlines())}
-    d['hp'] = d.pop('hit points')
-    return Player(name='boss', **d)
+    d = {k.lower(): int(v) for k, v in (line.split(": ") for line in data.splitlines())}
+    d["hp"] = d.pop("hit points")
+    return Player(name="boss", **d)
 
 
 def choices(shop):
-    weapon_choices = combinations(shop['weapon'], 1)
+    weapon_choices = combinations(shop["weapon"], 1)
 
     armor_choices = [()]  # no armor..
-    armor_choices += combinations(shop['armor'], 1)
+    armor_choices += combinations(shop["armor"], 1)
 
     ring_choices = [()]  # no rings..
-    ring_choices += combinations(shop['ring'], 1)
-    ring_choices += combinations(shop['ring'], 2)
+    ring_choices += combinations(shop["ring"], 1)
+    ring_choices += combinations(shop["ring"], 2)
 
     for weapon in weapon_choices:
         for armor in armor_choices:
@@ -96,7 +97,7 @@ def choices(shop):
 
 
 def play(data, shop):
-    min_cost = float('inf')
+    min_cost = float("inf")
     max_cost = 0
     for player in choices(shop):
         boss = parsed(data)

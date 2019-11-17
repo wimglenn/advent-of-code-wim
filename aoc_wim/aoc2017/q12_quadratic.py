@@ -3,8 +3,8 @@ from aocd import data
 
 def part_ab(data):
     d = {}
-    for line in data.replace(' <->', ',').splitlines():
-        xs = [int(x) for x in line.split(', ')]
+    for line in data.replace(" <->", ",").splitlines():
+        xs = [int(x) for x in line.split(", ")]
         d[tuple(xs)] = set(xs)
 
     while True:

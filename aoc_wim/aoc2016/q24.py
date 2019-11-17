@@ -1,7 +1,9 @@
-from aocd import data
-import numpy as np
 from collections import deque
-from itertools import permutations, combinations
+from itertools import combinations
+from itertools import permutations
+
+import numpy as np
+from aocd import data
 
 
 test_data = """\
@@ -18,7 +20,7 @@ def valid_next_states(state, maze, seen=()):
     neighbours = [state + dz for dz in deltas]
     for z in neighbours:
         row, col = int(-z.imag), int(z.real)
-        if maze[row,col] != '#' and z not in seen:
+        if maze[row, col] != "#" and z not in seen:
             yield z
 
 
@@ -43,12 +45,12 @@ def get_distance_matrix(data):
 
     states = []
     for target in targets:
-        [row], [col] = np.where(maze==target)
+        [row], [col] = np.where(maze == target)
         states.append(complex(col, -row))
 
-    d = np.zeros((n,n), dtype=int)
-    for a,b in combinations(range(n), 2):
-        d[a,b] = d[b,a] = bfs(states[a], states[b], maze)
+    d = np.zeros((n, n), dtype=int)
+    for a, b in combinations(range(n), 2):
+        d[a, b] = d[b, a] = bfs(states[a], states[b], maze)
 
     return d
 
@@ -57,7 +59,7 @@ def solve(d, return_home=False):
     distance = {}
     for path in permutations(range(1, len(d))):
         path = (0,) + path + ((0,) if return_home else ())
-        distance[path] = sum(d[a,b] for a,b in zip(path, path[1:]))
+        distance[path] = sum(d[a, b] for a, b in zip(path, path[1:]))
     return min(distance.values())
 
 

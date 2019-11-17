@@ -1,6 +1,7 @@
-from aocd import data
-import networkx as nx
 from itertools import combinations
+
+import networkx as nx
+from aocd import data
 
 
 tests = {

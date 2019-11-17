@@ -1,12 +1,13 @@
 from aocd import data
 from parse import parse
+
 from ..astar import AStar
 
 
 def zrange(*args):
     if len(args) == 1:
         start = 0
-        stop, = args
+        (stop,) = args
         step = 1 + 1j
     elif len(args) == 2:
         start, stop = args
@@ -43,7 +44,7 @@ class Grid:
             elif pos.real == 0:
                 self._gi[pos] = 48271 * int(pos.imag)
             else:
-                self._gi[pos] = self.el(pos-1) * self.el(pos-1j)
+                self._gi[pos] = self.el(pos - 1) * self.el(pos - 1j)
         return self._gi[pos]
 
 
@@ -80,9 +81,9 @@ class Q22AStar(AStar):
     tools = {None, "🔦", "🧗"}
 
     valid_tools = {
-        '.': tools - {None},  # you'll likely slip and fall
-        '=': tools - {"🔦"},  # if it gets wet, you won't have a light source
-        '|': tools - {"🧗"},  # it's too bulky to fit
+        ".": tools - {None},  # you'll likely slip and fall
+        "=": tools - {"🔦"},  # if it gets wet, you won't have a light source
+        "|": tools - {"🧗"},  # it's too bulky to fit
     }
 
     def __init__(self, state0, target, grid):
@@ -105,7 +106,7 @@ class Q22AStar(AStar):
             assert tool0 != tool1
             return 7
         else:
-            assert abs(z1-z0) == 1
+            assert abs(z1 - z0) == 1
             return 1
 
     def adjacent(self, state):
@@ -114,16 +115,17 @@ class Q22AStar(AStar):
         z_here, tool = state
         current_terain = Grid.glyph[self.grid.t(z_here)]
         assert tool in self.valid_tools[current_terain]
-        candidates = [z_here + 1, z_here + 1j]
+        zs = [z_here + 1, z_here + 1j]
         if z_here.real > 0:
-            candidates.append(z_here - 1)
+            zs.append(z_here - 1)
         if z_here.imag > 0:
-            candidates.append(z_here - 1j)
-        terrains = [Grid.glyph[self.grid.t(z)] for z in candidates]
-        candidates = [z for z, t in zip(candidates, terrains) if tool in self.valid_tools[t]]
-        candidates = [(z, tool) for z in candidates]
-        candidates.extend([(z_here, t) for t in Q22AStar.tools - {tool} if t in self.valid_tools[current_terain]])
-        return candidates
+            zs.append(z_here - 1j)
+        terrains = [Grid.glyph[self.grid.t(z)] for z in zs]
+        zs = [z for z, t in zip(zs, terrains) if tool in self.valid_tools[t]]
+        zs = [(z, tool) for z in zs]
+        tools = Q22AStar.tools - {tool}
+        zs.extend([(z_here, t) for t in tools if t in self.valid_tools[current_terain]])
+        return zs
 
 
 def part_b(data):
