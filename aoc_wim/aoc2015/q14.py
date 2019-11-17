@@ -8,7 +8,6 @@ Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds.
 
 
 class Reindeer(object):
-
     def __init__(self, line):
         words = line.split()
         self.name = words[0]
@@ -44,8 +43,8 @@ def race(data, max_t, measure):
     return max([getattr(deer, measure) for deer in deers])
 
 
-assert race(test_data, max_t=1000, measure='distance') == 1120
-print(race(data, max_t=2503, measure='distance'))
+assert race(test_data, max_t=1000, measure="distance") == 1120
+print(race(data, max_t=2503, measure="distance"))
 
-assert race(test_data, max_t=1000, measure='points') == 689
-print(race(data, max_t=2503, measure='points'))
+assert race(test_data, max_t=1000, measure="points") == 689
+print(race(data, max_t=2503, measure="points"))

@@ -2,26 +2,26 @@ from aocd import data
 
 
 class Computer:
-
-    def __init__(self, instructions=''):
+    def __init__(self, instructions=""):
         self.reset(instructions=instructions)
 
-    def reset(self, i=0, instructions=''):
+    def reset(self, i=0, instructions=""):
         self.i = i
         self.instructions = instructions.strip().splitlines()
-        self.registers = dict.fromkeys('ab', 0)
+        self.registers = dict.fromkeys("ab", 0)
 
     def compute(self, i=0, verbose=False):
         self.i = i
         while 0 <= self.i < len(self.instructions):
             line = self.instructions[self.i]
             op, args = line.split(None, maxsplit=1)
-            args = args.split(', ')
+            args = args.split(", ")
             args = [x if x in self.registers else int(x) for x in args]
             f = getattr(self, op)
             if verbose:
-                state = ','.join('{}:{}'.format(k,v) for k,v in self.registers.items())
-                print(state, f'L{i}', op, *args)
+                registers = ["{}:{}".format(k, v) for k, v in self.registers.items()]
+                state = ",".join(registers)
+                print(state, f"L{i}", op, *args)
             f(*args)
             self.i += 1
 
@@ -56,13 +56,13 @@ inc a
 
 computer = Computer(instructions=test_data)
 computer.compute()
-assert computer.registers['a'] == 2
+assert computer.registers["a"] == 2
 
 computer.reset(instructions=data)
 computer.compute()
-print(computer.registers['b'])
+print(computer.registers["b"])
 
 computer.reset(instructions=data)
-computer.registers['a'] = 1
+computer.registers["a"] = 1
 computer.compute()
-print(computer.registers['b'])
+print(computer.registers["b"])
