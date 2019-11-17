@@ -6,13 +6,13 @@ from aocd import data
 
 
 def get_first_triple(hash_):
-    candidate = re.search(r'([0-9a-f])\1{2}', hash_)
+    candidate = re.search(r"([0-9a-f])\1{2}", hash_)
     if candidate is not None:
         return candidate.group()[0]
 
 
 def get_all_quintuples(hash_):
-    return re.findall(r'([0-9a-f])\1{4}', hash_)
+    return re.findall(r"([0-9a-f])\1{4}", hash_)
 
 
 def normal_hash(s):
@@ -21,12 +21,12 @@ def normal_hash(s):
 
 def stretched_hash(s):
     for i in range(2017):
-        s = md5(s).hexdigest().encode('ascii')
-    return s.decode('ascii')
+        s = md5(s).hexdigest().encode("ascii")
+    return s.decode("ascii")
 
 
 def search(data=data, hash_function=normal_hash):
-    template = data.strip().encode('ascii') + b'%d'
+    template = data.strip().encode("ascii") + b"%d"
     keys = []
     triples = defaultdict(list)
     i = 0
@@ -45,9 +45,9 @@ def search(data=data, hash_function=normal_hash):
     return sorted(keys)[:64][-1]
 
 
-assert search(data='abc') == 22728
+assert search(data="abc") == 22728
 print("part a:", search())
 
-assert stretched_hash(b'abc0') == "a107ff634856bb300138cac6568c0f24"
-assert search(data='abc', hash_function=stretched_hash) == 22551
+assert stretched_hash(b"abc0") == "a107ff634856bb300138cac6568c0f24"
+assert search(data="abc", hash_function=stretched_hash) == 22551
 print("part b:", search(hash_function=stretched_hash))

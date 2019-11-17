@@ -28,27 +28,33 @@ def parsed(data):
     for line_no, line in enumerate(data.splitlines(), 1):
         words = line.split()
         for i, word in enumerate(words, -1):
-            if word.startswith('generator'):
+            if word.startswith("generator"):
                 generator = words[i]
                 generators[generator] = line_no
-            elif word.startswith('microchip'):
-                chip, compatible = words[i].split('-')
+            elif word.startswith("microchip"):
+                chip, compatible = words[i].split("-")
                 chips[chip] = line_no
     chip_names = sorted(chips)
     if chip_names != sorted(generators):
-        raise Exception('chip and generators mismatched')
-    state0 = 1, tuple(chips[k] for k in chip_names), tuple(generators[k] for k in chip_names)
+        raise Exception("chip and generators mismatched")
+    state0 = (
+        1,
+        tuple(chips[k] for k in chip_names),
+        tuple(generators[k] for k in chip_names),
+    )
     target = 4, tuple(4 for chip in chip_names), tuple(4 for generator in generators)
     if not is_valid(state0) or not is_valid(target):
-        raise Exception('parsed state vector is invalid')
+        raise Exception("parsed state vector is invalid")
     return state0, target
 
 
 def is_valid(state):
     elevator, chips, generators = state
     for chip, generator in zip(chips, generators):
-        if chip != generator:  # if the chip and the matching generator are on different floors
-            if chip in generators:  # and there is some other generator on the same floor as the chip
+        if chip != generator:
+            # if the chip and the matching generator are on different floors
+            if chip in generators:
+                # and there is some other generator on the same floor as the chip
                 return False  # then this chip gets fried
     if not {elevator}.union(chips, generators) < {1, 2, 3, 4}:
         return False  # everything must be on a floor 1-4
@@ -71,8 +77,8 @@ def get_valid_next_states(state, seen=()):
         new_items = items[:]
         for index in indices:
             new_items[index] += direction
-        new_chips = new_items[:len(chips)]
-        new_generators = new_items[len(chips):]
+        new_chips = new_items[: len(chips)]
+        new_generators = new_items[len(chips) :]
         assert len(new_chips) == len(chips)
         assert len(new_generators) == len(generators)
         new_state = new_elevator, tuple(new_chips), tuple(new_generators)
@@ -81,9 +87,8 @@ def get_valid_next_states(state, seen=()):
 
 
 def bfs(state0, target, verbose=False):
-
-    def progress_bar(msg, spinner=cycle(r'\|/-')):
-        msg = ('\r{} '.format(next(spinner)) + msg).ljust(50)
+    def progress_bar(msg, spinner=cycle(r"\|/-")):
+        msg = ("\r{} ".format(next(spinner)) + msg).ljust(50)
         sys.stdout.write(msg)
         sys.stdout.flush()
 
@@ -98,12 +103,14 @@ def bfs(state0, target, verbose=False):
             depth = new_depth
         if state == target:
             if verbose:
-                progress_bar('Target found at depth {}'.format(depth), spinner=iter('✔'))
-                sys.stdout.write('\n')
+                msg = "Target found at depth {}".format(depth)
+                progress_bar(msg, spinner=iter("✔"))
+                sys.stdout.write("\n")
             return depth
         else:
-            if verbose and (i%2000 == 0):
-                progress_bar('search depth {}, queue length {}'.format(new_depth, len(queue)))
+            if verbose and (i % 2000 == 0):
+                msg = "search depth {}, queue length {}".format(new_depth, len(queue))
+                progress_bar(msg)
         children = list(get_valid_next_states(state, seen))
         seen.update(children)
         queue.extend((child, depth + 1) for child in children)

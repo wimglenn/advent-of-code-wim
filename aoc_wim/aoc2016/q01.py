@@ -6,15 +6,15 @@ turn_left = np.array([[0, -1], [1, 0]], dtype=int)  # pi/2 counter-clockwise rot
 turn_right = turn_left @ turn_left @ turn_left  # 3*pi/2 counter-clockwise rotation
 
 turns = {
-    'L': turn_left,
-    'R': turn_right,
+    "L": turn_left,
+    "R": turn_right,
 }
 
 
 def part_a(data):
     position = np.array([0, 0], dtype=int)
     bearing = np.array([0, 1], dtype=int)  # north
-    for step in data.split(', '):
+    for step in data.split(", "):
         turn, n_blocks = turns[step[0]], int(step[1:])
         bearing = turn @ bearing
         for block in range(n_blocks):
@@ -26,7 +26,7 @@ def part_b(data):
     position = np.array([0, 0], dtype=int)
     bearing = np.array([0, 1], dtype=int)  # north
     seen = {(0, 0)}
-    for step in data.split(', '):
+    for step in data.split(", "):
         turn, n_blocks = turns[step[0]], int(step[1:])
         bearing = turn @ bearing
         for block in range(n_blocks):
