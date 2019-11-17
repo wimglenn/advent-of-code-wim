@@ -29,25 +29,25 @@ def run_a(data):
     i = 0
     while True:
         line = lines[i]
-        if line.startswith('snd'):
+        if line.startswith("snd"):
             _snd, k = line.split()
             snd = d[k]
-        elif line.startswith('rcv'):
+        elif line.startswith("rcv"):
             _rcv, k = line.split()
             if d[k]:
                 return snd
         else:
             op, k, n = line.split()
             n = d[n] if n in d else int(n)
-            if op == 'set':
+            if op == "set":
                 d[k] = n
-            elif op == 'add':
+            elif op == "add":
                 d[k] += n
-            elif op == 'mul':
+            elif op == "mul":
                 d[k] *= n
-            elif op == 'mod':
+            elif op == "mod":
                 d[k] %= n
-            elif op == 'jgz':
+            elif op == "jgz":
                 k = d[k] if k in d else int(k)
                 i += n - 1 if k > 0 else 0
         i += 1
@@ -56,15 +56,15 @@ def run_a(data):
 def run_b(data, p, q):
     lines = data.splitlines()
     d = {line[4:5]: 0 for line in lines if not line[4:5].isdigit()}
-    d['p'] = p
+    d["p"] = p
     i = 0
     while True:
         line = lines[i]
-        if line.startswith('snd'):
+        if line.startswith("snd"):
             _snd, n = line.split()
             n = d[n] if n in d else int(n)
             yield n
-        elif line.startswith('rcv'):
+        elif line.startswith("rcv"):
             _rcv, k = line.split()
             try:
                 d[k] = q.popleft()
@@ -74,15 +74,15 @@ def run_b(data, p, q):
         else:
             op, k, n = line.split()
             n = d[n] if n in d else int(n)
-            if op == 'set':
+            if op == "set":
                 d[k] = n
-            elif op == 'add':
+            elif op == "add":
                 d[k] += n
-            elif op == 'mul':
+            elif op == "mul":
                 d[k] *= n
-            elif op == 'mod':
+            elif op == "mod":
                 d[k] %= n
-            elif op == 'jgz':
+            elif op == "jgz":
                 k = d[k] if k in d else int(k)
                 i += n - 1 if k > 0 else 0
         i += 1

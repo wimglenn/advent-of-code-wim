@@ -4,19 +4,19 @@ from aocd import data
 def parsed(data, mod=16):
     S = 0
     ops = []
-    for op in data.split(','):
-        if op.startswith('s'):
+    for op in data.split(","):
+        if op.startswith("s"):
             n = int(op[1:])
             S += n
-        elif op.startswith('x'):
-            a, b = op[1:].split('/')
+        elif op.startswith("x"):
+            a, b = op[1:].split("/")
             a = (int(a) - S) % mod
             b = (int(b) - S) % mod
-            ops.append(('x', a, b))
-        elif op.startswith('p'):
-            a, b = op[1:].split('/')
-            ops.append(('p', a, b))
-    ops.append(('s', S % mod, S % mod))
+            ops.append(("x", a, b))
+        elif op.startswith("p"):
+            a, b = op[1:].split("/")
+            ops.append(("p", a, b))
+    ops.append(("s", S % mod, S % mod))
     return ops
 
 
@@ -25,7 +25,7 @@ def dance(data, d, n=1):
     ops = parsed(data, mod=mod)
     seen = {}
     while n:
-        s = ''.join(d)
+        s = "".join(d)
         if s in seen:
             r = seen[s] - n
             n %= r
@@ -33,21 +33,21 @@ def dance(data, d, n=1):
             continue
         seen[s] = n
         for i, a, b in ops:
-            if i == 'x':
+            if i == "x":
                 d[a], d[b] = d[b], d[a]
-            elif i == 'p':
+            elif i == "p":
                 ai = d.index(a)
                 bi = d.index(b)
                 d[ai], d[bi] = d[bi], d[ai]
-            elif i == 's':
-                d[:] = d[(mod-a):] + d[:(mod-a)]
+            elif i == "s":
+                d[:] = d[(mod - a) :] + d[: (mod - a)]
         n -= 1
-    return ''.join(d)
+    return "".join(d)
 
 
-assert dance(data='s1,x3/4,pe/b', d=list('abcde')) == 'baedc'
-assert dance(data='s1,x3/4,pe/b', d=list('abcde'), n=2) == 'ceadb'
+assert dance(data="s1,x3/4,pe/b", d=list("abcde")) == "baedc"
+assert dance(data="s1,x3/4,pe/b", d=list("abcde"), n=2) == "ceadb"
 
-d = list('abcdefghijklmnop')
+d = list("abcdefghijklmnop")
 print("part a:", dance(data, d))
-print("part b:", dance(data, d, n=1000000000-1))
+print("part b:", dance(data, d, n=1000000000 - 1))

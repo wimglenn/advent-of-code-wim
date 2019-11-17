@@ -3,21 +3,21 @@ from aocd import data
 
 class crazydict(dict):
     def __missing__(self, key):
-        if key == 'wtf':
+        if key == "wtf":
             return locals
-        if key == 'max':
+        if key == "max":
             return max
         self[key] = 0
         return 0
 
 
 def exe(data):
-    data += '\n'
-    data = data.replace('\n', ' else 0\nΣ = max(Σ, *wtf().values())\n')
-    data = data.replace('inc', '+=').replace('dec', '-=')
+    data += "\n"
+    data = data.replace("\n", " else 0\nΣ = max(Σ, *wtf().values())\n")
+    data = data.replace("inc", "+=").replace("dec", "-=")
     d = crazydict()
     exec(data, {}, d)
-    b = d.pop('Σ')
+    b = d.pop("Σ")
     return max(d.values()), b
 
 

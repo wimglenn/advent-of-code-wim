@@ -7,22 +7,23 @@ from parse import parse
 
 
 ops = {
-    '>': op.gt,
-    '<': op.lt,
-    '>=': op.ge,
-    '<=': op.le,
-    '==': op.eq,
-    '!=': op.ne,
-    'inc': op.iadd,
-    'dec': op.isub,
+    ">": op.gt,
+    "<": op.lt,
+    ">=": op.ge,
+    "<=": op.le,
+    "==": op.eq,
+    "!=": op.ne,
+    "inc": op.iadd,
+    "dec": op.isub,
 }
+
 
 def exe(data):
     b = 0
     d = defaultdict(int)
-    template = '{x} {i:op} {m:d} if {y} {cmp:op} {n:d}'
+    template = "{x} {i:op} {m:d} if {y} {cmp:op} {n:d}"
     for line in data.splitlines():
-        parsed = parse(template, line, {'op': ops.get})
+        parsed = parse(template, line, {"op": ops.get})
         r = SimpleNamespace(**parsed.named)
         d[r.x] = r.i(d[r.x], r.cmp(d[r.y], r.n) and r.m)
         b = max(b, d[r.x])

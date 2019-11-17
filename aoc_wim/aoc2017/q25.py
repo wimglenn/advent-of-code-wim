@@ -47,14 +47,14 @@ In state {state_current}:
 
 
 def parsed(data):
-    first, *rest = data.split('\n\n')
+    first, *rest = data.split("\n\n")
     parsed = parse(template_first, first).named
-    directions = {'right': 1, 'left': -1}
+    directions = {"right": 1, "left": -1}
     for text in rest:
         data = parse(template_rest, text).named
-        parsed[data['state_current']] = {
-            0: (directions[data['direction0']], data['val0'], data['state0']),
-            1: (directions[data['direction1']], data['val1'], data['state1']),
+        parsed[data["state_current"]] = {
+            0: (directions[data["direction0"]], data["val0"], data["state0"]),
+            1: (directions[data["direction1"]], data["val1"], data["state1"]),
         }
     return parsed
 
@@ -63,8 +63,8 @@ def exe(data):
     prog = parsed(data)
     tape = defaultdict(int)
     cursor = 0
-    state = prog['state0']
-    for i in range(prog['n']):
+    state = prog["state0"]
+    for i in range(prog["n"]):
         instructions = prog[state]
         val = tape[cursor]
         direction, tape[cursor], state = instructions[val]

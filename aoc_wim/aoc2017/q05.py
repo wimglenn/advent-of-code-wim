@@ -19,7 +19,7 @@ def part_b(data):
     return part_a(data, b_offset=-1)
 
 
-test_data = '0 3 0 1 -3'
+test_data = "0 3 0 1 -3"
 assert part_a(test_data) == 5
 assert part_a.final_state == [2, 5, 0, 1, -2]
 assert part_b(test_data) == 10
