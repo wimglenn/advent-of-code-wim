@@ -159,7 +159,6 @@ def part_b(data, debug=False):
     return part_a(data, first_crash=False, debug=debug)
 
 
-
 test_data1 = """|
 v
 |

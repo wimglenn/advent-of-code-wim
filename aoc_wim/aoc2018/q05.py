@@ -8,7 +8,7 @@ def part_a(data):
         for x in xs:
             sub1 = x + x.upper()
             sub2 = x.upper() + x
-            s1 = s0.replace(sub1, '').replace(sub2, '')
+            s1 = s0.replace(sub1, "").replace(sub2, "")
             if len(s1) < len(s0):
                 s0 = s1
                 break
@@ -19,7 +19,7 @@ def part_a(data):
 def part_b(data):
     result = len(data)
     for x in set(data.lower()):
-        m = part_a(data.replace(x, '').replace(x.upper(), ''))
+        m = part_a(data.replace(x, "").replace(x.upper(), ""))
         result = min(m, result)
     return result
 

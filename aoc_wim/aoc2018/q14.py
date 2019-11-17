@@ -5,7 +5,7 @@ from wimpy import is_subsequence
 
 
 def gen():
-    recipes = [3,7]
+    recipes = [3, 7]
     e1, e2 = 0, 1
     yield recipes[0]
     yield recipes[1]
@@ -24,7 +24,7 @@ def part_a(data):
     g = gen()
     for n in range(k):
         next(g)
-    s = ''.join(str(next(g)) for n in range(10))
+    s = "".join(str(next(g)) for n in range(10))
     return s
 
 
@@ -41,9 +41,9 @@ def part_b(data):
 
 
 tests = [
-    (9,    "5158916779"),
-    (5,    "0124515891"),
-    (18,   "9251071085"),
+    (9, "5158916779"),
+    (5, "0124515891"),
+    (18, "9251071085"),
     (2018, "5941429882"),
 ]
 

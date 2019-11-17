@@ -3,66 +3,50 @@ from parse import parse
 
 
 def all_ops():
-
     def addr(R, a, b, c):
         R[c] = R[a] + R[b]
-
 
     def addi(R, a, b, c):
         R[c] = R[a] + b
 
-
     def mulr(R, a, b, c):
         R[c] = R[a] * R[b]
-
 
     def muli(R, a, b, c):
         R[c] = R[a] * b
 
-
     def banr(R, a, b, c):
         R[c] = R[a] & R[b]
-
 
     def bani(R, a, b, c):
         R[c] = R[a] & b
 
-
     def borr(R, a, b, c):
         R[c] = R[a] | R[b]
-
 
     def bori(R, a, b, c):
         R[c] = R[a] | b
 
-
     def setr(R, a, b, c):
         R[c] = R[a]
-
 
     def seti(R, a, b, c):
         R[c] = a
 
-
     def gtir(R, a, b, c):
         R[c] = int(a > R[b])
-
 
     def gtri(R, a, b, c):
         R[c] = int(R[a] > b)
 
-
     def gtrr(R, a, b, c):
         R[c] = int(R[a] > R[b])
-
 
     def eqir(R, a, b, c):
         R[c] = int(a == R[b])
 
-
     def eqri(R, a, b, c):
         R[c] = int(R[a] == b)
-
 
     def eqrr(R, a, b, c):
         R[c] = int(R[a] == R[b])
@@ -102,15 +86,15 @@ assert len(choices(test_data)) == 3
 
 
 def part_a(data):
-    samples = data.split('\n' * 4)[0].split('\n' * 2)
+    samples = data.split("\n" * 4)[0].split("\n" * 2)
     result = sum(1 for s in samples if len(choices(s)) >= 3)
     return result
 
 
 def part_b(data):
     ops = all_ops()
-    samples, prog = data.split('\n' * 4)
-    samples = samples.split('\n' * 2)
+    samples, prog = data.split("\n" * 4)
+    samples = samples.split("\n" * 2)
     identified = {}
     while len(identified) < len(ops):
         for s in samples:

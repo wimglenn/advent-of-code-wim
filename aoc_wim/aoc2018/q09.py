@@ -60,7 +60,7 @@ def part_a(data):
 
 def part_b(data):
     n_players, n_marbles = parse(template, data)
-    return get_high_score(n_players, n_marbles*100)
+    return get_high_score(n_players, n_marbles * 100)
 
 
 print("part a:", part_a(data))

@@ -11,8 +11,8 @@ def parsed(data):
     template = "pos=<{:d},{:d},{:d}>, r={:d}"
     nums = [parse(template, s).fixed for s in data.splitlines()]
     A = np.array(nums)
-    xs = A[:,:-1]
-    rs = A[:,-1]
+    xs = A[:, :-1]
+    rs = A[:, -1]
     return xs, rs
 
 
@@ -38,12 +38,14 @@ def part_b(data):
         # divide this 3D space into 8 evenly sized subspaces
         for row in x + dx:
             # maximize number in range = minimizing number out of range
-            n_out = ((np.clip(row-xs, 0, None) + np.clip(xs-row-s+1, 0, None)).sum(axis=1) > rs).sum()
+            lo = np.clip(row - xs, 0, None)
+            hi = np.clip(xs - row - s + 1, 0, None)
+            n_out = ((lo + hi).sum(axis=1) > rs).sum()
             if n_out < len(rs):
                 heappush(priority_queue, (n_out, s, abs(row).sum(), *row))
     # search around neighborhood of x0
     r = 8
-    for dx in product(range(-r, r+1), repeat=3):
+    for dx in product(range(-r, r + 1), repeat=3):
         dx = np.array(dx)
         x = x0 + dx
         n_out = (abs(xs - x).sum(axis=1) > rs).sum()

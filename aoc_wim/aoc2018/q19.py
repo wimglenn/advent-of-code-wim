@@ -20,7 +20,7 @@ def parsed(data):
     lines = data.splitlines()
     ip = int(lines.pop(0).split()[1])
     lines = [s.split() for s in lines]
-    lines = [[a, int(b), int(c), int(d)] for a,b,c,d in lines]
+    lines = [[a, int(b), int(c), int(d)] for a, b, c, d in lines]
     return ip, lines
 
 
@@ -28,13 +28,12 @@ funcs = all_ops()
 
 
 class Comp:
-
     def __init__(self, ip, d, r0, hacked):
         self.hacked = hacked
         self.ip = ip
         self.i = 0
         self.d = d
-        self.r = [0]*6
+        self.r = [0] * 6
         self.r[0] = r0
 
     def step(self):
@@ -64,7 +63,7 @@ def divisors(n):
     divs = {1, n}
     for i in range(2, int(math.sqrt(n)) + 1):
         if not n % i:
-            divs |= {i, n//i}
+            divs |= {i, n // i}
     return divs
 
 
