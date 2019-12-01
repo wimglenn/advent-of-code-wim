@@ -7,9 +7,7 @@ def fuel(data, part="a"):
     A = np.fromstring(data, dtype=int, sep="\n")
     total = 0
     while A.any():
-        A //= 3
-        A -= 2
-        A[A < 0] = 0
+        A = (A // 3 - 2).clip(0)
         total += A.sum()
         if part == "a":
             break
