@@ -42,7 +42,7 @@ class IntComputer:
         func()
         self.ip += jump
 
-    def run(self, n=10**10):
+    def run(self, n=10 ** 10):
         for i in range(n):
             log.debug("%10d(ip%3d): %s", i, self.ip, self.reg)
             self.step()
