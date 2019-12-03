@@ -21,8 +21,8 @@ test_data = """
 100756
 """
 
-assert fuel(test_data) == sum([2, 2, 654, 33583])
+assert fuel(test_data, part="a") == sum([2, 2, 654, 33583])
 assert fuel(test_data, part="b") == sum([2, 2, 966, 50346])
 
-print(fuel(data))
+print(fuel(data, part="a"))
 print(fuel(data, part="b"))
