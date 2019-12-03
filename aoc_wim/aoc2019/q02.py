@@ -1,21 +1,62 @@
+import logging
+
 from aocd import data
 
 
-def compute(A, noun_verb=None):
-    if noun_verb is not None:
-        A[1:3] = noun_verb
-    i = 0
-    while A[i] != 99:
-        opcode = A[i]
-        if opcode == 1:
-            val = A[A[i + 1]] + A[A[i + 2]]
-        elif opcode == 2:
-            val = A[A[i + 1]] * A[A[i + 2]]
-        else:
-            raise NotImplementedError
+log = logging.getLogger(__name__)
+
+
+class CatchFire(Exception):
+    pass
+
+
+class IntComputer:
+    def __init__(self, reg0):
+        self.ip = 0
+        self.reg = reg0[:]
+        self.op_map = {
+            # opcode: (op, jump)
+            1: (self.op_add, 4),
+            2: (self.op_mul, 4),
+            99: (self.op_halt, 1),
+        }
+
+    def op_add(self):
+        i = self.ip
+        A = self.reg
+        val = A[A[i + 1]] + A[A[i + 2]]
         A[A[i + 3]] = val
-        i += 4
-    return A
+
+    def op_mul(self):
+        i = self.ip
+        A = self.reg
+        val = A[A[i + 1]] * A[A[i + 2]]
+        A[A[i + 3]] = val
+
+    def op_halt(self):
+        raise CatchFire
+
+    def step(self):
+        opcode = self.reg[self.ip]
+        func, jump = self.op_map[opcode]
+        func()
+        self.ip += jump
+
+    def run(self, n=10**10):
+        for i in range(n):
+            log.debug("%10d(ip%3d): %s", i, self.ip, self.reg)
+            self.step()
+
+
+def compute(A, noun_verb=None):
+    comp = IntComputer(A)
+    if noun_verb is not None:
+        comp.reg[1:3] = noun_verb
+    try:
+        comp.run()
+    except CatchFire:
+        pass
+    return comp.reg
 
 
 def part_a(data, r1=None, r2=None):
