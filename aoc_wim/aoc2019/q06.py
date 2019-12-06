@@ -2,19 +2,13 @@ import networkx as nx
 from aocd import data
 
 
-def graph(data):
-    g = nx.Graph()
-    g.add_edges_from(x.split(")") for x in data.splitlines())
-    return g
-
-
 def part_a(data):
-    g = graph(data)
+    g = nx.Graph(x.split(")") for x in data.splitlines())
     return sum(nx.shortest_path_length(g, x, "COM") for x in g.nodes)
 
 
 def part_b(data):
-    g = graph(data)
+    g = nx.Graph(x.split(")") for x in data.splitlines())
     return nx.shortest_path_length(g, "YOU", "SAN") - 2
 
 
