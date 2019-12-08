@@ -199,6 +199,14 @@ AOCR = """
 .#....#.
 
 
+#..#.
+#.#..
+##...
+#.#..
+#.#..
+#..#.
+
+
 #....
 #....
 #....
@@ -328,4 +336,4 @@ AOCR = """
 """
 
 AOCR = AOCR.strip().split("\n\n\n")
-AOCR = dict(zip(AOCR, "AABBCCEEFFGGHHHIIJJKLLNOPPRRSUXZZ"))
+AOCR = dict(zip(AOCR, "AABBCCEEFFGGHHHIIJJKKLLNOPPRRSUXZZ"))
