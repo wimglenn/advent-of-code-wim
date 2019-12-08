@@ -3,7 +3,7 @@ from aocd import data
 
 
 def part_a(data, r1=None, r2=None):
-    comp = IntComputer.fromsource(data)
+    comp = IntComputer(data)
     if r1 is not None:
         comp.reg[1] = r1
     if r2 is not None:

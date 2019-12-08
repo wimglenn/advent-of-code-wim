@@ -1,5 +1,5 @@
 import logging
-import sys
+from collections import deque
 
 
 # logging.basicConfig(level=logging.INFO, format="    %(message)s")
@@ -14,15 +14,16 @@ class IntComputer:
     class Halt(Exception):
         pass
 
-    class CatchFire(Exception):
-        pass
-
-    def __init__(self, reg0, input=input, output=sys.stdout):
-        self.input = input
-        self.output = output
+    def __init__(self, reg0, inputs=()):
+        if not isinstance(reg0, (list, tuple)):
+            reg0 = [int(x) for x in reg0.split(",")]
+        self.input = deque()
+        self.input.extend(inputs)
+        self.output = deque()
         self.op_modes = [POSITION, POSITION, POSITION]
         self.ip = 0
         self.reg = reg0
+        self._last_instruction = None
         self.op_map = {
             # opcode: (op, jump)
             1: (self.op_add, 4),
@@ -35,12 +36,6 @@ class IntComputer:
             8: (self.op_eq, 4),
             99: (self.op_halt, 1),
         }
-
-    @classmethod
-    def fromsource(cls, data):
-        reg0 = [int(x) for x in data.split(",")]
-        comp = cls(reg0)
-        return comp
 
     def op_add(self):
         x = self.reg[self.ip + 1]
@@ -63,14 +58,14 @@ class IntComputer:
         self.reg[self.reg[self.ip + 3]] = x * y
 
     def op_input(self):
-        val = self.reg[self.ip + 1]
-        self.reg[val] = int(self.input("IntComputer input --> "))
+        target = self.reg[self.ip + 1]
+        self.reg[target] = self.input.pop()
 
     def op_output(self):
         val = self.reg[self.ip + 1]
         if self.modes[0] == POSITION:
             val = self.reg[val]
-        print(val, file=self.output)
+        self.output.appendleft(val)
 
     def op_jump_t(self):
         val1 = self.reg[self.ip + 1]
@@ -123,16 +118,15 @@ class IntComputer:
         self.modes = [int(x) for x in reversed(str(opcode // 100).zfill(jump))]
         assert set(self.modes) <= {POSITION, IMMEDIATE}
         log.debug("processing opcode=%s op=%s jump=%d", opcode, op.__name__, jump)
+        self._last_instruction = op.__func__
         op()
         self.ip += jump
 
-    def run(self, max_i=5000):
-        i = 0
+    def run(self, until=None):
         while True:
             try:
                 self.step()
             except IntComputer.Halt:
                 break
-            i += 1
-            if i > max_i:
-                raise IntComputer.CatchFire
+            if self._last_instruction == until:
+                break
