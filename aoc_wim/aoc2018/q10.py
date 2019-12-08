@@ -1,9 +1,7 @@
 import re
-
 import numpy as np
 from aocd import data
-
-from ..ocr import AOCR
+from aoc_wim.ocr import AOCR
 
 
 test_data = """\
@@ -44,40 +42,25 @@ def varianceish(a):
     return a.std(axis=1)[:2].sum()
 
 
-def ocr(a, lettersize, draw=True):
+def ocr(a, lettersize):
     ps = a[:2].copy()
     ps -= ps.min(axis=1).reshape(-1, 1)
     W, H = ps.max(axis=1) + 1
-    img = np.full((H, W), ".")
+    img = np.full((H, W), 0)
+    col, row = ps
+    img[row, col] = 1
+    img = np.pad(img, ((0, 0), (1, 0)), mode="constant", constant_values=0)
+    W += 1
     h, w = lettersize
     assert h == H
-    col, row = ps
-    img[row, col] = "#"
-    img = np.pad(img, ((0, 0), (1, 0)), mode="constant", constant_values=".")
-    W += 1
     while W % w:
-        img = np.pad(img, ((0, 0), (0, 1)), mode="constant", constant_values=".")
+        img = np.pad(img, ((0, 0), (0, 1)), mode="constant", constant_values=0)
         W += 1
-    n = W // w
-    if draw:
-        for row in img:
-            print(*row, sep="")
-        print("\n")
-    letters = []
-    for i in range(n):
-        chunk = img[:, w * i : w * i + w]
-        key = "\n".join("".join(row) for row in chunk)
-        try:
-            letter = AOCR[key]
-        except KeyError:
-            print(key)
-            raise
-        letters.append(letter)
-    return "".join(letters)
+    return AOCR[img]
 
 
-def part_ab(data, debug=True, lettersize=(10, 8)):
-    numbers = [int(x) for x in re.findall("-?\d+", data)]
+def part_ab(data, lettersize=(10, 8)):
+    numbers = [int(x) for x in re.findall(r"-?\d+", data)]
     a = np.array(numbers).reshape(-1, 4).T
     t = 0
     minv = varianceish(a)
@@ -87,7 +70,7 @@ def part_ab(data, debug=True, lettersize=(10, 8)):
         minv = min(v, minv)
         if v > minv:
             a[:2] -= a[2:]  # back up one step
-            text = ocr(a, lettersize=lettersize, draw=debug)
+            text = ocr(a, lettersize=lettersize)
             return text, t
         t += 1
 
