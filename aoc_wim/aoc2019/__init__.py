@@ -15,14 +15,13 @@ class IntComputer:
         pass
 
     def __init__(self, reg0, inputs=()):
+        self.ip = 0
         if not isinstance(reg0, (list, tuple)):
             reg0 = [int(x) for x in reg0.split(",")]
-        self.input = deque()
-        self.input.extend(inputs)
-        self.output = deque()
-        self.op_modes = [POSITION, POSITION, POSITION]
-        self.ip = 0
         self.reg = reg0
+        self.input = deque(inputs)
+        self.output = deque()
+        self.modes = [POSITION, POSITION, POSITION]
         self._last_instruction = None
         self.op_map = {
             # opcode: (op, jump)
@@ -115,7 +114,7 @@ class IntComputer:
     def step(self):
         opcode = self.reg[self.ip]
         op, jump = self.op_map[opcode % 100]
-        self.modes = [int(x) for x in reversed(str(opcode // 100).zfill(jump))]
+        self.modes = [opcode // (100 * 10 ** n) % 10 for n in range(jump)]
         assert set(self.modes) <= {POSITION, IMMEDIATE}
         log.debug("processing opcode=%s op=%s jump=%d", opcode, op.__name__, jump)
         self._last_instruction = op.__func__
