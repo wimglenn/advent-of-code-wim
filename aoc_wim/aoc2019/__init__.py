@@ -113,8 +113,9 @@ class IntComputer:
 
     def step(self):
         opcode = self.reg[self.ip]
-        op, jump = self.op_map[opcode % 100]
-        self.modes = [opcode // (100 * 10 ** n) % 10 for n in range(jump)]
+        modes, opnum = divmod(opcode, 100)
+        op, jump = self.op_map[opnum]
+        self.modes = [modes // (10 ** n) % 10 for n in range(jump)]
         assert set(self.modes) <= {POSITION, IMMEDIATE}
         log.debug("processing opcode=%s op=%s jump=%d", opcode, op.__name__, jump)
         self._last_instruction = op.__func__
