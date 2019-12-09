@@ -24,7 +24,6 @@ class IntComputer:
         self.reg = defaultdict(int, dict(enumerate(reg0)))
         self.input = deque(inputs)
         self.output = deque()
-        self.modes = [POSITION, POSITION, POSITION]
         self._iterations = 0
         self._last_instruction = None
         self.op_map = {
@@ -41,129 +40,34 @@ class IntComputer:
             99: (self.op_halt, 1),
         }
 
-    def op_offset(self):
-        x = self.reg[self.ip + 1]
-        if self.modes[0] == POSITION:
-            x = self.reg[x]
-        elif self.modes[0] == RELATIVE:
-            x = self.reg[x + self.offset]
-        self.offset += x
+    def op_add(self, x, y, z):
+        self.reg[z] = self.reg[x] + self.reg[y]
 
-    def op_add(self):
-        x = self.reg[self.ip + 1]
-        if self.modes[0] == POSITION:
-            x = self.reg[x]
-        elif self.modes[0] == RELATIVE:
-            x = self.reg[x + self.offset]
-        y = self.reg[self.ip + 2]
-        if self.modes[1] == POSITION:
-            y = self.reg[y]
-        elif self.modes[1] == RELATIVE:
-            y = self.reg[y + self.offset]
-        if self.modes[2] == RELATIVE:
-            self.reg[self.reg[self.ip + 3] + self.offset] = x + y
-        else:
-            assert self.modes[2] == POSITION
-            self.reg[self.reg[self.ip + 3]] = x + y
+    def op_mul(self, x, y, z):
+        self.reg[z] = self.reg[x] * self.reg[y]
 
-    def op_mul(self):
-        x = self.reg[self.ip + 1]
-        if self.modes[0] == POSITION:
-            x = self.reg[x]
-        elif self.modes[0] == RELATIVE:
-            x = self.reg[x + self.offset]
-        y = self.reg[self.ip + 2]
-        if self.modes[1] == POSITION:
-            y = self.reg[y]
-        elif self.modes[1] == RELATIVE:
-            y = self.reg[y + self.offset]
-        if self.modes[2] == RELATIVE:
-            self.reg[self.reg[self.ip + 3] + self.offset] = x * y
-        else:
-            assert self.modes[2] == POSITION
-            self.reg[self.reg[self.ip + 3]] = x * y
+    def op_input(self, x):
+        self.reg[x] = self.input.pop()
 
-    def op_input(self):
-        # print(self.offset)
-        if self.modes[0] == POSITION:
-            target = self.reg[self.ip + 1]
-        else:
-            assert self.modes[0] == RELATIVE
-            target = self.reg[self.ip + 1] + self.offset
-        self.reg[target] = self.input.pop()
+    def op_output(self, x):
+        self.output.appendleft(self.reg[x])
 
-    def op_output(self):
-        val = self.reg[self.ip + 1]
-        if self.modes[0] == POSITION:
-            val = self.reg[val]
-        elif self.modes[0] == RELATIVE:
-            val = self.reg[val + self.offset]
-        self.output.appendleft(val)
+    def op_jump_t(self, x, y):
+        if self.reg[x]:
+            self.ip = self.reg[y] - 3
 
-    def op_jump_t(self):
-        val1 = self.reg[self.ip + 1]
-        if self.modes[0] == POSITION:
-            val1 = self.reg[val1]
-        elif self.modes[0] == RELATIVE:
-            val1 = self.reg[val1 + self.offset]
-        if not val1:
-            return
-        val2 = self.reg[self.ip + 2]
-        if self.modes[1] == POSITION:
-            val2 = self.reg[val2]
-        elif self.modes[1] == RELATIVE:
-            val2 = self.reg[val2 + self.offset]
-        self.ip = val2 - 3
+    def op_jump_f(self, x, y):
+        if not self.reg[x]:
+            self.ip = self.reg[y] - 3
 
-    def op_jump_f(self):
-        val1 = self.reg[self.ip + 1]
-        if self.modes[0] == POSITION:
-            val1 = self.reg[val1]
-        elif self.modes[0] == RELATIVE:
-            val1 = self.reg[val1 + self.offset]
-        if val1:
-            return
-        val2 = self.reg[self.ip + 2]
-        if self.modes[1] == POSITION:
-            val2 = self.reg[val2]
-        elif self.modes[1] == RELATIVE:
-            val2 = self.reg[val2 + self.offset]
-        self.ip = val2 - 3
+    def op_lt(self, x, y, z):
+        self.reg[z] = int(self.reg[x] < self.reg[y])
 
-    def op_lt(self):
-        val1 = self.reg[self.ip + 1]
-        if self.modes[0] == POSITION:
-            val1 = self.reg[val1]
-        elif self.modes[0] == RELATIVE:
-            val1 = self.reg[val1 + self.offset]
-        val2 = self.reg[self.ip + 2]
-        if self.modes[1] == POSITION:
-            val2 = self.reg[val2]
-        elif self.modes[1] == RELATIVE:
-            val2 = self.reg[val2 + self.offset]
-        if self.modes[2] == RELATIVE:
-            val3 = self.reg[self.ip + 3] + self.offset
-        else:
-            val3 = self.reg[self.ip + 3]
-        self.reg[val3] = int(val1 < val2)
+    def op_eq(self, x, y, z):
+        self.reg[z] = int(self.reg[x] == self.reg[y])
 
-    def op_eq(self):
-        val1 = self.reg[self.ip + 1]
-        if self.modes[0] == POSITION:
-            val1 = self.reg[val1]
-        elif self.modes[0] == RELATIVE:
-            val1 = self.reg[val1 + self.offset]
-        val2 = self.reg[self.ip + 2]
-        if self.modes[1] == POSITION:
-            val2 = self.reg[val2]
-        elif self.modes[1] == RELATIVE:
-            val2 = self.reg[val2 + self.offset]
-        if self.modes[2] == RELATIVE:
-            val3 = self.reg[self.ip + 3] + self.offset
-        else:
-            assert self.modes[2] == POSITION
-            val3 = self.reg[self.ip + 3]
-        self.reg[val3] = int(val1 == val2)
+    def op_offset(self, x):
+        self.offset += self.reg[x]
 
     def op_halt(self):
         raise IntComputer.Halt
@@ -172,20 +76,32 @@ class IntComputer:
         opcode = self.reg[self.ip]
         modes, opnum = divmod(opcode, 100)
         op, jump = self.op_map[opnum]
-        self.modes = [modes // (10 ** n) % 10 for n in range(jump - 1)]
-        assert set(self.modes) <= {POSITION, IMMEDIATE, RELATIVE}
+        modes = [modes // (10 ** n) % 10 for n in range(jump - 1)]
+        assert set(modes) <= {POSITION, IMMEDIATE, RELATIVE}
+        assert len(modes) + 1 == jump == op.__func__.__code__.co_argcount
+        args = []
+        for i, mode in enumerate(modes, start=1):
+            if mode == IMMEDIATE:
+                args.append(self.ip + i)
+            elif mode == POSITION:
+                args.append(self.reg[self.ip + i])
+            elif mode == RELATIVE:
+                args.append(self.reg[self.ip + i] + self.offset)
+
         log.info(
-            "%d processing ip=%-5d opcode=%-5d op=%-10s jump=%d offset=%-5d modes=%-10s reg=%s",
+            "%d processing ip=%-5d opcode=%-5d op=%-10s jump=%d offset=%-5d modes=%-10s args=%s",
             self._iterations,
             self.ip,
             opcode,
             op.__name__,
             jump,
             self.offset,
-            self.modes,
+            modes,
+            args,
         )
         self._last_instruction = op.__func__
-        op()
+        op(*args)
+        self._iterations += 1
         self.ip += jump
 
     def run(self, until=None):
@@ -194,6 +110,5 @@ class IntComputer:
                 self.step()
             except IntComputer.Halt:
                 break
-            self._iterations += 1
             if self._last_instruction is until:
                 break
