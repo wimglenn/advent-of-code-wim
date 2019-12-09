@@ -25,6 +25,7 @@ class IntComputer:
         self.input = deque(inputs)
         self.output = deque()
         self.modes = [POSITION, POSITION, POSITION]
+        self._iterations = 0
         self._last_instruction = None
         self.op_map = {
             # opcode: (op, jump)
@@ -174,7 +175,8 @@ class IntComputer:
         self.modes = [modes // (10 ** n) % 10 for n in range(jump - 1)]
         assert set(self.modes) <= {POSITION, IMMEDIATE, RELATIVE}
         log.info(
-            "processing ip=%5d opcode=%5d op=%10s jump=%5d offset=%5d modes=%s",
+            "%d processing ip=%-5d opcode=%-5d op=%-10s jump=%d offset=%-5d modes=%-10s reg=%s",
+            self._iterations,
             self.ip,
             opcode,
             op.__name__,
@@ -192,5 +194,6 @@ class IntComputer:
                 self.step()
             except IntComputer.Halt:
                 break
-            if self._last_instruction == until:
+            self._iterations += 1
+            if self._last_instruction is until:
                 break
