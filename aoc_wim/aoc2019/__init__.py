@@ -27,17 +27,16 @@ class IntComputer:
         self._iterations = 0
         self._last_instruction = None
         self.op_map = {
-            # opcode: (op, jump)
-            1: (self.op_add, 4),
-            2: (self.op_mul, 4),
-            3: (self.op_input, 2),
-            4: (self.op_output, 2),
-            5: (self.op_jump_t, 3),
-            6: (self.op_jump_f, 3),
-            7: (self.op_lt, 4),
-            8: (self.op_eq, 4),
-            9: (self.op_offset, 2),
-            99: (self.op_halt, 1),
+            1: self.op_add,
+            2: self.op_mul,
+            3: self.op_input,
+            4: self.op_output,
+            5: self.op_jump_t,
+            6: self.op_jump_f,
+            7: self.op_lt,
+            8: self.op_eq,
+            9: self.op_offset,
+            99: self.op_halt,
         }
 
     def op_add(self, x, y, z):
@@ -75,10 +74,10 @@ class IntComputer:
     def step(self):
         opcode = self.reg[self.ip]
         modes, opnum = divmod(opcode, 100)
-        op, jump = self.op_map[opnum]
-        modes = [modes // (10 ** n) % 10 for n in range(jump - 1)]
+        op = self.op_map[opnum]
+        nargs = op.__func__.__code__.co_argcount - 1
+        modes = [modes // (10 ** n) % 10 for n in range(nargs)]
         assert set(modes) <= {POSITION, IMMEDIATE, RELATIVE}
-        assert len(modes) + 1 == jump == op.__func__.__code__.co_argcount
         args = []
         for i, mode in enumerate(modes, start=1):
             if mode == IMMEDIATE:
@@ -87,14 +86,12 @@ class IntComputer:
                 args.append(self.reg[self.ip + i])
             elif mode == RELATIVE:
                 args.append(self.reg[self.ip + i] + self.offset)
-
         log.info(
-            "%d processing ip=%-5d opcode=%-5d op=%-10s jump=%d offset=%-5d modes=%-10s args=%s",
+            "%d processing ip=%-5d opcode=%-5d op=%-10s offset=%-5d modes=%-10s args=%s",
             self._iterations,
             self.ip,
             opcode,
             op.__name__,
-            jump,
             self.offset,
             modes,
             args,
@@ -102,7 +99,7 @@ class IntComputer:
         self._last_instruction = op.__func__
         op(*args)
         self._iterations += 1
-        self.ip += jump
+        self.ip += nargs + 1
 
     def run(self, until=None):
         while True:
