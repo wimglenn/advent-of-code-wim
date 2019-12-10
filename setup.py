@@ -26,6 +26,7 @@ setup(
         "numpy",
         "parse",
         "scipy",
+        "sympy",
         "fields",
         "networkx",
         "wimpy",
