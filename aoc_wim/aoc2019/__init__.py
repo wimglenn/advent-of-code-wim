@@ -73,33 +73,23 @@ class IntComputer:
 
     def step(self):
         opcode = self.reg[self.ip]
-        modes, opnum = divmod(opcode, 100)
-        op = self.op_map[opnum]
-        nargs = op.__func__.__code__.co_argcount - 1
-        modes = [modes // (10 ** n) % 10 for n in range(nargs)]
-        assert set(modes) <= {POSITION, IMMEDIATE, RELATIVE}
+        op = self.op_map[opcode % 100]
+        nargs = op.__func__.__code__.co_argcount
         args = []
-        for i, mode in enumerate(modes, start=1):
+        for i in range(1, nargs):
+            mode = opcode // (10 ** (i + 1)) % 10
             if mode == IMMEDIATE:
                 args.append(self.ip + i)
             elif mode == POSITION:
                 args.append(self.reg[self.ip + i])
             elif mode == RELATIVE:
                 args.append(self.reg[self.ip + i] + self.offset)
-        log.info(
-            "%d processing ip=%-5d opcode=%-5d op=%-10s offset=%-5d modes=%-10s args=%s",
-            self._iterations,
-            self.ip,
-            opcode,
-            op.__name__,
-            self.offset,
-            modes,
-            args,
-        )
+        e = "%4d %-10s ip=%-4d opcode=%05d  offset=%-5d args=%s"
+        log.debug(e, self._iterations, op.__name__, self.ip, opcode, self.offset, args)
         self._last_instruction = op.__func__
         op(*args)
         self._iterations += 1
-        self.ip += nargs + 1
+        self.ip += nargs
 
     def run(self, until=None):
         while True:
