@@ -106,7 +106,7 @@ def grad(a0, a):
     try:
         m = abs(Fraction(y - y0, x - x0))
     except ZeroDivisionError:
-        m = float('inf')
+        m = float("inf")
     if q % 2:
         m *= -1
     return q, m
@@ -116,7 +116,7 @@ def part_a(data):
     gradients = defaultdict(set)
     A = parsed(data)
     for i, a0 in enumerate(A):
-        for a in A[i+1:]:
+        for a in A[i + 1 :]:
             q, g = grad(a, a0)
             gradients[a0].add((q, g))
             gradients[a].add(((q + 2) % 4, -g))
@@ -128,7 +128,7 @@ def part_a(data):
 def norm2(a1, a2):
     dx = a2[0] - a1[0]
     dy = a2[1] - a1[1]
-    d2 = dx*dx + dy*dy
+    d2 = dx * dx + dy * dy
     return d2
 
 
@@ -154,7 +154,7 @@ def part_ab(data, target=200, extra_assertions=()):
                     assert extra_assertions[i] == a
                     log.info("The %dth asteroid to be vaporized is at %d,%d", i, *a)
                 if i == target:
-                    part_b_answer = 100*a[0] + a[1]
+                    part_b_answer = 100 * a[0] + a[1]
                     return part_a_answer, part_b_answer
 
 
