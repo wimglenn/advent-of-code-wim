@@ -115,11 +115,11 @@ def grad(a0, a):
 def part_a(data):
     gradients = defaultdict(set)
     A = parsed(data)
-    for a0 in A:
-        for a in A:
-            if a == a0:
-                continue
-            gradients[a0].add(grad(a, a0))
+    for i, a0 in enumerate(A):
+        for a in A[i+1:]:
+            q, g = grad(a, a0)
+            gradients[a0].add((q, g))
+            gradients[a].add(((q + 2) % 4, -g))
     n_collinear = {k: len(v) for k, v in gradients.items()}
     a, n = max(n_collinear.items(), key=itemgetter(1))
     return a, n
