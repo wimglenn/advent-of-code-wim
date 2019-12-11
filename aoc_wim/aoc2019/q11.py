@@ -2,11 +2,13 @@ from aocd import data
 from aoc_wim.aoc2019 import IntComputer
 from aoc_wim.ocr import AOCR
 from collections import defaultdict
+from collections import deque
 
 
 class Robot:
     def __init__(self, data, colour0=0, position0=0j, direction0=1j):
         self.brain = IntComputer(data)
+        self.brain.output = deque(maxlen=2)
         self.position = position0
         self.direction = direction0
         self.painted = defaultdict(int, {position0: colour0})
@@ -17,7 +19,6 @@ class Robot:
             self.brain.run(until=IntComputer.op_output)
             self.brain.run(until=IntComputer.op_output)
             turn, colour = self.brain.output
-            self.brain.output.clear()
             self.painted[self.position] = colour
             self.direction *= [1j, -1j][turn]
             self.position += self.direction
