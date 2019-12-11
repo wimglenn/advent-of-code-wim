@@ -13,7 +13,11 @@ class Amp:
         self.comps[0].input.appendleft(0)
         while True:
             for comp in self.comps:
-                comp.run(until=IntComputer.op_output)
+                try:
+                    comp.run(until=IntComputer.op_output)
+                except IntComputer.Halt:
+                    pass
+            assert comp is self.comps[-1]
             if comp._last_instruction is IntComputer.op_halt:
                 break
         return self.comps[-1].output[-1]

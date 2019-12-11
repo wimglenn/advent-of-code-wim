@@ -96,6 +96,8 @@ class IntComputer:
             try:
                 self.step()
             except IntComputer.Halt:
+                if until not in {None, IntComputer.Halt, IntComputer.op_halt}:
+                    raise
                 break
             if self._last_instruction is until:
-                break
+                return
