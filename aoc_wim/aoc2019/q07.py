@@ -16,11 +16,7 @@ class Amp:
                 try:
                     comp.run(until=IntComputer.op_output)
                 except IntComputer.Halt:
-                    pass
-            assert comp is self.comps[-1]
-            if comp._last_instruction is IntComputer.op_halt:
-                break
-        return self.comps[-1].output[-1]
+                    return self.comps[-1].output[-1]
 
 
 def max_thruster_signal(data, part="a"):
