@@ -19,29 +19,19 @@ def simulate(data, n=0):
     p = np.array([int(n) for n in ns]).reshape(-1, 3)
     v = np.zeros_like(p)
 
-    tx = None
-    ty = None
-    tz = None
-    seenx = {}
-    seeny = {}
-    seenz = {}
-
+    ts = [0, 0, 0]
+    ss = [{}, {}, {}]
     for t in range(n) or count():
 
-        sx = tuple(p[:, 0]) + tuple(v[:, 0])
-        sy = tuple(p[:, 1]) + tuple(v[:, 1])
-        sz = tuple(p[:, 2]) + tuple(v[:, 2])
-        if sx in seenx:
-            tx = t - seenx[sx]
-        seenx[sx] = t
-        if sy in seeny:
-            ty = t - seeny[sy]
-        seeny[sy] = t
-        if sz in seenz:
-            tz = t - seenz[sz]
-        seenz[sz] = t
-        if tx is not None and ty is not None and tz is not None:
-            return lcm(tx, lcm(ty, tz))
+        for i in range(3):
+            if not ts[i]:
+                s = p[:, i].tostring(), v[:, i].tostring()
+                if s in ss[i]:
+                    ts[i] = t - ss[i][s]
+                    if all(ts):
+                        tx, ty, tz = ts
+                        return lcm(tx, lcm(ty, tz))
+                ss[i][s] = t
 
         for p0, v0 in zip(p, v):
             v0 += (p0 < p).sum(axis=0) - (p0 > p).sum(axis=0)
