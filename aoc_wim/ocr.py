@@ -370,18 +370,12 @@ class DebugDict(dict):
                         return txt
         if isinstance(item, dict) and {type(k) for k in item} == {complex}:
             # sparse grid
-            sparse = np.array([(int(k.imag), int(k.real), v) for k, v in item.items()])
+            sparse = np.array([(int(-k.imag), int(k.real), v) for k, v in item.items() if v])
             h, w, _ = sparse.ptp(axis=0)
-            full = np.zeros((h + 1, w + 1), dtype=int)
+            full = np.zeros((h + 1, w + 2), dtype=int)
             rows, cols, vals = sparse.T
             full[rows - rows.min(), cols - cols.min()] = vals
-            # trim fat from left
-            while not full[:, 0].any():
-                full = full[:, 1:]
-            # trim fat from right
-            while not full[:, -2:].any():
-                full = full[:, :-1]
-            return self.__getitem__(np.flipud(full))
+            return self.__getitem__(full)
         if isinstance(item, np.ndarray):
             self.__missing__(item)
         return super(DebugDict, self).__getitem__(item)
