@@ -1,12 +1,8 @@
 from aocd import data
 from itertools import count
+from math import gcd
 import numpy as np
 import re
-
-
-def gcd(a, b):
-    """greatest common divisor"""
-    return gcd(b, a % b) if b else a
 
 
 def lcm(a, b):
@@ -15,23 +11,21 @@ def lcm(a, b):
 
 
 def simulate(data, n=0):
-    ns = re.findall(r"-?\d+", data)
-    p = np.array([int(n) for n in ns]).reshape(-1, 3)
+    p = np.array(re.findall(r"-?\d+", data)).astype(int).reshape(-1, 3)
     v = np.zeros_like(p)
 
     ts = [0, 0, 0]
-    ss = [{}, {}, {}]
+    ss = [(p[:, i].tobytes(), v[:, i].tobytes()) for i in range(3)]
     for t in range(n) or count():
 
         for i in range(3):
             if not ts[i]:
-                s = p[:, i].tostring(), v[:, i].tostring()
-                if s in ss[i]:
-                    ts[i] = t - ss[i][s]
+                s = p[:, i].tobytes(), v[:, i].tobytes()
+                if s == ss[i]:
+                    ts[i] = t
                     if all(ts):
                         tx, ty, tz = ts
                         return lcm(tx, lcm(ty, tz))
-                ss[i][s] = t
 
         for p0, v0 in zip(p, v):
             v0 += (p0 < p).sum(axis=0) - (p0 > p).sum(axis=0)

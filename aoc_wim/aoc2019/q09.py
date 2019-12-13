@@ -2,7 +2,7 @@ from aocd import data
 from aoc_wim.aoc2019 import IntComputer
 
 
-def run(data, inputs=()):
+def compute(data, inputs=()):
     comp = IntComputer(data, inputs=inputs)
     comp.run()
     result = ",".join([str(x) for x in reversed(comp.output)])
@@ -16,7 +16,7 @@ tests = {
     "104,1125899906842624,99": "1125899906842624",
 }
 for input_data, expected_output in tests.items():
-    assert run(input_data) == expected_output
+    assert compute(input_data) == expected_output
 
-print(run(data, inputs=[1]))
-print(run(data, inputs=[2]))
+print(compute(data, inputs=[1]))
+print(compute(data, inputs=[2]))
