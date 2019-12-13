@@ -60,8 +60,8 @@ def ocr(a, lettersize):
 
 
 def part_ab(data, lettersize=(10, 8)):
-    numbers = [int(x) for x in re.findall(r"-?\d+", data)]
-    a = np.array(numbers).reshape(-1, 4).T
+    numbers = re.findall(r"-?\d+", data)
+    a = np.array(numbers).astype(int).reshape(-1, 4).T
     t = 0
     minv = varianceish(a)
     while True:
