@@ -1,5 +1,10 @@
 from aocd import data
 from collections import Counter
+import bisect
+import logging
+
+
+log = logging.getLogger(__name__)
 
 
 tests = {
@@ -92,11 +97,11 @@ def make_only_trade(have, trades):
         if not any(elem in dst for src, dst in trades):
             src, dst = next((src, dst) for (src, dst) in trades if list(src) == [elem])
             if src[elem] >= need:
-                # print("trading (only)", src, dst)
+                log.debug("trading (only) %s -> %s", src, dst)
                 have -= src
                 have += dst
                 trades.remove((src, dst))
-                return True
+                return src, dst
 
 
 def make_unique_trade(have, trades):
@@ -105,10 +110,12 @@ def make_unique_trade(have, trades):
         if len(options) == 1:
             [(src, dst)] = options
             if have[elem] >= src[elem]:
-                # print("trading (unique)", src, dst)
-                have -= src
-                have += dst
-                return True
+                r = have[elem] // src[elem] - 1
+                factor = r or 1
+                log.debug("trading (unique) x%d %s -> %s", factor, src, dst)
+                have -= Counter({k: v * factor for k, v in src.items()})
+                have += Counter({k: v * factor for k, v in dst.items()})
+                return src, dst
 
 
 def get_only_trade(have, trades):
@@ -150,23 +157,37 @@ def part_a(data, fuel=1):
 
 def part_b(data):
     n_ore = 1000000000000
-    trades = parsed(data)
-    return "bleh"
+    lo = fuel = 1
+    n = part_a(data, fuel=lo)
+    assert n < n_ore
+    while True:
+        fuel *= 2
+        n = part_a(data, fuel)
+        if n < n_ore:
+            lo = fuel
+        else:
+            hi = fuel
+            break
+
+    assert lo < hi
+    assert part_a(data, lo) < n_ore
+    assert part_a(data, hi) >= n_ore
+
+    class Wrapper:
+        def __getitem__(self, item):
+            return part_a(data, fuel=item) >= n_ore
+
+    search = Wrapper()
+    pos = bisect.bisect_right(search, 0.5, lo, hi)
+    assert part_a(data, fuel=pos - 1) < n_ore
+    assert part_a(data, fuel=pos) >= n_ore
+    return pos - 1
 
 
 for test_data, (a, b) in tests.items():
     assert part_a(test_data) == a
-    # if b is not None:
-    #     assert part_b(test_data) == b
+    assert b is None or part_b(test_data) == b
 
 
-# trades = parsed(data)
-# for src, dst in trades:
-#     [elem] = list(src)
-#     print(dict(src), "<--", dict(dst))
-# print()
-
-
-result = part_a(data)
-print(result)
-assert result == 483766
+print(part_a(data))
+print(part_b(data))
