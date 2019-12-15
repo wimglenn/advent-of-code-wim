@@ -50,3 +50,31 @@ def ways(total, coins=(1, 2, 5, 10, 20, 50, 100)):
         for i in range(coin, total + 1):
             ways[i] += [way + Counter({coin: 1}) for way in ways[i - coin]]
     return ways[total]
+
+
+def dump_grid(g, clear=True):
+    transform = {"#": "⬛", ".": "  ", "O": "🤖", "T": "🥇"}
+    empty = "  "
+    print()
+    xs = [int(z.real) for z in g]
+    ys = [int(z.imag) for z in g]
+    cols = range(min(xs), max(xs) + 1)
+    rows = range(min(ys), max(ys) + 1)
+    if clear:
+        print("\033c")
+    for row in rows:
+        print(f"{row:>5d} ", end="")
+        for col in cols:
+            glyph = g.get(complex(col, row), empty)
+            glyph = transform.get(glyph, glyph)
+            print(glyph, end="")
+        print()
+    W = len(cols)
+    footer_left = f"{cols[0]}".ljust(W * 2)
+    footer_center = f"{cols[W//2]}".center(W * 2)
+    footer_right = f"{cols[-1]}".rjust(W * 2)
+    zf = zip(footer_left, footer_center, footer_right)
+    footer = [next((x for x in iter([l, c, r]) if x != " "), " ") for (l, c, r) in zf]
+    footer = "".join(footer)
+    print(" " * 6 + footer)
+    print()

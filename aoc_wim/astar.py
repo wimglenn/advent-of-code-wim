@@ -12,6 +12,7 @@ class AStar:
         inf = float("inf")
         self.fscore = defaultdict(lambda: inf, {target: self.heuristic(state0, target)})
         self.gscore = defaultdict(lambda: inf, {state0: 0})
+        self.path_length = None
 
     def heuristic(self, state0, state1):
         """estimate of distance (cost) to get from state0 to state1
@@ -44,7 +45,9 @@ class AStar:
         while heap:
             _score, _id, current_state = heapq.heappop(heap)
             if self.target_reached(current_state, self.target):
-                return self.reconstruct_path(current_state)
+                path_to_target = self.reconstruct_path(current_state)
+                self.path_length = len(path_to_target) - 1
+                return path_to_target
             self.closed.add(current_state)
             for next_state in self.adjacent(current_state):
                 if next_state in self.closed:

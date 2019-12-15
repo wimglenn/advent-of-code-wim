@@ -23,10 +23,10 @@ def plugin(year, day, data):
         [part_a] = lines
         part_b = None
     else:
-        part_a = next((s for s in lines if s.lower().startswith("part a:")), None)
-        part_b = next((s for s in lines if s.lower().startswith("part b:")), None)
-    if part_a and part_a.lower().startswith("part a:"):
-        part_a = part_a[7:].strip()
-    if part_b and part_b.lower().startswith("part b:"):
-        part_b = part_b[7:].strip()
+        part_a = next((s for s in lines if s.lower().startswith("part a")), None)
+        part_b = next((s for s in lines if s.lower().startswith("part b")), None)
+    if part_a and part_a.lower().startswith("part a"):
+        part_a = part_a.split()[-1]
+    if part_b and part_b.lower().startswith("part b"):
+        part_b = part_b.split()[-1]
     return part_a, part_b

@@ -101,3 +101,12 @@ class IntComputer:
                 break
             if self._last_instruction is until:
                 return
+
+    def freeze(self):
+        return self.ip, self.offset, tuple(self.reg.items())
+
+    def unfreeze(self, state):
+        self.ip, self.offset, reg = state
+        self.reg.clear()
+        for k, v in reg:
+            self.reg[k] = v
