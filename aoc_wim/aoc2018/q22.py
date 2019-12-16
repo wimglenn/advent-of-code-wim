@@ -1,7 +1,6 @@
 from aocd import data
 from parse import parse
-
-from ..astar import AStar
+from aoc_wim.search import AStar
 
 
 def zrange(*args):

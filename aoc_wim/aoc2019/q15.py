@@ -1,7 +1,7 @@
 from collections import deque
 from aocd import data
 from aoc_wim.aoc2019 import IntComputer
-from aoc_wim.astar import AStar
+from aoc_wim.search import AStar
 from aoc_wim.stuff import dump_grid
 
 

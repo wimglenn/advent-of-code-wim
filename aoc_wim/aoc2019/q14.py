@@ -1,7 +1,7 @@
+import logging
 from aocd import data
 from collections import Counter
-import bisect
-import logging
+from aoc_wim.search import Bisect
 
 
 log = logging.getLogger(__name__)
@@ -157,31 +157,8 @@ def part_a(data, fuel=1):
 
 def part_b(data):
     n_ore = 1000000000000
-    lo = fuel = 1
-    n = part_a(data, fuel=lo)
-    assert n < n_ore
-    while True:
-        fuel *= 2
-        n = part_a(data, fuel)
-        if n < n_ore:
-            lo = fuel
-        else:
-            hi = fuel
-            break
-
-    assert lo < hi
-    assert part_a(data, lo) < n_ore
-    assert part_a(data, hi) >= n_ore
-
-    class Wrapper:
-        def __getitem__(self, item):
-            return part_a(data, fuel=item) >= n_ore
-
-    search = Wrapper()
-    pos = bisect.bisect_right(search, 0.5, lo, hi)
-    assert part_a(data, fuel=pos - 1) < n_ore
-    assert part_a(data, fuel=pos) >= n_ore
-    return pos - 1
+    bisect = Bisect(lambda fuel: part_a(data, fuel), val=n_ore, lo=1)
+    return bisect.run()
 
 
 for test_data, (a, b) in tests.items():

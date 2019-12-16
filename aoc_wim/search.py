@@ -1,6 +1,10 @@
 import heapq
 from collections import defaultdict
 from itertools import count
+import logging
+
+
+log = logging.getLogger(__name__)
 
 
 class AStar:
@@ -61,3 +65,66 @@ class AStar:
                 fscore = tentative_gscore + self.heuristic(next_state, self.target)
                 self.fscore[next_state] = fscore
                 heapq.heappush(heap, (fscore, next(i), next_state))
+
+
+class BisectError(Exception):
+    pass
+
+
+class Bisect:
+
+    def __init__(self, callable, val=0.5, lo=None, hi=None):
+        self.callable = callable
+        self.val = val
+        self.lo = lo
+        self.hi = hi
+        self.results = {}
+
+    def discover_bounds(self):
+        step = 1
+        if self.lo is None:
+            pos = 0
+            if self.hi is not None:
+                pos = self.hi - 1
+            while True:
+                self.results[pos] = result = self.callable(pos)
+                log.debug("discovering lower bound %s: %s", pos, result)
+                if result < self.val:
+                    self.lo = pos
+                    break
+                if self.hi is not None:
+                    self.hi = min(self.hi, pos)
+                pos -= step
+                step *= 2
+        step = 1
+        if self.hi is None:
+            pos = self.lo + 1
+            while True:
+                self.results[pos] = result = self.callable(pos)
+                log.debug("discovering upper bound %s: %s", pos, result)
+                if self.val <= result:
+                    self.hi = pos
+                    break
+                self.lo = max(self.lo, pos)
+                pos += step
+                step *= 2
+        if self.lo > self.hi:
+            raise BisectError("error discovering bounds")
+        if self.results[self.lo] > self.results[self.hi]:
+            raise BisectError("callable isn't non-decreasing between %s and %s", self.lo. self.hi)
+
+    def step(self):
+        mid = self.lo + (self.hi - self.lo) // 2
+        self.results[mid] = result = self.callable(mid)
+        log.debug("bisected %s: %s", mid, result)
+        if result < self.val:
+            self.lo = mid
+        elif self.val <= result:
+            self.hi = mid
+
+    def run(self):
+        if self.lo is None or self.hi is None:
+            self.discover_bounds()
+        while self.hi - self.lo > 1:
+            self.step()
+        return self.lo
