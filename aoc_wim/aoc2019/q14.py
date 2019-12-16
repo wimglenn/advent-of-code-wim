@@ -118,30 +118,6 @@ def make_unique_trade(have, trades):
                 return src, dst
 
 
-def get_only_trade(have, trades):
-    options = {}
-    for elem, avail in have.items():
-        if elem == "ORE":
-            continue
-        elem_options = [(src, dst) for (src, dst) in trades if list(src) == [elem]]
-        if elem_options:
-            options[elem] = elem_options
-    if len(options) == 1:
-        [(elem, trades)] = options.items()
-        if len(trades) == 1:
-            [(src, dst)] = trades
-            return src, dst
-
-
-def get_any_trade(have, trades):
-    for elem, avail in have.items():
-        if elem == "ORE":
-            continue
-        for src, dst in trades:
-            if elem in src:
-                return src, dst
-
-
 def part_a(data, fuel=1):
     trades = parsed(data)
     have = Counter({"FUEL": fuel})
