@@ -29,14 +29,15 @@ for z, txt in grid.items():
         calibration += int(z.real) * int(z.imag)
 print("part a", calibration)
 
-path = "A,B,A,C,A,B,C,B,C,B\n"
-A = "R,10,R,10,R,6,R,4\n"
-B = "R,10,R,10,L,4\n"
-C = "R,4,L,4,L,10,L,10\n"
-display = "n\n"
+path = """\
+A,B,A,C,A,B,C,B,C,B
+R,10,R,10,R,6,R,4
+R,10,R,10,L,4
+R,4,L,4,L,10,L,10
+n
+"""
 comp = IntComputer(data)
 comp.reg[0] = 2
-for char in path + A + B + C + display:
-    comp.input.appendleft(ord(char))
+comp.input.extend(ord(c) for c in reversed(path))
 comp.run()
 print("part b", comp.output[0])
