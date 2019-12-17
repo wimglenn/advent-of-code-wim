@@ -53,7 +53,16 @@ def ways(total, coins=(1, 2, 5, 10, 20, 50, 100)):
 
 
 def dump_grid(g, clear=True):
-    transform = {"#": "⬛", ".": "  ", "O": "🤖", "T": "🥇"}
+    transform = {
+        "#": "⬛",
+        ".": "  ",
+        "O": "🤖",
+        "T": "🥇",
+        ">": "➡️ ",
+        "<": "⬅️ ",
+        "^": "⬆️ ",
+        "v": "⬇️ ",
+    }
     empty = "  "
     print()
     xs = [int(z.real) for z in g]
