@@ -1,10 +1,7 @@
-import logging
 from aocd import data
 from collections import Counter
 from aoc_wim.search import Bisect
-
-
-log = logging.getLogger(__name__)
+import networkx as nx
 
 
 tests = {
@@ -78,57 +75,28 @@ tests = {
 
 
 def parsed(data):
-    trades = []
+    digraph = nx.DiGraph()
     for line in data.splitlines():
         sources, sep, dest = line.partition(" => ")
-        src = Counter()
+        n0, elem0 = dest.split()
         for source in sources.split(", "):
-            n, source = source.split()
-            src[source] += int(n)
-        n, dest = dest.split()
-        dst = Counter({dest: int(n)})
-        trades.append((dst, src))
-    assert len(trades) == len({k for src, dst in trades for k in dst})
-    return trades
-
-
-def make_only_trade(have, trades):
-    for elem, need in have.items():
-        if not any(elem in dst for src, dst in trades):
-            src, dst = next((src, dst) for (src, dst) in trades if list(src) == [elem])
-            if src[elem] >= need:
-                log.debug("trading (only) %s -> %s", src, dst)
-                have -= src
-                have += dst
-                trades.remove((src, dst))
-                return src, dst
-
-
-def make_unique_trade(have, trades):
-    for elem, avail in have.items():
-        options = [(src, dst) for (src, dst) in trades if list(src) == [elem]]
-        if len(options) == 1:
-            [(src, dst)] = options
-            if have[elem] >= src[elem]:
-                r = have[elem] // src[elem] - 1
-                factor = r or 1
-                log.debug("trading (unique) x%d %s -> %s", factor, src, dst)
-                have -= Counter({k: v * factor for k, v in src.items()})
-                have += Counter({k: v * factor for k, v in dst.items()})
-                return src, dst
+            n1, elem1 = source.split()
+            digraph.add_edge(elem0, elem1, ratio=(int(n0), int(n1)))
+    return digraph
 
 
 def part_a(data, fuel=1):
-    trades = parsed(data)
-    have = Counter({"FUEL": fuel})
-    while list(have) != ["ORE"]:
-        if make_only_trade(have, trades):
-            continue
-        if make_unique_trade(have, trades):
-            continue
-        raise Exception("stuck")
-    result = have["ORE"]
-    return result
+    elems = Counter({"FUEL": fuel})
+    digraph = parsed(data)
+    for elem0 in nx.topological_sort(digraph):
+        amount = elems.pop(elem0)
+        if elem0 == "ORE":
+            assert not elems
+            return amount
+        for elem1, edge_data in digraph[elem0].items():
+            n0, n1 = edge_data["ratio"]
+            r = -(amount // -n0)  # ceiling division
+            elems[elem1] += r * n1
 
 
 def part_b(data):
