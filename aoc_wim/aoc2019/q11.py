@@ -5,11 +5,11 @@ from collections import deque
 
 
 class Robot:
-    def __init__(self, data, colour0=0, position0=0j, direction0=1j):
+    def __init__(self, data, colour0=0):
         self.brain = IntComputer(data, inputs=[colour0])
         self.brain.output = deque(maxlen=2)
-        self.position = position0
-        self.direction = direction0
+        self.position = 0
+        self.direction = -1j
         self.painted = {}
 
     def paint(self):
@@ -18,7 +18,7 @@ class Robot:
             self.brain.run(until=IntComputer.op_output)
             turn, colour = self.brain.output
             self.painted[self.position] = colour
-            self.direction *= [1j, -1j][turn]
+            self.direction *= [-1j, 1j][turn]
             self.position += self.direction
             self.brain.input.append(self.painted.get(self.position, 0))
 
