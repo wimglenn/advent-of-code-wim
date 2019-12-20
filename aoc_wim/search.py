@@ -23,11 +23,11 @@ class AStar:
         note: in order for the heuristic to be admissible, this must
         not overestimate the actual distance (i.e. be optimistic)
         """
-        return abs(state0 - state1)
+        return 1
 
     def cost(self, current_state, next_state):
         """actual delta to get from current state to an adjacent state"""
-        return abs(current_state - next_state)
+        return 1
 
     def adjacent(self, state):
         """other states reachable from given state"""
@@ -114,7 +114,7 @@ class Bisect:
             raise BisectError("callable isn't non-decreasing between %s and %s", self.lo. self.hi)
 
     def step(self):
-        mid = self.lo + (self.hi - self.lo) // 2
+        mid = (self.lo + self.hi) // 2
         self.results[mid] = result = self.callable(mid)
         log.debug("bisected %s: %s", mid, result)
         if result < self.val:
@@ -128,3 +128,7 @@ class Bisect:
         while self.hi - self.lo > 1:
             self.step()
         return self.lo
+
+
+class BFS:
+    ...
