@@ -18,9 +18,9 @@ class Network:
             try:
                 comp.run(until=IntComputer.op_output)
             except IndexError:
-                # unblock input queue (hack)
+                # attempted pop from an empty deque
                 comp.input.appendleft(-1)
-                comp.ip += 2
+                comp.step()
             if len(comp.output) >= 3:
                 # 3 outputs: packet ready to consume/transmit
                 dest = comp.output.pop()
@@ -29,9 +29,7 @@ class Network:
                 log.info("comp[%d] sends (x=%d, y=%d) to comp[%d]", i, x, y, dest)
                 if dest == 0xFF:
                     self.xy = x, y
-                    if any(c.output for c in self.comps):
-                        continue
-                    if any(c.input and [*c.input] != [-1] for c in self.comps):
+                    if any(c.output or c.input for c in self.comps):
                         continue
                     if not self.y0:
                         print("part a", y)
