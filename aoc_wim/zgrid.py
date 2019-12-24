@@ -1,12 +1,30 @@
 import string
 from collections import ChainMap
-from bidict import bidict
 import numpy as np
+import networkx as nx
+
+
+dzs = [-1j, 1, 1j, -1]
 
 
 class ZGrid:
 
-    dzs = bidict(zip("^>v<", [-1j, 1, 1j, -1]))
+    dzs = ChainMap(
+        dict(zip(dzs, dzs)),
+        dict(zip("^>v<", dzs)),
+        dict(zip("up right down left".split(), dzs)),
+        dict(zip("up right down left".upper().split(), dzs)),
+        dict(zip("URDL", dzs)),
+        dict(zip("NESW", dzs)),
+    )
+    U = N = up = north = -1j
+    R = E = right = east = 1
+    D = S = down = south = 1j
+    L = W = left = west = -1
+
+    turn_right = 1j
+    turn_left = -1j
+    turn_around = -1
 
     def __init__(self, initial_data=None, on="#", off="."):
         self.on = on
@@ -26,8 +44,33 @@ class ZGrid:
     def __getitem__(self, key):
         return self.d[key]
 
+    def __delitem__(self, key):
+        del self.d[key]
+
     def __contains__(self, item):
         return item in self.d
+
+    def __len__(self):
+        return len(self.d)
+
+    def items(self):
+        return self.d.items()
+
+    def values(self):
+        return self.d.values()
+
+    def get(self, k, default=None):
+        return self.d.get(k, default)
+
+    def near(self, z, n=4):
+        if n == 4:
+            return [z - 1j, z + 1, z + 1j, z - 1]
+        elif n == 8:
+            return [
+                z - 1 - 1j, z - 1j, z + 1 - 1j,
+                z - 1, z + 1,
+                z - 1 + 1j, z + 1j, z + 1 + 1j,
+            ]
 
     def draw(self, overlay=None, clear=False, pretty=True):
         d = self.d
@@ -40,7 +83,15 @@ class ZGrid:
             if self.d[z] in table:
                 self.d[z] = table[self.d[z]]
 
+    @property
+    def n_on(self):
+        return sum(1 for val in self.d.values() if val == self.on)
+
+    def n_on_near(self, z0, n=4):
+        return sum(1 for z in self.near(z0, n=n) if self.d.get(z) == self.on)
+
     def __array__(self):
+        """makes np.array(zgrid) work"""
         zs = np.array(list(self.d))
         xs = zs.real.astype(int)
         ys = zs.imag.astype(int)
@@ -50,6 +101,24 @@ class ZGrid:
         full = np.full((h, w), fill_value=self.off, dtype=vs.dtype)
         full[ys - ys.min(), xs - xs.min()] = vs
         return full
+
+    def graph(self, extra=()):
+        """connected components"""
+        node_glyphs = {self.on}.union(extra)
+        g = nx.Graph()
+        g.extra = {}
+        for pos, glyph in self.d.items():
+            if glyph in node_glyphs:
+                g.add_node(pos)
+                if glyph != self.on:
+                    g.extra[glyph] = pos
+                right = pos + 1
+                down = pos + 1j
+                if self.d.get(right) in node_glyphs:
+                    g.add_edge(pos, right)
+                if self.d.get(down) in node_glyphs:
+                    g.add_edge(pos, down)
+        return g
 
 
 def dump_grid(g, clear=False, pretty=True):
@@ -62,6 +131,7 @@ def dump_grid(g, clear=False, pretty=True):
         "<": "⬅️ ",
         "^": "⬆️ ",
         "v": "⬇️ ",
+        "@": "@️ ",
         0: "  ",
         1: "⬛",
     }
@@ -100,3 +170,20 @@ def array2txt(a):
     lines = ["".join(row) for row in a]
     txt = "\n".join(lines)
     return txt
+
+
+def zrange(*args):
+    if len(args) == 1:
+        start = 0
+        (stop,) = args
+        step = 1 + 1j
+    elif len(args) == 2:
+        start, stop = args
+        step = 1 + 1j
+    elif len(args) == 3:
+        start, stop, step = args
+    else:
+        raise TypeError(f"zrange expected 1-3 arguments, got {len(args)}")
+    xs = range(int(start.real), int(stop.real), int(step.real))
+    ys = range(int(start.imag), int(stop.imag), int(step.imag))
+    return [complex(x, y) for y in ys for x in xs]

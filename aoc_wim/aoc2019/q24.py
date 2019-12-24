@@ -1,6 +1,5 @@
 from aocd import data
 from aoc_wim.zgrid import ZGrid
-from collections import defaultdict
 
 test_data = """\
 ....#
@@ -11,24 +10,21 @@ test_data = """\
 
 
 def new_empty_grid():
-    grid = ZGrid(".....\n"*5)
+    grid = ZGrid(".....\n" * 5)
     del grid[2 + 2j]
     return grid
 
 
 def evolve_a(grid):
     d = {}
-    for z0, g in grid.items():
-        n_bugs_adjacent = sum(1 for z in grid.near(z0) if grid.get(z) == "#")
+    for z, g in grid.items():
+        n = grid.n_on_near(z)
         if g == "#":
-            if n_bugs_adjacent == 1:
-                d[z0] = "#"
-            else:
-                d[z0] = "."
-        elif 1 <= n_bugs_adjacent <= 2:
-            d[z0] = "#"
+            d[z] = ".#"[n == 1]
+        elif 1 <= n <= 2:
+            d[z] = "#"
         else:
-            d[z0] = g
+            d[z] = g
     grid.d = d
 
 
@@ -38,7 +34,7 @@ def part_a(data):
     while True:
         k = tuple(grid.items())
         if k in seen:
-            return sum(2**i for i, glyph in enumerate(grid.values()) if glyph == "#")
+            return sum(2 ** i for i, glyph in enumerate(grid.values()) if glyph == "#")
         seen.add(k)
         evolve_a(grid)
 
@@ -46,55 +42,55 @@ def part_a(data):
 def evolve_b(grids):
     min_grid = min(grids)
     max_grid = max(grids)
-    grids[min_grid - 1]  # add new grid above
-    grids[max_grid + 1]  # add new grid below
+    grids[min_grid - 1] = new_empty_grid()  # add new grid above
+    grids[max_grid + 1] = new_empty_grid()  # add new grid below
     new_grids = {}
     for depth, grid in grids.items():
         d = {}
         for z0, glyph in grid.items():
-            n_bugs_adjacent = 0
+            n = 0
             for z in grid.near(z0):
                 if z == 2 + 2j:
                     if depth + 1 not in grids:
                         continue
-                    grid_under = grids[depth + 1]
+                    grid_down = grids[depth + 1]
                     if z == z0 + ZGrid.down:
-                        n_bugs_adjacent += sum([grid_under[i] == "#" for i in range(5)])
+                        n += sum([grid_down[i] == "#" for i in range(5)])
                     elif z == z0 + ZGrid.left:
-                        n_bugs_adjacent += sum([grid_under[4 + i*1j] == "#" for i in range(5)])
+                        n += sum([grid_down[4 + i * 1j] == "#" for i in range(5)])
                     elif z == z0 + ZGrid.up:
-                        n_bugs_adjacent += sum([grid_under[i + 4j] == "#" for i in range(5)])
+                        n += sum([grid_down[i + 4j] == "#" for i in range(5)])
                     elif z == z0 + ZGrid.right:
-                        n_bugs_adjacent += sum([grid_under[i * 1j] == "#" for i in range(5)])
+                        n += sum([grid_down[i * 1j] == "#" for i in range(5)])
                 elif z in grid:
-                    n_bugs_adjacent += grid[z] == "#"
+                    n += grid[z] == "#"
                 else:
                     if depth - 1 not in grids:
                         continue
-                    grid_above = grids[depth-1]
+                    grid_up = grids[depth - 1]
                     assert z not in grid
                     if z.imag < 0:
-                        n_bugs_adjacent += grid_above[2+1j] == "#"
+                        n += grid_up[2 + 1j] == "#"
                     if z.imag > 4:
-                        n_bugs_adjacent += grid_above[2+3j] == "#"
+                        n += grid_up[2 + 3j] == "#"
                     if z.real < 0:
-                        n_bugs_adjacent += grid_above[1+2j] == "#"
+                        n += grid_up[1 + 2j] == "#"
                     if z.real > 4:
-                        n_bugs_adjacent += grid_above[3+2j] == "#"
+                        n += grid_up[3 + 2j] == "#"
             if glyph == "#":
-                if n_bugs_adjacent == 1:
+                if n == 1:
                     d[z0] = "#"
                 else:
                     d[z0] = "."
-            elif 1 <= n_bugs_adjacent <= 2:
+            elif 1 <= n <= 2:
                 d[z0] = "#"
             else:
                 d[z0] = glyph
         new_grids[depth] = ZGrid(d)
-    if "#" not in new_grids[min_grid-1].values():
-        del new_grids[min_grid-1]
-    if "#" not in new_grids[max_grid+1].values():
-        del new_grids[max_grid+1]
+    if "#" not in new_grids[min_grid - 1].values():
+        del new_grids[min_grid - 1]
+    if "#" not in new_grids[max_grid + 1].values():
+        del new_grids[max_grid + 1]
     grids.clear()
     grids.update(new_grids)
 
@@ -102,7 +98,7 @@ def evolve_b(grids):
 def part_b(data, t=200):
     zgrid = ZGrid(data)
     del zgrid[2 + 2j]
-    grids = defaultdict(new_empty_grid, {0: zgrid})
+    grids = {0: zgrid}
     for i in range(t):
         evolve_b(grids)
     n_bugs = 0

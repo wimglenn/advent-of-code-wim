@@ -1,23 +1,7 @@
 from aocd import data
 from parse import parse
 from aoc_wim.search import AStar
-
-
-def zrange(*args):
-    if len(args) == 1:
-        start = 0
-        (stop,) = args
-        step = 1 + 1j
-    elif len(args) == 2:
-        start, stop = args
-        step = 1 + 1j
-    elif len(args) == 3:
-        start, stop, step = args
-    else:
-        raise TypeError(f"zrange expected 1-3 arguments, got {len(args)}")
-    ys = range(int(start.imag), int(stop.imag), int(step.imag))
-    xs = range(int(start.real), int(stop.real), int(step.real))
-    return (complex(x, y) for y in ys for x in xs)
+from aoc_wim.zgrid import zrange
 
 
 class Grid:
