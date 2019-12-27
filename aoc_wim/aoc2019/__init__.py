@@ -91,6 +91,14 @@ class IntComputer:
         self._iterations += 1
         self.ip += nargs
 
+    @property
+    def output_as_text(self):
+        return "".join([chr(c) for c in reversed(self.output)])
+
+    def input_text(self, value):
+        for char in value:
+            self.input.appendleft(ord(char))
+
     def run(self, until=None):
         while True:
             try:
