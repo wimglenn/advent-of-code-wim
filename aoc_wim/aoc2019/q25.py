@@ -1,6 +1,5 @@
 import logging
 from collections import deque
-from types import SimpleNamespace
 import networkx as nx
 from aocd import data
 from aoc_wim.aoc2019 import IntComputer
@@ -41,17 +40,12 @@ def parse_room(txt):
             continue
         if not line.startswith("Command?"):
             log.info("suffix: %s", line)
-    result = SimpleNamespace(
-        name=name,
-        description=description,
-        doors=dict.fromkeys(doors),
-        items=items,
-    )
+    doors = dict.fromkeys(doors)
+    result = {"name": name, "description": description, "doors": doors, "items": items}
     return result
 
 
 class Room:
-
     def __init__(self, name, description, doors, items):
         self.name = name
         self.description = description
@@ -63,7 +57,6 @@ class Room:
 
 
 class Game:
-
     def __init__(self):
         self.comp = IntComputer(data)
         self.world = nx.Graph()
@@ -141,7 +134,8 @@ class Game:
             # entered a room
             if output.strip().startswith("=="):
                 parsed_room = parse_room(output)
-                if parsed_room.name == "Pressure-Sensitive Floor":
+                here = parsed_room["name"]
+                if here == "Pressure-Sensitive Floor":
                     if "ejected" in output:
                         if "Droids on this ship are heavier" in output:
                             self.combos[self.combo] = "too light"
@@ -152,26 +146,23 @@ class Game:
                         else:
                             log.warning("shouldn't be here: %r", output)
                 log.debug("parsed room data: %s", parsed_room)
-                if parsed_room.name not in self.rooms:
+                if here not in self.rooms:
                     log.debug("entered new room %r, adding to graph", parsed_room)
-                    new_room = self.rooms[parsed_room.name] = Room(**vars(parsed_room))
+                    new_room = self.rooms[here] = Room(**parsed_room)
                     if self.prev_room is not None:
                         back = self.inverse[self.prev_direction]
                         self.world.add_edge(
                             new_room,
                             self.prev_room,
-                            **{
-                                self.prev_direction: new_room,
-                                back: self.prev_room,
-                            },
+                            **{self.prev_direction: new_room, back: self.prev_room},
                         )
                         new_room.doors[back] = self.prev_room
                         self.prev_room.doors[self.prev_direction] = new_room
                     else:
                         self.world.add_node(new_room)
 
-                self.current_room = self.rooms[parsed_room.name]
-                if parsed_room.name == "Pressure-Sensitive Floor":
+                self.current_room = self.rooms[here]
+                if here == "Pressure-Sensitive Floor":
                     if "ejected" in output:
                         # actually we got kicked out
                         self.current_room = self.rooms["Security Checkpoint"]
@@ -215,12 +206,14 @@ class Game:
                 log.info("entering command %r", command)
 
             # continue proceeding to checkpoint
-            if self.mode == "unlock" and self.current_room.name != "Security Checkpoint":
-                command = self.find_path(to=self.rooms["Security Checkpoint"])
-                self.prev_direction = command
-                self.prev_room = self.current_room
+            if self.mode == "unlock":
+                if self.current_room.name != "Security Checkpoint":
+                    command = self.find_path(to=self.rooms["Security Checkpoint"])
+                    self.prev_direction = command
+                    self.prev_room = self.current_room
 
-            if self.mode == "unlock" and self.current_room.name == "Security Checkpoint":
+            if self.mode == "unlock" and not command:
+                assert self.current_room.name == "Security Checkpoint"
                 if self.combo is None:
                     self.combo = next(k for k, v in self.combos.items() if v == "new")
                 combo = set(self.combo)
@@ -248,6 +241,7 @@ class Game:
                     # soft dependency on https://github.com/cosminbasca/asciinet
                     try:
                         from asciinet import graph_to_ascii
+
                         print(graph_to_ascii(self.world))
                     except Exception as err:
                         log.warning("Couldn't graph the space: %r", err)
