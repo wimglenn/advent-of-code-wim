@@ -1,43 +1,222 @@
 from aocd import data
 from aoc_wim.aoc2019 import IntComputer
-from aoc_wim.stuff import dump_grid
-from bidict import bidict
+from aoc_wim.zgrid import ZGrid
 
 
-comp = IntComputer(data)
-comp.run()
+test_calibration = """\
+..#..........
+..#..........
+#######...###
+#.#...#...#.#
+#############
+..#...#...#..
+..#####...^.."""
 
-grid = {}
-z = 0
-dzs = bidict(zip("^>v<", [-1j, 1, 1j, -1]))
-for ascii_ord in reversed(comp.output):
-    txt = chr(ascii_ord)
-    if txt == "\n":
-        z += 1j - z.real
-        continue
-    grid[z] = txt
-    if txt in dzs:
-        z0 = z
-        dz0 = dzs[txt]
-    z += 1
 
-dump_grid(grid)
+test_path = """\
+#######...#####
+#.....#...#...#
+#.....#...#...#
+......#...#...#
+......#...###.#
+......#.....#.#
+^########...#.#
+......#.#...#.#
+......#########
+........#...#..
+....#########..
+....#...#......
+....#...#......
+....#...#......
+....#####......"""
 
-calibration = 0
-for z, txt in grid.items():
-    if txt == "#" and {grid.get(z + dz) for dz in dzs.inv} == {"#"}:
-        calibration += int(z.real) * int(z.imag)
-print("part a", calibration)
 
-path = """\
-A,B,A,C,A,B,C,B,C,B
-R,10,R,10,R,6,R,4
-R,10,R,10,L,4
-R,4,L,4,L,10,L,10
-n
-"""
+# this next example is from an AoC beta tester
+# https://www.reddit.com/r/adventofcode/comments/ebz338/2019_day_17_part_2_pathological_pathfinding/
+test_pathological = """\
+.........................................
+...................#############.........
+...................#.....................
+...................#.....................
+...................#.....................
+...................#.....................
+...................#.....................
+...................###########...........
+.............................#...........
+...................#######...#...........
+...................#.....#...#...........
+...................#.....#...#...........
+...................#.....#...#...........
+...................#.....#...#...........
+...................#.....#...#...........
+.###########.......#.....#...#...........
+.#.........#.......#.....#...#...........
+.#.........#.....#####...#...#...........
+.#.........#.....#.#.#...#...#...........
+.#.....#############.#...#...###########.
+.#.....#...#.....#...#...#.............#.
+.#.....#...#######...#...#####.........#.
+.#.....#.............#.......#.........#.
+.#.....#.............#.......#.........#.
+.#.....#.............#.......#.........#.
+.#.....#.........#######################.
+.#.....#.........#...#.......#...........
+.#.....#.......#######.#######...........
+.#.....#.......#.#.....#.................
+.#######.......#.#.....#.................
+...............#.#.....#.................
+...#######.....#.###########.............
+...#.....#.....#.......#...#.............
+...#.....#.....#####...#...#.............
+...#.....#.........#...#...#.............
+...#.....#.........#...#...#.............
+...#.....#.........#...#...#.............
+...#.....###########...#####.............
+...#.....................................
+...#.....................................
+...#.....................................
+...###########...........................
+.............#...........................
+.............#...........................
+.............#...........................
+.............#...........................
+.............#...........................
+...^##########...........................
+........................................."""
+
+
+def parsed(data):
+    comp = IntComputer(data)
+    comp.run()
+    txt = "".join([chr(x) for x in reversed(comp.output)])
+    grid = ZGrid(txt)
+    grid.draw()
+    return grid
+
+
+def calibration(grid):
+    result = 0
+    for z0, txt in grid.items():
+        if txt == "#" and {grid.get(z) for z in grid.near(z0)} == {"#"}:
+            result += int(z0.real) * int(z0.imag)
+    return result
+
+
+def get_path(grid, compressed=True):
+    # detect initial position and orientation
+    [(z0, glyph)] = [(k,v) for (k,v) in grid.items() if v in "^>v<"]
+    dz0 = grid.dzs[glyph]
+    [z1] = [z for z in grid.near(z0) if grid.get(z) == "#"]
+    steps = []
+
+    # orient self onto scaffold
+    if z0 + dz0 != z1:
+        if z0 + dz0 * grid.turn_right == z1:
+            steps.append("R")
+            dz0 *= grid.turn_right
+        elif z0 + dz0 * grid.turn_left == z1:
+            steps.append("L")
+            dz0 *= grid.turn_left
+        else:
+            assert z0 - dz0 == z1
+            steps.extend("RR")
+            dz0 *= grid.turn_around
+
+    # find an uncompressed path
+    z = z0
+    dz = dz0
+    while True:
+        n = 0
+        while grid.get(z + dz) == "#":
+            n += 1
+            z += dz
+        steps.append(str(n))
+        if grid.get(z + dz * grid.turn_right) == "#":
+            dz *= grid.turn_right
+            steps.append("R")
+        elif grid.get(z + dz * grid.turn_left) == "#":
+            dz *= grid.turn_left
+            steps.append("L")
+        else:
+            break
+
+    # compress path to memory requirement
+    path = ",".join(steps)
+    if compressed:
+        options = compress(path)
+        path = min(options, key=len)
+        path += "\nn\n"  # suppress "continuous video feed"
+    return path
+
+
+def chunk_choices(path):
+    choices = []
+    for i in range(1, 20):
+        chunk = path[:i]
+        if path[i:i+1] not in {"", ","}:
+            continue
+        score = len(chunk) * path.count(chunk)
+        choices.append((score, chunk))
+    choices = {chunk: score for score, chunk in sorted(choices, reverse=True)}
+    return choices
+
+
+def compress(path, mem=20):
+    results = []
+    A_choices = chunk_choices(path)
+    for A in A_choices:
+        compressed_pathA = ""
+        pathA = path
+        while pathA.startswith(A):
+            compressed_pathA += "A,"
+            pathA = pathA[len(A):].lstrip(",")
+        B_choices = chunk_choices(pathA)
+        for B in B_choices:
+            compressed_pathAB = compressed_pathA
+            pathAB = pathA
+            while pathAB.startswith((A, B)):
+                if pathAB.startswith(A):
+                    pathAB = pathAB[len(A):].lstrip(",")
+                    compressed_pathAB += "A,"
+                if pathAB.startswith(B):
+                    pathAB = pathAB[len(B):].lstrip(",")
+                    compressed_pathAB += "B,"
+            C_choices = chunk_choices(pathAB)
+            for C in C_choices:
+                compressed_pathABC = compressed_pathAB
+                pathABC = pathAB
+                while pathABC.startswith((A, B, C)):
+                    if pathABC.startswith(A):
+                        pathABC = pathABC[len(A):].lstrip(",")
+                        compressed_pathABC += "A,"
+                    if pathABC.startswith(B):
+                        pathABC = pathABC[len(B):].lstrip(",")
+                        compressed_pathABC += "B,"
+                    if pathABC.startswith(C):
+                        pathABC = pathABC[len(C):].lstrip(",")
+                        compressed_pathABC += "C,"
+                if not pathABC:
+                    result = compressed_pathABC.rstrip(",")
+                    if len(result) <= mem:
+                        results.append("\n".join([result, A, B, C]))
+    return results
+
+
+assert calibration(ZGrid(test_calibration)) == 76
+uncompressed_test_path = get_path(ZGrid(test_path), compressed=False)
+assert uncompressed_test_path == "R,8,R,8,R,4,R,4,R,8,L,6,L,2,R,4,R,4,R,8,R,8,R,8,L,6,L,2"
+assert """\
+A,B,C,B,A,C
+R,8,R,8
+R,4,R,4,R,8
+L,6,L,2""" in compress(uncompressed_test_path)
+
+
+grid = parsed(data)
+print("part a", calibration(grid))
 comp = IntComputer(data)
 comp.reg[0] = 2
-comp.input.extend(ord(c) for c in reversed(path))
+path = get_path(grid)
+comp.input_text(path)
 comp.run()
 print("part b", comp.output[0])
