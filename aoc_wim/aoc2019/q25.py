@@ -228,7 +228,8 @@ class Game:
                 else:
                     assert combo == self.inventory
                     log.info("trying combo %s", combo)
-                    command = self.unlock_direction
+                    command = self.prev_direction = self.unlock_direction
+                    self.prev_room = self.current_room
 
             # don't know what to do
             if not command:
@@ -239,6 +240,7 @@ class Game:
                 # so that pressing "enter" at the prompt adds some useful context
                 if self.world:
                     # soft dependency on https://github.com/cosminbasca/asciinet
+                    # TODO: change graph to anytree
                     try:
                         from asciinet import graph_to_ascii
 
