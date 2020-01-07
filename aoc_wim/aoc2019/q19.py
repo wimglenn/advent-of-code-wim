@@ -1,61 +1,93 @@
 from aocd import data
 from aoc_wim.aoc2019 import IntComputer
 from aoc_wim.zgrid import ZGrid, zrange
-from collections import deque
+import functools
 
 
+class OutOfBeam(Exception):
+    pass
 
-d = {}
-for z in zrange(50 + 50j):
-    comp = IntComputer(data, inputs=[int(z.real), int(z.imag)])
-    comp.output = deque(maxlen=1)
+
+@functools.lru_cache(maxsize=100**2)
+def beam(z):
+    comp = IntComputer(data, inputs=[int(z.imag), int(z.real)])
     comp.run(until=IntComputer.op_output)
-    d[z] = comp.output[0]
-
-g = ZGrid(d)
-
-def v(z):
-    comp = IntComputer(data)
-    comp.output = deque(maxlen=1)
-    comp.input.appendleft(int(z.real))
-    comp.input.appendleft(int(z.imag))
-    comp.run(until=IntComputer.op_output)
-    [val] = comp.output
-    d[z] = val
-    return val
+    [result] = comp.output
+    return result
 
 
-def wh(z):
-    z0 = z
-    if v(z) != 1:
-        raise Exception
+grid = ZGrid({z: beam(z) for z in zrange(50 + 50j)})
+print("part a", sum(grid.values()))
+
+
+def gradients(grid, d=49):
+    bottom_edge = [x + d*1j for x in range(d)]
+    right_edge = [d + y*1j for y in reversed(range(d + 1))]
+    it = iter(bottom_edge + right_edge)
+    for left in it:
+        if grid[left]:
+            break
+    for right in it:
+        if not grid[right]:
+            break
+    m1 = left.imag/left.real
+    m2 = right.imag/right.real
+    return m1, m2
+
+
+def refine(m1, m2, x=2000):
+    m = (m1 + m2) / 2
+    z0 = x + int(m*x)*1j
+    if beam(z0) != 1:
+        raise OutOfBeam
+    left = z0 - 1
+    right = z0 + 1
+    while beam(left):
+        left -= 1
+    while beam(right):
+        right += 1
+    m1 = left.imag/left.real
+    m2 = right.imag/right.real
+    return m1, m2
+
+
+def beam_w_h(z):
+    if beam(z) != 1:
+        raise OutOfBeam
     w = 0
     while True:
         w += 1
-        z += 1
-        if not v(z):
+        if not beam(z + w):
             break
-    z = z0
     h = 0
     while True:
         h += 1
-        z += 1j
-        if not v(z):
+        if not beam(z + h*1j):
             break
     return w, h
 
 
-# print(wh(45+19j))  # 3, 6
-# z = 45*f+19j*f
+def find_in_neighbourhood(z0, r=10, d=100):
+    results = []
+    for z in zrange(z0 - r - r*1j, z0 + r + r*1j):
+        try:
+            w, h = beam_w_h(z)
+        except OutOfBeam:
+            print(z, "--> out")
+            continue
+        print(z, "-->", (w, h))
+        if (w, h) == (d, d):
+            results.append(z)
+    z = min(results, key=abs)
+    print(results)
+    result = int(z.real)*10000 + int(z.imag)
+    return result
 
-x = 424
-y = 964
-W = 1
 
-for dx in range(-W, W+1):
-    for dy in range(-W, W+1):
-        z = (x + dx) + (y + dy)*1j
-        r = wh(z)
-        print(z, "-->", r)
-        if r == (100, 100):
-            print("boom -> ", int(z.real)*10000 + int(z.imag))
+d = 100
+m1, m2 = gradients(grid)
+m1, m2 = refine(m1, m2)
+x = (d + m2*d) / (m1 - m2)
+y = m1*x - d
+z_approx = int(x) + int(y)*1j
+print("part b", find_in_neighbourhood(z_approx, d=d))
