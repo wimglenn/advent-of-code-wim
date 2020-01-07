@@ -1,6 +1,6 @@
 from aocd import data
 from aoc_wim.aoc2019 import IntComputer
-from aoc_wim.zgrid import ZGrid, zrange
+from aoc_wim.zgrid import ZGrid
 from aoc_wim.search import Bisect
 import functools
 
@@ -17,20 +17,24 @@ def beam(z):
     return result
 
 
-grid = ZGrid({z: beam(z) for z in zrange(50 + 50j)})
+print("populating 50x50 zgrid...")
+grid = ZGrid()
+x0 = 0
+for y in range(50):
+    on = False
+    for x in range(x0, 50):
+        z = x + y*1j
+        val = grid[z] = beam(z)
+        if not on and val:
+            on = True
+            x0 = x
+        if on and not val:
+            break
+grid.draw()
 print("part a", sum(grid.values()))
 
 
-def gradient(grid, d=49):
-    # gradient of the left edge of the tractor beam
-    bottom_edge = [x + d*1j for x in range(d)]
-    right_edge = [d + y*1j for y in reversed(range(d + 1))]
-    z = next(z for z in bottom_edge + right_edge if grid[z])
-    grad = z.imag/z.real
-    return grad
-
-
-def find_left_edge_of_beam(y, gradient):
+def left_edge_of_beam(y, gradient):
     x = int(y / gradient)
     z = x + y*1j
     if beam(z):
@@ -44,25 +48,25 @@ def find_left_edge_of_beam(y, gradient):
     return z
 
 
-print("estimating gradient...")
-m = gradient(grid)
+print("gradient estimate...")
+m = y / x0
 print("gradient -->", m)
 print("refining estimate...")
-z = find_left_edge_of_beam(y=2000, gradient=m)
+z = left_edge_of_beam(2000, gradient=m)
 m = z.imag/z.real
 print("gradient -->", m)
 
 
-def check(row, gradient=m):
-    z = find_left_edge_of_beam(row, gradient)
+def check(y, gradient=m):
+    z = left_edge_of_beam(y, gradient)
     val = beam(z + d - d * 1j)
-    print(f"y={row}", "wide" if val else "narrow")
+    print(f"y={y}", "wide" if val else "nary")
     return val
 
 
 d = 99
 bisect = Bisect(check, lo=d)
 print("bisecting...")
-row = bisect.run() + 1
-z = find_left_edge_of_beam(row, m) - d * 1j
+y = bisect.run() + 1
+z = left_edge_of_beam(y, m) - d * 1j
 print("part b", int(z.real)*10000 + int(z.imag))
