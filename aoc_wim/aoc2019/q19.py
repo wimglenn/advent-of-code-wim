@@ -60,7 +60,7 @@ print("gradient -->", m)
 def check(y, gradient=m):
     z = left_edge_of_beam(y, gradient)
     val = beam(z + d - d * 1j)
-    print(f"y={y}", "wide" if val else "nary")
+    print(f"y={y}", "wide" if val else "narrow")
     return val
 
 
