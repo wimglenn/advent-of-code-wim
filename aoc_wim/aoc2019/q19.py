@@ -1,6 +1,7 @@
 from aocd import data
 from aoc_wim.aoc2019 import IntComputer
 from aoc_wim.zgrid import ZGrid, zrange
+from aoc_wim.search import Bisect
 import functools
 
 
@@ -20,74 +21,48 @@ grid = ZGrid({z: beam(z) for z in zrange(50 + 50j)})
 print("part a", sum(grid.values()))
 
 
-def gradients(grid, d=49):
+def gradient(grid, d=49):
+    # gradient of the left edge of the tractor beam
     bottom_edge = [x + d*1j for x in range(d)]
     right_edge = [d + y*1j for y in reversed(range(d + 1))]
-    it = iter(bottom_edge + right_edge)
-    for left in it:
-        if grid[left]:
-            break
-    for right in it:
-        if not grid[right]:
-            break
-    m1 = left.imag/left.real
-    m2 = right.imag/right.real
-    return m1, m2
+    z = next(z for z in bottom_edge + right_edge if grid[z])
+    grad = z.imag/z.real
+    return grad
 
 
-def refine(m1, m2, x=2000):
-    m = (m1 + m2) / 2
-    z0 = x + int(m*x)*1j
-    if beam(z0) != 1:
-        raise OutOfBeam
-    left = z0 - 1
-    right = z0 + 1
-    while beam(left):
-        left -= 1
-    while beam(right):
-        right += 1
-    m1 = left.imag/left.real
-    m2 = right.imag/right.real
-    return m1, m2
+def find_left_edge_of_beam(y, gradient):
+    x = int(y / gradient)
+    z = x + y*1j
+    if beam(z):
+        while beam(z - 1):
+            z -= 1
+    else:
+        while not beam(z + 1):
+            z += 1
+        z += 1
+    assert beam(z) and not beam(z - 1)
+    return z
 
 
-def beam_w_h(z):
-    if beam(z) != 1:
-        raise OutOfBeam
-    w = 0
-    while True:
-        w += 1
-        if not beam(z + w):
-            break
-    h = 0
-    while True:
-        h += 1
-        if not beam(z + h*1j):
-            break
-    return w, h
+print("estimating gradient...")
+m = gradient(grid)
+print("gradient -->", m)
+print("refining estimate...")
+z = find_left_edge_of_beam(y=2000, gradient=m)
+m = z.imag/z.real
+print("gradient -->", m)
 
 
-def find_in_neighbourhood(z0, r=10, d=100):
-    results = []
-    for z in zrange(z0 - r - r*1j, z0 + r + r*1j):
-        try:
-            w, h = beam_w_h(z)
-        except OutOfBeam:
-            print(z, "--> out")
-            continue
-        print(z, "-->", (w, h))
-        if (w, h) == (d, d):
-            results.append(z)
-    z = min(results, key=abs)
-    print(results)
-    result = int(z.real)*10000 + int(z.imag)
-    return result
+def check(row, gradient=m):
+    z = find_left_edge_of_beam(row, gradient)
+    val = beam(z + d - d * 1j)
+    print(f"y={row}", "wide" if val else "narrow")
+    return val
 
 
-d = 100
-m1, m2 = gradients(grid)
-m1, m2 = refine(m1, m2)
-x = (d + m2*d) / (m1 - m2)
-y = m1*x - d
-z_approx = int(x) + int(y)*1j
-print("part b", find_in_neighbourhood(z_approx, d=d))
+d = 99
+bisect = Bisect(check, lo=d)
+print("bisecting...")
+row = bisect.run() + 1
+z = find_left_edge_of_beam(row, m) - d * 1j
+print("part b", int(z.real)*10000 + int(z.imag))
