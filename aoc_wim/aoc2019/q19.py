@@ -28,6 +28,8 @@ for y in range(50):
         if not on and val:
             on = True
             x0 = x
+            if x0:
+                m = y / x0
         if on and not val:
             break
 grid.draw()
@@ -48,13 +50,11 @@ def left_edge_of_beam(y, gradient):
     return z
 
 
-print("gradient estimate...")
-m = y / x0
-print("gradient -->", m)
-print("refining estimate...")
+print("initial gradient is approx -->", m)
+print("refining gradient estimate -->", end=" ")
 z = left_edge_of_beam(2000, gradient=m)
 m = z.imag/z.real
-print("gradient -->", m)
+print(m)
 
 
 def check(y, gradient=m):
