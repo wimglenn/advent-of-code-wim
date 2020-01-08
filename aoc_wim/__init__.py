@@ -4,7 +4,7 @@ import runpy
 import sys
 
 
-__version__ = "2019.1"
+__version__ = "2020.1"
 
 
 def plugin(year, day, data):
