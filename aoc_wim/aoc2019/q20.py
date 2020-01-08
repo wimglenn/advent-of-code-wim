@@ -1,8 +1,10 @@
-from aocd import data, submit
+from aocd import data
 from aoc_wim.zgrid import ZGrid
 from aoc_wim.search import AStar
-import string
 from bidict import bidict
+import string
+import numpy as np
+
 
 
 test_data = """\
@@ -84,86 +86,57 @@ RE....#.#                           #......RF
                A O F   N                     
                A A D   M                     """
 
-# data = test_data
-grid = ZGrid(data)
 
-
-
+grid = ZGrid(data, on=".", off="#")
+h, w = np.array(grid).shape
 dzs = [-1j, 1, 1j, -1]
 
-portals = {}
-for pos, c in grid.d.items():
-    if c in string.ascii_uppercase:
-        z0 = None
+# parse the warps
+outside = {}
+inside = {}
+for z, glyph in grid.items():
+    if glyph in string.ascii_uppercase:
         for dz in dzs:
-            z = pos + dz
-            if grid.d.get(z) == ".":
-                z0 = z
-            if grid.d.get(z, ".") in string.ascii_uppercase:
-                pos2 = z
-                c2 = grid.d.get(z)
-        if z0 is None:
-            continue
-        if pos.real < pos2.real:
-            name = c + c2
-        elif pos.imag < pos2.imag:
-            name = c + c2
-        else:
-            name = c2 + c
-        if name not in portals:
-            portals[name] = []
-        portals[name].append(z0)
+            if grid.get(z + dz) == ".":
+                zp = z + dz  # actual position of portal
+                name = glyph + grid.get(z - dz)  # add other letter
+                if 3 < z.real < w - 3 and 3 < z.imag < h - 3:
+                    side = inside
+                else:
+                    side = outside
+                if zp - z in {1j, 1}:
+                    name = name[::-1]  # reverse the label
+                side[name] = zp
+                break
 
+state0 = outside.pop("AA")
+target = outside.pop("ZZ")
+assert outside.keys() == inside.keys()
+warps = bidict({v: outside[k] for k, v in inside.items()})
 
-warps = bidict()
-for name, vals in portals.items():
-    if len(vals) == 2:
-        z0, z1 = vals
-        warps[z0] = z1
-    elif name == "AA":
-        [state0] = vals
-    elif name == "ZZ":
-        [target] = vals
-        # target -= 1j
-
-import numpy as np
-h, w = np.array(grid).shape
-h //= 2
-w //= 2
-warps2 = bidict()
-for z0, z1 in warps.items():
-    z_in, z_out = sorted([z0, z1], key=lambda x: abs(x-(w+h*1j)))
-    warps2[z_in] = z_out
-
-warps = warps2
-
-d = grid.d
 
 class Q20AStar(AStar):
 
-    def __init__(self):
+    def __init__(self, part="a"):
+        self.d_level = 1 if part == "b" else 0
         AStar.__init__(self, (state0, 0), (target, 0))
 
     def adjacent(self, state):
         z0, level = state
         if z0 in warps:
-            print("warp", z0, warps[z0])
-            yield warps[z0], level + 1
+            yield warps[z0], level + self.d_level
         if z0 in warps.inv:
-            print("warp_inv", z0, warps.inv[z0])
-            if level > 0:
-                yield warps.inv[z0], level - 1
+            if level > 0 or self.d_level == 0:
+                yield warps.inv[z0], level - self.d_level
         for dz in dzs:
             z = z0 + dz
-            if d.get(z) == ".":
-                # print(z0, z)
+            if grid.get(z) == ".":
                 yield z, level
 
-    # def heuristic(self, state0, state1):
-    #     pass
-
-astar = Q20AStar()
+astar = Q20AStar(part="a")
 astar.run()
 print(astar.path_length)
-submit((astar.path_length))
 
+astar = Q20AStar(part="b")
+astar.run()
+print(astar.path_length)
