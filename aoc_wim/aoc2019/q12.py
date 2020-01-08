@@ -27,8 +27,7 @@ def simulate(data, n=0):
                         tx, ty, tz = ts
                         return lcm(tx, lcm(ty, tz))
 
-        for p0, v0 in zip(p, v):
-            v0 += (p0 < p).sum(axis=0) - (p0 > p).sum(axis=0)
+        v += np.sign(p[:, None, :] - p).sum(axis=0)
         p += v
 
     pe = abs(p).sum(axis=1)
