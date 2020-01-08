@@ -51,6 +51,8 @@ class AStar:
             if self.target_reached(current_state, self.target):
                 path_to_target = self.reconstruct_path(current_state)
                 self.path_length = len(path_to_target) - 1
+                if self.target is None:
+                    self.target = current_state
                 return path_to_target
             self.closed.add(current_state)
             for next_state in self.adjacent(current_state):

@@ -1,6 +1,6 @@
 import logging
 from collections import deque
-import networkx as nx
+import anytree
 from aocd import data
 from aoc_wim.aoc2019 import IntComputer
 from itertools import combinations
@@ -45,7 +45,7 @@ def parse_room(txt):
     return result
 
 
-class Room:
+class Room(anytree.NodeMixin):
     def __init__(self, name, description, doors, items):
         self.name = name
         self.description = description
@@ -59,7 +59,7 @@ class Room:
 class Game:
     def __init__(self):
         self.comp = IntComputer(data)
-        self.world = nx.Graph()
+        self.root = None
         self.comp.input = self
         self.command_queue = deque()
         self.shortcuts = {
@@ -86,6 +86,17 @@ class Game:
         self.mode = "explore"  # or "unlock"
         self.combo = None
 
+    def shortest_path(self, to):
+        to_path = to.path
+        path = []
+        for room in reversed(self.current_room.path):
+            if room in to_path:
+                to_path = to_path[to_path.index(room):]
+                path.extend(to_path)
+                break
+            path.append(room)
+        return path
+
     def find_path(self, to=None):
         last_step = None
         if to is None:
@@ -99,7 +110,7 @@ class Game:
                     break
             else:
                 return
-        intermediate_rooms = nx.shortest_path(self.world, self.current_room, to)
+        intermediate_rooms = self.shortest_path(to=to)
         path = []
         for left, right in zip(intermediate_rooms, intermediate_rooms[1:]):
             direction = next(d for d, r in left.doors.items() if r is right)
@@ -150,16 +161,12 @@ class Game:
                     log.debug("entered new room %r, adding to graph", parsed_room)
                     new_room = self.rooms[here] = Room(**parsed_room)
                     if self.prev_room is not None:
+                        new_room.parent = self.prev_room
                         back = self.inverse[self.prev_direction]
-                        self.world.add_edge(
-                            new_room,
-                            self.prev_room,
-                            **{self.prev_direction: new_room, back: self.prev_room},
-                        )
                         new_room.doors[back] = self.prev_room
                         self.prev_room.doors[self.prev_direction] = new_room
                     else:
-                        self.world.add_node(new_room)
+                        self.root = new_room
 
                 self.current_room = self.rooms[here]
                 if here == "Pressure-Sensitive Floor":
@@ -228,7 +235,8 @@ class Game:
                 else:
                     assert combo == self.inventory
                     log.info("trying combo %s", combo)
-                    command = self.unlock_direction
+                    command = self.prev_direction = self.unlock_direction
+                    self.prev_room = self.current_room
 
             # don't know what to do
             if not command:
@@ -237,14 +245,8 @@ class Game:
 
             if not command:
                 # so that pressing "enter" at the prompt adds some useful context
-                if self.world:
-                    # soft dependency on https://github.com/cosminbasca/asciinet
-                    try:
-                        from asciinet import graph_to_ascii
-
-                        print(graph_to_ascii(self.world))
-                    except Exception as err:
-                        log.warning("Couldn't graph the space: %r", err)
+                if self.root:
+                    print(anytree.RenderTree(self.root))
                 print("current room:", self.current_room.name)
                 print(self.current_room.description)
                 print("doors:", "/".join(self.current_room.doors))
