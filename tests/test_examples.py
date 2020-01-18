@@ -7,7 +7,7 @@ from aoc_wim import plugin
 
 
 here = pathlib.Path(__file__).parent
-data_samples = here.joinpath("data").glob("*.txt")
+data_samples = sorted(here.joinpath("data").glob("*.txt"))
 
 
 @pytest.mark.parametrize("example_path", data_samples, ids=attrgetter("name"))
