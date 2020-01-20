@@ -13,7 +13,7 @@ def n(row, col):
     return i // 2
 
 
-def code(row, col, code0=20151125, m=252533, d=33554393):
+def get_code(row, col, code0=20151125, m=252533, d=33554393):
     i = n(row, col)
     code = code0
     for _ in range(i - 1):
@@ -21,5 +21,4 @@ def code(row, col, code0=20151125, m=252533, d=33554393):
     return code
 
 
-row, col = parsed(data)
-print(code(row, col))
+print(get_code(*parsed(data)))
