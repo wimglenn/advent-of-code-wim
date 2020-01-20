@@ -3,8 +3,8 @@ from itertools import combinations
 
 from aocd import data
 
-from ..stuff import prod
-from ..stuff import subset_sum
+from aoc_wim.stuff import prod
+from aoc_wim.stuff import subset_sum
 
 
 def parsed(data, n_groups):

@@ -2,17 +2,7 @@ from collections import Counter
 
 from aocd import data
 
-from ..stuff import rsubset_sum
-from ..stuff import subset_sum
-
-
-test_data = """\
-20
-15
-10
-5
-5
-"""
+from aoc_wim.stuff import subset_sum
 
 
 def part_a(vals, target, impl=subset_sum):
@@ -24,12 +14,7 @@ def part_b(vals, target, impl=subset_sum):
     return counter[min(counter)]
 
 
-test_vals = [int(n) for n in test_data.splitlines()]
-for impl in rsubset_sum, subset_sum:
-    assert part_a(test_vals, target=25, impl=impl) == 4
-    assert part_b(test_vals, target=25, impl=impl) == 3
-
-
-vals = [int(n) for n in data.splitlines()]
-print(part_a(vals, target=150))
-print(part_b(vals, target=150))
+if __name__ == "__main__":
+    vals = [int(n) for n in data.splitlines()]
+    print(part_a(vals, target=150))
+    print(part_b(vals, target=150))

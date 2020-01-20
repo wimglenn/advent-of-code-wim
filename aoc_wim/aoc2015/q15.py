@@ -2,12 +2,6 @@ from aocd import data
 from parse import parse
 
 
-test_data = """\
-Butterscotch: capacity -1, durability -2, flavor 6, texture 3, calories 8
-Cinnamon: capacity 2, durability 3, flavor -2, texture -1, calories 3
-"""
-
-
 def parsed(data):
     template = "{name}: capacity {:d}, durability {:d}, flavor {:d}, texture {:d}, calories {:d}"
     ingredients = []
@@ -47,8 +41,5 @@ def best_score(data, cal_target=None):
     return best
 
 
-assert best_score(test_data) == 62842880
 print(best_score(data))
-
-assert best_score(test_data, cal_target=500) == 57600000
 print(best_score(data, cal_target=500))

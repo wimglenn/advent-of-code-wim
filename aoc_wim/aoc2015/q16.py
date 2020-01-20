@@ -39,4 +39,4 @@ def find_sue(**kwargs):
 
 
 print(find_sue())
-print(find_sue(cats=gt, trees=gt, pomeranians=lt, goldfish=lt,))
+print(find_sue(cats=gt, trees=gt, pomeranians=lt, goldfish=lt))
