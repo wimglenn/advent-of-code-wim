@@ -38,16 +38,6 @@ def is_nice_b(s):
     return has_pair(s) and has_skip_repeat(s)
 
 
-assert is_nice_a("ugknbfddgicrmopn")
-assert is_nice_a("aaa")
-assert not is_nice_a("jchzalrnumimnmhp")
-assert not is_nice_a("haegwjzuvuyypxyu")
-assert not is_nice_a("dvszwmarrgswjxmb")
-assert is_nice_b("qjhvhtzxzqqjkmpb")
-assert is_nice_b("xxyxx")
-assert not is_nice_b("uurcxstgmygtbstg")
-assert not is_nice_b("ieodomkazucvgmuy")
-
 words = data.splitlines()
 print("part a:", len([w for w in words if is_nice_a(w)]))
 print("part b:", len([w for w in words if is_nice_b(w)]))
