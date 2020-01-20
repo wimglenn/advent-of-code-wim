@@ -8,6 +8,8 @@ from aoc_wim import plugin
 
 here = pathlib.Path(__file__).parent
 data_samples = sorted(here.joinpath("data").glob("*.txt"))
+slow = {"2015_04_a.txt", "2015_04_b.txt"}
+data_samples = [p for p in data_samples if p.name not in slow]
 
 
 @pytest.mark.parametrize("input_file", data_samples, ids=attrgetter("name"))
