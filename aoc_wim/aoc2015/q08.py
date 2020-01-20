@@ -1,12 +1,6 @@
 from aocd import data
 
 
-test_data = r'''""
-"abc"
-"aaa\"aaa"
-"\x27"'''
-
-
 def tokens(s):
     iterator = iter(s)
     for char in iterator:
@@ -39,9 +33,6 @@ def length_diff(data):
 def encoded_diff(data):
     return sum(len("".join(encoder(line))) - len(line) for line in data.splitlines())
 
-
-assert length_diff(test_data) == 12
-assert encoded_diff(test_data) == 19
 
 print(length_diff(data))
 print(encoded_diff(data))

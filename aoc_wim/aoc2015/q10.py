@@ -9,11 +9,8 @@ def look_and_say(s, n=1):
     return s
 
 
-assert look_and_say("211") == "1221"
-assert look_and_say("1", n=5) == "312211"
-
-a = look_and_say(data, n=40)
-print("part a:", len(a))
-
-b = look_and_say(a, n=50 - 40)
-print("part b:", len(b))
+if __name__ == "__main__":
+    a = look_and_say(data, n=40)
+    print("part a:", len(a))
+    b = look_and_say(a, n=50 - 40)
+    print("part b:", len(b))
