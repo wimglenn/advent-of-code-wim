@@ -1,11 +1,9 @@
 from aocd import data
 
 
-def parsed(data):
-    words = data.split()
-    row = int(words[-3].rstrip(","))
-    col = int(words[-1].rstrip("."))
-    return row, col
+words = data.split()
+row = int(words[-3].rstrip(","))
+col = int(words[-1].rstrip("."))
 
 
 def n(row, col):
@@ -13,12 +11,11 @@ def n(row, col):
     return i // 2
 
 
-def get_code(row, col, code0=20151125, m=252533, d=33554393):
-    i = n(row, col)
-    code = code0
-    for _ in range(i - 1):
-        code = m * code % d
-    return code
+m = 252533
+d = 33554393
+i = n(row, col)
+code = 20151125
+for _ in range(1, i):
+    code = m * code % d
 
-
-print(get_code(*parsed(data)))
+print(code)
