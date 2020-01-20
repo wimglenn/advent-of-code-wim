@@ -46,17 +46,7 @@ class Computer:
             self.jmp(offset)
 
 
-test_data = """\
-inc a
-jio a, +2
-tpl a
-inc a
-"""
-
-
-computer = Computer(instructions=test_data)
-computer.compute()
-assert computer.registers["a"] == 2
+computer = Computer()
 
 computer.reset(instructions=data)
 computer.compute()

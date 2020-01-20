@@ -58,10 +58,5 @@ def solve(data, n_groups):
         return prod(group1)
 
 
-test_data = "1 2 3 4 5 7 8 9 10 11"
-
-assert solve(test_data, n_groups=3) == 99
-assert solve(test_data, n_groups=4) == 44
-
 print(solve(data, n_groups=3))
 print(solve(data, n_groups=4))
