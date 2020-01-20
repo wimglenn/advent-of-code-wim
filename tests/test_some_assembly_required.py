@@ -21,5 +21,6 @@ expected = {
     "y": 456,
 }
 
+
 def test_circuit():
     assert compute(data) == expected
