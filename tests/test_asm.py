@@ -8,7 +8,7 @@ inc a
 """
 
 
-def test_example():
+def test_simple_jump():
     computer = q23.Computer(instructions=data)
     computer.compute()
     assert computer.registers["a"] == 2

@@ -46,13 +46,14 @@ class Computer:
             self.jmp(offset)
 
 
-computer = Computer()
+if __name__ == "__main__":
+    computer = Computer()
 
-computer.reset(instructions=data)
-computer.compute()
-print(computer.registers["b"])
+    computer.reset(instructions=data)
+    computer.compute()
+    print(computer.registers["b"])
 
-computer.reset(instructions=data)
-computer.registers["a"] = 1
-computer.compute()
-print(computer.registers["b"])
+    computer.reset(instructions=data)
+    computer.registers["a"] = 1
+    computer.compute()
+    print(computer.registers["b"])
