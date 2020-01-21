@@ -1,7 +1,6 @@
-import heapq
-
 from aocd import data
 from fields import Fields
+from aoc_wim.search import AStar
 
 
 class Spell(Fields.name.cost.duration[0].damage[0].healing[0].armor[0].mana[0]):
@@ -36,6 +35,7 @@ class GameState:
         to_move="player",
         history=(),
         spent=0,
+        part="a",
     ):
         self.player_hp = player_hp
         self.mana = mana
@@ -43,15 +43,7 @@ class GameState:
         self.to_move = to_move
         self.history = history
         self.spent = spent
-
-    def __repr__(self):
-        return "GameState({}player={}+{}, {}boss={})".format(
-            {"player": "*", "boss": ""}[self.to_move],
-            self.player_hp,
-            self.mana,
-            {"player": "", "boss": "*"}[self.to_move],
-            self.boss_hp,
-        )
+        self.part = part
 
     @property
     def winner(self):
@@ -67,14 +59,11 @@ class GameState:
                 if self.boss_hp <= spells["Poison"].damage:
                     return "player"
 
-    def __lt__(self, other):  # needed for min-heap
-        return self.spent < other.spent
-
     @property
     def active_spells(self):
         return {move for move, duration_left in self.history if duration_left > 0}
 
-    def next_states(self, hard_mode=False):
+    def next_states(self):
         if self.winner is not None:
             return []
 
@@ -108,13 +97,15 @@ class GameState:
                     to_move="player",
                     history=self.history,
                     spent=self.spent,
+                    part=self.part,
                 )
             ]
 
         assert self.to_move == "player"
 
         moves = []
-        if hard_mode:
+        if self.part == "b":
+            # hard mode!
             player_hp -= 1
             if player_hp <= 0:
                 return moves
@@ -130,6 +121,7 @@ class GameState:
                         to_move="boss",
                         history=self.history + [(spell.name, spell.duration)],
                         spent=self.spent + spell.cost,
+                        part=self.part,
                     )
                 )
 
@@ -144,25 +136,65 @@ class GameState:
                         to_move="boss",
                         history=self.history + [(spell.name, 0)],
                         spent=self.spent + spell.cost,
+                        part=self.part,
                     )
                 )
 
         return moves
 
+    def freeze(self):
+        tup = (
+            self.player_hp,
+            self.mana,
+            self.boss_hp,
+            self.to_move,
+            frozenset(self.history),
+            self.spent,
+            self.part,
+        )
+        return tup
 
-def bfs(state0, hard_mode=False):
-    queue = [(state0.spent, state0)]  # min-heap
-    while queue:
-        spent, state = heapq.heappop(queue)
-        if state.winner == "player":
-            return spent
-        if state.winner is None:
-            for child in state.next_states(hard_mode=hard_mode):
-                heapq.heappush(queue, (child.spent, child))
+    @classmethod
+    def unfreeze(cls, tup):
+        return cls(*tup)
+
+    def __eq__(self, other):
+        if not isinstance(other, GameState):
+            return NotImplemented
+        return self.freeze() == other.freeze()
+
+    def __hash__(self):
+        return hash(self.freeze())
 
 
-min_spent = bfs(GameState())
-min_spent_hard = bfs(GameState(), hard_mode=True)
+class Q22AStar(AStar):
+    def __init__(self, part="a"):
+        state0 = GameState(part=part).freeze()
+        AStar.__init__(self, state0, None)
 
-print(min_spent)
-print(min_spent_hard)
+    def target_reached(self, current_state, target):
+        game = GameState.unfreeze(current_state)
+        return game.winner == "player"
+
+    def adjacent(self, state):
+        game = GameState.unfreeze(state)
+        result = [s.freeze() for s in game.next_states()]
+        return result
+
+    def cost(self, state0, state1):
+        if state1 is None:
+            return 0
+        game0 = GameState.unfreeze(state0)
+        game1 = GameState.unfreeze(state1)
+        return abs(game1.spent - game0.spent)
+
+    heuristic = cost
+
+
+astar = Q22AStar(part="a")
+astar.run()
+print("part a:", GameState.unfreeze(astar.target).spent)
+
+astar = Q22AStar(part="b")
+astar.run()
+print("part b:", GameState.unfreeze(astar.target).spent)

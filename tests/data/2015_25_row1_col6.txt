@@ -1,0 +1,3 @@
+To continue, please consult the code grid in the manual.  Enter the code at row 1, column 6.
+33511524
+-

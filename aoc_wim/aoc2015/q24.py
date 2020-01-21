@@ -3,8 +3,8 @@ from itertools import combinations
 
 from aocd import data
 
-from ..stuff import prod
-from ..stuff import subset_sum
+from aoc_wim.stuff import prod
+from aoc_wim.stuff import subset_sum
 
 
 def parsed(data, n_groups):
@@ -57,11 +57,6 @@ def solve(data, n_groups):
             continue
         return prod(group1)
 
-
-test_data = "1 2 3 4 5 7 8 9 10 11"
-
-assert solve(test_data, n_groups=3) == 99
-assert solve(test_data, n_groups=4) == 44
 
 print(solve(data, n_groups=3))
 print(solve(data, n_groups=4))

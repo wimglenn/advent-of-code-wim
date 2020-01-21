@@ -60,13 +60,6 @@ def battle_winner(attacker, defender):
     return defender
 
 
-test_player = Player(name="player", hp=8, damage=5, armor=5)
-test_boss = Player(name="boss", hp=12, damage=7, armor=2)
-
-winner = battle_winner(attacker=test_player, defender=test_boss)
-assert winner is test_player and winner.hp == 2
-
-
 def parsed(data):
     d = {k.lower(): int(v) for k, v in (line.split(": ") for line in data.splitlines())}
     d["hp"] = d.pop("hit points")
@@ -108,7 +101,7 @@ def play(data, shop):
     return min_cost, max_cost
 
 
-min_cost_to_win, max_cost_to_lose = play(data, shop)
-
-print(min_cost_to_win)
-print(max_cost_to_lose)
+if __name__ == "__main__":
+    min_cost_to_win, max_cost_to_lose = play(data, shop)
+    print(min_cost_to_win)
+    print(max_cost_to_lose)

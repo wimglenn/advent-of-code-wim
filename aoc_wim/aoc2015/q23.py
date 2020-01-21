@@ -46,23 +46,14 @@ class Computer:
             self.jmp(offset)
 
 
-test_data = """\
-inc a
-jio a, +2
-tpl a
-inc a
-"""
+if __name__ == "__main__":
+    computer = Computer()
 
+    computer.reset(instructions=data)
+    computer.compute()
+    print(computer.registers["b"])
 
-computer = Computer(instructions=test_data)
-computer.compute()
-assert computer.registers["a"] == 2
-
-computer.reset(instructions=data)
-computer.compute()
-print(computer.registers["b"])
-
-computer.reset(instructions=data)
-computer.registers["a"] = 1
-computer.compute()
-print(computer.registers["b"])
+    computer.reset(instructions=data)
+    computer.registers["a"] = 1
+    computer.compute()
+    print(computer.registers["b"])

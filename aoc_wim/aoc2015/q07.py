@@ -2,7 +2,7 @@ import operator
 import re
 
 from aocd import data
-from numpy import uint16
+import numpy as np
 
 
 opmap = {
@@ -17,7 +17,7 @@ def compute(data):
     result = {}
 
     def getval(v):
-        return result[v] if v in result else uint16(v)
+        return result[v] if v in result else np.uint16(v)
 
     lines = data.splitlines()
     lines = [line.partition(" -> ")[::2] for line in lines]
@@ -50,32 +50,10 @@ def compute(data):
     return result
 
 
-test_data = """\
-123 -> x
-456 -> y
-x AND y -> d
-x OR y -> e
-x LSHIFT 2 -> f
-y RSHIFT 2 -> g
-NOT x -> h
-NOT y -> i"""
+if __name__ == "__main__":
+    result = compute(data)
+    result_a = result["a"]
+    print("part a:", result_a)
 
-test_result = {
-    "d": 72,
-    "e": 507,
-    "f": 492,
-    "g": 114,
-    "h": 65412,
-    "i": 65079,
-    "x": 123,
-    "y": 456,
-}
-
-assert compute(test_data) == test_result
-
-result = compute(data)
-result_a = result["a"]
-print("part a:", result_a)
-
-new_data = re.sub(r"\n([0-9]+) -> b\n", "\n{} -> b\n".format(result_a), data)
-print("part b:", compute(new_data)["a"])
+    new_data = re.sub(r"\n([0-9]+) -> b\n", "\n{} -> b\n".format(result_a), data)
+    print("part b:", compute(new_data)["a"])

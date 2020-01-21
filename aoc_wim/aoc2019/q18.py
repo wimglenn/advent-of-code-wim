@@ -6,6 +6,24 @@ from aoc_wim.search import AStar
 import networkx as nx
 
 
+# https://www.reddit.com/r/adventofcode/comments/ecj4e7/2019_day_18_challenging_input/
+test_data = """\
+##########
+#.a###.Ab#
+#.B..@.###
+#...######
+##########"""
+
+
+# https://www.reddit.com/r/adventofcode/comments/ejbm8r/2019_day_18_are_we_allowed_to_assume_no_cycles_in/
+test_data2 = """\
+###################
+#.c.B...a...@..Ab.#
+#.########.######.#
+#.................#
+###################"""
+
+
 class Q18AStar(AStar):
 
     def __init__(self, data, part="a"):

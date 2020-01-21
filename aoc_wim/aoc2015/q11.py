@@ -69,15 +69,7 @@ def next_password(s):
             return s
 
 
-assert req1("hijklmmn")
-assert not req2("hijklmmn")
-assert req3("abbceffg")
-assert not req1("abbceffg")
-assert not req3("abbcegjk")
-assert next_password("abcdefgh") == "abcdffaa"
-assert next_password("ghijklmn") == "ghjaabcc"
-
-
-first = next_password(data)
-print(first)
-print(next_password(first))
+if __name__ == "__main__":
+    first = next_password(data)
+    print(first)
+    print(next_password(first))

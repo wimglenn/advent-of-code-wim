@@ -3,24 +3,20 @@ import hashlib
 from aocd import data
 
 
-def mine(data, difficulty):
-    secret_key = data.strip()
-    i = 1
+def mine(data, difficulty, start=0):
+    secret_key = data.encode()
+    prefix = "0" * difficulty
+    h0 = hashlib.md5(secret_key).copy
+    i = start
     while True:
-        text = u"{}{}".format(secret_key, i)
-        hash_ = hashlib.md5(text.encode("ascii")).hexdigest()
-        if hash_.startswith("0" * difficulty):
-            return i
         i += 1
+        hash_ = h0()
+        hash_.update(b"%d" % i)
+        if hash_.hexdigest().startswith(prefix):
+            return i
 
 
-a_tests = {
-    "abcdef": 609043,
-    "pqrstuv": 1048970,
-}
-for test_data, expected in a_tests.items():
-    assert mine(test_data, difficulty=5) == expected
-
-
-print("part a:", mine(data, difficulty=5))
-print("part b:", mine(data, difficulty=6))
+a = mine(data, difficulty=5)
+print("part a:", a)
+b = mine(data, difficulty=6, start=a - 1)
+print("part b:", b)

@@ -2,7 +2,7 @@ import numpy as np
 from aocd import data
 from scipy.ndimage.measurements import label
 
-from .q10 import knot_hash
+from aoc_wim.aoc2017.q10 import knot_hash
 
 
 def f(data):

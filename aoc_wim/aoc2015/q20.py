@@ -2,19 +2,13 @@ import numpy as np
 from aocd import data
 
 
-def part_a(data):
-    A = np.zeros(1000000, dtype=int)
-    for i in range(1, 1000000):
-        A[i::i] += i * 10
-    return np.argmax(A > int(data))
+A = np.zeros(1000000, dtype=int)
+B = A.copy()
+for i in range(1, 1000000):
+    A[i::i] += i * 10
+    B[i::i][:50] += i * 11
 
 
-def part_b(data):
-    A = np.zeros(1000000, dtype=int)
-    for i in range(1, 1000000):
-        A[i::i][:50] += i * 11
-    return np.argmax(A > int(data))
-
-
-print("part a:", part_a(data))
-print("part b:", part_b(data))
+assert A[1:10].tolist() == [10, 30, 40, 70, 60, 120, 80, 150, 130]
+print("part a:", np.argmax(A > int(data)))
+print("part b:", np.argmax(B > int(data)))

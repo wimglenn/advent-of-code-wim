@@ -2,7 +2,7 @@ import math
 
 from aocd import data
 
-from .q16 import all_ops
+from aoc_wim.aoc2018.q16 import all_ops
 
 
 test_data = """\
