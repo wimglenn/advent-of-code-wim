@@ -27,7 +27,7 @@ def pytest_configure(config):
 def pytest_collection_modifyitems(config, items):
     runslow = config.getoption("--slow")
     skip_slow = pytest.mark.skip(reason="need --slow option to run")
-    yyyy_dd = re.compile(r"20\d\d/\d\d")
+    yyyy_dd = re.compile(r"20[0-9]{2}/[0-2][0-9]]")
     for item in items:
         if "slow" in item.nodeid:
             item.add_marker(pytest.mark.slow)
@@ -37,7 +37,5 @@ def pytest_collection_modifyitems(config, items):
         if match is not None and len(match) == 1:
             [year_day] = match
             year, day = year_day.split("/")
-            year = f"y{year}"
-            day = f"d{int(day):02}"
-            item.add_marker(getattr(pytest.mark, year))
-            item.add_marker(getattr(pytest.mark, day))
+            item.add_marker(getattr(pytest.mark, f"y{year}"))
+            item.add_marker(getattr(pytest.mark, f"d{int(day):02}"))
