@@ -1,3 +1,4 @@
+import datetime
 import re
 import pytest
 import sys
@@ -15,14 +16,18 @@ def pytest_addoption(parser):
 def pytest_configure(config):
     msg = """slow: marks tests as slow (deselect with '-m "not slow"')"""
     config.addinivalue_line("markers", msg)
-    config.addinivalue_line("markers", "year(arg): particular AoC year (2015+)")
-    config.addinivalue_line("markers", "day(arg): particular AoC day (1-25)")
+    for year in range(2015, datetime.date.today().year + 1):
+        msg = f"y{year}: https://adventofcode.com/{year}"
+        config.addinivalue_line("markers", msg)
+    for day in range(1, 26):
+        msg = f"d{day:02d}: https://adventofcode.com/*/day/{day:02d}"
+        config.addinivalue_line("markers", msg)
 
 
 def pytest_collection_modifyitems(config, items):
     runslow = config.getoption("--slow")
     skip_slow = pytest.mark.skip(reason="need --slow option to run")
-    yyyy_dd = re.compile(r"20\d\d_\d\d")
+    yyyy_dd = re.compile(r"20\d\d/\d\d")
     for item in items:
         if "slow" in item.nodeid:
             item.add_marker(pytest.mark.slow)
@@ -31,10 +36,8 @@ def pytest_collection_modifyitems(config, items):
         match = yyyy_dd.findall(item.name)
         if match is not None and len(match) == 1:
             [year_day] = match
-            year, day = year_day.split("_")
-            item.add_marker(pytest.mark.year(int(year)))
-            item.add_marker(pytest.mark.day(int(day)))
-    # for item in items:
-    #     print(item.nodeid)
-    #     print(*list(item.iter_markers()), sep="\n")
-    #     print()
+            year, day = year_day.split("/")
+            year = f"y{year}"
+            day = f"d{int(day):02}"
+            item.add_marker(getattr(pytest.mark, year))
+            item.add_marker(getattr(pytest.mark, day))

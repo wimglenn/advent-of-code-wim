@@ -1,5 +1,4 @@
 import pathlib
-from operator import attrgetter
 
 import pytest
 
@@ -7,13 +6,17 @@ from aoc_wim import plugin
 
 
 here = pathlib.Path(__file__).parent
-input_files = here.joinpath("data").glob("*.txt")
+input_files = sorted(here.glob("20*/*/*.txt"))
 
 
-@pytest.mark.parametrize("input_file", input_files, ids=attrgetter("name"))
+def path2id(input_file):
+    return str(input_file.relative_to(here))
+
+
+@pytest.mark.parametrize("input_file", input_files, ids=path2id)
 def test_example(input_file, monkeypatch):
-    # the example input filename is e.g. YYYY_dd_suffix.txt
-    year, day, *rest = input_file.name.split("_")
+    # example input files are in ./YYYY/dd/fname.txt
+    *pre, year, day, fname = input_file.parts
     year = int(year)
     day = int(day)
 
