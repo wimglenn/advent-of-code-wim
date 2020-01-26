@@ -65,6 +65,15 @@ class ZGrid:
     def get(self, k, default=None):
         return self.d.get(k, default)
 
+    def z(self, val, first=True):
+        zs = []
+        for k, v in self.items():
+            if v == val:
+                if first:
+                    return k
+                zs.append(k)
+        return zs
+
     def near(self, z, n=4):
         if n == 4:
             return [z - 1j, z + 1, z + 1j, z - 1]
