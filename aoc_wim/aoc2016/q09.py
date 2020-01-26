@@ -5,7 +5,7 @@ from aocd import data
 
 def get_marker(iterator):
     marker = ""
-    for c in iterator:
+    for i, c in iterator:
         if c == ")":
             break
         marker += c
@@ -14,15 +14,32 @@ def get_marker(iterator):
     return [duration, multiplier, length]
 
 
-def part_a(s):
+def can_parse_marker(data, pos):
+    end = data.find(")", pos)
+    if end == "-1":
+        return False
+    assert data[pos] == "("
+    assert data[end] == ")"
+    substring = data[pos + 1:end]
+    if substring.count("x") != 1:
+        return False
+    left, right = substring.split("x")
+    result = left.isdigit() and right.isdigit()
+    return result
+
+
+def part_a(data):
     result = 0
-    iterator = iter(s)
-    for c in iterator:
-        if c == "(":
+    iterator = enumerate(data)
+    for i, c in iterator:
+        if c == "(" and can_parse_marker(data, i):
             duration, multiplier, _length = get_marker(iterator)
-            for _ in range(duration):
-                next(iterator)
-            result += duration * multiplier
+            try:
+                for _ in range(duration):
+                    next(iterator)
+                    result += multiplier
+            except StopIteration:
+                break
         else:
             result += 1
     return result
@@ -30,12 +47,13 @@ def part_a(s):
 
 def parsed(data):
     d = deque()
-    iterator = iter(data.strip())
+    iterator = enumerate(data)
     while True:
-        letter = next(iterator, None)
-        if letter is None:
+        try:
+            i, letter = next(iterator)
+        except StopIteration:
             break
-        if letter == "(":
+        if letter == "(" and can_parse_marker(data, i):
             d.append(get_marker(iterator))
         else:
             d.append(1)
@@ -64,25 +82,6 @@ def part_b(data):
                 i += 1
     return result
 
-
-assert part_a("ADVENT") == 6
-assert part_a("A(1x5)BC") == 7  # 1 + 5 + 1
-assert part_a("(3x3)XYZ") == 9  # 3*3
-assert part_a("A(2x2)BCD(2x2)EFG") == 11  # 1 + 2*2 + 1 + 2*2 + 1
-assert part_a("(6x1)(1x3)A") == 6
-assert part_a("X(8x2)(3x3)ABCY") == 18
-
-
-assert part_b("(3x3)XYZ") == len("XYZXYZXYZ") == 9  # 3x3
-assert part_b("X(8x2)(3x3)ABCY") == len("XABCABCABCABCABCABCY") == 20  # 1 + 6x3 + 1
-assert part_b("(27x12)(20x12)(13x14)(7x10)(1x12)A") == 241920  # 12 * 12 * 14 * 10 * 12
-assert part_b("(25x3)(3x3)ABC(2x3)XY(5x2)PQRSTX(18x9)(3x2)TWO(5x7)SEVEN") == 445
-
-# TODO:
-# Additional test cases from AoC author:
-# https://www.reddit.com/r/adventofcode/comments/5hh56d/help_dont_understand_puzzle_9_part_b/db0aggl
-assert part_b("AAA(4x3)BBB") == len("AAABBBBBBBBB") == 12
-# assert part_b('(7x2)A(3x2)BCD') == len('ABA(BABCDBCD') == 12, part_b('(7x2)A(3x2)BCD')
 
 print("part a:", part_a(data))
 print("part b:", part_b(data))
