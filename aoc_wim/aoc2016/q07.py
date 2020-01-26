@@ -12,8 +12,11 @@ def splitter(s):
 
 def chunker(s, size):
     i = 0
-    while len(s[i : i + size]) == size:
-        yield s[i : i + size]
+    while True:
+        chunk = s[i : i + size]
+        if len(chunk) != size:
+            break
+        yield chunk
         i += 1
 
 
@@ -48,21 +51,10 @@ def support_ssl(s):
     return False
 
 
-assert support_tls("abba[mnop]qrst")
-assert not support_tls("abcd[bddb]xyyx")
-assert not support_tls("aaaa[qwer]tyui")
-assert support_tls("ioxxoj[asdfgh]zxcvbn")
-
-assert support_ssl("aba[bab]xyz")
-assert not support_ssl("xyx[xyx]xyx")
-assert support_ssl("aaa[kek]eke")
-assert support_ssl("zazbz[bzb]cdb")
-
-
 tls = ssl = 0
 for line in data.splitlines():
     tls += support_tls(line)
     ssl += support_ssl(line)
 
-print(tls)  # 115
-print(ssl)  # 231
+print(tls)
+print(ssl)
