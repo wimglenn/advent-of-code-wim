@@ -1,0 +1,5 @@
+(4x2)AA(3x2)BCD
+14  # len("AA(3AA(3x2)BCD")
+12  # len("AA(3AABCDBCD")
+
+# splits a marker

@@ -1,0 +1,8 @@
+(6x2)(2x2)AB
+13  # len("(2x2)A(2x2)AB")
+7  # len("A(AABAB")
+
+# user example from reddit
+# https://www.reddit.com/r/adventofcode/comments/5hbygy/2016_day_9_solutions/dazbjjb
+# another marker over-reaching input
+# note that the example solution shown there A(A(ABAB has an off-by-one error
