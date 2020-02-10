@@ -28,19 +28,21 @@ def parsed(data):
     chip_names = sorted(chips)
     if chip_names != sorted(generators):
         raise Exception("chip and generators mismatched")
-    state0 = (
-        1,
-        tuple(chips[k] for k in chip_names),
-        tuple(generators[k] for k in chip_names),
-    )
-    target = 4, tuple(4 for c in chip_names), tuple(4 for g in generators)
-    if not is_valid(state0) or not is_valid(target):
+    state0 = (1,)
+    for k in chip_names:
+        state0 += (chips[k],)
+    for k in chip_names:
+        state0 += (generators[k],)
+    if not is_valid(state0):
         raise Exception("parsed state vector is invalid")
-    return state0, target
+    return state0
 
 
 def is_valid(state):
-    elevator, chips, generators = state
+    n = len(state) // 2
+    elevator = state[0]
+    chips = state[1:1+n]
+    generators = state[1+n:]
     for chip, generator in zip(chips, generators):
         if chip != generator:
             # if the chip and the matching generator are on different floors
@@ -54,50 +56,26 @@ def is_valid(state):
     return True
 
 
-def get_valid_next_states(state, seen=()):
-    elevator, chips, generators = state
-    items = list(chips + generators)
-    # indices of stuff on the same floor as the elevator:
-    indices = [i for i, item_pos in enumerate(items) if elevator == item_pos]
-    # we can take 1 or 2 things with us when changing floors
-    indices_choices = list(combinations(indices, 1)) + list(combinations(indices, 2))
-    # we can go up or down a floor
-    directions = -1, +1
-    for direction, indices in product(directions, indices_choices):
-        new_elevator = elevator + direction
-        new_items = items[:]
-        for index in indices:
-            new_items[index] += direction
-        new_chips = new_items[: len(chips)]
-        new_generators = new_items[len(chips) :]
-        assert len(new_chips) == len(chips)
-        assert len(new_generators) == len(generators)
-        new_state = new_elevator, tuple(new_chips), tuple(new_generators)
-        if is_valid(new_state) and new_state not in seen:
-            yield new_state
-
-
 class Q11AStar(AStar):
 
     def __init__(self, data, part="a"):
-        state0, target = parsed(data)
+        state0 = parsed(data)
+        self.n = n = len(state0) // 2
+        target = (4,) * (2 * n + 1)
         if part == "b":
-            state0 = state0[0], state0[1] + (1, 1), state0[2] + (1, 1)
-            target = target[0], target[1] + (4, 4), target[2] + (4, 4)
+            state0 = state0[:1 + n] + (1, 1) + state0[1 + n:] + (1, 1)
+            target += (4,) * 4
+            self.n += 2
         AStar.__init__(self, state0, target)
 
     def heuristic(self, state0, state1):
-        elevator0, chips0, generators0 = state0
-        elevator1, chips1, generators1 = state0
-        result = abs(elevator0 - elevator1)
-        for c0, c1 in zip(chips0, chips1):
-            result += abs(c0 - c1)
-        for g0, g1 in zip(generators0, generators1):
-            result += abs(g0 - g1)
-        return result
+        return sum(abs(a - b) for (a, b) in zip(state0, state1))
 
     def adjacent(self, state):
-        elevator, chips, generators = state
+        n = self.n
+        elevator = state[0]
+        chips = state[1:n]
+        generators = state[n:]
         items = list(chips + generators)
         # indices of stuff on the same floor as the elevator:
         indices = [i for i, item_pos in enumerate(items) if elevator == item_pos]
@@ -112,9 +90,7 @@ class Q11AStar(AStar):
                 new_items[index] += direction
             new_chips = new_items[: len(chips)]
             new_generators = new_items[len(chips):]
-            assert len(new_chips) == len(chips)
-            assert len(new_generators) == len(generators)
-            new_state = new_elevator, tuple(new_chips), tuple(new_generators)
+            new_state = (new_elevator,) + tuple(new_chips) + tuple(new_generators)
             if is_valid(new_state):
                 yield new_state
 

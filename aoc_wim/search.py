@@ -33,7 +33,9 @@ class AStar:
         """other states reachable from given state"""
         return []
 
-    def reconstruct_path(self, current):
+    def reconstruct_path(self, current=None):
+        if current is None:
+            current = self.target
         path = [current]
         while current in self.came_from:
             current = self.came_from[current]
