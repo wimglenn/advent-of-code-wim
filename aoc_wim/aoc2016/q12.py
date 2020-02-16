@@ -36,7 +36,8 @@ class AssembunnyComputer:
                     if j == "-2" and r_cond == r_dec:
                         if self.reg[r_cond] > 0:
                             add = self.reg[r_cond]
-                            log.info("patching out loop: %s += %d", r_inc, add)
+                            msg = "patching out loop (lines %d-%d): %s += %d"
+                            log.info(msg, self.i, self.i + 2, r_inc, add)
                             self.reg[r_inc] += add
                             self.i += 3
                             return
