@@ -197,6 +197,7 @@ class ZGrid:
                         continue
                     if g == self.on:
                         queue.append((z, depth + 1))
+        return seen
 
 
 def dump_grid(g, clear=False, pretty=True):

@@ -132,7 +132,3 @@ class Bisect:
         while self.hi - self.lo > 1:
             self.step()
         return self.lo
-
-
-class BFS:
-    ...
