@@ -11,7 +11,7 @@ class AssembunnyComputer:
     def __init__(self, source, c=0):
         self.i = 0
         self.lines = source.splitlines()
-        self.reg = dict.fromkeys("abcd", 0)
+        self.reg = {}.fromkeys("abcd", 0)
         self.reg["c"] = c
 
     def run(self):

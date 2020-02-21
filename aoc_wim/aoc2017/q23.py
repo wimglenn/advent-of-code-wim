@@ -2,7 +2,7 @@ from aocd import data
 
 
 def exe(a0=0):
-    d = dict.fromkeys("abcdefgh", 0)
+    d = {}.fromkeys("abcdefgh", 0)
     d["a"] = a0
     i = 0
     n_mul = 0

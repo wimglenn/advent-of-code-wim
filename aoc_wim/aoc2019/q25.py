@@ -40,7 +40,7 @@ def parse_room(txt):
             continue
         if not line.startswith("Command?"):
             log.info("suffix: %s", line)
-    doors = dict.fromkeys(doors)
+    doors = {}.fromkeys(doors)
     result = {"name": name, "description": description, "doors": doors, "items": items}
     return result
 

@@ -167,7 +167,7 @@ class ZGrid:
 
     def draw_path(self, z, z0=0, glyph="x", clear=False, pretty=True):
         path = self.path(z, z0)
-        overlay = dict.fromkeys(path, glyph)
+        overlay = {}.fromkeys(path, glyph)
         overlay[path[0]] = "O"
         overlay[path[-1]] = "T"
         self.draw(overlay=overlay, clear=clear, pretty=pretty)

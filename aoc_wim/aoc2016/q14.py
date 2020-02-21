@@ -29,7 +29,7 @@ def search(data, stretch):
                     stop = i + 1001
             triples[triple.group()[0]].append(i)
         i += 1
-    return sorted(keys)[:64][-1]
+    return sorted(keys)[63]
 
 
 print("part a:", search(data, stretch=1))

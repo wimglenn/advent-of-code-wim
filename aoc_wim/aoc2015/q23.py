@@ -8,7 +8,7 @@ class Computer:
     def reset(self, i=0, instructions=""):
         self.i = i
         self.instructions = instructions.strip().splitlines()
-        self.registers = dict.fromkeys("ab", 0)
+        self.registers = {}.fromkeys("ab", 0)
 
     def compute(self, i=0, verbose=False):
         self.i = i

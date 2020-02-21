@@ -77,7 +77,7 @@ def graph(data, z0=0):
         elif s == ")":
             new_tails.extend(tails)
             stack.pop()
-            tails = [*dict.fromkeys(new_tails)]
+            tails = [*{}.fromkeys(new_tails)]
     return g
 
 
