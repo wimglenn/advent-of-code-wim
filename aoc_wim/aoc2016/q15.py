@@ -29,12 +29,6 @@ def find_time(data):
             disc.rotate(1)
 
 
-test_data = """\
-Disc #1 has 5 positions; at time=0, it is at position 4.
-Disc #2 has 2 positions; at time=0, it is at position 1.
-"""
-
-assert find_time(test_data) == 5
 print(find_time(data))
 data += "\nBonus disc has 11 positions; at time=0, it is at position 0."
 print(find_time(data))

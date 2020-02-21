@@ -1,10 +1,6 @@
 from aocd import data
 
 
-test_data = "10000"
-test_len = 20
-
-
 def dragon(a):
     return a + "0" + "".join([{"0": "1", "1": "0"}[x] for x in a[::-1]])
 
@@ -23,9 +19,9 @@ def r_checksum(s):
 
 
 def f(data, n):
-    return r_checksum(pad(data.strip(), n))
+    return r_checksum(pad(data, n))
 
 
-assert f(test_data, test_len) == "01100"
-print(f(data, 272))
-print(f(data, 35651584))
+if __name__ == "__main__":
+    print(f(data, n=272))
+    print(f(data, n=35651584))
