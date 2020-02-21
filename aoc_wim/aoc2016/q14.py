@@ -7,29 +7,22 @@ except ImportError:
     from hashlib import md5
 
 
-def normal_hash(s):
-    return md5(s).hexdigest()
-
-
-def stretched_hash(s):
-    for i in range(2017):
-        s = md5(s).hexdigest().encode()
-    return s.decode()
-
-
-def search(data=data, hash_function=normal_hash):
+def search(data, stretch):
     template = data.encode() + b"%d"
     keys = []
     triples = defaultdict(list)
-    pat3 = re.compile(r"([0-9a-f])\1{2}")
-    pat5 = re.compile(r"([0-9a-f])\1{4}")
+    pat3 = re.compile(r"(.)\1{2}")
+    pat5 = re.compile(r"(.)\1{4}")
     i = 0
     stop = None
     while stop is None or i < stop:
-        hash_ = hash_function(template % i)
-        triple = pat3.search(hash_)
+        s = template % i
+        for _ in range(stretch):
+            s = md5(s).hexdigest().encode()
+        s = s.decode()
+        triple = pat3.search(s)
         if triple is not None:
-            for quintuple in pat5.findall(hash_):
+            for quintuple in pat5.findall(s):
                 keys.extend([x for x in triples[quintuple] if i - x <= 1000])
                 triples[quintuple].clear()  # avoid to count same key twice
                 if stop is None and len(keys) >= 64:
@@ -39,5 +32,5 @@ def search(data=data, hash_function=normal_hash):
     return sorted(keys)[:64][-1]
 
 
-print("part a:", search())
-print("part b:", search(hash_function=stretched_hash))
+print("part a:", search(data, stretch=1))
+print("part b:", search(data, stretch=2017))
