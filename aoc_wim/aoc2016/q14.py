@@ -1,10 +1,7 @@
 import re
 from collections import defaultdict
 from aocd import data
-try:
-    from _md5 import md5
-except ImportError:
-    from hashlib import md5
+from _md5 import md5
 
 
 def search(data, stretch):

@@ -1,8 +1,4 @@
-try:
-    from _md5 import md5
-except ImportError:
-    from hashlib import md5
-
+from _md5 import md5
 from aocd import data
 
 
