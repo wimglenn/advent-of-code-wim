@@ -3,32 +3,32 @@ from _md5 import md5
 from aocd import data
 
 
-def bfs(state0=(0, data), target=3 + 3j, part="a"):
-    z0, key = state0
-    depth, longest_path_length = 0, None
-    queue = deque([(state0, depth)])
+def bfs(part="a"):
+    z0 = 0
+    target = 3 + 3j
+    depth = 0
+    path = ""
+    longest_path_length = None
+    queue = deque([(z0, path, depth)])
     while queue:
-        (z, path), depth = queue.popleft()
+        z, path, depth = queue.popleft()
         if z == target:
             if part == "a":
-                return path[len(key) :]
-            else:
-                longest_path_length = depth
-        queue.extend((child, depth + 1) for child in next_states((z, path)))
+                return path
+            longest_path_length = depth
+        else:
+            queue.extend((x + (depth + 1,)) for x in adjacent(z, path))
     return longest_path_length
 
 
-def next_states(state):
-    offsets = {"U": -1j, "D": 1j, "L": -1, "R": 1}
-    z0, path = state
-    if z0 == 3 + 3j:
-        return
-    directions = zip(offsets, md5(path.encode()).hexdigest())
-    for dir_, s in directions:
+def adjacent(z0, path):
+    dzs = {"U": -1j, "D": 1j, "L": -1, "R": 1}
+    directions = zip(dzs.items(), md5((data + path).encode()).hexdigest())
+    for (dpath, dz), s in directions:
         if s in "bcdef":
-            z1 = z0 + offsets[dir_]
-            if 0 <= z1.real <= 3 and 0 <= z1.imag <= 3:
-                yield z1, path + dir_
+            z = z0 + dz
+            if 0 <= z.real <= 3 and 0 <= z.imag <= 3:
+                yield z, path + dpath
 
 
 print("part a:", bfs(part="a"))
