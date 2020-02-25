@@ -2,12 +2,12 @@ from aocd import data
 
 
 def generate_rows(row):
+    idx = range(len(row))
+    S = {"^^.", ".^^", "^..", "..^"}
     while True:
         yield row
         row = "." + row + "."
-        S = {"^^.", ".^^", "^..", "..^"}
-        indices = range(1, len(row) - 1)
-        row = "".join(".^"[row[i - 1 : i + 2] in S] for i in indices)
+        row = "".join([".^"[row[i:i + 3] in S] for i in idx])
 
 
 def make_grid(row0, nrows):
@@ -20,29 +20,6 @@ def n_safe_tiles(row0, nrows):
     return sum(next(gen).count(".") for i in range(nrows))
 
 
-expected = """\
-..^^.
-.^^^^
-^^..^
-"""
-assert make_grid("..^^.", nrows=3) == expected
-
-test_grid = """\
-.^^.^.^^^^
-^^^...^..^
-^.^^.^.^^.
-..^^...^^^
-.^^^^.^^.^
-^^..^.^^..
-^^^^..^^^.
-^..^^^^.^^
-.^^^..^.^^
-^^.^^^..^^
-"""
-
-row0 = test_grid.splitlines()[0]
-assert make_grid(row0, nrows=10) == test_grid
-assert n_safe_tiles(row0, nrows=10) == 38
-
-print(n_safe_tiles(data, nrows=40))
-print(n_safe_tiles(data, nrows=400000))
+if __name__ == "__main__":
+    print(n_safe_tiles(data, nrows=40))
+    print(n_safe_tiles(data, nrows=400000))
