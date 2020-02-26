@@ -1,32 +1,27 @@
 from aocd import data
 
 
-test_data = """\
-5-8
-0-2
-4-7"""
-
-
 def cleanup_data(data):
-    ranges = []
+    intervals = []
     for line in data.splitlines():
-        ranges.append(tuple([int(n) for n in line.split("-")]))
-
-    ranges.sort()
+        left, right = line.split("-")
+        interval = int(left), int(right)
+        intervals.append(interval)
+    intervals.sort()
 
     while True:
-        n = len(ranges)
-        for i0, i1 in zip(range(n), range(n)[1:]):
-            lo_p, hi_p = ranges[i0]
-            lo, hi = ranges[i1]
+        n = len(intervals)
+        for i in range(n - 1):
+            lo_p, hi_p = intervals[i]
+            lo, hi = intervals[i + 1]
             if lo <= hi_p + 1:
-                del ranges[i1]
-                ranges[i0] = (lo_p, max(hi_p, hi))
+                del intervals[i + 1]
+                intervals[i] = lo_p, max(hi_p, hi)
                 break
         else:
             break
 
-    return ranges
+    return intervals
 
 
 def part_a(clean_data):
@@ -40,10 +35,7 @@ def part_b(clean_data, n_min=0, n_max=4294967295):
     return n
 
 
-clean_test_data = cleanup_data(test_data)
-assert part_a(clean_test_data) == 3
-assert part_b(clean_test_data, n_min=0, n_max=9) == 2
-
-clean_data = cleanup_data(data)
-print(part_a(clean_data))
-print(part_b(clean_data))
+if __name__ == "__main__":
+    clean_data = cleanup_data(data)
+    print(part_a(clean_data))
+    print(part_b(clean_data))
