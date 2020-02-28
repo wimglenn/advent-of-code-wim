@@ -6,7 +6,6 @@ log = logging.getLogger(__name__)
 
 
 class AssembunnyComputer:
-
     def __init__(self, source, a0=0, b0=0, c0=0, d0=0):
         self.i = 0
         self.lines = source.splitlines()
@@ -25,7 +24,7 @@ class AssembunnyComputer:
         op, *args = line.split()
 
         if op == "inc":
-            asm = self.lines[self.i:self.i+3]
+            asm = self.lines[self.i : self.i + 3]
             if len(asm) == 3 and asm[1].startswith("dec"):
                 _, r_inc = asm[0].split()
                 _, r_dec = asm[1].split()
@@ -41,7 +40,7 @@ class AssembunnyComputer:
                             self.i += 3
                             return
 
-        if op == "cpy" and self.lines[self.i:self.i+6] == [
+        if op == "cpy" and self.lines[self.i : self.i + 6] == [
             "cpy b c",
             "inc a",
             "dec c",

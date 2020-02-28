@@ -2,22 +2,24 @@ from aocd import data
 from aoc_wim.zgrid import ZGrid
 
 
-keypad_a = ZGrid("""\
+keypad_a = """\
 123
 456
 789
-""")
+"""
 
-keypad_b = ZGrid("""\
+
+keypad_b = """\
   1
  234
 56789
  ABC
   D
-""")
+"""
 
 
 def decode(keypad):
+    keypad = ZGrid(keypad)
     z = keypad.z("5")
     code = ""
     for line in data.splitlines():

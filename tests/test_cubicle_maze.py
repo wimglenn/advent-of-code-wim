@@ -15,8 +15,7 @@ def test_draw(capsys):
     grid = q13.ZGrid(q13.WallMap(fav_number=10), on=".", off="#")
     grid.draw(window=9 + 6j, pretty=False)
     out, err = capsys.readouterr()
-
-    assert out.rstrip() == """
+    expected1 = """
     0 .#.####.##
     1 ..#..#...#
     2 #....##...
@@ -25,11 +24,11 @@ def test_draw(capsys):
     5 ..##....#.
     6 #...##.###
       0   5    9"""
+    assert out.rstrip() == expected1
 
     grid.draw_path(z=target, z0=z0, pretty=False)
     out, err = capsys.readouterr()
-
-    assert out.rstrip() == """
+    expected2 = """
     0 .#.####.##
     1 .O#..#...#
     2 #xxx.##...
@@ -38,3 +37,4 @@ def test_draw(capsys):
     5 ..##xxx.#.
     6 #...##.###
       0   5    9"""
+    assert out.rstrip() == expected2

@@ -11,6 +11,7 @@ for a, b in combinations(graph.extra, 2):
     d = nx.shortest_path_length(graph, graph.extra[a], graph.extra[b])
     distances[a, b] = distances[b, a] = d
 
+
 def shortest_path(part="a"):
     paths = {}
     for nodes in permutations(graph.extra.keys() - {"0"}):
@@ -19,6 +20,7 @@ def shortest_path(part="a"):
             path += "0"
         paths[path] = sum(distances[a, b] for a, b in zip(path, path[1:]))
     return min(paths.values())
+
 
 print("part a:", shortest_path(part="a"))
 print("part b:", shortest_path(part="b"))

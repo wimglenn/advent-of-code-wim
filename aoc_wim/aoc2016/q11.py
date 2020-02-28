@@ -41,7 +41,6 @@ def is_valid(state):
 
 
 class Q11AStar(AStar):
-
     def __init__(self, data, part="a"):
         state0 = parsed(data)
         if part == "b":
