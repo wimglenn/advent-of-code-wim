@@ -1,10 +1,28 @@
+import logging
 import string
 from collections import ChainMap
+from collections import deque
 import numpy as np
 import networkx as nx
 
 
+log = logging.getLogger(__name__)
+
+
 dzs = [-1j, 1, 1j, -1]
+
+
+class ZDict(dict):
+
+    def __init__(self, func):
+        self.func = func
+
+    def __missing__(self, z):
+        if not isinstance(z, (int, complex, float)):
+            log.error("ZDict does not support key %r", z)
+            raise NotImplementedError
+        self[z] = self.func(z)
+        return self[z]
 
 
 class ZGrid:
@@ -35,7 +53,9 @@ class ZGrid:
                 for row, line in enumerate(initial_data.splitlines()):
                     for col, char in enumerate(line):
                         d[col + row*1j] = char
-            if isinstance(initial_data, dict):
+            elif callable(initial_data):
+                self.d = ZDict(func=initial_data)
+            elif isinstance(initial_data, dict):
                 self.d = initial_data
 
     def __setitem__(self, key, value):
@@ -65,6 +85,15 @@ class ZGrid:
     def get(self, k, default=None):
         return self.d.get(k, default)
 
+    def z(self, val, first=True):
+        zs = []
+        for k, v in self.items():
+            if v == val:
+                if first:
+                    return k
+                zs.append(k)
+        return zs
+
     def near(self, z, n=4):
         if n == 4:
             return [z - 1j, z + 1, z + 1j, z - 1]
@@ -75,8 +104,13 @@ class ZGrid:
                 z - 1 + 1j, z + 1j, z + 1 + 1j,
             ]
 
-    def draw(self, overlay=None, clear=False, pretty=True):
-        d = self.d
+    def draw(self, overlay=None, window=None, clear=False, pretty=True):
+        if window is None:
+            d = self.d
+        else:
+            if isinstance(window, complex):
+                window = zrange(window + 1 + 1j)
+            d = {z: self[z] for z in window}
         if overlay is not None:
             d = {**self.d, **overlay}
         dump_grid(d, clear=clear, pretty=pretty)
@@ -123,6 +157,48 @@ class ZGrid:
                     g.add_edge(pos, down)
         return g
 
+    def path(self, z, z0=0):
+        g = self.graph()
+        return nx.shortest_path(g, z0, z)
+
+    def path_length(self, z, z0=0):
+        g = self.graph()
+        return nx.shortest_path_length(g, z0, z)
+
+    def draw_path(self, z, z0=0, glyph="x", clear=False, pretty=True):
+        path = self.path(z, z0)
+        overlay = {}.fromkeys(path, glyph)
+        overlay[path[0]] = "O"
+        overlay[path[-1]] = "T"
+        self.draw(overlay=overlay, clear=clear, pretty=pretty)
+
+    def bfs(self, target=None, z0=0, max_depth=None):
+        """returns a dict of connected nodes vs depth up to max_depth"""
+        g0 = self[z0]
+        if g0 != self.on:
+            log.error("Expected initial glyph %r, got %r", self.on, g0)
+            raise NotImplementedError
+        seen = {}
+        queue = deque([(z0, 0)])
+        while queue:
+            z0, depth = queue.popleft()
+            if max_depth is not None and depth > max_depth:
+                return seen
+            if z0 not in seen:
+                seen[z0] = depth
+                if target is not None and z0 == target:
+                    return seen
+                for z in self.near(z0):
+                    if z in seen:
+                        continue
+                    try:
+                        g = self[z]
+                    except KeyError:
+                        continue
+                    if g == self.on:
+                        queue.append((z, depth + 1))
+        return seen
+
 
 def dump_grid(g, clear=False, pretty=True):
     transform = {
@@ -130,6 +206,7 @@ def dump_grid(g, clear=False, pretty=True):
         ".": "  ",
         "O": "🤖",
         "T": "🥇",
+        "x": "👣",
         ">": "➡️ ",
         "<": "⬅️ ",
         "^": "⬆️ ",
@@ -138,7 +215,7 @@ def dump_grid(g, clear=False, pretty=True):
         0: "  ",
         1: "⬛",
     }
-    transform.update({x: x + " " for x in string.ascii_letters})
+    transform.update({x: x + " " for x in string.ascii_letters if x not in transform})
     empty = "  " if pretty else "."
     print()
     xs = [int(z.real) for z in g]

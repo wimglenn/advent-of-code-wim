@@ -22,8 +22,5 @@ def part_b(n):
     return elf
 
 
-assert part_a(5) == 3
-assert part_b(5) == 2
-
 print("part a:", part_a(data))
 print("part b:", part_b(data))

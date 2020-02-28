@@ -1,0 +1,3 @@
+A(2x2)BCD(2x2)EFG
+11  # len("ABCBCDEFEFG")
+-

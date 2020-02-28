@@ -1,34 +1,32 @@
-from hashlib import md5
-
+from _md5 import md5
 from aocd import data
 
 
-def part_ab(data):
-    data = data.strip().encode("ascii")
-    code1 = ""
-    code2 = [None] * 8
-    n = 0
-    remaining = set("01234567")
-    while True:
-        test = b"%s%d" % (data, n)
-        hash_ = md5(test).hexdigest()
-        n += 1
-        if not hash_.startswith("0" * 5):
-            continue
-        h5, h6 = hash_[5], hash_[6]
-        code1 += h5
-        if h5 in remaining:
-            code2[int(h5)] = h6
-            remaining.remove(h5)
-            if not remaining:
-                break
-    code1 = code1[:8]
-    code2 = "".join(code2)
-    return code1, code2
+code1 = []
+code2 = ["."] * 8
+remaining = set("01234567")
+h0 = md5(data.encode("ascii")).copy
 
 
-assert part_ab("abc") == ("18f47a30", "05ace8e3")
+n = 0
+while True:
+    hash_ = h0()
+    hash_.update(b"%d" % n)
+    hash_ = hash_.hexdigest()
+    n += 1
+    if not hash_.startswith("00000"):
+        continue
+    h5, h6 = hash_[5], hash_[6]
+    code1.append(h5)
+    if h5 in remaining:
+        code2[int(h5)] = h6
+        remaining.remove(h5)
+        if not remaining:
+            break
 
-a, b = part_ab(data)
-print("part a:", a)
-print("part b:", b)
+code1 = "".join(code1[:8])
+code2 = "".join(code2)
+
+
+print("part a:", code1)
+print("part b:", code2)

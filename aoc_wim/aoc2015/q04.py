@@ -1,12 +1,11 @@
-import hashlib
-
+from _md5 import md5
 from aocd import data
 
 
 def mine(data, difficulty, start=0):
     secret_key = data.encode()
     prefix = "0" * difficulty
-    h0 = hashlib.md5(secret_key).copy
+    h0 = md5(secret_key).copy
     i = start
     while True:
         i += 1

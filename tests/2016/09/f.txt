@@ -1,0 +1,3 @@
+X(8x2)(3x3)ABCY
+18  # len("X(3x3)ABC(3x3)ABCY")
+-
