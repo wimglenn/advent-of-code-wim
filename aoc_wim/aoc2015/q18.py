@@ -17,6 +17,7 @@ kernel[1, 1] = 0
 
 
 def evolve(A, part="a"):
+    """conway's game of life"""
     C = convolve2d(A, kernel, mode="same")
     A = ((A == 1) & ((C == 2) | (C == 3))) | ((A == 0) & (C == 3))
     A = A.astype(int)
