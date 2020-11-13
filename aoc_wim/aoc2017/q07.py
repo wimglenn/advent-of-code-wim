@@ -4,23 +4,6 @@ from collections import deque
 from aocd import data
 from wimpy import cached_property
 
-test_data = """\
-pbga (66)
-xhth (57)
-ebii (61)
-havc (66)
-ktlj (57)
-fwft (72) -> ktlj, cntj, xhth
-qoyq (66)
-padx (45) -> pbga, havc, qoyq
-tknk (41) -> ugml, padx, fwft
-jptl (61)
-ugml (68) -> gyxo, ebii, jptl
-gyxo (61)
-cntj (57)"""
-
-nodes = {}
-
 
 class Node:
     def __init__(self, name):
@@ -75,11 +58,7 @@ def find_bad_node_correct_weight(tree):
     return node.weight - delta
 
 
-test_tree = make_tree(test_data)
-assert test_tree.name == "tknk"
-assert find_bad_node_correct_weight(test_tree) == 60
-
-nodes.clear()
+nodes = {}
 tree = make_tree(data)
 print(tree.name)
 print(find_bad_node_correct_weight(tree))
