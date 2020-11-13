@@ -1,3 +1,7 @@
+"""
+--- Day 8: Space Image Format ---
+https://adventofcode.com/2019/day/8
+"""
 from aocd import data
 import numpy as np
 from aoc_wim.ocr import AOCR

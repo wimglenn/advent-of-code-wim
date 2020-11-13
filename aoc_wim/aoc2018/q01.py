@@ -1,3 +1,7 @@
+"""
+--- Day 1: Chronal Calibration ---
+https://adventofcode.com/2018/day/1
+"""
 from itertools import cycle
 
 from aocd import data

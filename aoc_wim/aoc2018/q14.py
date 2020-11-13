@@ -1,3 +1,7 @@
+"""
+--- Day 14: Chocolate Charts ---
+https://adventofcode.com/2018/day/14
+"""
 from collections import deque
 
 from aocd import data

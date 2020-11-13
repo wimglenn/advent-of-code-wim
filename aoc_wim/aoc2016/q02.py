@@ -1,3 +1,7 @@
+"""
+--- Day 2: Bathroom Security ---
+https://adventofcode.com/2016/day/2
+"""
 from aocd import data
 from aoc_wim.zgrid import ZGrid
 

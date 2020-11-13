@@ -1,3 +1,7 @@
+"""
+--- Day 13: Mine Cart Madness ---
+https://adventofcode.com/2018/day/13
+"""
 import random
 from collections import Counter
 from itertools import cycle

@@ -1,3 +1,7 @@
+"""
+--- Day 7: Recursive Circus ---
+https://adventofcode.com/2017/day/7
+"""
 from collections import Counter
 from collections import deque
 

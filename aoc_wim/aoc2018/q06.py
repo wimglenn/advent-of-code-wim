@@ -1,3 +1,7 @@
+"""
+--- Day 6: Chronal Coordinates ---
+https://adventofcode.com/2018/day/6
+"""
 from io import StringIO
 
 import numpy as np

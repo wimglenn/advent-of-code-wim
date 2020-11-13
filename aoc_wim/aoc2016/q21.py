@@ -1,3 +1,7 @@
+"""
+--- Day 21: Scrambled Letters and Hash ---
+https://adventofcode.com/2016/day/21
+"""
 from itertools import permutations
 
 from aocd import data

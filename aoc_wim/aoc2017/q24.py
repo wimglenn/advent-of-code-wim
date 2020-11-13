@@ -1,3 +1,7 @@
+"""
+--- Day 24: Electromagnetic Moat ---
+https://adventofcode.com/2017/day/24
+"""
 from aocd import data
 
 test_data = """\

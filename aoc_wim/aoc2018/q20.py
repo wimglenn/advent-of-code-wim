@@ -1,3 +1,7 @@
+"""
+--- Day 20: A Regular Map ---
+https://adventofcode.com/2018/day/20
+"""
 import networkx as nx
 from aocd import data
 

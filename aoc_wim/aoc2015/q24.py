@@ -1,6 +1,10 @@
-from math import prod
+"""
+--- Day 24: It Hangs in the Balance ---
+https://adventofcode.com/2015/day/24
+"""
 from collections import Counter
 from itertools import combinations
+from math import prod
 
 from aocd import data
 

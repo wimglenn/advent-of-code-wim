@@ -1,3 +1,7 @@
+"""
+--- Day 20: Particle Swarm ---
+https://adventofcode.com/2017/day/20
+"""
 from collections import defaultdict
 
 from aocd import data

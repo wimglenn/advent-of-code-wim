@@ -1,3 +1,7 @@
+"""
+--- Day 6: Memory Reallocation ---
+https://adventofcode.com/2017/day/6
+"""
 from itertools import count
 
 import numpy as np

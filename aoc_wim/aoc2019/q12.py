@@ -1,3 +1,7 @@
+"""
+--- Day 12: The N-Body Problem ---
+https://adventofcode.com/2019/day/12
+"""
 from aocd import data
 from itertools import count
 from math import gcd

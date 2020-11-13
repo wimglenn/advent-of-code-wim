@@ -1,3 +1,7 @@
+"""
+--- Day 10: Knot Hash ---
+https://adventofcode.com/2017/day/10
+"""
 from functools import reduce
 from operator import xor
 

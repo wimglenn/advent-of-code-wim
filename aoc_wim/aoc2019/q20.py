@@ -1,3 +1,7 @@
+"""
+--- Day 20: Donut Maze ---
+https://adventofcode.com/2019/day/20
+"""
 from aocd import data
 from aoc_wim.zgrid import ZGrid
 from aoc_wim.search import AStar

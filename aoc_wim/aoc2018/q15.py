@@ -1,3 +1,7 @@
+"""
+--- Day 15: Beverage Bandits ---
+https://adventofcode.com/2018/day/15
+"""
 from collections import deque
 from operator import attrgetter
 from time import sleep

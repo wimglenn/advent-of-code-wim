@@ -1,3 +1,7 @@
+"""
+--- Day 14: Space Stoichiometry ---
+https://adventofcode.com/2019/day/14
+"""
 from aocd import data
 from collections import Counter
 from aoc_wim.search import Bisect

@@ -1,3 +1,7 @@
+"""
+--- Day 16: Chronal Classification ---
+https://adventofcode.com/2018/day/16
+"""
 from aocd import data
 from parse import parse
 

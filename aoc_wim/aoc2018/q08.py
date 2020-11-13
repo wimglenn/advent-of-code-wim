@@ -1,3 +1,7 @@
+"""
+--- Day 8: Memory Maneuver ---
+https://adventofcode.com/2018/day/8
+"""
 from anytree import NodeMixin
 from aocd import data
 

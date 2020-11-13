@@ -1,3 +1,7 @@
+"""
+--- Day 12: Digital Plumber ---
+https://adventofcode.com/2017/day/12
+"""
 import networkx as nx
 from aocd import data
 

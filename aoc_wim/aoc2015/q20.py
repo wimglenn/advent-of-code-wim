@@ -1,3 +1,7 @@
+"""
+--- Day 20: Infinite Elves and Infinite Houses ---
+https://adventofcode.com/2015/day/20
+"""
 import numpy as np
 from aocd import data
 

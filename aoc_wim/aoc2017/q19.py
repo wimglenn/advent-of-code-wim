@@ -1,3 +1,7 @@
+"""
+--- Day 19: A Series of Tubes ---
+https://adventofcode.com/2017/day/19
+"""
 from itertools import count
 
 import numpy as np

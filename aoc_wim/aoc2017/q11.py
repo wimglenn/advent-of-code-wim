@@ -1,3 +1,7 @@
+"""
+--- Day 11: Hex Ed ---
+https://adventofcode.com/2017/day/11
+"""
 from collections import Counter
 
 from aocd import data

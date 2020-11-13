@@ -1,3 +1,7 @@
+"""
+--- Day 14: Disk Defragmentation ---
+https://adventofcode.com/2017/day/14
+"""
 import numpy as np
 from aocd import data
 from scipy.ndimage.measurements import label

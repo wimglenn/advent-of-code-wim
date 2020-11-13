@@ -1,3 +1,7 @@
+"""
+--- Day 8: Two-Factor Authentication ---
+https://adventofcode.com/2016/day/8
+"""
 import numpy as np
 from aocd import data
 from aoc_wim.ocr import AOCR

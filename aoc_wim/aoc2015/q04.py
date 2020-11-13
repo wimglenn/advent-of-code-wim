@@ -1,3 +1,7 @@
+"""
+--- Day 4: The Ideal Stocking Stuffer ---
+https://adventofcode.com/2015/day/4
+"""
 from _md5 import md5
 from aocd import data
 

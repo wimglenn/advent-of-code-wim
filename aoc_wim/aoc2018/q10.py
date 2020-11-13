@@ -1,3 +1,7 @@
+"""
+--- Day 10: The Stars Align ---
+https://adventofcode.com/2018/day/10
+"""
 import re
 import numpy as np
 from aocd import data
