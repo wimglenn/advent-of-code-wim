@@ -6,6 +6,7 @@ from aocd import data
 
 
 def generate_rows(row):
+    """rule90"""
     idx = range(len(row))
     while True:
         yield row
