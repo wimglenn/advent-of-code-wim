@@ -1,8 +1,6 @@
 from collections import Counter
 from aocd import data
 
-counter = Counter(int(x) for x in data.splitlines())
-
 
 def find_pair(counter, target=2020):
     # find a pair of numbers from the multiset (counter) which sums to target
@@ -14,6 +12,7 @@ def find_pair(counter, target=2020):
             return number, diff
 
 
+counter = Counter(int(x) for x in data.splitlines())
 x, y = find_pair(counter)
 print(f"part a: {x} * {y} == {x * y}")
 
