@@ -1,4 +1,4 @@
-from aoc_wim.stuff import prod
+from math import prod
 from aocd import data
 
 

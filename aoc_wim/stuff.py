@@ -2,12 +2,6 @@ from collections import Counter
 from functools import lru_cache
 
 
-def prod(vals, n=1):
-    for val in vals:
-        n *= val
-    return n
-
-
 def rsubset_sum(vals, target=0):
     # recursion impl
 
@@ -21,7 +15,7 @@ def rsubset_sum(vals, target=0):
         else:
             choices = set(range(len(vals))) - hand
             hands = (worker(hand | {choice}) for choice in choices)
-            result = set.union(*hands)
+            result = set().union(*hands)
         return result
 
     result = [[vals[i] for i in way] for way in set(worker())]

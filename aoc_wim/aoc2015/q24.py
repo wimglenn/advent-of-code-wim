@@ -1,9 +1,9 @@
+from math import prod
 from collections import Counter
 from itertools import combinations
 
 from aocd import data
 
-from aoc_wim.stuff import prod
 from aoc_wim.stuff import subset_sum
 
 
