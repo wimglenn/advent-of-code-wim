@@ -17,16 +17,19 @@ def plugin(year, day, data):
     finally:
         sys.stdout = old_stdout
     lines = [x for x in out.getvalue().splitlines() if x]
-    if len(lines) == 2:
-        part_a, part_b = lines
-    elif day == 25 and len(lines) == 1:
-        [part_a] = lines
-        part_b = None
+    part_a = part_b = None
+    for line in lines:
+        if line.startswith("part a"):
+            part_a = line.split()[-1]
+        elif line.startswith("part b"):
+            part_b = line.split()[-1]
+    if part_a and part_b:
+        return part_a, part_b
+    if not lines:
+        return None, None
+    if len(lines) == 1:
+        part_a = lines[0].split()[-1]
     else:
-        part_a = next((s for s in lines if s.lower().startswith("part a")), None)
-        part_b = next((s for s in lines if s.lower().startswith("part b")), None)
-    if part_a and part_a.lower().startswith("part a"):
-        part_a = part_a.split()[-1]
-    if part_b and part_b.lower().startswith("part b"):
-        part_b = part_b.split()[-1]
+        part_a = lines[-2].split()[-1]
+        part_b = lines[-1].split()[-1]
     return part_a, part_b
