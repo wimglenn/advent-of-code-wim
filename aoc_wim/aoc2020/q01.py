@@ -1,18 +1,26 @@
-from math import prod
+from collections import Counter
 from aocd import data
-from aoc_wim.stuff import subset_sum
 
-numbers = sorted(int(x) for x in data.splitlines())
+counter = Counter(int(x) for x in data.splitlines())
 
-a = b = None
-for subset in subset_sum(numbers, target=2020):
-    if len(subset) == 2:
-        a = prod(subset)
-        print("part a:", a)
-        if b is not None:
-            break
-    elif len(subset) == 3:
-        b = prod(subset)
-        print("part b:", b)
-        if a is not None:
-            break
+
+def find_pair(counter, target=2020):
+    # find a pair of numbers from the multiset (counter) which sums to target
+    for number in counter:
+        diff = target - number
+        if diff in counter:
+            if diff == number and counter[number] <= 1:
+                continue
+            return number, diff
+
+
+x, y = find_pair(counter)
+print(f"part a: {x} * {y} == {x * y}")
+
+for z in list(counter):
+    counter[z] -= 1
+    pair = find_pair(counter, target=2020 - z)
+    if pair:
+        x, y = pair
+        print(f"part b: {x} * {y} * {z} == {x * y * z}")
+        break
