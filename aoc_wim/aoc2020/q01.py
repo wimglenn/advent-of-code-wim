@@ -18,8 +18,10 @@ print(f"part a: {x} * {y} == {x * y}")
 
 for z in list(counter):
     counter[z] -= 1
-    pair = find_pair(counter, target=2020 - z)
-    if pair:
-        x, y = pair
+    try:
+        x, y = find_pair(counter, target=2020 - z)
+    except TypeError:
+        counter[z] += 1
+    else:
         print(f"part b: {x} * {y} * {z} == {x * y * z}")
         break
