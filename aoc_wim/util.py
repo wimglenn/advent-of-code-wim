@@ -1,6 +1,5 @@
 import ast
 from pathlib import Path
-from textwrap import dedent
 
 from aocd.models import Puzzle
 
@@ -27,7 +26,7 @@ def set_module_docstring(path, text):
     Path(path).write_text(f'"""\n{text}\n"""\n{content}')
 
 
-def set_module_docstrings():
+def set_docstrings():
     files = here.glob("aoc*/q*.py")
     for file in files:
         day = int(file.name[1:3])
