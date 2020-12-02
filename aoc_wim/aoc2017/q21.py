@@ -44,11 +44,6 @@ def evolve(data, iterations):
     return grid.sum()
 
 
-test_data = """\
-../.# => ##./#../...
-.#./..#/### => #..#/..../..../#..#
-"""
-
-assert evolve(test_data, 2) == 12
-print(evolve(data, 5))
-print(evolve(data, 18))
+if __name__ == "__main__":
+    print(evolve(data, 5))
+    print(evolve(data, 18))

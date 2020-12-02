@@ -2,42 +2,28 @@
 --- Day 19: A Series of Tubes ---
 https://adventofcode.com/2017/day/19
 """
-from itertools import count
-
-import numpy as np
 from aocd import data
-
-test_data = """\
-     |          
-     |  +--+    
-     A  |  C    
- F---|----E|--+ 
-     |  |  |  D 
-     +B-+  +--+ 
-                """
+from aoc_wim.zgrid import ZGrid
 
 
-def tubemaze(data):
-    A = np.fromiter(data.replace("\n", ""), dtype="U1")
-    A = A.reshape(len(data.splitlines()), -1)
-    x = np.array([-1, A[0].argmax()], dtype=int)
-    v = np.array([1, 0], dtype=int)
-    letters = ""
-    for i in count():
-        x += v
-        a = A[tuple(x)]
-        if a == "+":
-            v = v[::-1]
-            if A[tuple(x + v)] == " ":
-                v *= -1
-        elif a not in "-| ":
-            letters += a
-        elif a == " ":
-            return letters, i
+grid = ZGrid(data)
+z = data.splitlines()[0].index("|")
+assert grid[z] == "|"
+dz = ZGrid.down
+letters = ""
+n_steps = 0
+while True:
+    z += dz
+    n_steps += 1
+    a = grid.get(z, " ")
+    if a == "+":
+        dz *= ZGrid.turn_left
+        if grid.get(z + dz, " ") == " ":
+            dz *= ZGrid.turn_around
+    elif a not in "-| ":
+        letters += a
+    elif a == " ":
+        break
 
-
-assert tubemaze(test_data) == ("ABCDEF", 38)
-
-a, b = tubemaze(data)
-print("part a:", a)
-print("part b:", b)
+print("part a:", letters)
+print("part b:", n_steps)

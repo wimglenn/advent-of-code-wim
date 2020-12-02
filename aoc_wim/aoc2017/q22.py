@@ -15,12 +15,12 @@ def parsed(data):
     return grid
 
 
-def mutate(data, n_iterations, mutation=1):
+def mutate(data, n_iterations, part="a"):
     mutations = {
-        1: {"#": ".", ".": "#"},
-        2: {"#": "F", "F": ".", ".": "W", "W": "#"},
+        "a": {"#": ".", ".": "#"},
+        "b": {"#": "F", "F": ".", ".": "W", "W": "#"},
     }
-    mutation = mutations[mutation]
+    mutation = mutations[part]
     factors = {".": 1j, "W": 1, "F": -1, "#": -1j}
     grid = parsed(data)
     p, v = 0, 1j
@@ -35,16 +35,6 @@ def mutate(data, n_iterations, mutation=1):
     return n_infected
 
 
-test_data = """\
-..#
-#..
-...
-"""
-assert mutate(test_data, n_iterations=7) == 5
-assert mutate(test_data, n_iterations=70) == 41
-assert mutate(test_data, n_iterations=10000) == 5587
-assert mutate(test_data, n_iterations=100, mutation=2) == 26
-assert mutate(test_data, n_iterations=10000000, mutation=2) == 2511944
-
-print("part a:", mutate(data, n_iterations=10000))
-print("part b:", mutate(data, n_iterations=10000000, mutation=2))
+if __name__ == "__main__":
+    print(mutate(data, n_iterations=10000, part="a"))
+    print(mutate(data, n_iterations=10000000, part="b"))

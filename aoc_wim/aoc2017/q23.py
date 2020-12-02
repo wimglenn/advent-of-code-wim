@@ -5,6 +5,8 @@ https://adventofcode.com/2017/day/23
 from aocd import data
 
 
+# TODO: change to OOP comp and re-use day 18 code
+
 def exe(a0=0):
     d = {}.fromkeys("abcdefgh", 0)
     d["a"] = a0

@@ -33,7 +33,7 @@ def test_example(input_file, monkeypatch):
     lines = input_file.read_text().splitlines()
     remove_trailing_comments(lines)
     *lines, part_a_answer, part_b_answer = lines
-    input_data = "\n".join(lines).strip()
+    input_data = "\n".join(lines).rstrip()
 
     # patch out aocd
     monkeypatch.setattr("aocd.data", input_data)
