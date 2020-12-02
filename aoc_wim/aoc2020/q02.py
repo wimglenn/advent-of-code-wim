@@ -3,14 +3,11 @@
 https://adventofcode.com/2020/day/2
 """
 from aocd import data
+from parse import parse
 
 a = b = 0
 for line in data.splitlines():
-    xy, char, passwd = line.split()
-    char = char.rstrip(":")
-    x, y = xy.split("-")
-    x = int(x)
-    y = int(y)
+    x, y, char, passwd = parse("{:d}-{:d} {}: {}", line)
     a += x <= passwd.count(char) <= y
     b += (passwd[x - 1] + passwd[y - 1]).count(char) == 1
 
