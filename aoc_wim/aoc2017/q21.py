@@ -1,3 +1,7 @@
+"""
+--- Day 21: Fractal Art ---
+https://adventofcode.com/2017/day/21
+"""
 import numpy as np
 from aocd import data
 
@@ -40,11 +44,6 @@ def evolve(data, iterations):
     return grid.sum()
 
 
-test_data = """\
-../.# => ##./#../...
-.#./..#/### => #..#/..../..../#..#
-"""
-
-assert evolve(test_data, 2) == 12
-print(evolve(data, 5))
-print(evolve(data, 18))
+if __name__ == "__main__":
+    print(evolve(data, 5))
+    print(evolve(data, 18))

@@ -1,3 +1,7 @@
+"""
+--- Day 6: Memory Reallocation ---
+https://adventofcode.com/2017/day/6
+"""
 from itertools import count
 
 import numpy as np
@@ -17,10 +21,6 @@ def part_ab(data):
         q, r = divmod(a[max_pos], n)
         a[max_pos] = 0
         a += np.roll([q + 1] * r + [q] * (n - r), max_pos + 1)
-
-
-test_data = "0 2 7 0"
-assert part_ab(test_data) == (5, 4)
 
 
 a, b = part_ab(data)

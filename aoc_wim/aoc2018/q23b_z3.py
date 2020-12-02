@@ -1,3 +1,7 @@
+"""
+--- Day 23: Experimental Emergency Teleportation ---
+https://adventofcode.com/2018/day/23
+"""
 import z3
 from aocd import get_data
 from parse import parse

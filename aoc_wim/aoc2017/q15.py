@@ -1,3 +1,7 @@
+"""
+--- Day 15: Dueling Generators ---
+https://adventofcode.com/2017/day/15
+"""
 from aocd import data
 from parse import parse
 
@@ -29,9 +33,6 @@ def score(gena, genb, n=40000000):
         x += a & 0xFFFF == b & 0xFFFF
     return x
 
-
-assert score(gen(a, 65), gen(b, 8921)) == 588
-assert score(gen2(a, 65, 4), gen2(b, 8921, 8), n=5000000) == 309
 
 print(score(gen(a, a0), gen(b, b0)))
 print(score(gen2(a, a0, 4), gen2(b, b0, 8), n=5000000))

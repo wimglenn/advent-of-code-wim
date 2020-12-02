@@ -1,3 +1,7 @@
+"""
+--- Day 6: Universal Orbit Map ---
+https://adventofcode.com/2019/day/6
+"""
 import networkx as nx
 from aocd import data
 

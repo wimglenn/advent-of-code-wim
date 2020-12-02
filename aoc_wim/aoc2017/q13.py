@@ -1,13 +1,11 @@
+"""
+--- Day 13: Packet Scanners ---
+https://adventofcode.com/2017/day/13
+"""
 from itertools import count
 
 from aocd import data
 from parse import parse
-
-test_data = """\
-0: 3
-1: 2
-4: 4
-6: 4"""
 
 
 def parsed(data):
@@ -28,10 +26,6 @@ def delay(d):
         if not s and t0 % d[0]:
             return t0
 
-
-test = parsed(test_data)
-assert severity(test) == 24
-assert delay(test) == 10
 
 d = parsed(data)
 print(severity(d))

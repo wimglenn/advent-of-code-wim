@@ -1,26 +1,13 @@
+"""
+--- Day 18: Duet ---
+https://adventofcode.com/2017/day/18
+"""
 from collections import deque
 
 from aocd import data
 
-test_data_a = """set a 1
-add a 2
-mul a a
-mod a 5
-snd a
-set a 0
-rcv a
-jgz a -1
-set a 1
-jgz a -2"""
 
-test_data_b = """snd 1
-snd 2
-snd p
-rcv a
-rcv b
-rcv c
-rcv d"""
-
+# TODO: change to OOP comp
 
 def run_a(data):
     snd = None
@@ -31,7 +18,10 @@ def run_a(data):
         line = lines[i]
         if line.startswith("snd"):
             _snd, k = line.split()
-            snd = d[k]
+            try:
+                snd = d[k]
+            except KeyError:
+                return
         elif line.startswith("rcv"):
             _rcv, k = line.split()
             if d[k]:
@@ -104,9 +94,6 @@ def part_b(data):
         if n0 is n1 is None:
             return p1_sent
 
-
-assert run_a(test_data_a) == 4
-assert part_b(test_data_b) == 3
 
 print("part a:", run_a(data))
 print("part b:", part_b(data))

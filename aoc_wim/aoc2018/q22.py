@@ -1,3 +1,7 @@
+"""
+--- Day 22: Mode Maze ---
+https://adventofcode.com/2018/day/22
+"""
 from aocd import data
 from parse import parse
 from aoc_wim.search import AStar

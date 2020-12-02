@@ -1,3 +1,7 @@
+"""
+--- Day 24: Air Duct Spelunking ---
+https://adventofcode.com/2016/day/24
+"""
 from aoc_wim.zgrid import ZGrid
 from itertools import combinations
 from itertools import permutations

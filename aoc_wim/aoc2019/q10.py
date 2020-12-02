@@ -1,3 +1,7 @@
+"""
+--- Day 10: Monitoring Station ---
+https://adventofcode.com/2019/day/10
+"""
 from aocd import data
 from fractions import Fraction
 from collections import defaultdict

@@ -1,3 +1,7 @@
+"""
+--- Day 5: How About a Nice Game of Chess? ---
+https://adventofcode.com/2016/day/5
+"""
 from _md5 import md5
 from aocd import data
 

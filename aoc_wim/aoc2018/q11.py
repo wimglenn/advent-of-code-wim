@@ -1,3 +1,7 @@
+"""
+--- Day 11: Chronal Charge ---
+https://adventofcode.com/2018/day/11
+"""
 import numpy as np
 from aocd import data
 from scipy.signal import convolve2d

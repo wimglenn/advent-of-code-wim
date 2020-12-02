@@ -1,3 +1,7 @@
+"""
+--- Day 23: Experimental Emergency Teleportation ---
+https://adventofcode.com/2018/day/23
+"""
 from heapq import heappop
 from heapq import heappush
 from itertools import product

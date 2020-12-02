@@ -1,3 +1,7 @@
+"""
+--- Day 21: Chronal Conversion ---
+https://adventofcode.com/2018/day/21
+"""
 from aocd import data
 from parse import parse
 

@@ -1,3 +1,7 @@
+"""
+--- Day 13: Knights of the Dinner Table ---
+https://adventofcode.com/2015/day/13
+"""
 from collections import defaultdict
 from itertools import permutations
 

@@ -1,3 +1,7 @@
+"""
+--- Day 16: Permutation Promenade ---
+https://adventofcode.com/2017/day/16
+"""
 from aocd import data
 
 
@@ -44,9 +48,6 @@ def dance(data, d, n=1):
         n -= 1
     return "".join(d)
 
-
-assert dance(data="s1,x3/4,pe/b", d=list("abcde")) == "baedc"
-assert dance(data="s1,x3/4,pe/b", d=list("abcde"), n=2) == "ceadb"
 
 d = list("abcdefghijklmnop")
 print("part a:", dance(data, d))

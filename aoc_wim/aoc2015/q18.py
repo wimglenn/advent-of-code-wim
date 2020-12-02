@@ -1,3 +1,7 @@
+"""
+--- Day 18: Like a GIF For Your Yard ---
+https://adventofcode.com/2015/day/18
+"""
 import numpy as np
 from aocd import data
 from scipy.signal import convolve2d

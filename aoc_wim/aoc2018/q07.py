@@ -1,3 +1,7 @@
+"""
+--- Day 7: The Sum of Its Parts ---
+https://adventofcode.com/2018/day/7
+"""
 import logging
 from types import SimpleNamespace
 

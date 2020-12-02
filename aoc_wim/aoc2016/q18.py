@@ -1,7 +1,12 @@
+"""
+--- Day 18: Like a Rogue ---
+https://adventofcode.com/2016/day/18
+"""
 from aocd import data
 
 
 def generate_rows(row):
+    """rule90"""
     idx = range(len(row))
     while True:
         yield row

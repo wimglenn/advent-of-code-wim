@@ -1,3 +1,7 @@
+"""
+--- Day 1: Report Repair ---
+https://adventofcode.com/2020/day/1
+"""
 from collections import Counter
 from aocd import data
 

@@ -1,3 +1,7 @@
+"""
+--- Day 2: Password Philosophy ---
+https://adventofcode.com/2020/day/2
+"""
 from aocd import data
 
 a = b = 0

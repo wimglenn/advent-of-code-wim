@@ -34,6 +34,9 @@ setup(
     packages=find_packages(),
     entry_points={
         "adventofcode.user": ["wim = aoc_wim:plugin"],
-        "console_scripts": ["aocw = aoc_wim.cli:run_one"],
+        "console_scripts": [
+            "aocw = aoc_wim.cli:run_one",
+            "_set_docstrings = aoc_wim.util:set_docstrings",
+        ],
     },
 )

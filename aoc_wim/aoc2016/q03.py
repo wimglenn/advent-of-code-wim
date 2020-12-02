@@ -1,3 +1,7 @@
+"""
+--- Day 3: Squares With Three Sides ---
+https://adventofcode.com/2016/day/3
+"""
 import numpy as np
 from aocd import data
 

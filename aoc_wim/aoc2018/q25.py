@@ -1,3 +1,7 @@
+"""
+--- Day 25: Four-Dimensional Adventure ---
+https://adventofcode.com/2018/day/25
+"""
 from itertools import combinations
 
 import networkx as nx

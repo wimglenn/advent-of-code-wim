@@ -1,3 +1,7 @@
+"""
+--- Day 4: Security Through Obscurity ---
+https://adventofcode.com/2016/day/4
+"""
 from collections import Counter
 from collections import deque
 from string import ascii_lowercase

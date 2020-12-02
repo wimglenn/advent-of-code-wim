@@ -1,3 +1,7 @@
+"""
+--- Day 4: High-Entropy Passphrases ---
+https://adventofcode.com/2017/day/4
+"""
 from aocd import data
 
 
@@ -9,17 +13,6 @@ def has_dupe(txt):
 def has_anagram(txt):
     parts = [tuple(sorted(x)) for x in txt.split()]
     return len(parts) != len(set(parts))
-
-
-assert not has_dupe("aa bb cc dd ee")
-assert has_dupe("aa bb cc dd aa")
-assert not has_dupe("aa bb cc dd aaa")
-
-assert not has_anagram("abcde fghij")
-assert has_anagram("abcde xyz ecdab")
-assert not has_anagram("a ab abc abd abf abj")
-assert not has_anagram("iiii oiii ooii oooi oooo")
-assert has_anagram("oiii ioii iioi iiio")
 
 
 a = b = 0

@@ -1,3 +1,7 @@
+"""
+--- Day 22: Grid Computing ---
+https://adventofcode.com/2016/day/22
+"""
 import numpy as np
 from aocd import data
 
