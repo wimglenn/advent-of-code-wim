@@ -30,6 +30,8 @@ def plugin(year, day, data):
     if len(lines) == 1:
         part_a = lines[0].split()[-1]
     else:
-        part_a = lines[-2].split()[-1]
-        part_b = lines[-1].split()[-1]
+        if part_a is None:
+            part_a = lines[-2].split()[-1]
+        if part_b is None:
+            part_b = lines[-1].split()[-1]
     return part_a, part_b
