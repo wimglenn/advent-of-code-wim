@@ -1,10 +1,13 @@
 import argparse
 import ast
+import shutil
 import sys
+import tempfile
 from pathlib import Path
 from datetime import datetime
 from textwrap import dedent
 
+from aocd import get_data
 from aocd.get import most_recent_year
 from aocd.models import Puzzle
 from aocd.utils import AOC_TZ
@@ -64,6 +67,12 @@ def start():
         default=most_recent_year(),
         help="2015-{} (default: %(default)s)".format(years[-1]),
     )
+    parser.add_argument(
+        "-f",
+        "--force",
+        action="store_true",
+        help="create the template file even if source already exists",
+    )
     args = parser.parse_args()
     if args.day in years and args.year in days:
         # be forgiving
@@ -76,11 +85,18 @@ def start():
     here = Path(__file__).parent
     src = here / f"aoc{year}" / f"q{day:02d}.py"
     if src.exists():
-        sys.exit(f"{src} already exists!")
-    src.write_text(dedent("""\
+        if not args.force:
+            sys.exit(f"{src} already exists!")
+        shutil.copy2(src, tempfile.gettempdir())
+    src.write_text(dedent('''\
         from aocd import data
         from collections import *
 
-        print(data)
-    """))
+        test_data = """\\
+        """
+
+
+    '''))
     set_docstrings([src])
+    data = get_data(day=day, year=year)
+    print(data)
