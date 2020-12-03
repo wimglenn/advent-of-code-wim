@@ -37,6 +37,7 @@ setup(
         "console_scripts": [
             "aocw = aoc_wim.cli:run_one",
             "_set_docstrings = aoc_wim.util:set_docstrings",
+            "aoc-init = aoc_wim.util:start",
         ],
     },
 )

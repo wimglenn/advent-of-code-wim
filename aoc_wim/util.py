@@ -1,7 +1,13 @@
+import argparse
 import ast
+import sys
 from pathlib import Path
+from datetime import datetime
+from textwrap import dedent
 
+from aocd.get import most_recent_year
 from aocd.models import Puzzle
+from aocd.utils import AOC_TZ
 
 
 here = Path(__file__).parent.resolve()
@@ -14,6 +20,7 @@ def get_module_docstring(path):
 
 
 def set_module_docstring(path, text):
+    """update docstring of file at path with text, cautiously"""
     prev = get_module_docstring(path)
     if prev == text:
         # nothing to do
@@ -26,12 +33,54 @@ def set_module_docstring(path, text):
     Path(path).write_text(f'"""\n{text}\n"""\n{content}')
 
 
-def set_docstrings():
-    files = here.glob("aoc*/q*.py")
-    for file in files:
+def set_docstrings(files=()):
+    """puts name and link into puzzle source files"""
+    for file in files or here.glob("aoc*/q*.py"):
         day = int(file.name[1:3])
         year = int(file.parent.name[3:])
         puzzle = Puzzle(year, day)
         docstring = f"--- Day {day}: {puzzle.title} ---\n"
         docstring += puzzle.url
         set_module_docstring(file, docstring)
+
+
+def start():
+    """init a new source file at ./aocYYYY/qDD.py"""
+    aoc_now = datetime.now(tz=AOC_TZ)
+    years = range(2015, aoc_now.year + int(aoc_now.month == 12))
+    days = range(1, 26)
+    parser = argparse.ArgumentParser(description="init current day")
+    parser.add_argument(
+        "day",
+        nargs="?",
+        type=int,
+        default=min(aoc_now.day, 25) if aoc_now.month == 12 else 1,
+        help="1-25 (default: %(default)s)",
+    )
+    parser.add_argument(
+        "year",
+        nargs="?",
+        type=int,
+        default=most_recent_year(),
+        help="2015-{} (default: %(default)s)".format(years[-1]),
+    )
+    args = parser.parse_args()
+    if args.day in years and args.year in days:
+        # be forgiving
+        args.day, args.year = args.year, args.day
+    if args.day not in days or args.year not in years:
+        parser.print_usage()
+        parser.exit(1)
+    year = args.year
+    day = args.day
+    here = Path(__file__).parent
+    src = here / f"aoc{year}" / f"q{day:02d}.py"
+    if src.exists():
+        sys.exit(f"{src} already exists!")
+    src.write_text(dedent("""\
+        from aocd import data
+        from collections import *
+
+        print(data)
+    """))
+    set_docstrings([src])
