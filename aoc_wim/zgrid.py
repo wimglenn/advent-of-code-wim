@@ -199,6 +199,30 @@ class ZGrid:
                         queue.append((z, depth + 1))
         return seen
 
+    @property
+    def top_left(self):
+        return min(self.d, key=lambda z: (z.imag, z.real))
+
+    @property
+    def left_bottom(self):
+        return min(self.d, key=lambda z: (z.real, -z.imag))
+
+    @property
+    def bottom_right(self):
+        return max(self.d, key=lambda z: (z.imag, z.real))
+
+    @property
+    def right_top(self):
+        return max(self.d, key=lambda z: (z.real, -z.imag))
+
+    @property
+    def width(self):
+        return int(self.right_top.real - self.left_bottom.real) + 1
+
+    @property
+    def height(self):
+        return int(self.bottom_right.imag - self.top_left.imag) + 1
+
 
 def dump_grid(g, clear=False, pretty=True):
     transform = {
