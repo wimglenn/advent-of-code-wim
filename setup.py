@@ -30,6 +30,7 @@ setup(
         "fields",
         "networkx",
         "wimpy",
+        "marshmallow",
     ],
     packages=find_packages(),
     entry_points={
