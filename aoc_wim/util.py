@@ -11,6 +11,7 @@ from aocd import get_data
 from aocd.get import most_recent_year
 from aocd.models import Puzzle
 from aocd.utils import AOC_TZ
+from aocd.utils import blocker
 
 
 here = Path(__file__).parent.resolve()
@@ -84,6 +85,11 @@ def start():
     day = args.day
     here = Path(__file__).parent
     src = here / f"aoc{year}" / f"q{day:02d}.py"
+    if day < 25 and year == aoc_now.year and day == aoc_now.day:
+        if src.exists() and str(day) not in sys.argv:
+            day += 1
+            blocker()
+            src = here / f"aoc{year}" / f"q{day:02d}.py"
     if src.exists():
         if not args.force:
             sys.exit(f"{src} already exists!")
@@ -94,7 +100,6 @@ def start():
 
         test_data = """\\
         """
-
 
     '''))
     set_docstrings([src])
