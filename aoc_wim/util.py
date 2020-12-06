@@ -3,6 +3,7 @@ import ast
 import shutil
 import sys
 import tempfile
+import webbrowser
 from pathlib import Path
 from datetime import datetime
 from textwrap import dedent
@@ -102,6 +103,7 @@ def start():
         """
 
     '''))
-    set_docstrings([src])
     data = get_data(day=day, year=year)
     print(data)
+    set_docstrings([src])
+    webbrowser.open(Puzzle(year, day).url)
