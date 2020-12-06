@@ -8,7 +8,7 @@ a = b = 0
 for block in data.split("\n\n"):
     s = {*block} - {"\n"}
     a += len(s)
-    b += len(s.intersection(*map(set, block.splitlines())))
+    b += len(s.intersection(*block.splitlines()))
 
 print(a)
 print(b)
