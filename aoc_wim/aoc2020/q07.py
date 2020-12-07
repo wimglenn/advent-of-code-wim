@@ -24,7 +24,7 @@ q = deque([(1, "shiny gold bag")])
 while q:
     weight0, bag0 = q.popleft()
     b += weight0
-    for bag1 in nx.descendants_at_distance(g, bag0, 1):
+    for bag1 in nx.neighbors(g, bag0):
         weight1 = g.get_edge_data(bag0, bag1)["weight"]
         q.append((weight0 * weight1, bag1))
 
