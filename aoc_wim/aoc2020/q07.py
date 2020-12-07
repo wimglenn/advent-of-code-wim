@@ -17,15 +17,14 @@ for line in data.splitlines():
         right = right.rstrip("s.")
         g.add_edge(left, right, weight=int(n))
 
-print("part a:", sum(nx.has_path(g, bag, "shiny gold bag") for bag in g.nodes) - 1)
+print("part a:", sum(nx.has_path(g, b, "shiny gold bag") for b in g.nodes) - 1)
 
 b = -1
 q = deque([(1, "shiny gold bag")])
 while q:
-    weight0, bag0 = q.popleft()
+    weight0, b0 = q.popleft()
     b += weight0
-    for bag1 in nx.neighbors(g, bag0):
-        weight1 = g.get_edge_data(bag0, bag1)["weight"]
-        q.append((weight0 * weight1, bag1))
+    for b1 in g[b0]:
+        q.append((weight0 * g[b0][b1]["weight"], b1))
 
 print("part b:", b)
