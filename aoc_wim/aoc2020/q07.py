@@ -9,13 +9,12 @@ import networkx as nx
 g = nx.DiGraph()
 for line in data.splitlines():
     left, right = line.split("s contain ")
-    if right == "no other bags.":
-        continue
     rights = right.split(", ")
     for right in rights:
         n, right = right.split(None, 1)
         right = right.rstrip("s.")
-        g.add_edge(left, right, weight=int(n))
+        n = 0 if n == "no" else int(n)
+        g.add_edge(left, right, weight=n)
 
 print("part a:", sum(nx.has_path(g, b, "shiny gold bag") for b in g.nodes) - 1)
 
