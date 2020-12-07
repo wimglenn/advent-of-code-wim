@@ -22,9 +22,8 @@ print("part a:", sum(nx.has_path(g, b, "shiny gold bag") for b in g.nodes) - 1)
 b = -1
 q = deque([(1, "shiny gold bag")])
 while q:
-    weight0, b0 = q.popleft()
-    b += weight0
-    for b1 in g[b0]:
-        q.append((weight0 * g[b0][b1]["weight"], b1))
+    w, b0 = q.popleft()
+    b += w
+    q.extend((w * g[b0][b1]["weight"], b1) for b1 in g[b0])
 
 print("part b:", b)
