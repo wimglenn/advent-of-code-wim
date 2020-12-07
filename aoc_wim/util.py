@@ -98,9 +98,13 @@ def start():
     src.write_text(dedent('''\
         from aocd import data
         from collections import *
+        # import numpy as np
+        # import networkx as nx
 
-        test_data = """\\
-        """
+        # UNCOMMENT FOR TESTS!
+        #
+        # data = """\\
+        # """
 
     '''))
     data = get_data(day=day, year=year)
