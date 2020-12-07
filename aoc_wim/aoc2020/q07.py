@@ -19,7 +19,7 @@ for line in data.splitlines():
 
 print("part a:", sum(nx.has_path(g, bag, "shiny gold bag") for bag in g.nodes) - 1)
 
-b = 0
+b = -1
 q = deque([(1, "shiny gold bag")])
 while q:
     weight0, bag0 = q.popleft()
@@ -28,4 +28,4 @@ while q:
         weight1 = g.get_edge_data(bag0, bag1)["weight"]
         q.append((weight0 * weight1, bag1))
 
-print("part b:", b - 1)
+print("part b:", b)
