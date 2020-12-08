@@ -2,7 +2,7 @@ import logging
 
 
 log = logging.getLogger(__name__)
-# logging.basicConfig(level=logging.INFO, format="%(message)s")
+# logging.basicConfig(format="%(message)s", level=logging.INFO)
 
 
 class AssembunnyComputer:

@@ -9,7 +9,7 @@ from operator import itemgetter
 import logging
 
 
-# logging.basicConfig(level=logging.INFO, format="%(message)s")
+# logging.basicConfig(format="%(message)s", level=logging.INFO)
 log = logging.getLogger(__name__)
 
 
