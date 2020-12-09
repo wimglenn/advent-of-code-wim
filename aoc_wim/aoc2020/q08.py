@@ -2,11 +2,10 @@
 --- Day 8: Handheld Halting ---
 https://adventofcode.com/2020/day/8
 """
-import logging
 from aocd import data
 from aoc_wim.aoc2020 import Comp
 
-# logging.basicConfig(format="%(message)s", level=logging.DEBUG)
+# import logging; logging.basicConfig(format="%(message)s", level=logging.DEBUG)
 
 ops = []
 for line in data.splitlines():

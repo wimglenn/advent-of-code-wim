@@ -9,6 +9,8 @@ from aocd import data
 import numpy as np
 
 
+# TODO: change to use topological sort
+
 opmap = {
     "AND": operator.and_,
     "OR": operator.or_,
