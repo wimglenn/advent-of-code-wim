@@ -52,13 +52,13 @@ def mutate(A0):
 def part_a(data, minutes=10, debug=False):
     A = parsed(data)
     m = minutes
-    seen = {A.tostring(): m}
+    seen = {A.tobytes(): m}
     while m > 0:
         m -= 1
         A = mutate(A)
         if debug:
             dump(A)
-        s = A.tostring()
+        s = A.tobytes()
         if s in seen:
             delta = seen[s] - m
             m %= delta

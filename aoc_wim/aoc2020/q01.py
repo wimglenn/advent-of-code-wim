@@ -4,16 +4,7 @@ https://adventofcode.com/2020/day/1
 """
 from collections import Counter
 from aocd import data
-
-
-def find_pair(counter, target=2020):
-    # find a pair of numbers from the multiset (counter) which sums to target
-    for number in counter:
-        diff = target - number
-        if diff in counter:
-            if diff == number and counter[number] <= 1:
-                continue
-            return number, diff
+from aoc_wim.aoc2020 import find_pair
 
 
 counter = Counter(int(x) for x in data.splitlines())

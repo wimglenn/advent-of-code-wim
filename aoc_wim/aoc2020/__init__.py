@@ -28,3 +28,13 @@ class Comp:
         log.debug(f"{self.n:5}:   {op:3}{arg:4}   L={self.line:3}   a={self.a:4}")
         op_func(arg)
         self.line += 1
+
+
+def find_pair(counter, target=2020):
+    # find a pair of numbers from the multiset (counter) which sums to target
+    for number in counter:
+        diff = target - number
+        if diff in counter:
+            if diff == number and counter[number] <= 1:
+                continue
+            return number, diff
