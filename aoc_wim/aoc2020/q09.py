@@ -20,8 +20,8 @@ for *pre, target in chunks(numbers, chunk_size=n + 1, overlap=n):
 start = stop = total = 0
 while total != target:
     if total < target:
+        total += numbers[stop]
         stop += 1
-        total += numbers[stop - 1]
     else:
         total -= numbers[start]
         start += 1
