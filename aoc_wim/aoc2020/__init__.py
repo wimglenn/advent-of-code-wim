@@ -32,9 +32,10 @@ class Comp:
 
 def find_pair(counter, target=2020):
     # find a pair of numbers from the multiset (counter) which sums to target
+    # if the input is a set, find a pair of *distinct* numbers
     for number in counter:
         diff = target - number
         if diff in counter:
-            if diff == number and counter[number] <= 1:
+            if diff == number and (isinstance(counter, set) or counter[number] <= 1):
                 continue
             return number, diff
