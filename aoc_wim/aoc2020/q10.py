@@ -21,9 +21,8 @@ tri = Tribonacci()
 b = 1
 while i > 1:
     substring = "1" * (i - 1)
-    if substring not in s:
-        continue
-    b *= tri[i + 1] ** s.count(substring)
-    s = s.replace(substring, "")
+    if substring in s:
+        b *= tri[i + 1] ** s.count(substring)
+        s = s.replace(substring, "")
     i -= 1
 print("part b:", b)
