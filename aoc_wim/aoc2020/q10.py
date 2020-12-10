@@ -2,8 +2,9 @@
 --- Day 10: Adapter Array ---
 https://adventofcode.com/2020/day/10
 """
-from aocd import numbers
+from aocd import data
 
+numbers = [int(x) for x in data.split()]
 numbers.append(0)  # outlet
 numbers.sort()
 numbers.append(numbers[-1] + 3)  # device

@@ -8,4 +8,4 @@
 12
 20
 40
-28
+28  # not 80 because that would be the chunk with only 1 number, the target itself

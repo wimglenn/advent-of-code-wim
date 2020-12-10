@@ -18,5 +18,6 @@ for z in list(counter):
     except TypeError:
         counter[z] += 1
     else:
+        assert x + y + z == 2020
         print(f"part b: {x} * {y} * {z} == {x * y * z}")
         break
