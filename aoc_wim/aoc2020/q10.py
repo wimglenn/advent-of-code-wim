@@ -13,12 +13,12 @@ numbers.sort()
 print("part a:", Δ.count(1) * Δ.count(3))
 
 tri = Tribonacci()
-b = 1
+Π = 1
 ones = 0
 for d in Δ:
     if d == 1:
         ones += 1  # finding longest streak of ones
         continue
-    b *= tri[ones + 2] or 1  # streak broken, cash in
+    Π *= tri[ones + 2] or 1  # streak broken, cash in
     ones = 0
-print("part b:", b)
+print("part b:", Π)
