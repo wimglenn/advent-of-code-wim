@@ -44,3 +44,16 @@ def ways(total, coins=(1, 2, 5, 10, 20, 50, 100)):
         for i in range(coin, total + 1):
             ways[i] += [way + Counter({coin: 1}) for way in ways[i - coin]]
     return ways[total]
+
+
+class Tribonacci(dict):
+    """https://oeis.org/A000073"""
+
+    def __init__(self):
+        self[0] = self[1] = 0
+        self[2] = 1
+
+    def __missing__(self, key):
+        val = self[key - 1] + self[key - 2] + self[key - 3]
+        self[key] = val
+        return val
