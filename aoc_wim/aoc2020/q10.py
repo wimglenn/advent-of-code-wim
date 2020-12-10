@@ -8,21 +8,17 @@ from aoc_wim.stuff import Tribonacci
 numbers = [int(x) for x in data.split()]
 numbers.append(0)  # outlet
 numbers.sort()
-numbers.append(numbers[-1] + 3)  # device
-s0 = s = "".join([str(y - x) for x, y in zip(numbers, numbers[1:])])
-print("part a:", s.count("1") * s.count("3"))
+Δ = [y - x for x, y in zip(numbers, numbers[1:])]
+Δ.append(3)  # device
+print("part a:", Δ.count(1) * Δ.count(3))
 
-# find longest sequence of 1
-i = 1
-while "1" * i in s0:
-    i += 1
 tri = Tribonacci()
-
 b = 1
-while i > 1:
-    substring = "1" * (i - 1)
-    if substring in s:
-        b *= tri[i + 1] ** s.count(substring)
-        s = s.replace(substring, "")
-    i -= 1
+ones = 0
+for d in Δ:
+    if d == 1:
+        ones += 1  # finding longest streak of ones
+        continue
+    b *= tri[ones + 2] or 1  # streak broken, cash in
+    ones = 0
 print("part b:", b)
