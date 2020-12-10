@@ -16,8 +16,10 @@ for *pre, target in chunks(numbers, chunk_size=n + 1, overlap=n):
         print("part a:", target)
         break
 
-start = stop = total = 0
-while total != target:
+start = 0
+stop = 2
+total = sum(numbers[start:stop])
+while total != target or start == stop - 1:
     if total < target:
         total += numbers[stop]
         stop += 1
@@ -25,4 +27,6 @@ while total != target:
         total -= numbers[start]
         start += 1
 chunk = numbers[start:stop]
+assert sum(chunk) == target, "the chunk must sum to the target value"
+assert len(chunk) >= 2, "the chunk must be a contiguous set of at least two numbers"
 print("part b:", min(chunk) + max(chunk))
