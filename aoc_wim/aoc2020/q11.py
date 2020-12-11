@@ -19,12 +19,11 @@ def evolve(grid, part="a"):
             n_occ = 0
             for dz in dzs:
                 z = z0
-                while True:
+                val = "."
+                while val == ".":
                     z += dz
                     val = grid.get(z)
-                    if val is None or val != ".":
-                        n_occ += val == "#"
-                        break
+                    n_occ += val == "#"
         if c0 == "L" and n_occ == 0:
             result[z0] = "#"
         if c0 == "#" and n_occ >= max_occ:
