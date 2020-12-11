@@ -9,9 +9,6 @@ import networkx as nx
 log = logging.getLogger(__name__)
 
 
-dzs = [-1j, 1, 1j, -1]
-
-
 class ZDict(dict):
 
     def __init__(self, func):
@@ -27,13 +24,14 @@ class ZDict(dict):
 
 class ZGrid:
 
+    _dzs = [-1j, 1, 1j, -1]
     dzs = ChainMap(
-        dict(zip(dzs, dzs)),
-        dict(zip("^>v<", dzs)),
-        dict(zip("up right down left".split(), dzs)),
-        dict(zip("up right down left".upper().split(), dzs)),
-        dict(zip("URDL", dzs)),
-        dict(zip("NESW", dzs)),
+        dict(zip(_dzs, _dzs)),
+        dict(zip("^>v<", _dzs)),
+        dict(zip("up right down left".split(), _dzs)),
+        dict(zip("up right down left".upper().split(), _dzs)),
+        dict(zip("URDL", _dzs)),
+        dict(zip("NESW", _dzs)),
     )
     U = N = up = north = -1j
     R = E = right = east = 1
@@ -85,6 +83,13 @@ class ZGrid:
     def count(self, val):
         return sum([1 for v in self.values() if v == val])
 
+    def count_near(self, z0, val, *, n=4, include_z0=False, default=None):
+        vals = [self.get(z, default) for z in self.near(z0, n=n)]
+        result = vals.count(val)
+        if include_z0:
+            result += self.get(z0, default) == val
+        return result
+
     def get(self, k, default=None):
         return self.d.get(k, default)
 
@@ -99,12 +104,16 @@ class ZGrid:
 
     def near(self, z, n=4):
         if n == 4:
-            return [z - 1j, z + 1, z + 1j, z - 1]
+            return [
+                        z-1j,
+                z-1,             z+1,
+                        z+1j,
+            ]
         elif n == 8:
             return [
-                z - 1 - 1j, z - 1j, z + 1 - 1j,
-                z - 1, z + 1,
-                z - 1 + 1j, z + 1j, z + 1 + 1j,
+                z-1-1j, z-1j, z+1-1j,
+                z-1,             z+1,
+                z-1+1j, z+1j, z+1+1j,
             ]
 
     def draw(self, overlay=None, window=None, clear=False, pretty=True):

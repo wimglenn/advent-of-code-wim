@@ -13,9 +13,9 @@ def evolve(grid, part="a"):
         if c0 == ".":
             continue  # floor
         if part == "a":
-            n_occ = sum(grid.get(z) == "#" for z in grid.near(z0, n=8))
+            n_occ = grid.count_near(z0, "#", n=8)
         else:
-            dzs = [z - z0 for z in grid.near(z0, n=8)]
+            dzs = grid.near(0, n=8)
             n_occ = 0
             for dz in dzs:
                 z = z0
