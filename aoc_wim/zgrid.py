@@ -82,6 +82,9 @@ class ZGrid:
     def values(self):
         return self.d.values()
 
+    def count(self, val):
+        return sum([1 for v in self.values() if v == val])
+
     def get(self, k, default=None):
         return self.d.get(k, default)
 
