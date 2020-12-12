@@ -116,7 +116,7 @@ class ZGrid:
                 z-1+1j, z+1j, z+1+1j,
             ]
 
-    def draw(self, overlay=None, window=None, clear=False, pretty=True):
+    def draw(self, overlay=None, window=None, clear=False, pretty=False, transform=None):
         if window is None:
             d = self.d
         else:
@@ -125,7 +125,7 @@ class ZGrid:
             d = {z: self[z] for z in window}
         if overlay is not None:
             d = {**self.d, **overlay}
-        dump_grid(d, clear=clear, pretty=pretty)
+        dump_grid(d, clear=clear, pretty=pretty, transform=transform)
 
     def translate(self, table):
         for z in self.d:
@@ -236,23 +236,26 @@ class ZGrid:
         return int(self.bottom_right.imag - self.top_left.imag) + 1
 
 
-def dump_grid(g, clear=False, pretty=True):
-    transform = {
-        "#": "⬛",
-        ".": "  ",
-        "O": "🤖",
-        "T": "🥇",
-        "x": "👣",
-        ">": "➡️ ",
-        "<": "⬅️ ",
-        "^": "⬆️ ",
-        "v": "⬇️ ",
-        "@": "@️ ",
-        0: "  ",
-        1: "⬛",
-    }
-    transform.update({x: x + " " for x in string.ascii_letters if x not in transform})
-    empty = "  " if pretty else "."
+def dump_grid(g, clear=False, pretty=True, transform=None):
+    if transform is None:
+        transform = {
+            "#": "⬛",
+            ".": "  ",
+            "O": "🤖",
+            "T": "🥇",
+            "x": "👣",
+            ">": "➡️ ",
+            "<": "⬅️ ",
+            "^": "⬆️ ",
+            "v": "⬇️ ",
+            "@": "@️ ",
+            0: "  ",
+            1: "⬛",
+        }
+    empty = "."
+    if pretty:
+        transform.update({x: x + " " for x in string.ascii_letters if x not in transform})
+        empty = "  "
     print()
     xs = [int(z.real) for z in g]
     ys = [int(z.imag) for z in g]

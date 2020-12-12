@@ -34,7 +34,7 @@ for p in "ab":
     grid0 = ZGrid(data)
     while True:
         grid1 = evolve(grid0, part=p)
-        # grid1.draw(pretty=0)
+        grid1.draw(clear=True, pretty=True, transform={".": "  ", "L": "💺", "#": "🧘🏽"})
         if grid1.d == grid0.d:
             break
         grid0 = grid1
