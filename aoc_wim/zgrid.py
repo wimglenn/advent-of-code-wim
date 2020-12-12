@@ -9,6 +9,11 @@ import networkx as nx
 log = logging.getLogger(__name__)
 
 
+def manhattan_distance(z1, z0=0):
+    dz = z1 - z0
+    return abs(int(dz.real)) + abs(int(dz.imag))
+
+
 class ZDict(dict):
 
     def __init__(self, func):
@@ -38,8 +43,8 @@ class ZGrid:
     D = S = down = south = 1j
     L = W = left = west = -1
 
-    turn_right = 1j
-    turn_left = -1j
+    turn_right = turnR = 1j
+    turn_left = turnL = -1j
     turn_around = -1
 
     def __init__(self, initial_data=None, on="#", off="."):
