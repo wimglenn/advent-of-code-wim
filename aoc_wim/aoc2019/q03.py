@@ -3,6 +3,7 @@
 https://adventofcode.com/2019/day/3
 """
 from aocd import data
+from aoc_wim.zgrid import manhattan_distance
 
 
 directions = {
@@ -28,7 +29,7 @@ def solve(data, part="a"):
                     seen[-1][pos] = d
     crossings = seen[0].keys() & seen[1].keys()
     if part == "a":
-        result = min([int(abs(z.real) + abs(z.imag)) for z in crossings])
+        result = min([manhattan_distance(z) for z in crossings])
     else:
         result = min([seen[0][z] + seen[1][z] for z in crossings])
     return result

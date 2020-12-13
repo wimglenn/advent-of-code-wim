@@ -3,6 +3,7 @@
 https://adventofcode.com/2017/day/3
 """
 from aocd import data
+from aoc_wim.zgrid import manhattan_distance
 
 
 def gen():
@@ -18,7 +19,7 @@ def gen():
                 pos += delta
                 neighbours = (pos + dr + dj for dr in (-1, 0, 1) for dj in (-1j, 0, 1j))
                 sums[pos] = sum(sums.get(p, 0) for p in neighbours)
-                yield int(abs(pos.real) + abs(pos.imag)), sums[pos]
+                yield manhattan_distance(pos), sums[pos]
 
 
 def part_ab(data):

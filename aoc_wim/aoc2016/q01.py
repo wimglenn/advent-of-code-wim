@@ -3,6 +3,7 @@
 https://adventofcode.com/2016/day/1
 """
 from aocd import data
+from aoc_wim.zgrid import manhattan_distance
 
 
 z = 0
@@ -16,8 +17,8 @@ for step in data.split(", "):
     for block in range(n_blocks):
         z += dz
         if b is None and z in seen:
-            b = int(abs(z.real) + abs(z.imag))
+            b = manhattan_distance(z)
         seen.add(z)
 
-print("part a:", int(abs(z.real) + abs(z.imag)))
+print("part a:", manhattan_distance(z))
 print("part b:", b)

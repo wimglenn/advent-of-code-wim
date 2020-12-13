@@ -6,6 +6,7 @@ from aocd import data
 from parse import parse
 from aoc_wim.search import AStar
 from aoc_wim.zgrid import zrange
+from aoc_wim.zgrid import manhattan_distance
 
 
 class Grid:
@@ -80,8 +81,7 @@ class Q22AStar(AStar):
     def heuristic(self, state0, state1):
         z0, tool0 = state0
         z1, tool1 = state1
-        delta = z1 - z0
-        result = int(abs(delta.real) + abs(delta.imag))
+        result = manhattan_distance(z1, z0)
         if tool0 != tool1:
             result += 7
         return result
