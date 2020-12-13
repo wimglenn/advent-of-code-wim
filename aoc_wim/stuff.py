@@ -1,5 +1,6 @@
 from collections import Counter
 from functools import lru_cache
+from math import sqrt
 
 
 def rsubset_sum(vals, target=0):
@@ -57,3 +58,40 @@ class Tribonacci(dict):
         val = self[key - 1] + self[key - 2] + self[key - 3]
         self[key] = val
         return val
+
+
+def factorise(n):
+    """returns the sorted prime factors of natural number n
+
+    >>> factorise(12)
+    [2, 2, 3]
+    >>> factorise(4998)
+    [2, 3, 7, 7, 17]
+    >>> factorise(4999)
+    [4999]"""
+    if n < 0:
+        result = factorise(-n)
+        result[0] *= -1
+        return result
+    for i in range(2, int(1 + sqrt(n))):
+        if n % i == 0:
+            return [i] + factorise(n // i)
+    else:
+        return [n]
+
+
+def extended_euclidean(a, b):
+    # find m1, m2 such that a*m1 + b*m2 = gcd(a, b)
+    r_prev, r = a, b
+    s_prev, s = 1, 0
+    t_prev, t = 0, 1
+    while r:
+        q = r_prev // r
+        r_prev, r = r, r_prev - q * r
+        s_prev, s = s, s_prev - q * s
+        t_prev, t = t, t_prev - q * t
+    if s_prev < 0:
+        s_prev += a
+    if t_prev < 0:
+        t_prev += b
+    return s_prev, t_prev

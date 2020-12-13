@@ -4,14 +4,9 @@ https://adventofcode.com/2019/day/12
 """
 from aocd import data
 from itertools import count
-from math import gcd
+from math import lcm
 import numpy as np
 import re
-
-
-def lcm(a, b):
-    """least common multiple"""
-    return abs(a * b) // gcd(a, b)
 
 
 def simulate(data, n=0):
@@ -29,7 +24,7 @@ def simulate(data, n=0):
                     ts[i] = t
                     if all(ts):
                         tx, ty, tz = ts
-                        return lcm(tx, lcm(ty, tz))
+                        return lcm(tx, ty, tz)
 
         v += np.sign(p[:, None, :] - p).sum(axis=0)
         p += v
