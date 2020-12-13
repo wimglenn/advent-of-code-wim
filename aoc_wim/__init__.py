@@ -20,10 +20,16 @@ def plugin(year, day, data):
     part_a = part_b = None
     for line in lines:
         if line.startswith("part a"):
-            part_a = line.split()[-1]
+            if len(line.split()) > 2:
+                part_a = line.split()[-1]
+            else:
+                part_a = ""
         elif line.startswith("part b"):
-            part_b = line.split()[-1]
-    if part_a and part_b:
+            if len(line.split()) > 2:
+                part_b = line.split()[-1]
+            else:
+                part_b = ""
+    if part_a is not None and part_b is not None:
         return part_a, part_b
     if not lines:
         return None, None
