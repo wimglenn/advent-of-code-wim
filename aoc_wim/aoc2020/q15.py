@@ -3,29 +3,20 @@
 https://adventofcode.com/2020/day/15
 """
 from aocd import data
+from collections import defaultdict
 
 
-def local():
-    i = 0
-    seen = {}
-    for s in data.split(","):
-        i += 1
-        prev = int(s)
-        seen[prev] = i
-    while True:
-        if prev not in seen:
-            n = 0
-        else:
-            n = i - seen[prev]
-        seen[prev] = i
-        prev = n
-        i += 1
-        if i == 2020:
-            print("part a:", n)
-        elif i == 30000000:
-            print("part b:", n)
-            break
+# CPython hack: loading names in a local namespace (LOAD_FAST op) is
+# quicker than loading names in a module namespace (LOAD_GLOBAL op)
+def local(n):
+    seen = defaultdict(lambda: i)
+    for i0, prev in enumerate(ns, start=1):
+        seen[prev] = i0
+    for i in range(i0, n):
+        seen[prev], prev = i, i - seen[prev]
+    return prev
 
-# CPython hack: loading names in a local namespace is significantly faster than
-# loading names from a global (module) namespace
-local()
+
+ns = [int(x) for x in data.split(",")]
+print("part a:", local(2020))
+print("part b:", local(30000000))
