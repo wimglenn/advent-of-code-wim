@@ -3,17 +3,17 @@
 https://adventofcode.com/2020/day/15
 """
 from aocd import data
-from collections import defaultdict
 
 
 # CPython hack: loading names in a local namespace (LOAD_FAST op) is
 # quicker than loading names in a module namespace (LOAD_GLOBAL op)
 def local(n):
-    seen = defaultdict(lambda: i)
+    seen = {}
+    get = seen.get
     for i0, prev in enumerate(ns, start=1):
         seen[prev] = i0
     for i in range(i0, n):
-        seen[prev], prev = i, i - seen[prev]
+        seen[prev], prev = i, i - get(prev, i)
     return prev
 
 
