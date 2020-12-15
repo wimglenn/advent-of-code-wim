@@ -98,15 +98,21 @@ def start():
     src.write_text(dedent('''\
         from aocd import data
         from collections import *
+
         # import numpy as np
         # import networkx as nx
 
-        # UNCOMMENT FOR TESTS!
-        #
-        # data = """\\
+        # tdata = """\\
         # """
 
+
+        print("part a:", )
+        print("part b:", )
     '''))
+    test = here / str(year) / str(day) / "a.txt"
+    if not test.exists():
+        test.parent.mkdir(parents=True, exist_ok=True)
+        test.touch(exist_ok=True)
     data = get_data(day=day, year=year)
     print(data)
     set_docstrings([src])
