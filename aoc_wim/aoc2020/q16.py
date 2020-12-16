@@ -1,5 +1,5 @@
 """
---- Day 16: Ticket Tranearby_ticketslation ---
+--- Day 16: Ticket Translation ---
 https://adventofcode.com/2020/day/16
 """
 from aocd import data
