@@ -7,14 +7,8 @@ from itertools import product
 import numpy as np
 
 
-def pad(A):
-    B = np.zeros([d + 2 for d in A.shape], dtype=A.dtype)
-    B[(slice(1, -1),) * A.ndim] = A
-    return B
-
-
 def evolve(A):
-    A0 = pad(A)
+    A0 = np.pad(A, pad_width=1)
     A1 = A0.copy()
     for pos in [*product(*[range(d) for d in A0.shape])]:
         slices = [slice(max(x-1, 0), x+2) for x in pos]
