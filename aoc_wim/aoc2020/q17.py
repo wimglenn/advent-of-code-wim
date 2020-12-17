@@ -27,8 +27,8 @@ def evolve(A):
 
 
 A0 = np.array([[v == "#" for v in line] for line in data.splitlines()], dtype=int)
-for part, dim in zip("ab", [3, 4]):
-    A = A0.copy()[(...,) + (None,) * (dim - A0.ndim)]
+for dimension, part in enumerate("ab", start=3):
+    A = A0.copy()[(...,) + (None,) * (dimension - A0.ndim)]
     for _ in range(6):
         A = evolve(A)
     print("part", part, A.sum())
