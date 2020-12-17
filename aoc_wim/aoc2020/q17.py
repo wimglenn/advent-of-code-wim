@@ -8,10 +8,10 @@ from scipy.signal import convolve
 
 
 def evolve(A, n=6):
+    kernel = np.ones((3,) * A.ndim, dtype=A.dtype)
+    kernel[(1,) * A.ndim] = 0  # hollow center
     for _ in range(n):
         A = np.pad(A, pad_width=1)
-        kernel = np.ones((3,) * A.ndim, dtype=A.dtype)
-        kernel[(1,) * A.ndim] = 0  # hollow center
         C = convolve(A, kernel, mode="same")
         A = ((A == 1) & ((C == 2) | (C == 3))) | ((A == 0) & (C == 3))
         A = A.astype(int)
