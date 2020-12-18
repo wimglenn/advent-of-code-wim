@@ -21,7 +21,7 @@ def remove_trailing_comments(lines):
 
 
 @pytest.mark.parametrize("input_file", input_files, ids=path2id)
-def test_example(input_file, monkeypatch):
+def test_example(input_file, monkeypatch, request):
     # example input files are in ./YYYY/dd/fname.txt
     *pre, year, day, fname = input_file.parts
     year = int(year)
@@ -45,5 +45,5 @@ def test_example(input_file, monkeypatch):
     # an example input where the answer was provided for only one of the two parts
     if part_a_answer != "-":
         assert part_a == part_a_answer
-    if part_b_answer != "-":
+    if part_b_answer != "-" and not request.config.getoption("--part-a-only"):
         assert part_b == part_b_answer

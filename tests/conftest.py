@@ -11,6 +11,7 @@ sys.modules["aocd"] = mock_aocd
 
 def pytest_addoption(parser):
     parser.addoption("--slow", action="store_true", default=0, help="run slow tests")
+    parser.addoption("--part-a-only", action="store_true", default=0, help="don't assert on part b result")
 
 
 def pytest_configure(config):
