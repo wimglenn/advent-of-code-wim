@@ -113,7 +113,7 @@ def start():
         print("part a:", )
         print("part b:", )
     '''))
-    test = here / "tests" / str(year) / str(day) / "a.txt"
+    test = here.parent / "tests" / str(year) / str(day) / "a.txt"
     if not test.exists():
         test.parent.mkdir(parents=True, exist_ok=True)
         test.touch(exist_ok=True)

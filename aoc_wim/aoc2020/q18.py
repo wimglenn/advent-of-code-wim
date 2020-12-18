@@ -27,10 +27,10 @@ def evaluate(d, part="a"):
                 if part == "b":
                     while d and d[0] == "+":
                         d.popleft()
-                        if d[0].isdigit():
-                            val += int(d.popleft())
-                        elif d[0] == "(":
-                            d.popleft()
+                        r = d.popleft()
+                        if r.isdigit():
+                            val += int(r)
+                        elif r == "(":
                             val += evaluate(d, part=part)
                 prev *= val
             val = None
