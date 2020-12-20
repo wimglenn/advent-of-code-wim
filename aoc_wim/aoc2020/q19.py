@@ -19,43 +19,33 @@ def eliminate(rules, k0):
         v0 = f"( {v0} )"
     for k, v in rules.items():
         rules[k] = " ".join([v0 if k == k0 else k for k in v.split()])
+    return v0.replace(" ", "")
 
 
 def simplify(rules):
-    rules = rules.copy()
+    solved = {}
+    unsolved = rules.copy()
     while True:
-        for k, v in rules.items():
+        for k, v in unsolved.items():
             if not digits.intersection(v):
                 break
         else:
-            return rules
-        eliminate(rules, k)
-        if len(rules) == 1:
             break
-    return rules
+        solved[k] = eliminate(unsolved, k)
+    return solved, unsolved
 
 
-rules_a = simplify(rules)
-rule0_a = re.compile("^" + rules_a["0"].replace(" ", "") + "$")
-print("part a:", sum(rule0_a.match(m) is not None for m in messages))
+solved, unsolved = simplify(rules)
+r0a = re.compile("^" + solved["0"].replace(" ", "") + "$")
+print("part a:", sum(r0a.match(m) is not None for m in messages))
 
 if {"8", "11"} < rules.keys():
     rules["8"] += " | 42 8"
     rules["11"] += " | 42 11 31"
-    rules = simplify(rules)
-    r0 = rules.pop("0")
-    r8 = rules.pop("8")
-    r11 = rules.pop("11")
-    r8 = r8.replace(" ", "")
-    r8 = r8[:-1]
-    r8 = r8[:len(r8)//2]
-    r8 = r8.replace("(", "(?:")
-    r8 = "(" + r8 + ")+"
-    r11 = r11.replace(" ", "")
-    pre, post = r11.split("11")
-    pre = pre[:pre.index(post)]
-    pre = pre.replace("(", "(?:")
-    post = post.replace("(", "(?:")
-    r11 = "(" + pre + "(?2)?" + post + ")"
-    rule0_b = re.compile("^" + r8 + r11 + "$")
-    print("part b:", sum(rule0_b.match(m) is not None for m in messages))
+    solved, unsolved = simplify(rules)
+    r42 = solved["42"].replace("(", "(?:")  # non-capture
+    r31 = solved["31"].replace("(", "(?:")  # non-capture
+    r8 = "(" + r42 + ")+"
+    r11 = "(" + r42 + "(?2)?" + r31 + ")"
+    r0b = re.compile("^" + r8 + r11 + "$")
+    print("part b:", sum(r0b.match(m) is not None for m in messages))

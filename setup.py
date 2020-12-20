@@ -31,6 +31,7 @@ setup(
         "networkx",
         "wimpy",
         "marshmallow",
+        "regex",
     ],
     packages=find_packages(),
     entry_points={
