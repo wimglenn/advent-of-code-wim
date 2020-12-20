@@ -116,9 +116,9 @@ full_grid = np.vstack(full_rows)
 big_tile = Tile(0, full_grid)
 
 sea_monster_raw = """\
-                  # 
+                  #
 #    ##    ##    ###
- #  #  #  #  #  #   
+ #  #  #  #  #  #
 """
 sea_monster = (np.array(ZGrid(sea_monster_raw)) == "#").astype(int)
 n = sea_monster.sum()
