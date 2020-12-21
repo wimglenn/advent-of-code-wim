@@ -12,6 +12,13 @@ from itertools import combinations
 
 
 class Tile:
+    opposite = {
+        "L": "R",
+        "R": "L",
+        "U": "D",
+        "D": "U",
+    }
+
     def __init__(self, id, data):
         self.id = id
         self.data = data
@@ -19,12 +26,24 @@ class Tile:
         self.flip = False
 
     @property
+    def U(self):
+        return *self.data[0],
+
+    @property
+    def D(self):
+        return *self.data[-1],
+
+    @property
+    def L(self):
+        return *self.data[:,0],
+
+    @property
+    def R(self):
+        return *self.data[:,-1],
+
+    @property
     def edges(self):
-        U = self.data[0]
-        D = self.data[-1]
-        L = self.data[:,0]
-        R = self.data[:,-1]
-        return {(*edge,) for edge in (U, D, L, R)}
+        return {self.U, self.D, self.L, self.R}
 
     def fits_with(self, other):
         return any({e, e[::-1]} & self.edges for e in other.edges)
@@ -37,24 +56,16 @@ class Tile:
             self.data = np.flipud(self.data)
             self.flip = not self.flip
 
-    def orient_to_left(self, other):
+    def orient_to(self, other, side="R"):
         # line up the left edge of this tile with the right edge of other
-        edge = other.data[:, -1]
+        # return False if tiles can not be oriented
+        edge = getattr(other, side)
+        opposite_side = Tile.opposite[side]
         for i in range(8):
-            if (self.data[:, 0] == edge).all():
+            if edge == getattr(self, opposite_side):
                 return True
             self.transform()
         return False
-
-    def orient_to_above(self, other):
-        # line up the top edge of this tile with the bottom edge of other
-        other.data = np.rot90(other.data)
-        ok = self.orient_to_left(other)
-        other.data = np.rot90(other.data, -1)
-        self.data = np.rot90(self.data, -1)
-        if ok:
-            assert (self.data[0] == other.data[-1]).all()
-        return ok
 
     def trimmed(self):
         return self.data[1:-1, 1:-1]
@@ -94,20 +105,20 @@ while True:
     tile00.transform()
 
 n = math.isqrt(len(g))  # we have n*n square of tiles
-grid = {(0,0): tile00}
-for c in range(1, n):
-    left = grid[0, c-1]
-    for tile in {*g.neighbors(left)}.intersection(tiles.values()):
-        if tile.orient_to_left(left):
-            grid[0,c] = tile
-            del tiles[tile.id]
-            break
-for r in range(1, n):
-    for c in range(n):
-        above = grid[r-1,c]
-        for tile in {*g.neighbors(above)}.intersection(tiles.values()):
-            if tile.orient_to_above(above):
-                grid[r,c] = tile
+grid = {(0, 0): tile00}
+for row in range(n):
+    for col in range(n):
+        if row == col == 0:
+            continue
+        try:
+            prev = grid[row, col-1]  # tile on left
+            side = "R"
+        except KeyError:
+            prev = grid[row-1, col]  # tile above
+            side = "D"
+        for tile in {*g.neighbors(prev)}.intersection(tiles.values()):
+            if tile.orient_to(prev, side):
+                grid[row, col] = tile
                 del tiles[tile.id]
                 break
 
