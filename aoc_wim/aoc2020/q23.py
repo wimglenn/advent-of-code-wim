@@ -2,8 +2,8 @@
 --- Day 23: Crab Cups ---
 https://adventofcode.com/2020/day/23
 """
-# data = "562893147"
-from aocd import data
+data = "562893147"
+# from aocd import data
 from operator import attrgetter
 
 
@@ -15,9 +15,6 @@ class Cup:
         self.label = label
         self.left = left
         self.right = right
-
-    def __repr__(self):
-        return f"Cup({self.label})"
 
 
 class CupGame:
@@ -35,12 +32,6 @@ class CupGame:
         self.current_cup = cups[0]
         self.cups[:unsorted] = sorted(self.cups[:unsorted], key=attrgetter("label"))
         self.i = 1
-
-    def cup(self, label):
-        result = self.current_cup
-        while self.current_cup.label != label:
-            result = result.left
-        return result
 
     def move(self):
         dest = self.dest()
@@ -97,11 +88,11 @@ for i in range(100):
 
 cup1 = game.cups[0]
 cup = cup1.right
-print("part a: ", end="")
+labels = []
 while cup is not cup1:
-    print(cup.label, end="")
+    labels.append(str(cup.label))
     cup = cup.right
-print()
+print("part a:", "".join(labels))
 
 game = CupGame(data, n=1000000)
 for i in range(10000000):
