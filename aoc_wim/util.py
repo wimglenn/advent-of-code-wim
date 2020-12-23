@@ -98,9 +98,13 @@ def start():
     src.write_text(dedent('''\
         from aocd import data
         from collections import *
-
+        import math
         # import numpy as np
         # import networkx as nx
+        # from aoc_wim.zgrid import *
+        # from aoc_wim.stuff import *
+        # from aoc_wim.aoc2020 import Comp
+        # import logging; logging.basicConfig(level=logging.DEBUG)
 
         tdata = """\\
         """
