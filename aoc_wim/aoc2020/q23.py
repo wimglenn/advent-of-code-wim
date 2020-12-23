@@ -26,30 +26,24 @@ class CupGame:
             self.maxlabel = labels[-1]
         cups = self.cups = [Cup(n) for n in labels]
         for i in range(self.maxlabel):
-            cups[i-1].r = cups[i]
+            cups[i - 1].r = cups[i]
         self.current = cups[0]
         self.cups[:unsorted] = sorted(self.cups[:unsorted], key=attrgetter("label"))
 
     def play(self, iterations=1):
         for i in range(iterations):
             label = self.current.label - 1 or self.maxlabel
-            pickup_labels = [
-                self.current.r.label,
-                self.current.r.r.label,
-                self.current.r.r.r.label,
+            cut = self.current.r
+            self.current.r = cut.r.r.r
+            pickup = [
+                cut.label,
+                cut.r.label,
+                cut.r.r.label,
             ]
-            while label in pickup_labels:
+            while label in pickup:
                 label = label - 1 or self.maxlabel
             dest = self.cups[label - 1]
-            destr = dest.r
-            c0 = self.current
-            c1 = c0.r
-            c3 = c1.r.r
-            # cut the circle
-            c0.r = c3.r
-            # relink after dest
-            dest.r = c1
-            c3.r = destr
+            cut.r.r.r, dest.r = dest.r, cut
             self.current = self.current.r
 
 
