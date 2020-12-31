@@ -78,7 +78,6 @@ class HexPos:
 
 
 # See https://www.redblobgames.com/grids/hexagons/#coordinates-cube
-o  = HexPos( 0,  0,  0)
 n  = HexPos( 0,  1, -1)
 ne = HexPos( 1,  0, -1)
 nw = HexPos(-1,  1,  0)
@@ -97,7 +96,7 @@ dhs = {
 }
 
 
-def dist(h, h0=o):
+def dist(h, h0=HexPos(0, 0, 0)):
     # See https://www.redblobgames.com/grids/hexagons/#distances-cube
     dh = h - h0
     d2 = abs(dh.x) + abs(dh.y) + abs(dh.z)
