@@ -20,7 +20,7 @@ setup(
         "Topic :: Games/Entertainment :: Puzzle Games",
     ],
     install_requires=[
-        "advent-of-code-data >= 0.8.0",
+        "advent-of-code-data >= 0.9.7",
         "anytree",
         "bidict",
         "numpy",
