@@ -2,19 +2,26 @@
 --- Day 11: Hex Ed ---
 https://adventofcode.com/2017/day/11
 """
-from collections import Counter
-
+from aoc_wim import hexgrid
 from aocd import data
 
+# rotate to convert flat topped hexagon orientation into pointy topped
+# see https://www.redblobgames.com/grids/hexagons/#basics
+rot = {
+    "n": hexgrid.nw,
+    "nw": hexgrid.w,
+    "sw": hexgrid.sw,
+    "s": hexgrid.se,
+    "se": hexgrid.e,
+    "ne": hexgrid.ne,
+}
 
-def norm(data, steps=None):
-    c = Counter(data.split(",")[:steps])
-    c["ne"] -= c.pop("sw", 0)
-    c["nw"] -= c.pop("se", 0)
-    c["s"] -= c.pop("n", 0)
-    d = sum(abs(x) for x in c.values()) - abs(sorted(c.values())[1])
-    return d
+h = hexgrid.o
+d = dmax = hexgrid.dist(h)
+for step in data.split(","):
+    h += rot[step]
+    d = hexgrid.dist(h)
+    dmax = max(d, dmax)
 
-
-print(norm(data))
-print(max(norm(data, steps=i) for i in range(data.count(","))))
+print("part a:", d)
+print("part b:", dmax)

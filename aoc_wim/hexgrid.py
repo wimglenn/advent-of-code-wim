@@ -70,6 +70,13 @@ se = -nw
 w  = -e
 
 
+def dist(h, h0=o):
+    # See https://www.redblobgames.com/grids/hexagons/#distances-cube
+    dh = h - h0
+    d2 = abs(dh.x) + abs(dh.y) + abs(dh.z)
+    return d2 // 2
+
+
 class HexGrid:
 
     def __init__(self, d=None):
