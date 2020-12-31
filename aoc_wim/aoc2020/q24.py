@@ -3,20 +3,15 @@
 https://adventofcode.com/2020/day/24
 """
 from aocd import data
-from collections import Counter
 import re
-from aoc_wim.hexgrid import HexGrid
+from aoc_wim import hexgrid
 
 
 pat = r"(se|sw|ne|nw|e|w)"
-grid = HexGrid()
+grid = hexgrid.HexGrid()
 for line in data.splitlines():
-    steps = Counter(re.findall(pat, line))
-    h = (
-            steps["se"] - steps["nw"],
-            steps["ne"] - steps["sw"],
-            steps["w"] - steps["e"],
-    )
+    steps = re.findall(pat, line)
+    h = sum(getattr(hexgrid, s) for s in steps)
     grid[h] = not grid.get(h, False)
 print("part a:", grid.count(True))
 

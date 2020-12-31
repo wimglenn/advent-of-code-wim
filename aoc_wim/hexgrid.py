@@ -1,3 +1,75 @@
+# See https://www.redblobgames.com/grids/hexagons/
+
+
+class HexError(Exception):
+    pass
+
+
+class HexPos:
+
+    def __init__(self, x, y, z=None):
+        if z is None:
+            z = -y - x
+        if x + y + z != 0:
+            raise HexError("cube coordinates must sum to zero")
+        self.x = x
+        self.y = y
+        self.z = z
+
+    def __add__(self, other):
+        if not isinstance(other, HexPos):
+            if other == 0:
+                return self
+            return NotImplemented
+        return HexPos(self.x + other.x, self.y + other.y, self.z + other.z)
+
+    __radd__ = __add__
+
+    def __sub__(self, other):
+        if not isinstance(other, HexPos):
+            if other == 0:
+                return self
+            return NotImplemented
+        return HexPos(self.x - other.x, self.y - other.y, self.z - other.z)
+
+    def __pos__(self):
+        return self
+
+    def __neg__(self):
+        return HexPos(-self.x, -self.y, -self.z)
+
+    def __repr__(self):
+        return f"HexPos({self.x}, {self.y}, {self.z})"
+
+    def __mul__(self, other):
+        if not isinstance(other, int):
+            return NotImplemented
+        return HexPos(other * self.x, other * self.y, other * self.z)
+
+    __rmul__ = __mul__
+
+    def __hash__(self):
+        return hash((self.x, self.y, self.z))
+
+    def __iter__(self):
+        return iter((self.x, self.y, self.z))
+
+    def __eq__(self, other):
+        if not isinstance(other, HexPos):
+            return NotImplemented
+        return (self.x, self.y, self.z) == (other.x, other.y, other.z)
+
+
+# See https://www.redblobgames.com/grids/hexagons/#coordinates-cube
+o  = HexPos(0,  0,  0)
+nw = HexPos(0,  1, -1)
+ne = HexPos(1,  0, -1)
+e  = HexPos(1, -1,  0)
+sw = -ne
+se = -nw
+w  = -e
+
+
 class HexGrid:
 
     def __init__(self, d=None):
@@ -5,23 +77,8 @@ class HexGrid:
             d = {}
         self.d = d
 
-    @staticmethod
-    def _normalize(h):
-        m = min(h)
-        return h[0] - m, h[1] - m, h[2] - m
-
     def near(self, h):
-        x, y, z = h
-        adjacent = (
-            (x+1, y, z),
-            (x-1, y, z),
-            (x, y+1, z),
-            (x, y-1, z),
-            (x, y, z+1),
-            (x, y, z-1),
-        )
-        adjacent = [self._normalize(a) for a in adjacent]
-        return adjacent
+        return [h + dh for dh in (nw, ne, e, se, sw, w)]
 
     def count_near(self, h0, val, *, include_h0=False, default=None):
         vals = [self.get(h, default) for h in self.near(h0)]
@@ -31,19 +88,15 @@ class HexGrid:
         return result
 
     def get(self, h, default=None):
-        h = self._normalize(h)
         return self.d.get(h, default)
 
     def __contains__(self, h):
-        h = self._normalize(h)
         return h in self.d
 
     def __getitem__(self, h):
-        h = self._normalize(h)
         return self.d[h]
 
     def __setitem__(self, h, val):
-        h = self._normalize(h)
         self.d[h] = val
 
     def items(self):
