@@ -16,6 +16,23 @@ class HexPos:
         self.y = y
         self.z = z
 
+    @classmethod
+    def from_steps(cls, steps, reorient=False):
+        if reorient:
+            # rotate to convert convert pointy topped hexagon orientation into flat topped
+            # (flat topped is better for ascii drawing)
+            # see https://www.redblobgames.com/grids/hexagons/#basics
+            rot = {
+                "nw": "n",
+                "w": "nw",
+                "sw": "sw",
+                "se": "s",
+                "e": "se",
+                "ne": "ne",
+            }
+            steps = [rot[s] for s in steps]
+        return sum(dhs[s] for s in steps)
+
     def __add__(self, other):
         if not isinstance(other, HexPos):
             if other == 0:
@@ -61,13 +78,23 @@ class HexPos:
 
 
 # See https://www.redblobgames.com/grids/hexagons/#coordinates-cube
-o  = HexPos(0,  0,  0)
-nw = HexPos(0,  1, -1)
-ne = HexPos(1,  0, -1)
-e  = HexPos(1, -1,  0)
-sw = -ne
+o  = HexPos( 0,  0,  0)
+n  = HexPos( 0,  1, -1)
+ne = HexPos( 1,  0, -1)
+nw = HexPos(-1,  1,  0)
 se = -nw
-w  = -e
+sw = -ne
+s  = -n
+
+
+dhs = {
+    "n": n,
+    "ne": ne,
+    "nw": nw,
+    "se": se,
+    "sw": sw,
+    "s": s,
+}
 
 
 def dist(h, h0=o):
@@ -85,7 +112,7 @@ class HexGrid:
         self.d = d
 
     def near(self, h):
-        return [h + dh for dh in (nw, ne, e, se, sw, w)]
+        return [h + dh for dh in (nw, n, ne, se, s, sw)]
 
     def count_near(self, h0, val, *, include_h0=False, default=None):
         vals = [self.get(h, default) for h in self.near(h0)]

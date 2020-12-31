@@ -11,7 +11,7 @@ pat = r"(se|sw|ne|nw|e|w)"
 grid = hexgrid.HexGrid()
 for line in data.splitlines():
     steps = re.findall(pat, line)
-    h = sum(getattr(hexgrid, s) for s in steps)
+    h = hexgrid.HexPos.from_steps(steps, reorient=True)
     grid[h] = not grid.get(h, False)
 print("part a:", grid.count(True))
 
