@@ -22,7 +22,7 @@ def new_empty_grid():
 def evolve_a(grid):
     d = {}
     for z, g in grid.items():
-        n = grid.n_on_near(z)
+        n = grid.count_near(z, val="#")
         if g == "#":
             d[z] = ".#"[n == 1]
         elif 1 <= n <= 2:
@@ -109,7 +109,7 @@ def part_b(data, t=200):
     for depth, grid in sorted(grids.items()):
         # print(f"Depth {depth}:")
         # grid.draw(pretty=False, overlay={2+2j: "?"})
-        n_bugs += grid.n_on
+        n_bugs += grid.count("#")
     return n_bugs
 
 

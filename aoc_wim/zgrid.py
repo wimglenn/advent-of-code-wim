@@ -14,6 +14,11 @@ def manhattan_distance(z1, z0=0):
     return abs(int(dz.real)) + abs(int(dz.imag))
 
 
+def hexagonal_distance(z1, z0=0):
+    dz = z1 - z0
+    return int(max(abs(dz.real), abs(dz.imag), abs(dz.real - dz.imag)))
+
+
 class ZDict(dict):
 
     def __init__(self, func):
@@ -42,6 +47,10 @@ class ZGrid:
     R = E = right = east = 1
     D = S = down = south = 1j
     L = W = left = west = -1
+    UR = NE = N + E
+    UL = NW = N + W
+    DL = SW = S + W
+    DR = SE = S + E
 
     turn_right = turnR = 1j
     turn_left = turnL = -1j
@@ -88,11 +97,9 @@ class ZGrid:
     def count(self, val):
         return sum([1 for v in self.values() if v == val])
 
-    def count_near(self, z0, val, *, n=4, include_z0=False, default=None):
+    def count_near(self, z0, val, *, n=4, default=None):
         vals = [self.get(z, default) for z in self.near(z0, n=n)]
         result = vals.count(val)
-        if include_z0:
-            result += self.get(z0, default) == val
         return result
 
     def get(self, k, default=None):
@@ -114,10 +121,34 @@ class ZGrid:
                 z-1,             z+1,
                         z+1j,
             ]
+        if n == 5:
+            return [
+                        z-1j,
+                z-1,    z,       z+1,
+                        z+1j,
+            ]
+        elif n == 6:  # hexgrid w/ axial coordinates
+            return [
+                z-1-1j, z-1j,
+                z-1,             z+1,
+                        z+1j, z+1+1j,
+            ]
+        elif n == 7:
+            return [
+                z-1-1j, z-1j,
+                z-1,    z,       z+1,
+                        z+1j, z+1+1j,
+            ]
         elif n == 8:
             return [
                 z-1-1j, z-1j, z+1-1j,
                 z-1,             z+1,
+                z-1+1j, z+1j, z+1+1j,
+            ]
+        elif n == 9:
+            return [
+                z-1-1j, z-1j, z+1-1j,
+                z-1,    z,       z+1,
                 z-1+1j, z+1j, z+1+1j,
             ]
 
@@ -136,13 +167,6 @@ class ZGrid:
         for z in self.d:
             if self.d[z] in table:
                 self.d[z] = table[self.d[z]]
-
-    @property
-    def n_on(self):
-        return sum(1 for val in self.d.values() if val == self.on)
-
-    def n_on_near(self, z0, n=4):
-        return sum(1 for z in self.near(z0, n=n) if self.d.get(z) == self.on)
 
     def __array__(self):
         """makes np.array(zgrid) work"""
@@ -311,3 +335,10 @@ def zrange(*args):
     xs = range(int(start.real), int(stop.real), int(step.real))
     ys = range(int(start.imag), int(stop.imag), int(step.imag))
     return [complex(x, y) for y in ys for x in xs]
+
+
+# axes unit vectors for hexagonal grid with skewed axial coordinate system - flat-topped
+hexV = dict(zip("n ne nw se sw s".split(), ZGrid().near(0, n=6)))
+
+# hexgrid - pointy-topped
+hexH = dict(zip("w nw sw ne se e".split(), ZGrid().near(0, n=6)))

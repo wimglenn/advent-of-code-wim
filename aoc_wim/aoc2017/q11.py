@@ -2,14 +2,14 @@
 --- Day 11: Hex Ed ---
 https://adventofcode.com/2017/day/11
 """
-from aoc_wim import hexgrid
+from aoc_wim import zgrid
 from aocd import data
 
-h = d = dmax = 0
+z = 0
+grid = zgrid.ZGrid()
 for step in data.split(","):
-    h += getattr(hexgrid, step)
-    d = hexgrid.dist(h)
-    dmax = max(d, dmax)
+    z += zgrid.hexV[step]
+    grid[z] = 1
 
-print("part a:", d)
-print("part b:", dmax)
+print("part a:", zgrid.hexagonal_distance(z))
+print("part b:", max([zgrid.hexagonal_distance(z) for z in grid]))

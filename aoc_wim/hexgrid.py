@@ -19,8 +19,10 @@ class HexPos:
     @classmethod
     def from_steps(cls, steps, reorient=False):
         if reorient:
-            # rotate to convert convert pointy topped hexagon orientation into flat topped
-            # (flat topped is better for ascii drawing)
+            # rotate clockwise 30 degrees to convert pointy-topped hexagons into flat-topped
+            #   ⬡ -> ⎔
+            #   ⬢ -> ⬣
+            # flat topped hexes orientation are better for ascii drawing
             # see https://www.redblobgames.com/grids/hexagons/#basics
             rot = {
                 "nw": "n",
@@ -75,6 +77,18 @@ class HexPos:
         if not isinstance(other, HexPos):
             return NotImplemented
         return (self.x, self.y, self.z) == (other.x, other.y, other.z)
+
+    def to_doubleheight(self):
+        col = self.x
+        row = 2 * self.z + self.x
+        return row, col
+
+    @classmethod
+    def from_doubleheight(cls, row, col):
+        x = col
+        z = (row - col) // 2
+        y = -x -z
+        return cls(x, y, z)
 
 
 # See https://www.redblobgames.com/grids/hexagons/#coordinates-cube
@@ -143,3 +157,108 @@ class HexGrid:
 
     def count(self, val):
         return sum([v == val for v in self.values()])
+
+
+r"""\
+  ____
+ / __ \
+/ /  \ \
+\ \__/ /
+ \____/
+"""
+
+on = r"""
+  ____
+ /▟██▙\
+/      \
+\      /
+ \____/
+""".strip("\n")
+
+on = r"""
+  ____
+ /▟██▙\
+/▟████▙\
+\▜████▛/
+ \____/
+""".strip("\n")
+
+
+off = r"""
+  ____
+ /    \
+/      \
+\      /
+ \____/
+""".strip("\n")
+
+r"""
+  _____
+ /     \
+/       \
+\       /
+ \_____/
+
+ """
+
+r"""
+   ______
+  / ____ \
+ / / __ \ \
+/ / /  \ \ \
+\ \ \__/ / /
+ \ \____/ /
+  \______/
+"""
+
+
+def draw_cell(A, r, c, val=False, fill=""):
+    if val:
+        t = on
+    else:
+        t = off
+    r = r * 2
+    c = c * 6
+    for i, row in enumerate(t.splitlines()):
+        for j, char in enumerate(row):
+            if char == " ":
+                continue
+            A[r + i][c + j] = char
+    if fill:
+        r = r + 2
+        c = c + 1
+        it = iter(fill)
+        for char in it:
+            A[r][c] = char
+            c += 1
+
+
+def draw_grid(grid, clear=True):
+    if clear:
+        print("\033c")
+    d = grid.d.copy()
+    rcs = [k.to_doubleheight() for k in d]
+    rows, cols = zip(*rcs)
+    min_rows = min(rows)
+    min_cols = min(cols)
+    h = max(rows) - min(rows) + 1
+    w = max(cols) - min(cols) + 1
+
+    A = [[" "]*(w*6 + 2) for _ in range(h*2 + 3)]
+    for r, c in zip(rows, cols):
+        pos = HexPos.from_doubleheight(r, c)
+        fill = ",".join([str(p) for p in pos])
+        # fill = f"{c},{r}"
+        fill = ""
+        val = grid[pos]
+        r = r - min_rows
+        c = c - min_cols
+        draw_cell(A, r, c, val, fill[:6])
+
+    print("/" + "-"*len(A[0]) + "\\")
+    for row in A:
+        print("|", end="")
+        for char in row:
+            print(char, end="")
+        print("|")
+    print("\\" + "-"*len(A[0]) + "/")
