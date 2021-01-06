@@ -127,7 +127,7 @@ class ZGrid:
                 z-1,    z,       z+1,
                         z+1j,
             ]
-        elif n == 6:  # hexgrid w/ axial coordinates
+        elif n == 6:  # hexgrid w/ skewed coordinate system
             return [
                 z-1-1j, z-1j,
                 z-1,             z+1,
@@ -162,6 +162,18 @@ class ZGrid:
         if overlay is not None:
             d = {**self.d, **overlay}
         dump_grid(d, clear=clear, pretty=pretty, transform=transform)
+
+    def drawVhex(self, clear=True, side_length=2, labels=False):
+        cell = HexCell(side_length)
+        plane = Plane()
+        label = ""
+        for z, val in self.items():
+            row, col = transform(z)
+            if labels:
+                label = f"{col},{row}"
+            draw_cell(plane, cell, row, col, val, label=label)
+        plane.draw(clear=clear, xscale=cell.dx, yscale=cell.dy, cellwidth=cell.w)
+        return plane
 
     def translate(self, table):
         for z in self.d:
@@ -337,8 +349,165 @@ def zrange(*args):
     return [complex(x, y) for y in ys for x in xs]
 
 
-# axes unit vectors for hexagonal grid with skewed axial coordinate system - flat-topped
+# axes unit vectors for hexagonal grid with skewed coordinate system - flat-topped
 hexV = dict(zip("n ne nw se sw s".split(), ZGrid().near(0, n=6)))
 
 # hexgrid - pointy-topped
 hexH = dict(zip("w nw sw ne se e".split(), ZGrid().near(0, n=6)))
+
+
+def hex_glyph_gen(n):
+    #   ⬡ -> ⎔
+    #   ⬢ -> ⬣
+    if n == 0:
+        return "⎔"
+    first = " "*n + "__"*n
+    last = " "*(n - 1) + "\\" + "__"*n + "/"
+    lines = [first, last]
+    for i in range(n):
+        center = ".."*(n + i)
+        left = " "*(n - 1 - i)
+        top = left + "/" + center + "\\"
+        bottom = left + "\\" + center + "/"
+        mid = len(lines) // 2
+        lines[mid:mid] = [top, bottom]
+    del lines[-2]
+    return "\n".join(lines)
+
+
+class HexCell:
+
+    def __init__(self, glyph, dy=None, dx=None, fill="."):
+        if isinstance(glyph, int):
+            glyph = hex_glyph_gen(glyph)
+        self.glyph = glyph.strip("\n")
+        lines = self.glyph.splitlines()
+        self.h = len(lines)
+        self.w = max([len(x) for x in lines])
+        if dy is None:
+            for dy, line in enumerate(lines):
+                if line.strip().startswith("\\"):
+                    dy -= 1
+                    break
+        self.dy = dy or 1
+        if dx is None and len(lines) > 1:
+            for dx, char in enumerate(lines[1]):
+                if char == "\\":
+                    break
+        self.dx = dx or 1
+        self.blanked = self.glyph.replace(fill, " ")
+        if self.glyph == "⬣":
+            self.blanked = "⎔"
+            self.dx = 2
+
+
+class Plane:
+    """Unbounded 2D rectangular space of values that automatically grows as needed"""
+    def __init__(self, left=0, right=0, top=0, bottom=0, fill=" "):
+        if left > right or top > bottom:
+            raise ValueError(f"invalid initial: {left},{right},{top},{bottom}")
+        self.left = left
+        self.right = right
+        self.top = top
+        self.bottom = bottom
+        self.lines = {}
+        self.fill = fill
+        w = self.width
+        self.lines = {y: deque([fill]*w) for y in range(self.top, self.bottom + 1)}
+
+    def __getitem__(self, item):
+        row, col = item
+        col -= self.left
+        return self.lines[row][col]
+
+    def __setitem__(self, item, val):
+        row, col = item
+        while row < self.top:
+            self.top -= 1
+            self.lines[self.top] = deque([self.fill]*self.width)
+        while row > self.bottom:
+            self.bottom += 1
+            self.lines[self.bottom] = deque([self.fill]*self.width)
+        if col < self.left:
+            grow = [self.fill] * (self.left - col)
+            for line in self.lines.values():
+                line.extendleft(grow)
+            self.left = col
+        if col > self.right:
+            grow = [self.fill] * (col - self.right)
+            for line in self.lines.values():
+                line.extend(grow)
+            self.right = col
+        col -= self.left
+        self.lines[row][col] = val
+
+    @property
+    def width(self):
+        return self.right - self.left + 1
+
+    @property
+    def height(self):
+        return self.bottom - self.top + 1
+
+    def draw(self, clear=True, xscale=1, yscale=1, cellwidth=4):
+        if clear:
+            print("\033c")
+        y_pad = max([len(str(r//yscale)) for r in self.lines])
+        print(" "*y_pad + "┌" + "─"*self.width + "┐")
+        prev_tick = None
+        for row in range(self.top, self.bottom + 1):
+            line = self.lines[row]
+            tick = str(row//yscale)
+            if tick == prev_tick:
+                # don't write it again
+                tick = ""
+            else:
+                prev_tick = tick
+            print(tick.rjust(y_pad) + "│" + "".join(line) + "│")
+        print(" "*y_pad + "└" + "─"*self.width + "┘")
+        footer = [" "] * self.width
+        for i, char in enumerate(str((self.left + cellwidth//2)//xscale)):
+            footer[i] = char
+        for i, char in enumerate(reversed(str(self.right//xscale))):
+            footer[~i] = char
+        if self.left <= 0 <= self.right:
+            i0 = -self.left - 1
+            footer[i0] = "0"
+        else:
+            mid = self.left + self.width//2
+            imid = sorted(self.lines).index(mid)
+            mid_label = str(mid)
+            imidl = imid - 1
+            imidr = imid + len(mid_label) + 1
+            if imidl > 0 and footer[imidl] == " ":
+                if imidr < len(footer) and footer[imidr] == " ":
+                    for char in mid_label:
+                        footer[imid] = char
+                        imid += 1
+        print(" "*(y_pad + 1) + "".join(footer))
+
+
+def draw_cell(plane, cell, r, c, val=False, label=""):
+    glyph = cell.glyph if val else cell.blanked
+    r *= cell.dy
+    c *= cell.dx
+    for i, row in enumerate(glyph.splitlines(), start=-cell.dy):
+        for j, char in enumerate(row, start=(-cell.w//2)):
+            if char == " ":
+                continue
+            plane[r + i, c + j] = char
+    if label and cell.w > 4:
+        c = c - cell.w//2 + 1
+        for char in label:
+            plane[r, c] = char
+            c += 1
+
+
+def transform(z):
+    # change of coordinate system: axial to offset
+    #   1  --> (1, 1)
+    #   1j --> (1, -1)
+    real, imag = int(z.real), int(z.imag)
+    row = real + imag
+    col = real - imag
+    return row, col

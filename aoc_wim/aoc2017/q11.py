@@ -5,11 +5,14 @@ https://adventofcode.com/2017/day/11
 from aoc_wim import zgrid
 from aocd import data
 
-z = 0
-grid = zgrid.ZGrid()
+z = d = dmax = 0
+grid = zgrid.ZGrid({z: 1})
 for step in data.split(","):
     z += zgrid.hexV[step]
+    d = zgrid.hexagonal_distance(z)
+    dmax = max(d, dmax)
     grid[z] = 1
+    # grid.drawVhex(side_length=1)
 
-print("part a:", zgrid.hexagonal_distance(z))
-print("part b:", max([zgrid.hexagonal_distance(z) for z in grid]))
+print("part a:", d)
+print("part b:", dmax)
