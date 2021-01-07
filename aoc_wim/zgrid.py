@@ -163,12 +163,31 @@ class ZGrid:
             d = {**self.d, **overlay}
         dump_grid(d, clear=clear, pretty=pretty, transform=transform)
 
-    def drawVhex(self, clear=True, side_length=2, labels=False):
-        cell = HexCell(side_length)
+    # TODO:
+    #  hexgrid compass overlay ✶
+    #  odd-r / even-r etc modes
+    #  zoom / rotate / reflect
+
+    def draw_hexV(self, clear=True, glyph=2, labels=False):
+        cell = HexCell(glyph, fill="#")
         plane = Plane()
         label = ""
         for z, val in self.items():
             row, col = transform(z)
+            if labels:
+                label = f"{col},{row}"
+            draw_cell(plane, cell, row, col, val, label=label)
+        plane.draw(clear=clear, xscale=cell.dx, yscale=cell.dy, cellwidth=cell.w)
+        return plane
+
+    def draw_hexH(self, clear=True, glyph=2, labels=False):
+        cell = HexCell(glyph="⬢")
+        cell.dx //= 2
+        # cell = cellH
+        plane = Plane()
+        label = ""
+        for z, val in self.items():
+            row, col = transform_(z)
             if labels:
                 label = f"{col},{row}"
             draw_cell(plane, cell, row, col, val, label=label)
@@ -302,19 +321,28 @@ def dump_grid(g, clear=False, pretty=True, transform=None):
     ys = [int(z.imag) for z in g]
     cols = range(min(xs), max(xs) + 1)
     rows = range(min(ys), max(ys) + 1)
+    W = len(cols)
+    if pretty:
+        W *= 2
     if clear:
         print("\033c")
+    if pretty:
+        print(" "*5 + "┌" + "─"*W + "┐")
     for row in rows:
-        print(f"{row:>5d} ", end="")
+        print(f"{row:>5d}", end="")
+        line = []
+        if pretty:
+            line.append("│")
         for col in cols:
             glyph = g.get(col + row * 1j, empty)
             if pretty:
                 glyph = transform.get(glyph, glyph)
-            print(glyph, end="")
-        print()
-    W = len(cols)
+            line.append(glyph)
+        if pretty:
+            line.append("│")
+        print("".join(line))
     if pretty:
-        W *= 2
+        print(" "*5 + "└" + "─"*W + "┘")
     footer_left = f"{cols[0]}".ljust(W)
     footer_center = f"{cols[len(cols)//2]}".center(W)
     footer_right = f"{cols[-1]}".rjust(W)
@@ -356,16 +384,14 @@ hexV = dict(zip("n ne nw se sw s".split(), ZGrid().near(0, n=6)))
 hexH = dict(zip("w nw sw ne se e".split(), ZGrid().near(0, n=6)))
 
 
-def hex_glyph_gen(n):
-    #   ⬡ -> ⎔
-    #   ⬢ -> ⬣
+def hex_glyph_gen(n, fill="."):
     if n == 0:
-        return "⎔"
+        return "⬣"
     first = " "*n + "__"*n
     last = " "*(n - 1) + "\\" + "__"*n + "/"
     lines = [first, last]
     for i in range(n):
-        center = ".."*(n + i)
+        center = fill*2*(n + i)
         left = " "*(n - 1 - i)
         top = left + "/" + center + "\\"
         bottom = left + "\\" + center + "/"
@@ -379,7 +405,7 @@ class HexCell:
 
     def __init__(self, glyph, dy=None, dx=None, fill="."):
         if isinstance(glyph, int):
-            glyph = hex_glyph_gen(glyph)
+            glyph = hex_glyph_gen(glyph, fill=fill)
         self.glyph = glyph.strip("\n")
         lines = self.glyph.splitlines()
         self.h = len(lines)
@@ -399,6 +425,31 @@ class HexCell:
         if self.glyph == "⬣":
             self.blanked = "⎔"
             self.dx = 2
+        if self.glyph == "⬢":
+            self.blanked = "⬡"
+            self.dx = 2
+
+
+cellH = HexCell(r"""
+  .-''-.
+ / xxxx \
+|        |
+ \      /
+  `-..-'
+""", fill="x", dx=5, dy=3)
+
+
+cellH = HexCell(r"""
+   _,-''-,_
+,-'        '-,
+|xxx         |
+|            |
+|            |
+'-,_      _,-'
+    '-,,-'
+
+""", fill="x", dx=7, dy=5)
+
 
 
 class Plane:
@@ -485,6 +536,7 @@ class Plane:
                         footer[imid] = char
                         imid += 1
         print(" "*(y_pad + 1) + "".join(footer))
+        print()
 
 
 def draw_cell(plane, cell, r, c, val=False, label=""):
@@ -510,4 +562,14 @@ def transform(z):
     real, imag = int(z.real), int(z.imag)
     row = real + imag
     col = real - imag
+    return row, col
+
+
+def transform_(z):
+    # change of coordinate system: axial to offset
+    #   1  --> (-1, 1)
+    #   1j --> (1, 1)
+    real, imag = int(z.real), int(z.imag)
+    row = imag - real
+    col = imag + real
     return row, col

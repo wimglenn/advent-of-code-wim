@@ -12,7 +12,11 @@ grid = zgrid.ZGrid()
 for line in data.splitlines():
     steps = re.findall(pat, line)
     z = sum([zgrid.hexH[s] for s in steps])
-    grid[z] = not grid.get(z, False)
+    grid[z] = not grid.get(z)
+    grid.draw_hexH(clear=False, glyph=1, labels=True)
+    grid.draw_hexV(clear=False, glyph=1, labels=True)
+    grid.draw(clear=False, pretty=True)
+    import time; time.sleep(0.01)
 print("part a:", grid.count(True))
 
 
