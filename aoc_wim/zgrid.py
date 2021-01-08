@@ -14,6 +14,11 @@ def manhattan_distance(z1, z0=0):
     return abs(int(dz.real)) + abs(int(dz.imag))
 
 
+def hexagonal_distance(z1, z0=0):
+    dz = z1 - z0
+    return int(max(abs(dz.real), abs(dz.imag), abs(dz.real - dz.imag)))
+
+
 class ZDict(dict):
 
     def __init__(self, func):
@@ -42,6 +47,10 @@ class ZGrid:
     R = E = right = east = 1
     D = S = down = south = 1j
     L = W = left = west = -1
+    UR = NE = N + E
+    UL = NW = N + W
+    DL = SW = S + W
+    DR = SE = S + E
 
     turn_right = turnR = 1j
     turn_left = turnL = -1j
@@ -88,11 +97,9 @@ class ZGrid:
     def count(self, val):
         return sum([1 for v in self.values() if v == val])
 
-    def count_near(self, z0, val, *, n=4, include_z0=False, default=None):
+    def count_near(self, z0, val, *, n=4, default=None):
         vals = [self.get(z, default) for z in self.near(z0, n=n)]
         result = vals.count(val)
-        if include_z0:
-            result += self.get(z0, default) == val
         return result
 
     def get(self, k, default=None):
@@ -114,14 +121,38 @@ class ZGrid:
                 z-1,             z+1,
                         z+1j,
             ]
+        if n == 5:
+            return [
+                        z-1j,
+                z-1,    z,       z+1,
+                        z+1j,
+            ]
+        elif n == 6:  # hexgrid w/ skewed coordinate system
+            return [
+                z-1-1j, z-1j,
+                z-1,             z+1,
+                        z+1j, z+1+1j,
+            ]
+        elif n == 7:
+            return [
+                z-1-1j, z-1j,
+                z-1,    z,       z+1,
+                        z+1j, z+1+1j,
+            ]
         elif n == 8:
             return [
                 z-1-1j, z-1j, z+1-1j,
                 z-1,             z+1,
                 z-1+1j, z+1j, z+1+1j,
             ]
+        elif n == 9:
+            return [
+                z-1-1j, z-1j, z+1-1j,
+                z-1,    z,       z+1,
+                z-1+1j, z+1j, z+1+1j,
+            ]
 
-    def draw(self, overlay=None, window=None, clear=False, pretty=False, transform=None):
+    def draw(self, overlay=None, window=None, clear=False, pretty=False, transform=None, title=""):
         if window is None:
             d = self.d
         else:
@@ -130,19 +161,30 @@ class ZGrid:
             d = {z: self[z] for z in window}
         if overlay is not None:
             d = {**self.d, **overlay}
-        dump_grid(d, clear=clear, pretty=pretty, transform=transform)
+        dump_grid(d, clear=clear, pretty=pretty, transform=transform, title=title)
+
+    # TODO:
+    #  hexgrid compass overlay ✶
+    #  odd-r / even-r etc modes?
+    #  zoom / rotate / reflect
+    #  make sure axes line up with labels
+    #  better x-axis values
+    def draw_hex(self, clear=False, glyph=2, labels=False, orientation="V", title=""):
+        cell = HexCell(hex_glyph_gen(glyph, orientation=orientation))
+        plane = Plane()
+        label = ""
+        for z, val in self.items():
+            row, col = transform(z, orientation)
+            if labels:
+                label = f"{col},{row}"
+            draw_cell(plane, cell, row, col, val, label=label)
+        plane.draw(clear=clear, xscale=cell.dx, yscale=cell.dy, cellwidth=cell.w, title=title)
+        return plane
 
     def translate(self, table):
         for z in self.d:
             if self.d[z] in table:
                 self.d[z] = table[self.d[z]]
-
-    @property
-    def n_on(self):
-        return sum(1 for val in self.d.values() if val == self.on)
-
-    def n_on_near(self, z0, n=4):
-        return sum(1 for z in self.near(z0, n=n) if self.d.get(z) == self.on)
 
     def __array__(self):
         """makes np.array(zgrid) work"""
@@ -241,7 +283,7 @@ class ZGrid:
         return int(self.bottom_right.imag - self.top_left.imag) + 1
 
 
-def dump_grid(g, clear=False, pretty=True, transform=None):
+def dump_grid(g, clear=False, pretty=True, transform=None, title=""):
     if transform is None:
         transform = {
             "#": "⬛",
@@ -266,19 +308,32 @@ def dump_grid(g, clear=False, pretty=True, transform=None):
     ys = [int(z.imag) for z in g]
     cols = range(min(xs), max(xs) + 1)
     rows = range(min(ys), max(ys) + 1)
+    W = len(cols)
+    if pretty:
+        W *= 2
     if clear:
         print("\033c")
+    if pretty:
+        print(" "*5 + "┌" + title.center(W, "─") + "┐")
+    elif title:
+        print(" "*5 + title.center(W))
     for row in rows:
-        print(f"{row:>5d} ", end="")
+        print(f"{row:>5d}", end="")
+        line = []
+        if pretty:
+            line.append("│")
+        else:
+            line.append(" ")
         for col in cols:
             glyph = g.get(col + row * 1j, empty)
             if pretty:
                 glyph = transform.get(glyph, glyph)
-            print(glyph, end="")
-        print()
-    W = len(cols)
+            line.append(str(glyph))
+        if pretty:
+            line.append("│")
+        print("".join(line))
     if pretty:
-        W *= 2
+        print(" "*5 + "└" + "─"*W + "┘")
     footer_left = f"{cols[0]}".ljust(W)
     footer_center = f"{cols[len(cols)//2]}".center(W)
     footer_right = f"{cols[-1]}".rjust(W)
@@ -311,3 +366,208 @@ def zrange(*args):
     xs = range(int(start.real), int(stop.real), int(step.real))
     ys = range(int(start.imag), int(stop.imag), int(step.imag))
     return [complex(x, y) for y in ys for x in xs]
+
+
+# axes unit vectors for hexagonal grid with skewed coordinate system - flat-topped
+hexV = dict(zip("n ne nw se sw s".split(), ZGrid().near(0, n=6)))
+
+# hexgrid - pointy-topped
+hexH = dict(zip("w nw sw ne se e".split(), ZGrid().near(0, n=6)))
+
+
+def hex_glyph_gen(n, fill=".", orientation="V"):
+    if orientation not in ["V", "H"]:
+        # V is hexgrid with a North-South axis, i.e. flat-topped hexagons
+        # H is hexgrid with an East-West axis, i.e. pointy-topped hexagons
+        raise ValueError("Orientation must be 'V' or 'H'")
+    if n == 0:
+        return {"V": "⬣", "H": "⬢"}[orientation]
+    if orientation == "H":
+        # TODO: ascii-art for pointy-topped hexes
+        #  _.-''-._
+        # |        |
+        # |        |
+        #  '-.,,.-'
+        #
+        #      _.-''-._
+        #  _.-'        '-._
+        # |                |
+        # |                |
+        # |                |
+        # |                |
+        #  '-._        _.-'
+        #      '-.,,.-'
+        #
+        #  .-''-.
+        # /      \
+        #|        |
+        # \      /
+        #  `-..-'
+        #
+        #  _.-´`-._
+        # |        |     warning: ´ is non-ascii
+        # |        |     ⹁ too
+        #  '-.⹁,.-'
+        raise NotImplementedError
+    first = " "*n + "__"*n
+    last = " "*(n - 1) + "\\" + "__"*n + "/"
+    lines = [first, last]
+    for i in range(n):
+        center = fill*2*(n + i)
+        left = " "*(n - 1 - i)
+        top = left + "/" + center + "\\"
+        bottom = left + "\\" + center + "/"
+        mid = len(lines) // 2
+        lines[mid:mid] = [top, bottom]
+    del lines[-2]
+    return "\n".join(lines)
+
+
+class HexCell:
+
+    def __init__(self, glyph, dy=None, dx=None, fill="."):
+        if isinstance(glyph, int):
+            glyph = hex_glyph_gen(glyph, fill=fill)
+        self.glyph = glyph.strip("\n")
+        lines = self.glyph.splitlines()
+        self.h = len(lines)
+        self.w = max([len(x) for x in lines])
+        if dy is None:
+            for dy, line in enumerate(lines):
+                if line.strip().startswith("\\"):
+                    dy -= 1
+                    break
+        self.dy = dy or 1
+        if dx is None and len(lines) > 1:
+            for dx, char in enumerate(lines[1]):
+                if char == "\\":
+                    break
+        self.dx = dx or 1
+        self.blanked = self.glyph.replace(fill, " ")
+        if self.glyph == "⬣":
+            self.blanked = "⎔"
+            self.dx = 2
+        if self.glyph == "⬢":
+            self.blanked = "⬡"
+            self.dx = 1
+
+
+class Plane:
+    """Unbounded 2D rectangular space of values that automatically grows as needed"""
+    def __init__(self, left=0, right=0, top=0, bottom=0, fill=" "):
+        if left > right or top > bottom:
+            raise ValueError(f"invalid initial: {left},{right},{top},{bottom}")
+        self.left = left
+        self.right = right
+        self.top = top
+        self.bottom = bottom
+        self.lines = {}
+        self.fill = fill
+        w = self.width
+        self.lines = {y: deque([fill]*w) for y in range(self.top, self.bottom + 1)}
+
+    def __getitem__(self, item):
+        row, col = item
+        col -= self.left
+        return self.lines[row][col]
+
+    def __setitem__(self, item, val):
+        row, col = item
+        while row < self.top:
+            self.top -= 1
+            self.lines[self.top] = deque([self.fill]*self.width)
+        while row > self.bottom:
+            self.bottom += 1
+            self.lines[self.bottom] = deque([self.fill]*self.width)
+        if col < self.left:
+            grow = [self.fill] * (self.left - col)
+            for line in self.lines.values():
+                line.extendleft(grow)
+            self.left = col
+        if col > self.right:
+            grow = [self.fill] * (col - self.right)
+            for line in self.lines.values():
+                line.extend(grow)
+            self.right = col
+        col -= self.left
+        self.lines[row][col] = val
+
+    @property
+    def width(self):
+        return self.right - self.left + 1
+
+    @property
+    def height(self):
+        return self.bottom - self.top + 1
+
+    def draw(self, clear=True, xscale=1, yscale=1, cellwidth=4, title=""):
+        if clear:
+            print("\033c")
+        y_pad = max([len(str(r//yscale)) for r in self.lines])
+        print(" "*y_pad + "┌" + title.center(self.width, "─") + "┐")
+        prev_tick = None
+        for row in range(self.top, self.bottom + 1):
+            line = self.lines[row]
+            tick = str(row//yscale)
+            if tick == prev_tick:
+                # don't write it again
+                tick = ""
+            else:
+                prev_tick = tick
+            print(tick.rjust(y_pad) + "│" + "".join(line) + "│")
+        print(" "*y_pad + "└" + "─"*self.width + "┘")
+        footer = [" "] * self.width
+        for i, char in enumerate(str((self.left + cellwidth//2)//xscale)):
+            footer[i] = char
+        for i, char in enumerate(reversed(str(self.right//xscale))):
+            footer[~i] = char
+        if self.left <= 0 <= self.right:
+            i0 = -self.left - 1
+            footer[i0] = "0"
+        else:
+            mid = self.left + self.width//2
+            imid = sorted(self.lines).index(mid)
+            mid_label = str(mid)
+            imidl = imid - 1
+            imidr = imid + len(mid_label) + 1
+            if imidl > 0 and footer[imidl] == " ":
+                if imidr < len(footer) and footer[imidr] == " ":
+                    for char in mid_label:
+                        footer[imid] = char
+                        imid += 1
+        print(" "*(y_pad + 1) + "".join(footer))
+        print()
+
+
+def draw_cell(plane, cell, r, c, val=False, label=""):
+    glyph = cell.glyph if val else cell.blanked
+    r *= cell.dy
+    c *= cell.dx
+    for i, row in enumerate(glyph.splitlines(), start=-cell.dy):
+        for j, char in enumerate(row, start=(-cell.w//2)):
+            if char == " ":
+                continue
+            plane[r + i, c + j] = char
+    if label and cell.w > 4:
+        c = c - cell.w//2 + 1
+        for char in label:
+            plane[r, c] = char
+            c += 1
+
+
+def transform(z, orientation="V"):
+    # change of coordinate system: axial to offset
+    real, imag = int(z.real), int(z.imag)
+    if orientation == "V":
+        # 1  --> (1, 1)
+        # 1j --> (1, -1)
+        row = real + imag
+        col = real - imag
+    elif orientation == "H":
+        # 1  --> (-1, 1)
+        # 1j --> (1, 1)
+        row = imag - real
+        col = imag + real
+    else:
+        raise ValueError("Orientation must be 'V' or 'H'")
+    return row, col
