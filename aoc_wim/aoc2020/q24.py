@@ -9,13 +9,11 @@ from aoc_wim import zgrid
 
 pat = r"(se|sw|ne|nw|e|w)"
 grid = zgrid.ZGrid()
-for line in data.splitlines():
+for i, line in enumerate(data.splitlines()):
     steps = re.findall(pat, line)
     z = sum([zgrid.hexH[s] for s in steps])
     grid[z] = not grid.get(z)
-    grid.draw_hexH(clear=False, glyph=1, labels=True)
-    grid.draw_hexV(clear=False, glyph=1, labels=True)
-    grid.draw(clear=False, pretty=True)
+    # grid.draw_hex(glyph=0, orientation="H", clear=True, title=f" flip {i} ")
     import time; time.sleep(0.01)
 print("part a:", grid.count(True))
 

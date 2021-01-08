@@ -152,7 +152,7 @@ class ZGrid:
                 z-1+1j, z+1j, z+1+1j,
             ]
 
-    def draw(self, overlay=None, window=None, clear=False, pretty=False, transform=None):
+    def draw(self, overlay=None, window=None, clear=False, pretty=False, transform=None, title=""):
         if window is None:
             d = self.d
         else:
@@ -161,37 +161,22 @@ class ZGrid:
             d = {z: self[z] for z in window}
         if overlay is not None:
             d = {**self.d, **overlay}
-        dump_grid(d, clear=clear, pretty=pretty, transform=transform)
+        dump_grid(d, clear=clear, pretty=pretty, transform=transform, title=title)
 
     # TODO:
     #  hexgrid compass overlay ✶
     #  odd-r / even-r etc modes
     #  zoom / rotate / reflect
-
-    def draw_hexV(self, clear=True, glyph=2, labels=False):
-        cell = HexCell(glyph, fill="#")
+    def draw_hex(self, clear=False, glyph=2, labels=False, orientation="V", title=""):
+        cell = HexCell(hex_glyph_gen(glyph, orientation=orientation))
         plane = Plane()
         label = ""
         for z, val in self.items():
-            row, col = transform(z)
+            row, col = transform(z, orientation)
             if labels:
                 label = f"{col},{row}"
             draw_cell(plane, cell, row, col, val, label=label)
-        plane.draw(clear=clear, xscale=cell.dx, yscale=cell.dy, cellwidth=cell.w)
-        return plane
-
-    def draw_hexH(self, clear=True, glyph=2, labels=False):
-        cell = HexCell(glyph="⬢")
-        cell.dx //= 2
-        # cell = cellH
-        plane = Plane()
-        label = ""
-        for z, val in self.items():
-            row, col = transform_(z)
-            if labels:
-                label = f"{col},{row}"
-            draw_cell(plane, cell, row, col, val, label=label)
-        plane.draw(clear=clear, xscale=cell.dx, yscale=cell.dy, cellwidth=cell.w)
+        plane.draw(clear=clear, xscale=cell.dx, yscale=cell.dy, cellwidth=cell.w, title=title)
         return plane
 
     def translate(self, table):
@@ -296,7 +281,7 @@ class ZGrid:
         return int(self.bottom_right.imag - self.top_left.imag) + 1
 
 
-def dump_grid(g, clear=False, pretty=True, transform=None):
+def dump_grid(g, clear=False, pretty=True, transform=None, title=""):
     if transform is None:
         transform = {
             "#": "⬛",
@@ -327,12 +312,16 @@ def dump_grid(g, clear=False, pretty=True, transform=None):
     if clear:
         print("\033c")
     if pretty:
-        print(" "*5 + "┌" + "─"*W + "┐")
+        print(" "*5 + "┌" + title.center(W, "─") + "┐")
+    elif title:
+        print(" "*5 + title.center(W))
     for row in rows:
         print(f"{row:>5d}", end="")
         line = []
         if pretty:
             line.append("│")
+        else:
+            line.append(" ")
         for col in cols:
             glyph = g.get(col + row * 1j, empty)
             if pretty:
@@ -384,9 +373,16 @@ hexV = dict(zip("n ne nw se sw s".split(), ZGrid().near(0, n=6)))
 hexH = dict(zip("w nw sw ne se e".split(), ZGrid().near(0, n=6)))
 
 
-def hex_glyph_gen(n, fill="."):
+def hex_glyph_gen(n, fill=".", orientation="V"):
+    if orientation not in ["V", "H"]:
+        # V is hexgrid with a North-South axis, i.e. flat-topped hexagons
+        # H is hexgrid with an East-West axis, i.e. pointy-topped hexagons
+        raise ValueError("Orientation must be 'V' or 'H'")
     if n == 0:
-        return "⬣"
+        return {"V": "⬣", "H": "⬢"}[orientation]
+    if orientation == "H":
+        # TODO: ascii-art for flat-topped hexes
+        raise NotImplementedError
     first = " "*n + "__"*n
     last = " "*(n - 1) + "\\" + "__"*n + "/"
     lines = [first, last]
@@ -427,7 +423,7 @@ class HexCell:
             self.dx = 2
         if self.glyph == "⬢":
             self.blanked = "⬡"
-            self.dx = 2
+            self.dx = 1
 
 
 cellH = HexCell(r"""
@@ -449,7 +445,6 @@ cellH = HexCell(r"""
     '-,,-'
 
 """, fill="x", dx=7, dy=5)
-
 
 
 class Plane:
@@ -500,11 +495,11 @@ class Plane:
     def height(self):
         return self.bottom - self.top + 1
 
-    def draw(self, clear=True, xscale=1, yscale=1, cellwidth=4):
+    def draw(self, clear=True, xscale=1, yscale=1, cellwidth=4, title=""):
         if clear:
             print("\033c")
         y_pad = max([len(str(r//yscale)) for r in self.lines])
-        print(" "*y_pad + "┌" + "─"*self.width + "┐")
+        print(" "*y_pad + "┌" + title.center(self.width, "─") + "┐")
         prev_tick = None
         for row in range(self.top, self.bottom + 1):
             line = self.lines[row]
@@ -555,21 +550,19 @@ def draw_cell(plane, cell, r, c, val=False, label=""):
             c += 1
 
 
-def transform(z):
+def transform(z, orientation="V"):
     # change of coordinate system: axial to offset
-    #   1  --> (1, 1)
-    #   1j --> (1, -1)
     real, imag = int(z.real), int(z.imag)
-    row = real + imag
-    col = real - imag
-    return row, col
-
-
-def transform_(z):
-    # change of coordinate system: axial to offset
-    #   1  --> (-1, 1)
-    #   1j --> (1, 1)
-    real, imag = int(z.real), int(z.imag)
-    row = imag - real
-    col = imag + real
+    if orientation == "V":
+        # 1  --> (1, 1)
+        # 1j --> (1, -1)
+        row = real + imag
+        col = real - imag
+    elif orientation == "H":
+        # 1  --> (-1, 1)
+        # 1j --> (1, 1)
+        row = imag - real
+        col = imag + real
+    else:
+        raise ValueError("Orientation must be 'V' or 'H'")
     return row, col

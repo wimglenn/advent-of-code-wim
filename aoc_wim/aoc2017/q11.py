@@ -12,7 +12,7 @@ for step in data.split(","):
     d = zgrid.hexagonal_distance(z)
     dmax = max(d, dmax)
     grid[z] = 1
-    # grid.draw_hexV(glyph=1)
+    # grid.draw_hex(glyph=0, orientation="V", title=f" {d=}, {dmax=}")
 
 print("part a:", d)
 print("part b:", dmax)
