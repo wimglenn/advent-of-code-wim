@@ -165,8 +165,10 @@ class ZGrid:
 
     # TODO:
     #  hexgrid compass overlay ✶
-    #  odd-r / even-r etc modes
+    #  odd-r / even-r etc modes?
     #  zoom / rotate / reflect
+    #  make sure axes line up with labels
+    #  better x-axis values
     def draw_hex(self, clear=False, glyph=2, labels=False, orientation="V", title=""):
         cell = HexCell(hex_glyph_gen(glyph, orientation=orientation))
         plane = Plane()
@@ -401,6 +403,11 @@ def hex_glyph_gen(n, fill=".", orientation="V"):
         #|        |
         # \      /
         #  `-..-'
+        #
+        #  _.-´`-._
+        # |        |     warning: ´ is non-ascii
+        # |        |     ⹁ too
+        #  '-.⹁,.-'
         raise NotImplementedError
     first = " "*n + "__"*n
     last = " "*(n - 1) + "\\" + "__"*n + "/"
