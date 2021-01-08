@@ -381,8 +381,21 @@ def hex_glyph_gen(n, fill=".", orientation="V"):
     if n == 0:
         return {"V": "⬣", "H": "⬢"}[orientation]
     if orientation == "H":
-        # TODO: ascii-art for flat-topped hexes
         raise NotImplementedError
+        # TODO: ascii-art for pointy-topped hexes
+        #  _.-''-._
+        # |        |
+        # |        |
+        #  '-.__.-'
+        #
+        #      _.-''-._
+        #  _.-'        '-._
+        # |                |
+        # |                |
+        # |                |
+        # |                |
+        #  '-._        _.-'
+        #      '-.__.-'
     first = " "*n + "__"*n
     last = " "*(n - 1) + "\\" + "__"*n + "/"
     lines = [first, last]
