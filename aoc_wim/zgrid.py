@@ -326,7 +326,7 @@ def dump_grid(g, clear=False, pretty=True, transform=None, title=""):
             glyph = g.get(col + row * 1j, empty)
             if pretty:
                 glyph = transform.get(glyph, glyph)
-            line.append(glyph)
+            line.append(str(glyph))
         if pretty:
             line.append("│")
         print("".join(line))
@@ -381,12 +381,11 @@ def hex_glyph_gen(n, fill=".", orientation="V"):
     if n == 0:
         return {"V": "⬣", "H": "⬢"}[orientation]
     if orientation == "H":
-        raise NotImplementedError
         # TODO: ascii-art for pointy-topped hexes
         #  _.-''-._
         # |        |
         # |        |
-        #  '-.__.-'
+        #  '-.,,.-'
         #
         #      _.-''-._
         #  _.-'        '-._
@@ -395,7 +394,14 @@ def hex_glyph_gen(n, fill=".", orientation="V"):
         # |                |
         # |                |
         #  '-._        _.-'
-        #      '-.__.-'
+        #      '-.,,.-'
+        #
+        #  .-''-.
+        # /      \
+        #|        |
+        # \      /
+        #  `-..-'
+        raise NotImplementedError
     first = " "*n + "__"*n
     last = " "*(n - 1) + "\\" + "__"*n + "/"
     lines = [first, last]
@@ -437,27 +443,6 @@ class HexCell:
         if self.glyph == "⬢":
             self.blanked = "⬡"
             self.dx = 1
-
-
-cellH = HexCell(r"""
-  .-''-.
- / xxxx \
-|        |
- \      /
-  `-..-'
-""", fill="x", dx=5, dy=3)
-
-
-cellH = HexCell(r"""
-   _,-''-,_
-,-'        '-,
-|xxx         |
-|            |
-|            |
-'-,_      _,-'
-    '-,,-'
-
-""", fill="x", dx=7, dy=5)
 
 
 class Plane:
