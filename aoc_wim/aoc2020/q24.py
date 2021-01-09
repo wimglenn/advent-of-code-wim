@@ -14,7 +14,7 @@ for i, line in enumerate(data.splitlines()):
     z = sum([zgrid.hexH[s] for s in steps])
     grid[z] = not grid.get(z)
     # grid.draw_hex(glyph=0, orientation="H", clear=True, title=f" flip {i} ")
-print("part a:", grid.count(True))
+print("part a:", grid.count(1))
 
 
 for day in range(1, 101):
@@ -22,14 +22,14 @@ for day in range(1, 101):
     tiles_to_visit = z_black.union(*[grid.near(z, n=6) for z in z_black])
     tiles_to_update = {}
     for z in tiles_to_visit:
-        n_black = grid.count_near(z, n=6, val=True)
+        n_black = grid.count_near(z, n=6, val=1)
         if grid.get(z) and n_black == 0 or n_black > 2:
-            tiles_to_update[z] = False
+            tiles_to_update[z] = 0
         elif n_black == 2:
-            tiles_to_update[z] = True
+            tiles_to_update[z] = 1
     grid.d.update(tiles_to_update)
     if day <= 10 or day % 10 == 0:
-        print(f"Day {day}:", grid.count(True))
+        print(f"Day {day}:", grid.count(1))
     if day == 10:
         print()
-print("part b:", grid.count(True))
+print("part b:", grid.count(1))
