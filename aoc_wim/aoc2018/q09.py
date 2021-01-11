@@ -36,36 +36,7 @@ def get_high_score(n_players, n_marbles):
     return high_score
 
 
-# n_players, n_marbles, high_score
-tests = [(9, 25, 32)]
-
-tests_txt = """10 players; last marble is worth 1618 points: high score is 8317
-13 players; last marble is worth 7999 points: high score is 146373
-17 players; last marble is worth 1104 points: high score is 2764
-21 players; last marble is worth 6111 points: high score is 54718
-30 players; last marble is worth 5807 points: high score is 37305"""
-
-test_template = "{:d} players; last marble is worth {:d} points: high score is {:d}"
-
-for line in tests_txt.splitlines():
-    parsed = parse(test_template, line)
-    tests.append(parsed.fixed)
-
-for n_players, n_marbles, high_score in tests:
-    assert get_high_score(n_players, n_marbles) == high_score
-
 template = "{:d} players; last marble is worth {:d} points"
-
-
-def part_a(data):
-    n_players, n_marbles = parse(template, data)
-    return get_high_score(n_players, n_marbles)
-
-
-def part_b(data):
-    n_players, n_marbles = parse(template, data)
-    return get_high_score(n_players, n_marbles * 100)
-
-
-print("part a:", part_a(data))
-print("part b:", part_b(data))
+n_players, n_marbles = parse(template, data)
+print("part a:", get_high_score(n_players, n_marbles))
+print("part b:", get_high_score(n_players, n_marbles * 100))

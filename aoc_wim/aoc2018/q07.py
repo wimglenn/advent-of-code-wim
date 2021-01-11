@@ -13,17 +13,6 @@ log = logging.getLogger(__name__)
 # logging.basicConfig(format='%(message)s', level=logging.DEBUG)
 
 
-test_data = """\
-Step C must be finished before step A can begin.
-Step C must be finished before step F can begin.
-Step A must be finished before step B can begin.
-Step A must be finished before step D can begin.
-Step B must be finished before step E can begin.
-Step D must be finished before step E can begin.
-Step F must be finished before step E can begin.
-"""
-
-
 class Worker:
     def __init__(self):
         self.has = "."  # idle
@@ -71,9 +60,6 @@ def work(data, n_workers=4, delay=60):
     result = SimpleNamespace(text=text, n_iterations=t)
     return result
 
-
-assert work(test_data, n_workers=1, delay=0).text == "CABDFE"
-assert work(test_data, n_workers=2, delay=0).n_iterations == 15
 
 print("part a:", work(data, n_workers=1).text)
 print("part b:", work(data).n_iterations)

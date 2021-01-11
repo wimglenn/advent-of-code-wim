@@ -61,6 +61,8 @@ class ZGrid:
         self.off = off
         self.d = d = {}
         if initial_data is not None:
+            if isinstance(initial_data, ZGrid):
+                self.d = initial_data.d.copy()
             if isinstance(initial_data, str):
                 for row, line in enumerate(initial_data.splitlines()):
                     for col, char in enumerate(line):
@@ -194,7 +196,8 @@ class ZGrid:
         vs = np.array(list(self.d.values()))
         w = xs.ptp() + 1
         h = ys.ptp() + 1
-        full = np.full((h, w), fill_value=self.off, dtype=vs.dtype)
+        fill = "." if vs.dtype == "U1" else 0
+        full = np.full((h, w), fill_value=fill, dtype=vs.dtype)
         full[ys - ys.min(), xs - xs.min()] = vs
         return full
 

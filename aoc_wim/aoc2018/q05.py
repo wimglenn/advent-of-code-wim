@@ -28,10 +28,5 @@ def part_b(data):
     return result
 
 
-test_data = "dabAcCaCBAcCcaDA"
-assert part_a(test_data) == 10
-assert part_b(test_data) == 4
-
-
 print("part a:", part_a(data))
 print("part b:", part_b(data))
