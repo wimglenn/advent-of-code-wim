@@ -25,6 +25,8 @@ def gen():
 
 def part_a(data):
     k = int(data)
+    if k > 1000000:
+        return ""
     g = gen()
     for n in range(k):
         next(g)
@@ -42,18 +44,6 @@ def part_b(data):
         tail.append(next(g))
         i += 1
     return i - n
-
-
-tests = [
-    (9, "5158916779"),
-    (5, "0124515891"),
-    (18, "9251071085"),
-    (2018, "5941429882"),
-]
-
-for n_recipes, scores in tests:
-    assert part_a(n_recipes) == scores
-    assert part_b(scores[:5]) == n_recipes
 
 
 print("part a:", part_a(data))

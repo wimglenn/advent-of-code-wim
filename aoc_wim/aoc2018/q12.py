@@ -5,25 +5,6 @@ https://adventofcode.com/2018/day/12
 from aocd import data
 
 
-test_data = """\
-initial state: #..#.#..##......###...###
-
-...## => #
-..#.. => #
-.#... => #
-.#.#. => #
-.#.## => #
-.##.. => #
-.#### => #
-#.#.# => #
-#.### => #
-##.#. => #
-##.## => #
-###.. => #
-###.# => #
-####. => #"""
-
-
 def parsed(data):
     initial, _, *rest = data.splitlines()
     s0 = initial.split()[-1]
@@ -57,9 +38,6 @@ def part_a(data, n=20):
 
 def part_b(data):
     return part_a(data, n=50000000000)
-
-
-assert part_a(test_data) == 325
 
 
 print("part a:", part_a(data))

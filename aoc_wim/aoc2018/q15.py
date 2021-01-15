@@ -10,6 +10,9 @@ from aocd import data
 from termcolor import colored
 
 
+# TODO: refactor to use zgrid
+
+
 class CombatEnds(Exception):
     pass
 
@@ -262,82 +265,6 @@ def part_b(data, debug=False):
         if part_a.all_elves_alive:
             Elf.ap = 3
             return outcome
-
-
-part_a_tests = """\
-#######
-#.G...#
-#...EG#
-#.#.#G#
-#..G#E#
-#.....#
-#######
-
-27730
-
-#######
-#G..#E#
-#E#E.E#
-#G.##.#
-#...#E#
-#...E.#
-#######
-
-36334
-
-#######
-#E..EG#
-#.#G.E#
-#E.##E#
-#G..#.#
-#..E#.#
-#######
-
-39514
-
-#######
-#E.G#.#
-#.#G..#
-#G.#.G#
-#G..#.#
-#...E.#
-#######
-
-27755
-
-#######
-#.E...#
-#.#..G#
-#.###.#
-#E#G#G#
-#...#G#
-#######
-
-28944
-
-#########
-#G......#
-#.E.#...#
-#..##..G#
-#...##..#
-#...#...#
-#.G...G.#
-#.....G.#
-#########
-
-18740"""
-
-
-tests = part_a_tests.split("\n\n")
-grids = tests[0::2]
-outcomes = [int(line) for line in tests[1::2]]
-for grid, outcome in zip(grids, outcomes):
-    assert part_a(grid) == outcome
-
-part_b_tests = [4988, 31284, 3478, 6474, 1140]
-del grids[1]  # wtf eric
-for grid, outcome in zip(grids, part_b_tests):
-    assert part_b(grid) == outcome
 
 
 print("part a:", part_a(data))

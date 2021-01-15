@@ -85,7 +85,7 @@ def parsed(data):
     carts = []
     lines = data.splitlines()
     h = len(lines)
-    [w] = {len(line) for line in lines}
+    w = max(len(line) for line in lines)
     for y, line in enumerate(lines):
         for x, char in enumerate(line):
             if char in "v>^<":
@@ -154,6 +154,8 @@ def part_a(data, first_crash=True, debug=False):
                 # time. this is not strictly correct approach because 3 or 4
                 # carts could theoretically crash together at an intersection
                 carts = [c for c in carts if c.coordinates != err.coordinates]
+        if not carts:
+            return
         if len(carts) == 1:
             [cart] = carts
             return cart.coordinates
@@ -161,37 +163,6 @@ def part_a(data, first_crash=True, debug=False):
 
 def part_b(data, debug=False):
     return part_a(data, first_crash=False, debug=debug)
-
-
-test_data1 = """|
-v
-|
-|
-|
-^
-|"""
-
-
-test_data2 = r"""/->-\        
-|   |  /----\
-| /-+--+-\  |
-| | |  | v  |
-\-+-/  \-+--/
-  \------/   """
-
-
-test_data3 = r"""/>-<\  
-|   |  
-| /<+-\
-| | | v
-\>+</ |
-  |   ^
-  \<->/"""
-
-
-assert part_a(test_data1) == "0,3"
-assert part_a(test_data2) == "7,3"
-assert part_b(test_data3) == "6,4"
 
 
 print("part a:", part_a(data))
