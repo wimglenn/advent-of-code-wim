@@ -178,36 +178,17 @@ class Battle:
         return winner.n
 
 
-def part_a(data):
-    return Battle(data).part_a()
+print("part a:", Battle(data).part_a())
 
+boost = 0
+while True:
+    battle = Battle(data, immuno_boost=boost)
+    try:
+        battle.run_until_complete()
+    except StaleMate:
+        pass
+    if battle.immune.alive and not battle.infection.alive:
+        break
+    boost += 1
 
-def part_b(data, boost0=0):
-    boost = boost0
-    while True:
-        battle = Battle(data, immuno_boost=boost)
-        try:
-            battle.run_until_complete()
-        except StaleMate:
-            pass
-        if battle.immune.alive and not battle.infection.alive:
-            return battle.immune.n
-        boost += 1
-
-
-test_data = """\
-Immune System:
-17 units each with 5390 hit points (weak to radiation, bludgeoning) with an attack that does 4507 fire damage at initiative 2
-989 units each with 1274 hit points (immune to fire; weak to bludgeoning, slashing) with an attack that does 25 slashing damage at initiative 3
-
-Infection:
-801 units each with 4706 hit points (weak to radiation) with an attack that does 116 bludgeoning damage at initiative 1
-4485 units each with 2961 hit points (immune to radiation; weak to fire, cold) with an attack that does 12 slashing damage at initiative 4"""
-
-
-assert part_a(test_data) == 5216
-assert part_b(test_data, boost0=1570) == 51
-
-
-print("part a:", part_a(data))
-print("part b:", part_b(data))
+print("part b:", battle.immune.n)

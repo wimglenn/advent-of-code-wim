@@ -5,17 +5,6 @@ https://adventofcode.com/2018/day/17
 from aocd import data
 
 
-test_data = """\
-x=495, y=2..7
-y=7, x=495..501
-x=501, y=3..7
-x=498, y=2..4
-x=506, y=1..2
-x=498, y=10..13
-x=504, y=10..13
-y=13, x=498..504"""
-
-
 def parsed(data):
     grid = {}
     for line in data.splitlines():
@@ -114,17 +103,10 @@ def wet(grid, ymax, tap=1j + 500):
         flow = next_flow
 
 
-def part_ab(data):
-    grid, ymin, ymax = parsed(data)
-    wet(grid, ymax)
-    s = "".join(grid.values())
-    b = s.count("~")
-    a = s.count("|") + b - ymin + 1
-    return a, b
-
-
-assert part_ab(test_data) == (57, 29)
-
-a, b = part_ab(data)
+grid, ymin, ymax = parsed(data)
+wet(grid, ymax)
+s = "".join(grid.values())
+b = s.count("~")
+a = s.count("|") + b - ymin + 1
 print("part a:", a)
 print("part b:", b)

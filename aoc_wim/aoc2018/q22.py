@@ -9,6 +9,9 @@ from aoc_wim.zgrid import zrange
 from aoc_wim.zgrid import manhattan_distance
 
 
+# TODO: use zgrid
+
+
 class Grid:
 
     glyph = dict(enumerate(".=|"))  # rocky, wet, narrow
@@ -56,12 +59,6 @@ def draw(grid, z0=0, z1=None):
         print(g, end="")
         if z.real + 1 == z1.real:
             print()
-
-
-def part_a(data):
-    grid = parsed(data)
-    result = sum(grid.t(z) for z in zrange(0, grid.target + 1 + 1j))
-    return result
 
 
 class Q22AStar(AStar):
@@ -115,23 +112,11 @@ class Q22AStar(AStar):
         return zs
 
 
-def part_b(data):
-    grid = parsed(data)
-    state0 = (grid.pos, "🔦")
-    target = (grid.target, "🔦")
-    a_star = Q22AStar(state0=state0, target=target, grid=grid)
-    a_star.run()
-    result = a_star.gscore[target]
-    return result
+grid = parsed(data)
+print("part a:", sum(grid.t(z) for z in zrange(0, grid.target + 1 + 1j)))
 
-
-test_data = """\
-depth: 510
-target: 10,10"""
-
-
-assert part_a(test_data) == 114
-assert part_b(test_data) == 45
-
-print("part a:", part_a(data))
-print("part b:", part_b(data))
+state0 = (grid.pos, "🔦")
+target = (grid.target, "🔦")
+a_star = Q22AStar(state0=state0, target=target, grid=grid)
+a_star.run()
+print("part b:", a_star.gscore[target])

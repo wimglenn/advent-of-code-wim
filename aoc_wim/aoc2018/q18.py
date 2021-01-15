@@ -3,23 +3,9 @@
 https://adventofcode.com/2018/day/18
 """
 import time
-
 import numpy as np
 from aocd import data
 from scipy.signal import convolve2d
-
-
-test_data = """\
-.#.#...|#.
-.....#|##|
-.|..|...#.
-..|#.....#
-#.#|||#|#|
-...#.||...
-.|....|...
-||...#|.#|
-|.||||..|.
-...#.|..|."""
 
 
 def parsed(data):
@@ -49,15 +35,14 @@ def mutate(A0):
     return A1
 
 
-def part_a(data, minutes=10, debug=False):
+def evolve(data, minutes=10):
     A = parsed(data)
     m = minutes
     seen = {A.tobytes(): m}
     while m > 0:
         m -= 1
         A = mutate(A)
-        if debug:
-            dump(A)
+        # dump(A)
         s = A.tobytes()
         if s in seen:
             delta = seen[s] - m
@@ -66,11 +51,5 @@ def part_a(data, minutes=10, debug=False):
     return (A == 1).sum() * (A == 1j).sum()
 
 
-def part_b(data, debug=False):
-    return part_a(data, minutes=1000000000, debug=debug)
-
-
-assert part_a(test_data, minutes=10) == 1147
-
-print("part a:", part_a(data))
-print("part b:", part_b(data))
+print("part a:", evolve(data, minutes=10))
+print("part b:", evolve(data, minutes=1000000000))

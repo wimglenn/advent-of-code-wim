@@ -3,21 +3,8 @@
 https://adventofcode.com/2018/day/19
 """
 import math
-
 from aocd import data
-
 from aoc_wim.aoc2018.q16 import all_ops
-
-
-test_data = """\
-#ip 0
-seti 5 0 1
-seti 6 0 2
-addi 0 1 0
-addr 1 2 3
-setr 1 0 0
-seti 8 0 4
-seti 9 0 5"""
 
 
 def parsed(data):
@@ -47,7 +34,7 @@ class Comp:
         op(self.r, a, b, c)
         self.r[self.ip] += 1
         self.i = self.r[self.ip]
-        if self.hacked and self.i == 1:
+        if self.hacked and self.i == 1 and max(self.r) > 5:
             self.r[0] = sum(divisors(max(self.r)))
             [][0]
 
@@ -71,6 +58,5 @@ def divisors(n):
     return divs
 
 
-assert compute(test_data) == 7
-print(compute(data, r0=0, hack=True))
-print(compute(data, r0=1, hack=True))
+print("part a:", compute(data, r0=0, hack=True))
+print("part b:", compute(data, r0=1, hack=True))

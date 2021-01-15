@@ -80,25 +80,11 @@ Before: [{:d}, {:d}, {:d}, {:d}]
 After:  [{:d}, {:d}, {:d}, {:d}]"""
 
 
-test_data = """\
-Before: [3, 2, 1, 1]
-9 2 1 2
-After:  [3, 2, 2, 1]"""
-
-
-assert len(choices(test_data)) == 3
-
-
-def part_a(data):
-    samples = data.split("\n" * 4)[0].split("\n" * 2)
-    result = sum(1 for s in samples if len(choices(s)) >= 3)
-    return result
-
-
-def part_b(data):
+def main():
     ops = all_ops()
     samples, prog = data.split("\n" * 4)
     samples = samples.split("\n" * 2)
+    print("part a:", sum(len(choices(s)) >= 3 for s in samples))
     identified = {}
     while len(identified) < len(ops):
         for s in samples:
@@ -113,9 +99,8 @@ def part_b(data):
         opnum, a, b, c = [int(x) for x in line.split()]
         op = ops[opnum]
         op(R, a, b, c)
-    return R[0]
+    print("part b:", R[0])
 
 
 if __name__ == "__main__":
-    print("part a:", part_a(data))
-    print("part b:", part_b(data))
+    main()

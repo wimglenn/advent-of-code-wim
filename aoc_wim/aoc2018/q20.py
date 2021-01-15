@@ -6,31 +6,12 @@ import networkx as nx
 from aocd import data
 
 
-tests = {
-    # my examples
-    "^(N|S|E|W)$": 1,
-    "^(N|S|E|W)(N|S|E|W)$": 2,
-    "^(N|S|E|W)(N|E|W|S)(W|E|N|S)$": 3,
-    "^E(NN|S)E$": 4,
-    "^(N|S)N$": 2,
-    "^EEE(NN|SSS)EEE$": 9,
-    # AoC examples
-    "^WNE$": 3,
-    "^ENWWW(NEEE|SSE(EE|N))$": 10,
-    "^ENNWSWW(NEWS|)SSSEEN(WNSE|)EE(SWEN|)NNN$": 18,
-    "^ESSWWN(E|NNENN(EESS(WNSE|)SSS|WWWSSSSE(SW|NNNE)))$": 23,
-    "^WSSEESWWWNW(S|NENNEEEENN(ESSSSW(NWSW|SSEN)|WSWWN(E|WWS(E|SS))))$": 31,
-}
+# TODO: refactor to use zgrid
 steps = dict(zip("NSEW", [-2j, 2j, 2, -2]))
 dzs = [
-    -1j - 1,
-    -1j,
-    -1j + 1,
-    -1,
-    1,
-    +1j - 1,
-    +1j,
-    +1j + 1,
+    -1j-1, -1j, -1j+1,
+    -1,             1,
+    +1j-1, +1j, +1j+1,
 ]
 
 
@@ -85,20 +66,8 @@ def graph(data, z0=0):
     return g
 
 
-def part_ab(data):
-    g = graph(data)
-    distances = [nx.shortest_path_length(g, 0, x) for x in g.nodes]
-    part_a = max(distances)
-    part_b = sum(1 for d in distances if d >= 1000)
-    return part_a, part_b
+g = graph(data)
+distances = [nx.shortest_path_length(g, 0, x) for x in g.nodes]
 
-
-for test, expected in tests.items():
-    a, _b = part_ab(test)
-    assert a == expected
-
-
-render(data)
-a, b = part_ab(data)
-print("part a:", a)
-print("part b:", b)
+print("part a:", max(distances))
+print("part b:", sum(1 for d in distances if d >= 1000))
