@@ -65,7 +65,7 @@ class Cart:
         self.glyph = self.vs.inv[v]
 
     def tick(self, grid):
-        # dump(grid, carts=[self])
+        # draw(grid, carts=[self])
         self._position += self.velocity
         track = grid[self.y, self.x]
         assert track in r"+/-\|", f"WTF: {self} ran off the rails"
@@ -99,7 +99,7 @@ def parsed(data):
     return grid, carts
 
 
-def dump(grid, carts):
+def draw(grid, carts):
     seen = set()
     carts_on_grid = {}
     prompt = ""
@@ -134,19 +134,17 @@ def find_collision(carts):
         raise CartCollision(pos)
 
 
-def part_a(data, first_crash=True, debug=False):
+def part_a(data, first_crash=True):
     a0, carts = parsed(data)
     while True:
-        if debug:
-            dump(a0, carts)
+        # draw(a0, carts)
         carts.sort()
         for cart in carts:
             cart.tick(grid=a0)
             try:
                 find_collision(carts)
             except CartCollision as err:
-                if debug:
-                    dump(a0, carts)
+                # draw(a0, carts)
                 if first_crash:
                     return err.coordinates
                 # remove exactly 2 crashed carts. there can not be more than
@@ -161,8 +159,8 @@ def part_a(data, first_crash=True, debug=False):
             return cart.coordinates
 
 
-def part_b(data, debug=False):
-    return part_a(data, first_crash=False, debug=debug)
+def part_b(data):
+    return part_a(data, first_crash=False)
 
 
 print("part a:", part_a(data))

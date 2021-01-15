@@ -15,7 +15,7 @@ def parsed(data):
     return A
 
 
-def dump(A, dt=0.1):
+def draw(A, dt=0.1):
     # d = {0: ".", 1: "|", 1j: "#"}
     d = {0: "  ", 1: "🌲", 1j: " ⛏"}
     print("\33c")
@@ -42,7 +42,7 @@ def evolve(data, minutes=10):
     while m > 0:
         m -= 1
         A = mutate(A)
-        # dump(A)
+        # draw(A)
         s = A.tobytes()
         if s in seen:
             delta = seen[s] - m

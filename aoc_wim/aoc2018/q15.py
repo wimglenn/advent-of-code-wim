@@ -142,7 +142,7 @@ class Goblin(Unit):
     ap = 3
 
 
-def dump(grid, round=0, interactive=False, dt=0.1):
+def draw(grid, round=0, interactive=False, dt=0.1):
     print("\33c")
     units = grid["units"]
     units_on_grid = {}
@@ -236,14 +236,13 @@ def bfs(state0, targets, grid, others_positions):
     return found
 
 
-def part_a(data, debug=False):
+def part_a(data):
     Unit.grid = grid = parsed(data)
     round = 0
     units = grid["units"]
     n_elves = sum(1 for u in units if isinstance(u, Elf))
     while True:
-        if debug:
-            dump(grid, round)
+        # draw(grid, round)
         units.sort(key=attrgetter("yx"))
         for unit in units:
             if unit.alive:
@@ -257,11 +256,11 @@ def part_a(data, debug=False):
         round += 1
 
 
-def part_b(data, debug=False):
+def part_b(data):
     Elf.ap = 3
     while True:
         Elf.ap += 1
-        outcome = part_a(data, debug=debug)
+        outcome = part_a(data)
         if part_a.all_elves_alive:
             Elf.ap = 3
             return outcome

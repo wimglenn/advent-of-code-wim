@@ -29,7 +29,7 @@ def parsed(data):
     return grid, ymin, ymax
 
 
-def dump(grid, pause=False):
+def draw(grid, pause=False):
     print("\33c")
     xs = [int(z.real) for z in grid]
     xrange = range(min(xs) - 1, max(xs) + 2)
