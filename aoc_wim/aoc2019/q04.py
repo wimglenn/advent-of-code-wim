@@ -30,19 +30,8 @@ def ok(n, part="a"):
     return True
 
 
-def count(data, part="a"):
-    lo, hi = [int(x) for x in data.split("-")]
-    result = sum(1 for n in range(lo, hi + 1) if ok(n, part=part))
-    return result
+lo, hi = data.split("-")
+ns = range(int(lo), int(hi) + 1)
 
-
-assert ok(111111, part="a")
-assert not ok(223450, part="a")
-assert not ok(123789, part="a")
-
-assert ok(112233, part="b")
-assert not ok(123444, part="b")
-assert ok(111122, part="b")
-
-print(count(data, part="a"))
-print(count(data, part="b"))
+print("part a:", sum(ok(n, part="a") for n in ns))
+print("part b:", sum(ok(n, part="b") for n in ns))
