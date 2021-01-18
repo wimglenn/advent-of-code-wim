@@ -18,7 +18,7 @@ class IntComputer:
 
     def __init__(self, reg0, inputs=()):
         self.ip = 0
-        if not isinstance(reg0, (list, tuple)):
+        if reg0 and isinstance(reg0, str):
             reg0 = [int(x) for x in reg0.split(",")]
         self.offset = 0
         self.reg = defaultdict(int, dict(enumerate(reg0)))
@@ -100,6 +100,8 @@ class IntComputer:
             self.input.appendleft(ord(char))
 
     def run(self, until=None):
+        if self.ip not in self.reg:
+            return
         while True:
             try:
                 self.step()

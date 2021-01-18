@@ -155,6 +155,9 @@ class ZGrid:
             ]
 
     def draw(self, overlay=None, window=None, clear=False, pretty=False, transform=None, title=""):
+        if not self.d:
+            log.info("nothing to draw")
+            return
         if window is None:
             d = self.d
         else:
