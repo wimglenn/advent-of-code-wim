@@ -10,37 +10,19 @@ from aoc_wim.search import AStar
 import networkx as nx
 
 
-# https://www.reddit.com/r/adventofcode/comments/ecj4e7/2019_day_18_challenging_input/
-test_data = """\
-##########
-#.a###.Ab#
-#.B..@.###
-#...######
-##########"""
-
-
-# https://www.reddit.com/r/adventofcode/comments/ejbm8r/2019_day_18_are_we_allowed_to_assume_no_cycles_in/
-test_data2 = """\
-###################
-#.c.B...a...@..Ab.#
-#.########.######.#
-#.................#
-###################"""
-
-
 class Q18AStar(AStar):
 
     def __init__(self, data, part="a"):
         grid = ZGrid(data, on=".", off="#")
+        pos = ("@",)
         if part == "b":
             [z0] = [z for z, v in grid.items() if v == "@"]
-            pos = ("@0", "@1", "@2", "@3")
-            for dz in [0, -1j, 1, 1j, -1]:
-                grid[z0 + dz] = grid.off
-            for p, dz in zip(pos, [-1 - 1j, 1 - 1j,  1 + 1j, -1 + 1j]):
-                grid[z0 + dz] = p
-        else:
-            pos = ("@",)
+            if grid.count_near(z0, val=".", n=8, default=".") == 8:
+                pos = ("@0", "@1", "@2", "@3")
+                for z in grid.near(z0, n=5):
+                    grid[z] = grid.off
+                for p, dz in zip(pos, [-1 - 1j, 1 - 1j,  1 + 1j, -1 + 1j]):
+                    grid[z0 + dz] = p
         graph = grid.graph(extra=frozenset(string.ascii_letters).union(pos))
         self.all_keys = {k for k in graph.extra if k in string.ascii_lowercase}
 
@@ -57,7 +39,7 @@ class Q18AStar(AStar):
                 else:
                     break
             else:
-                raise Exception
+                raise Exception("nothing possible to do")
             self.kdist[k0, p] = self.kdist[p, k0] = len(path) - 1
             assert path[0] == graph.extra[p]
             assert path[-1] == graph.extra[k0]
@@ -102,8 +84,8 @@ class Q18AStar(AStar):
 
 astar = Q18AStar(data, part="a")
 path_a = astar.run()
-print(astar.gscore[astar.target])
+print("part a:", astar.gscore[astar.target])
 
 astar = Q18AStar(data, part="b")
 path_b = astar.run()
-print(astar.gscore[astar.target])
+print("part b:", astar.gscore[astar.target])

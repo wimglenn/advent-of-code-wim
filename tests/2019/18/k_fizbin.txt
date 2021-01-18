@@ -1,0 +1,8 @@
+###################
+#.c.B...a...@..Ab.#
+#.########.######.#
+#.................#
+###################
+26
+-
+# https://www.reddit.com/r/adventofcode/comments/ejbm8r/2019_day_18_are_we_allowed_to_assume_no_cycles_in/

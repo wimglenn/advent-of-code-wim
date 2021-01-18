@@ -1,0 +1,8 @@
+##########
+#.a###.Ab#
+#.B..@.###
+#...######
+##########
+20
+-
+# https://www.reddit.com/r/adventofcode/comments/ecj4e7/2019_day_18_challenging_input/

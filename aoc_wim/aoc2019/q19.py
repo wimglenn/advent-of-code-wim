@@ -9,10 +9,6 @@ from aoc_wim.search import Bisect
 import functools
 
 
-class OutOfBeam(Exception):
-    pass
-
-
 @functools.lru_cache(maxsize=100**2)
 def beam(z):
     comp = IntComputer(data, inputs=[int(z.imag), int(z.real)])
@@ -36,8 +32,10 @@ for y in range(50):
                 m = y / x0
         if on and not val:
             break
-grid.draw()
+
 print("part a", sum(grid.values()))
+grid.translate({0: ".", 1: "#"})
+grid.draw()
 
 
 def left_edge_of_beam(y, gradient):
