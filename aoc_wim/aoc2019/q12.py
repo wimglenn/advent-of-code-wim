@@ -35,23 +35,5 @@ def simulate(data, n=0):
     return e
 
 
-test1 = """\
-<x=-1, y=0, z=2>
-<x=2, y=-10, z=-7>
-<x=4, y=-8, z=8>
-<x=3, y=5, z=-1>"""
-
-test2 = """\
-<x=-8, y=-10, z=0>
-<x=5, y=5, z=10>
-<x=2, y=-7, z=3>
-<x=9, y=-8, z=-3>"""
-
-
-assert simulate(test1, n=10) == 179
-assert simulate(test2, n=100) == 1940
-print(simulate(data, n=1000))
-
-assert simulate(test1) == 2772
-assert simulate(test2) == 4686774924
-print(simulate(data))
+print("part a:", simulate(data, n=1000))
+print("part b:", simulate(data))

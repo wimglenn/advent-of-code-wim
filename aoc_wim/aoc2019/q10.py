@@ -2,92 +2,23 @@
 --- Day 10: Monitoring Station ---
 https://adventofcode.com/2019/day/10
 """
+import logging
 from aocd import data
 from fractions import Fraction
 from collections import defaultdict
 from operator import itemgetter
-import logging
+from aoc_wim.zgrid import ZGrid
 
 
 # logging.basicConfig(format="%(message)s", level=logging.INFO)
 log = logging.getLogger(__name__)
 
 
-maps = """\
-.#..#
-.....
-#####
-....#
-...##
-
-......#.#.
-#..#.#....
-..#######.
-.#.#.###..
-.#..#.....
-..#....#.#
-#..#....#.
-.##.#..###
-##...#..#.
-.#....####
-
-#.#...#.#.
-.###....#.
-.#....#...
-##.#.#.#.#
-....#.#.#.
-.##..###.#
-..#...##..
-..##....##
-......#...
-.####.###.
-
-.#..#..###
-####.###.#
-....###.#.
-..###.##.#
-##.##.#.#.
-....###..#
-..#.#..#.#
-#..#.#.###
-.##...##.#
-.....#.#..
-
-.#..##.###...#######
-##.############..##.
-.#.######.########.#
-.###.#######.####.#.
-#####.##.#.##.###.##
-..#####..#.#########
-####################
-#.####....###.#.#.##
-##.#################
-#####.##.###..####..
-..######..##.#######
-####.##.####...##..#
-.#####..#.######.###
-##...#.##########...
-#.##########.#######
-.####.#.###.###.#.##
-....##.##.###..#####
-.#.#.###########.###
-#.#.#.#####.####.###
-###.##.####.##.#..##
-"""
-
-pos_n = {(3, 4): 8, (5, 8): 33, (1, 2): 35, (6, 3): 41, (11, 13): 210}
-tests = dict(zip(maps.split("\n\n"), pos_n.items()))
-
-
 def parsed(data):
-    asteroids = []
-    rows = data.splitlines()
-    for y, row in enumerate(rows):
-        for x, val in enumerate(row):
-            if val == "#":
-                asteroids.append((x, y))
-    assert len(asteroids) == data.count("#")
-    return asteroids
+    zs = ZGrid(data).z(val="#", first=False)
+    xys = [(int(z.real), int(z.imag)) for z in zs]
+    assert len(xys) == data.count("#")
+    return xys
 
 
 def quadrant(a0, a):
@@ -116,11 +47,12 @@ def grad(a0, a):
     return q, m
 
 
-def part_a(data):
+def best_monitoring_station(data):
+    # returns (x, y), n_asteroids_detected
     gradients = defaultdict(set)
-    A = parsed(data)
-    for i, a0 in enumerate(A):
-        for a in A[i + 1 :]:
+    asteroids = parsed(data)
+    for i, a0 in enumerate(asteroids):
+        for a in asteroids[i + 1 :]:
             q, g = grad(a, a0)
             gradients[a0].add((q, g))
             gradients[a].add(((q + 2) % 4, -g))
@@ -136,11 +68,13 @@ def norm2(a1, a2):
     return d2
 
 
-def part_ab(data, target=200, extra_assertions=()):
-    A = parsed(data)
-    a0, part_a_answer = part_a(data)
+def part_ab(data, target=200):
+    n_max = data.count("#") - 1
+    target = min(target, n_max)
+    asteroids = parsed(data)
+    a0, part_a_answer = best_monitoring_station(data)
     d = defaultdict(list)
-    for a in A:
+    for a in asteroids:
         if a == a0:
             continue
         g = grad(a0, a)
@@ -154,40 +88,15 @@ def part_ab(data, target=200, extra_assertions=()):
             if ds[g]:
                 a = ds[g].pop()
                 i += 1
-                if i in extra_assertions:
-                    assert extra_assertions[i] == a
-                    log.info("The %dth asteroid to be vaporized is at %d,%d", i, *a)
+                s = {1: "st", 2: "nd", 3: "rd"}.get(i % 10, "th")
+                f = "and final " if i == n_max else ""
+                log.info("The %d%s %sasteroid to be vaporized is at %d,%d.", i, s, f, *a)
                 if i == target:
                     part_b_answer = 100 * a[0] + a[1]
                     return part_a_answer, part_b_answer
 
 
-for test_data, expected in tests.items():
-    assert part_a(test_data) == expected
-
-extra = """\
-The 1st asteroid to be vaporized is at 11,12.
-The 2nd asteroid to be vaporized is at 12,1.
-The 3rd asteroid to be vaporized is at 12,2.
-The 10th asteroid to be vaporized is at 12,8.
-The 20th asteroid to be vaporized is at 16,0.
-The 50th asteroid to be vaporized is at 16,9.
-The 100th asteroid to be vaporized is at 10,16.
-The 199th asteroid to be vaporized is at 9,6.
-The 200th asteroid to be vaporized is at 8,2.
-The 201st asteroid to be vaporized is at 10,9.
-The 299th and final asteroid to be vaporized is at 11,1."""
-extra_assertions = {}
-for line in extra.splitlines():
-    the, nth, *stuff, pos = line.split()
-    n = int(nth[:-2])
-    x, y = [int(v) for v in pos.strip(".").split(",")]
-    extra_assertions[n] = (x, y)
-
-test_b = list(tests)[-1]
-assert part_ab(test_b) == (210, 802)
-assert part_ab(test_b, 299, extra_assertions) == (210, 1101)
-
-a, b = part_ab(data)
-print(a)
-print(b)
+if __name__ == "__main__":
+    a, b = part_ab(data)
+    print("part a:", a)
+    print("part b:", b)

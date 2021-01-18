@@ -46,9 +46,9 @@ class Game:
 
 game_a = Game(data)
 game_a.play()
-print(game_a.n_blocks)
+print("part a:", game_a.n_blocks)
 
 game_b = Game(data)
 game_b.cpu.reg[0] = 2
 game_b.play()
-print(game_b.score)
+print("part b:", game_b.score)

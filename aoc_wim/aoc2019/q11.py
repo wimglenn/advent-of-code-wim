@@ -33,19 +33,11 @@ class Robot:
             return
 
 
-def part_a(data):
-    robot = Robot(data)
-    robot.paint_until_halt()
-    n_panels = len(robot.painted)
-    return n_panels
+robot = Robot(data)
+robot.paint_until_halt()
+print("part a:", len(robot.painted))
 
-
-def part_b(data):
-    robot = Robot(data, 1)
-    robot.paint_until_halt()
-    rego = AOCR[robot.painted]
-    return rego
-
-
-print(part_a(data))
-print(part_b(data))
+robot = Robot(data, 1)
+robot.paint_until_halt()
+rego = AOCR[robot.painted]
+print("part b:", rego)
