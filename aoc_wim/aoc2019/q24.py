@@ -113,8 +113,6 @@ def part_b(data, t=200):
     return n_bugs
 
 
-assert part_a(test_data) == 2129920
-print(part_a(data))
-
-assert part_b(test_data, t=10) == 99
-print(part_b(data))
+if __name__ == "__main__":
+    print("part a:", part_a(data))
+    print("part b:", part_b(data))
