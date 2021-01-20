@@ -5,34 +5,44 @@ https://adventofcode.com/2017/day/15
 from aocd import data
 from parse import parse
 
-a = 16807  # 7 ** 5
-b = 48271  # prime
-d = 2147483647  # prime
-
 template = "Generator A starts with {:d}\nGenerator B starts with {:d}"
-a0, b0 = parse(template, data).fixed  # note: a0 is 2**n, b0 is prime
+a0, b0 = parse(template, data).fixed
+
+# notes:
+#   the factor for generator A, 16807, is 7 ** 5
+#   the factor for generator B, 48271, is prime
+#   the modulo, 2147483647, is a mersenne prime: 2 ** 31 - 1
 
 
-def gen(m, x0):
-    x = x0
-    while True:
-        x = (x * m) % d
-        yield x
+def duel(a, b):
+    fa = 16807
+    fb = 48271
+    d = 2147483647
+    count1 = 0
+    a4 = []  # a values also divisible by 4
+    b8 = []  # b values also divisible by 8
+    for i in range(40000000):
+        a = (a * fa) % d
+        b = (b * fb) % d
+        a16 = a & 0xFFFF
+        b16 = b & 0xFFFF
+        count1 += a16 == b16
+        if not a16 & 0b11:
+            a4.append(a16)
+        if not b16 & 0b111:
+            b8.append(b16)
+    # a4 will contain well over 5 million values by now, because from 40 million
+    # pseudorandom numbers approx 10 million of them should be divisible by four.
+    # however b8 may still be slightly under 5 million and need more values generated.
+    while len(b8) < 5000000:
+        b = (b * fb) % d
+        b16 = b & 0xFFFF
+        if not b16 & 0b111:
+            b8.append(b16)
+    count2 = sum(a4[i] == b8[i] for i in range(5000000))
+    return count1, count2
 
 
-def gen2(m, x0, d):
-    for x in gen(m, x0):
-        if x % d == 0:
-            yield x
-
-
-def score(gena, genb, n=40000000):
-    x = 0
-    for i in range(n):
-        a, b = next(gena), next(genb)
-        x += a & 0xFFFF == b & 0xFFFF
-    return x
-
-
-print(score(gen(a, a0), gen(b, b0)))
-print(score(gen2(a, a0, 4), gen2(b, b0, 8), n=5000000))
+count_a, count_b = duel(a0, b0)
+print("part a:", count_a)
+print("part b:", count_b)
