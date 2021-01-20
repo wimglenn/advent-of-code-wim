@@ -33,7 +33,8 @@ def duel(a, b):
             b8.append(b16)
     # a4 will contain well over 5 million values by now, because from 40 million
     # pseudorandom numbers approx 10 million of them should be divisible by four.
-    # however b8 may still be slightly under 5 million and need more values generated.
+    # however b8 may still be slightly under 5 million, in which case we need to
+    # generate some more values.
     while len(b8) < 5000000:
         b = (b * fb) % d
         b16 = b & 0xFFFF
