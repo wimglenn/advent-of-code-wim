@@ -5,28 +5,21 @@ https://adventofcode.com/2018/day/5
 from aocd import data
 
 
-def part_a(data):
-    s0 = data
-    while True:
-        xs = set(s0.lower())
-        for x in xs:
-            sub1 = x + x.upper()
-            sub2 = x.upper() + x
-            s1 = s0.replace(sub1, "").replace(sub2, "")
-            if len(s1) < len(s0):
-                s0 = s1
-                break
+def react(data):
+    result = []
+    for char in data:
+        if result and char == result[-1].swapcase():
+            result.pop()
         else:
-            return len(s0)
+            result.append(char)
+    return "".join(result)
 
 
-def part_b(data):
-    result = len(data)
-    for x in set(data.lower()):
-        m = part_a(data.replace(x, "").replace(x.upper(), ""))
-        result = min(m, result)
-    return result
+print("part a:", len(react(data)))
 
+min_len = len(data)
+for x in set(data.lower()):
+    r = react(data.replace(x, "").replace(x.upper(), ""))
+    min_len = min(len(r), min_len)
 
-print("part a:", part_a(data))
-print("part b:", part_b(data))
+print("part b:", min_len)
