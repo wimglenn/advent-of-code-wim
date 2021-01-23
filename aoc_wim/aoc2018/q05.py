@@ -5,7 +5,9 @@ https://adventofcode.com/2018/day/5
 from aocd import data
 
 
-def react(data):
+def react(data, remove=None):
+    if remove is not None:
+        data = data.replace(remove, "").replace(remove.swapcase(), "")
     result = []
     for char in data:
         if result and char == result[-1].swapcase():
@@ -17,9 +19,11 @@ def react(data):
 
 print("part a:", len(react(data)))
 
-min_len = len(data)
-for x in set(data.lower()):
-    r = react(data.replace(x, "").replace(x.upper(), ""))
-    min_len = min(len(r), min_len)
 
-print("part b:", min_len)
+def choices(data):
+    units = set(data.lower())
+    results = {u: react(data, remove=u) for u in units}
+    return results
+
+
+print("part b:", min([len(v) for v in choices(data).values()], default=0))
