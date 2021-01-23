@@ -2,49 +2,39 @@
 --- Day 14: Chocolate Charts ---
 https://adventofcode.com/2018/day/14
 """
-from collections import deque
-
 from aocd import data
-from wimpy import is_subsequence
 
 
-def gen():
-    recipes = [3, 7]
-    e1, e2 = 0, 1
-    yield recipes[0]
-    yield recipes[1]
-    while True:
-        n = recipes[e1] + recipes[e2]
-        vals = [int(x) for x in str(n)]
-        for val in vals:
-            yield val
-        recipes.extend(vals)
-        e1 = (e1 + 1 + recipes[e1]) % len(recipes)
-        e2 = (e2 + 1 + recipes[e2]) % len(recipes)
+class RecipeList:
+
+    def __init__(self, initial=(3, 7)):
+        self.scores = list(initial)
+        self.scores_str = "".join([str(x) for x in self.scores])
+        self.elf1 = 0
+        self.elf2 = 1
+
+    def grow(self, min_length):
+        lookup = {n: [int(x) for x in str(n)] for n in range(19)}
+        prev_len = len(self.scores)
+        while len(self.scores) < min_length:
+            score1 = self.scores[self.elf1]
+            score2 = self.scores[self.elf2]
+            self.scores.extend(lookup[score1 + score2])
+            self.elf1 = (self.elf1 + 1 + score1) % len(self.scores)
+            self.elf2 = (self.elf2 + 1 + score2) % len(self.scores)
+        self.scores_str += "".join([str(x) for x in self.scores[prev_len:]])
 
 
-def part_a(data):
-    k = int(data)
-    if k > 1000000:
-        return ""
-    g = gen()
-    for n in range(k):
-        next(g)
-    s = "".join(str(next(g)) for n in range(10))
-    return s
+recipes = RecipeList()
 
+k = int(data)
+if k < 10**6:
+    recipes.grow(k + 10)
+    print("part a:", "".join(str(n) for n in recipes.scores[k:k + 10]))
 
-def part_b(data):
-    n = len(data)
-    s = [int(x) for x in data]
-    g = gen()
-    i = 0
-    tail = deque(maxlen=n)
-    while not is_subsequence(s, tail):
-        tail.append(next(g))
-        i += 1
-    return i - n
-
-
-print("part a:", part_a(data))
-print("part b:", part_b(data))
+chunk = 2_000_000
+i = -1
+while i == -1:
+    recipes.grow(min_length=len(recipes.scores) + chunk)
+    i = recipes.scores_str.find(data, -chunk - len(data))
+print("part b:", i)
