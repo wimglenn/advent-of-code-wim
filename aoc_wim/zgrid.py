@@ -116,7 +116,8 @@ class ZGrid:
                 zs.append(k)
         return zs
 
-    def near(self, z, n=4):
+    @staticmethod
+    def near(z, n=4):
         if n == 4:
             return [
                         z-1j,

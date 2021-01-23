@@ -8,7 +8,7 @@ from aoc_wim.zgrid import ZGrid
 
 grid = ZGrid(data)
 w, h = grid.width, grid.height
-dzs = dict.fromkeys([1 + 1j, 3 + 1j, 5 + 1j, 7 + 1j, 1 + 2j], 0)
+dzs = {}.fromkeys([1 + 1j, 3 + 1j, 5 + 1j, 7 + 1j, 1 + 2j], 0)
 for dz in dzs:
     z = grid.top_left
     while z.imag < h:

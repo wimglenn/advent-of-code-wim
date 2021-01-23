@@ -4,15 +4,8 @@ https://adventofcode.com/2018/day/20
 """
 import networkx as nx
 from aocd import data
-
-
-# TODO: refactor to use zgrid
-steps = dict(zip("NSEW", [-2j, 2j, 2, -2]))
-dzs = [
-    -1j-1, -1j, -1j+1,
-    -1,             1,
-    +1j-1, +1j, +1j+1,
-]
+from aoc_wim.zgrid import manhattan_distance
+from aoc_wim.zgrid import ZGrid
 
 
 def render(g):
@@ -34,7 +27,7 @@ def render(g):
                 line += "|"
             elif (z - 1j, z + 1j) in g.edges:
                 line += "-"
-            elif any(z + dz in g.nodes for dz in dzs):
+            elif any(zn in g.nodes for zn in ZGrid.near(z, n=8)):
                 line += "#"
             else:
                 line += " "
@@ -48,8 +41,8 @@ def graph(data, z0=0):
     tails = [z0]
     stack = []
     for s in data[1:-1]:
-        if s in steps:
-            dz = steps[s]
+        if s in "NSEW":
+            dz = 2*getattr(ZGrid, s)
             tails[:] = [z + dz for z in tails]
             for z in tails:
                 g.add_edge(z - dz, z)
@@ -67,7 +60,14 @@ def graph(data, z0=0):
 
 
 g = graph(data)
-distances = [nx.shortest_path_length(g, 0, x) for x in g.nodes]
 
-print("part a:", max(distances))
-print("part b:", sum(1 for d in distances if d >= 1000))
+distances = {}
+for z in sorted(g.nodes, key=manhattan_distance, reverse=True):
+    if z in distances:
+        continue
+    path = nx.shortest_path(g, 0, z)
+    for length, z in enumerate(path):
+        distances[z] = length
+
+print("part a:", max(distances.values()))
+print("part b:", sum(d >= 1000 for d in distances.values()))
