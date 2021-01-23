@@ -34,8 +34,14 @@ def duel(a, b):
     b8 = []  # b values also divisible by 8
     for i in range(40000000):
         a = (a * fa) % d
+        # a *= fa
+        # a = (a & d) + (a >> 31)  # lo bits + hi bits
+        # a = (a & d) + (a >> 31)
         b = (b * fb) % d
-        a16 = a & 0xffff
+        # b *= fb
+        # b = (b & d) + (b >> 31)
+        # b = (b & d) + (b >> 31)
+        a16 = a & 0xffff  # lo 16 bits
         b16 = b & 0xffff
         count1 += a16 == b16
         if not a16 & 0b11:
@@ -48,6 +54,9 @@ def duel(a, b):
     # generate some more values.
     while len(b8) < 5000000:
         b = (b * fb) % d
+        # b *= fb
+        # b = (b & d) + (b >> 31)
+        # b = (b & d) + (b >> 31)
         b16 = b & 0xffff
         if not b16 & 0b111:
             b8.append(b16)
