@@ -6,8 +6,7 @@ from aocd import data
 import regex as re
 
 
-data = data.replace('"', '')
-rules_raw, messages = data.split("\n\n")
+rules_raw, messages = data.replace('"', "").split("\n\n")
 messages = messages.splitlines()
 rules = dict(line.split(": ") for line in rules_raw.splitlines())
 digits = set("0123456789")
