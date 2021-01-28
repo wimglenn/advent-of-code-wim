@@ -1,0 +1,9 @@
+0: 1 1
+1: 2 | 1 1
+2: "a"
+
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab
+0
+-
+# Jonathan Paulson case, blows up the simple recursive approach
+# https://www.reddit.com/r/adventofcode/comments/kg1mro/2020_day_19_solutions/gky23wf
