@@ -1,4 +1,8 @@
 import logging
+from multiprocessing import current_process
+from _md5 import md5
+from functools import partial
+import re
 
 
 log = logging.getLogger(__name__)
@@ -92,3 +96,40 @@ class AssembunnyComputer:
             # and all other two-instructions become jnz.
             op = "cpy" if op == "jnz" else "jnz"
         self.lines[i] = " ".join([op, *args])
+
+
+def md5_miner(data, i0, n, keep, stretch=None, verbose=False):
+    pid = current_process().pid
+    if verbose:
+        print(f"MD5 miner start {i0=} {pid=}")
+    h0 = md5(data.encode("ascii")).copy
+    results = []
+    for i in range(i0, i0 + n):
+        hash_ = h0()
+        hash_.update(b"%d" % i)
+        result = hash_.hexdigest()
+        if stretch is not None:
+            result = result.encode()
+            for _ in range(stretch - 1):
+                result = md5(result).hexdigest().encode()
+            result = result.decode()
+        if keep(result):
+            results.append((i, result))
+    mined = len(results)
+    if verbose:
+        print(f"MD5 miner stop  {i0=} {pid=} {mined=}")
+    return results
+
+
+def _keep_q05(digest, difficulty=5):
+    return digest.startswith("0" * difficulty)
+
+
+def _keep_q14(digest):
+    pat3 = re.compile(r"(.)\1{2}")
+    return pat3.search(digest) is not None
+
+
+md5_miner_q05 = partial(md5_miner, keep=_keep_q05)
+md5_miner_q14a = partial(md5_miner, keep=_keep_q14)
+md5_miner_q14b = partial(md5_miner, keep=_keep_q14, stretch=2017)

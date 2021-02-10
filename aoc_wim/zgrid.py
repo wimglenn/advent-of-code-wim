@@ -412,6 +412,13 @@ def hex_glyph_gen(n, fill=".", orientation="V"):
         # |        |     warning: ´ is non-ascii
         # |        |     ⹁ too
         #  '-.⹁,.-'
+
+        # '' - -~~.., , __
+
+        # _,.-'"^`
+
+        # __,, ..--"" ^ ^ ^
+
         raise NotImplementedError
     first = " "*n + "__"*n
     last = " "*(n - 1) + "\\" + "__"*n + "/"
