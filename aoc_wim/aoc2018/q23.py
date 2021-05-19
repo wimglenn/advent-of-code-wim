@@ -36,6 +36,7 @@ while priority_queue:
         break
     dx = np.array(list(product([0, 1], repeat=3))) * s
     # divide this 3D space into 8 evenly sized subspaces
+    # see https://en.wikipedia.org/wiki/Octree for inspiration
     for row in x + dx:
         # maximize number in range = minimizing number out of range
         lo = np.clip(row - xs, 0, None)
