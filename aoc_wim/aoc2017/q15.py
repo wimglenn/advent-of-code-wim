@@ -14,8 +14,8 @@ d = 0x7fffffff
 
 f = np.array([[fa, fb]], dtype=np.uint)
 A = np.array([[a0, b0]], dtype=np.uint) * f % d
-while A.shape[0] < 40_000_000:
-    f = np.array([[pow(fa, A.shape[0], d), pow(fb, A.shape[0], d)]], dtype=np.uint)
+while len(A) < 40_000_000:
+    f = np.array([[pow(fa, len(A), d), pow(fb, len(A), d)]], dtype=np.uint)
     A = np.vstack([A, A * f % d])
 
 A &= 0xffff
