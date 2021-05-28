@@ -6,20 +6,23 @@ import numpy as np
 from aocd import data
 from parse import parse
 
-template = "Generator A starts with {:d}\nGenerator B starts with {:d}"
+template = (
+    "Generator A starts with {:d}\n"
+    "Generator B starts with {:d}"
+)
 a0, b0 = parse(template, data).fixed
 fa = 16807
 fb = 48271
 d = 0x7fffffff
 
-f = np.array([[fa, fb]], dtype=np.uint)
-A = np.array([[a0, b0]], dtype=np.uint) * f % d
-while len(A) < 40_000_000:
-    f = np.array([[pow(fa, len(A), d), pow(fb, len(A), d)]], dtype=np.uint)
-    A = np.vstack([A, A * f % d])
+AB = np.array([[a0, b0]]) * (fa, fb) % d
+while len(AB) < 40_000_000:
+    f = pow(fa, len(AB), d), pow(fb, len(AB), d)
+    AB = np.vstack([AB, AB * f % d])
 
-A &= 0xffff
-A4 = A[:, 0][A[:, 0] & 0b11 == 0]
-B8 = A[:, 1][A[:, 1] & 0b111 == 0]
-print("part a:", (A[:40_000_000][:, 0] == A[:40_000_000][:, 1]).sum())
+AB &= 0xffff
+A, B = AB.T
+A4 = A[A & 0b11 == 0]
+B8 = B[B & 0b111 == 0]
+print("part a:", (A[:40_000_000] == B[:40_000_000]).sum())
 print("part b:", (A4[:5_000_000] == B8[:5_000_000]).sum())
