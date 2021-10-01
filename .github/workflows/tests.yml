@@ -26,6 +26,7 @@ jobs:
       - name: "Install"
         run: |
           python -VV
+          python -m pip install -U pip setuptools wheel
           python -m pip install pytest --editable .
           python -m pip freeze --all
       - name: "Run tests for ${{ matrix.python-version }} on ${{ matrix.os }}"
