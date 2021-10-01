@@ -15,7 +15,7 @@ fa = 16807
 fb = 48271
 d = 0x7fffffff
 
-AB = np.array([[a0, b0]]) * (fa, fb) % d
+AB = np.array([[a0, b0]], dtype=np.int64) * (fa, fb) % d
 while len(AB) < 40_000_000:
     f = pow(fa, len(AB), d), pow(fb, len(AB), d)
     AB = np.vstack([AB, AB * f % d])
