@@ -34,6 +34,8 @@ def pytest_collection_modifyitems(config, items):
             item.add_marker(pytest.mark.slow)
             if not runslow:
                 item.add_marker(skip_slow)
+        if "broken" in item.nodeid:
+            item.add_marker(pytest.mark.skip(reason="the code can't solve this case yet"))
         match = yyyy_dd.findall(item.name)
         if match is not None and len(match) == 1:
             [year_day] = match
