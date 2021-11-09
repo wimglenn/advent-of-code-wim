@@ -7,9 +7,10 @@ from aocd import data
 
 def crack(pk_card, pk_door, subject_number=7, modulus=20201227):
     loop_size = 0
+    p = 1
     while True:
         loop_size += 1
-        p = pow(subject_number, loop_size, modulus)
+        p = p * subject_number % modulus
         if p == pk_card:
             return pow(pk_door, loop_size, modulus)
         if p == pk_door:
