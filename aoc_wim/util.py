@@ -115,8 +115,8 @@ def start():
 
 
 
-        print("part a:", )
-        print("part b:", )
+        print("part a:", a)
+        print("part b:", b)
     '''))
     test = here.parent / "tests" / str(year) / str(day).zfill(2) / "a.txt"
     if not test.exists():
