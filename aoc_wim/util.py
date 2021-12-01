@@ -121,7 +121,7 @@ def start():
     test = here.parent / "tests" / str(year) / str(day).zfill(2) / "a.txt"
     if not test.exists():
         test.parent.mkdir(parents=True, exist_ok=True)
-        test.touch(exist_ok=True)
+        test.touch()
     data = get_data(day=day, year=year, block=True)
     print(data)
     set_docstrings([src])
