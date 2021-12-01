@@ -52,7 +52,7 @@ def set_docstrings(files=()):
 def start():
     """init a new source file at ./aocYYYY/qDD.py"""
     aoc_now = datetime.now(tz=AOC_TZ)
-    years = range(2015, aoc_now.year + int(aoc_now.month == 12))
+    years = range(2015, aoc_now.year + int(aoc_now.month >= 11))
     days = range(1, 26)
     parser = argparse.ArgumentParser(description="init current day")
     parser.add_argument(
@@ -66,7 +66,7 @@ def start():
         "year",
         nargs="?",
         type=int,
-        default=most_recent_year(),
+        default=max(years),
         help="2015-{} (default: %(default)s)".format(years[-1]),
     )
     parser.add_argument(
@@ -95,6 +95,8 @@ def start():
         if not args.force:
             sys.exit(f"{src} already exists!")
         shutil.copy2(src, tempfile.gettempdir())
+    if day == 1 and not src.parent.is_dir():
+        src.parent.mkdir()
     src.write_text(dedent('''\
         from aocd import data
         from collections import *
@@ -103,7 +105,6 @@ def start():
         # import networkx as nx
         # from aoc_wim.zgrid import *
         # from aoc_wim.stuff import *
-        # from aoc_wim.aoc2020 import Comp
         # import logging; logging.basicConfig(level=logging.DEBUG)
 
         tdata = """\\
@@ -117,11 +118,11 @@ def start():
         print("part a:", )
         print("part b:", )
     '''))
-    test = here.parent / "tests" / str(year) / str(day) / "a.txt"
+    test = here.parent / "tests" / str(year) / str(day).zfill(2) / "a.txt"
     if not test.exists():
         test.parent.mkdir(parents=True, exist_ok=True)
         test.touch(exist_ok=True)
-    data = get_data(day=day, year=year)
+    data = get_data(day=day, year=year, block=True)
     print(data)
     set_docstrings([src])
     webbrowser.open(Puzzle(year, day).url)
