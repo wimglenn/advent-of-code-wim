@@ -9,7 +9,6 @@ from datetime import datetime
 from textwrap import dedent
 
 from aocd import get_data
-from aocd.get import most_recent_year
 from aocd.models import Puzzle
 from aocd.utils import AOC_TZ
 from aocd.utils import blocker
