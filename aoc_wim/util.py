@@ -96,6 +96,7 @@ def start():
         shutil.copy2(src, tempfile.gettempdir())
     if day == 1 and not src.parent.is_dir():
         src.parent.mkdir()
+        src.parent.joinpath("__init__.py").touch()
     src.write_text(dedent('''\
         from aocd import data
         from collections import *
