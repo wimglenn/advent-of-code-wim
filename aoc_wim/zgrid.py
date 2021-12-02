@@ -42,6 +42,7 @@ class ZGrid:
         dict(zip("up right down left".upper().split(), _dzs)),
         dict(zip("URDL", _dzs)),
         dict(zip("NESW", _dzs)),
+        dict(zip("forward backward".split(), _dzs[1::2])),
     )
     U = N = up = north = -1j
     R = E = right = east = 1
