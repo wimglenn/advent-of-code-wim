@@ -107,16 +107,9 @@ def start():
         # from aoc_wim.stuff import *
         # import logging; logging.basicConfig(level=logging.DEBUG)
 
-        tdata = """\\
-        """
-        # data = tdata
 
-
-
-
-
-        print("part a:", a)
-        print("part b:", b)
+        print("part a:", )
+        print("part b:", )
     '''))
     test = here.parent / "tests" / str(year) / str(day).zfill(2) / "a.txt"
     if not test.exists():
