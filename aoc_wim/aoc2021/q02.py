@@ -9,12 +9,12 @@ aim = za = zb = 0
 for line in data.splitlines():
     direction, X = line.split()
     X = int(X)
-    dz = ZGrid.dzs[direction]
-    za += dz * X
+    dz = ZGrid.dzs[direction] * X
+    za += dz
     if direction == "forward":
-        zb += X + aim * X
+        zb += dz + aim * X
     else:
-        aim += dz * X
+        aim += dz
 
 print("part a:", int(za.real) * int(za.imag))
 print("part b:", int(zb.real) * int(zb.imag))

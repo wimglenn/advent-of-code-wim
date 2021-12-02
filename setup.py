@@ -38,6 +38,7 @@ setup(
         "adventofcode.user": ["wim = aoc_wim:plugin"],
         "console_scripts": [
             "aocw = aoc_wim.cli:run_one",
+            "s = aoc_wim.cli:speedhack",
             "_set_docstrings = aoc_wim.util:set_docstrings",
             "aoc-init = aoc_wim.util:start",
         ],

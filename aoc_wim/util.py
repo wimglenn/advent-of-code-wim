@@ -65,8 +65,8 @@ def start():
         "year",
         nargs="?",
         type=int,
-        default=max(years),
-        help="2015-{} (default: %(default)s)".format(years[-1]),
+        default=years[-1],
+        help="2015-%(default)s (default: %(default)s)",
     )
     parser.add_argument(
         "-f",
@@ -114,7 +114,7 @@ def start():
     test = here.parent / "tests" / str(year) / str(day).zfill(2) / "a.txt"
     if not test.exists():
         test.parent.mkdir(parents=True, exist_ok=True)
-        test.touch()
+        test.write_text("\n-\n-\n")
     data = get_data(day=day, year=year, block=True)
     print(data)
     set_docstrings([src])
