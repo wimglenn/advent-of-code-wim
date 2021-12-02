@@ -1,3 +1,7 @@
+"""
+--- Day 2: Dive! ---
+https://adventofcode.com/2021/day/2
+"""
 from aocd import data
 from aoc_wim.zgrid import ZGrid
 
