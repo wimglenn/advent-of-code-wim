@@ -21,6 +21,10 @@ jobs:
       - uses: jannekem/run-python-script-action@v1
         with:
           script: |
+            import os, sys
+            print(os.getcwd())
+            print(os.listdir("."))
+            print(sys.path)
             import glob, sys, aoc_wim, luddite, subprocess
             v = aoc_wim.__version__
             vs = luddite.get_versions_pypi("advent-of-code-wim")
