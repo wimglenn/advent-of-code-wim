@@ -33,14 +33,7 @@ jobs:
             assert v in whl
             cmd = "twine upload --disable-progress-bar -u __token__ -p ${{ secrets.PYPI_TOKEN }} " + whl
             subprocess.check_call(cmd.split())
-            print(f"uploaded v{v}")
-            set_env("TAG", v)
-      - name: list tags
-        run: |
-          git tag -l
-          env
-      - name: tag
-        uses: tvdias/github-tagger@v0.0.1
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${TAG}
+            print(f"uploaded {whl}")
+            subprocess.check_call(["git", "tag", v])
+            subprocess.check_call(["git", "push", "--tags"])
+            print(f"tagged {v}")
