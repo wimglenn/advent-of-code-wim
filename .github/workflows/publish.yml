@@ -27,8 +27,8 @@ jobs:
             v = aoc_wim.__version__
             vs = luddite.get_versions_pypi("advent-of-code-wim")
             if v in vs:
-                print(f"{v} is already existing in {vs}, bye..")
-                sys.exit(1)
+                print(f"{v} already exists")
+                sys.exit(0)
             [whl] = glob.glob("advent*.whl")
             assert v in whl
             cmd = "twine upload --disable-progress-bar -u __token__ -p ${{ secrets.PYPI_TOKEN }} " + whl
