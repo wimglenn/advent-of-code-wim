@@ -100,12 +100,17 @@ def start():
         src.parent.joinpath("__init__.py").touch()
     src.write_text(dedent('''\
         from aocd import data
-        from collections import *
-        import math
+        from collections import Counter, defaultdict, deque
+        try:
+            ns = [int(x) for x in data.split()]
+        except Exception:
+            pass
+
         # import numpy as np
         # import networkx as nx
-        # from aoc_wim.zgrid import *
-        # from aoc_wim.stuff import *
+        # from aoc_wim.zgrid import ZGrid
+        # from aoc_wim import stuff
+
         # import logging; logging.basicConfig(level=logging.DEBUG)
 
 
