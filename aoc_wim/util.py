@@ -85,14 +85,15 @@ def start():
     day = args.day
     here = Path(__file__).parent
     src = here / f"aoc{year}" / f"q{day:02d}.py"
+    block = False
     if day < 25 and year == aoc_now.year and day == aoc_now.day:
         if src.exists() and str(day) not in sys.argv:
             day += 1
-            blocker()
+            block = True
             src = here / f"aoc{year}" / f"q{day:02d}.py"
     if src.exists():
         if not args.force:
-            sys.exit(f"{src} already exists!")
+            sys.exit(f"{src} already exists! (use -f to overwrite)")
         shutil.copy2(src, tempfile.gettempdir())
     if day == 1 and not src.parent.is_dir():
         src.parent.mkdir()
@@ -115,6 +116,8 @@ def start():
     if not test.exists():
         test.parent.mkdir(parents=True, exist_ok=True)
         test.write_text("\n-\n-\n")
+    if block:
+        blocker()
     data = get_data(day=day, year=year, block=True)
     print(data)
     set_docstrings([src])
