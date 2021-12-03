@@ -31,7 +31,7 @@ jobs:
                 sys.exit(1)
             [whl] = glob.glob("advent*.whl")
             assert v in whl
-            cmd = "twine upload -u __token__ -p ${{ secrets.PYPI_TOKEN }} " + whl
+            cmd = "twine upload --disable-progress-bar -u __token__ -p ${{ secrets.PYPI_TOKEN }} " + whl
             subprocess.check_call(cmd.split())
             print(f"uploaded v{v}")
             set_env("TAG", v)
@@ -43,4 +43,4 @@ jobs:
         uses: tvdias/github-tagger@v0.0.1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          tag: $TAG
+          tag: ${TAG}
