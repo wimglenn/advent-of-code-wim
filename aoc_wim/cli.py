@@ -31,7 +31,7 @@ def run_one():
         default=years[-1],
         help="2015-%(default)s (default: %(default)s)",
     )
-    parser.add_argument("-d", "--data")
+    parser.add_argument("-d", "--data", help="string or file to monkeypatch in aocd.data")
     log_levels = "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"
     parser.add_argument("--log-level", type=str.upper, choices=log_levels)
     args = parser.parse_args()
@@ -43,6 +43,14 @@ def run_one():
     mod_name = f"aoc_wim.aoc{args.year}.q{args.day:02d}"
     sys.modules.pop(mod_name, None)
     if args.data is not None:
+        if args.data.endswith("txt"):
+            path = Path(args.data)
+            if path.is_file():
+                txt = path.read_text()
+                if "tests" in path.parts:
+                    args.data = "\n".join(txt.splitlines()[:-2])
+                else:
+                    args.data = txt
         aocd.data = args.data
     print(f"--- {args.year} Day {args.day}: {Puzzle(args.year, args.day).title} ---")
     runpy.run_module(mod_name, run_name="__main__")
