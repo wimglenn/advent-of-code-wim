@@ -13,11 +13,30 @@ jobs:
         with:
           python-version: "3.10"
           architecture: x64
-      - name: my-step
-        run: echo "Hello World!"
       - name: "Install"
         run: |
           python -VV
           python -m pip install -U pip setuptools wheel twine luddite
           python -m pip wheel --no-deps .
-          ls -l .
+      - uses: jannekem/run-python-script-action@v1
+        with:
+          script: |
+            import glob, sys, aoc_wim, luddite, subprocess
+            v = aoc_wim.__version__
+            vs = luddite.get_versions_pypi("advent-of-code-wim")
+            if v in vs:
+                print(f"{v} is already existing in {vs}, bye..")
+                sys.exit(1)
+            [whl] = glob.glob("advent*.whl")
+            assert v in whl
+            cmd = "twine upload -u __token__ -p ${{ secrets.PYPI_TOKEN }} " + whl
+            subprocess.check_call(cmd.split())
+            print(f"uploaded v{v}")
+      - name: list tags
+        run: |
+          git tag -l
+      - name: tag
+        uses: tvdias/github-tagger@v0.0.1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          tag: 2021.2
