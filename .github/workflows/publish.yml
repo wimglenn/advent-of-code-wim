@@ -16,7 +16,7 @@ jobs:
       - name: "Install"
         run: |
           python -VV
-          python -m pip install -U pip setuptools wheel twine luddite
+          python -m pip install wheel twine luddite
           python -m pip wheel --no-deps .
       - uses: jannekem/run-python-script-action@v1
         with:
