@@ -357,6 +357,7 @@ def array2txt(a):
 
 
 def zrange(*args):
+    # a 2D rectangle of complex points
     if len(args) == 1:
         start = 0
         (stop,) = args

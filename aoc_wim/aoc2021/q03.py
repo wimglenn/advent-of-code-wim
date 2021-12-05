@@ -10,7 +10,7 @@ cols = ["".join(c) for c in zip(*rows)]
 h2 = len(rows) // 2
 n = "".join("10"[c.count("1") >= h2] for c in cols)
 𝛾 = int(n, 2)
-ε = int(n.translate(str.maketrans("10", "01")), 2)
+ε = 𝛾 ^ int("1" * len(n), 2)
 print("part a:", 𝛾 * ε)
 
 life_support = 1

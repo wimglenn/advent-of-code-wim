@@ -4,13 +4,12 @@ https://adventofcode.com/2021/day/5
 """
 from aocd import data
 from collections import Counter
+from parse import parse
 
 da = Counter()
 db = Counter()
 for line in data.splitlines():
-    xy1, xy2 = line.split(" -> ")
-    x1, y1 = [int(n) for n in xy1.split(",")]
-    x2, y2 = [int(n) for n in xy2.split(",")]
+    x1, y1, x2, y2 = parse('{:d},{:d} -> {:d},{:d}', line).fixed
     xstep = 1 if x1 < x2 else -1
     ystep = 1 if y1 < y2 else -1
     xrange = range(x1, x2 + xstep, xstep)
