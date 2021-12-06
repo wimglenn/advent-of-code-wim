@@ -126,4 +126,7 @@ def start():
     data = get_data(day=day, year=year, block=True)
     print(data)
     set_docstrings([src])
-    webbrowser.open(Puzzle(year, day).url)
+    puzzle = Puzzle(year, day)
+    if test.read_text() == "\n-\n-\n":
+        test.write_text("{}\n-\n-\n".format(puzzle.example_data))
+    webbrowser.open(puzzle.url)

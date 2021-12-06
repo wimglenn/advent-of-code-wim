@@ -9,7 +9,7 @@ from parse import parse
 da = Counter()
 db = Counter()
 for line in data.splitlines():
-    x1, y1, x2, y2 = parse('{:d},{:d} -> {:d},{:d}', line).fixed
+    x1, y1, x2, y2 = parse("{:d},{:d} -> {:d},{:d}", line).fixed
     xstep = 1 if x1 < x2 else -1
     ystep = 1 if y1 < y2 else -1
     xrange = range(x1, x2 + xstep, xstep)
