@@ -100,11 +100,12 @@ def start():
         src.parent.joinpath("__init__.py").touch()
     src.write_text(dedent('''\
         from aocd import data
+        from aoc_wim.autoparse import parsed
         from collections import Counter, defaultdict, deque
-        try:
-            ns = [int(x) for x in data.split()]
-        except Exception:
-            pass
+        d = autoparse(data)
+        if d != data:
+            print(d)
+            print(f"{parsed.n_bytes} bytes/{parsed.n_lines} lines, parsed by {autoparse.parser}")
 
         # import numpy as np
         # import networkx as nx
