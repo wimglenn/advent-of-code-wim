@@ -6,7 +6,7 @@ def parsed(raw):
     parsed.n_lines = len(raw.splitlines())
     this_module = sys.modules[__name__]
     for name, f in vars(this_module).items():
-        if not name.startswith("_") and callable(f) and f is not parsed:
+        if not name.startswith("_") and f is not parsed and f.__module__ == this_module.__name__:
             try:
                 result = f(raw)
             except Exception:
