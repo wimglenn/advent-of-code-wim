@@ -25,7 +25,7 @@ translations = [str.maketrans("".join(p), "abcdefg") for p in permutations("abcd
 
 a = b = 0
 for line in data.splitlines():
-    patterns, _sep, code = line.partition(" | ")
+    patterns, code = line.split(" | ")
     for part in code.split():
         a += len(part) in {2, 3, 4, 7}
     for t in translations:

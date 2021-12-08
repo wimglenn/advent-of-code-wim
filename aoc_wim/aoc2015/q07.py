@@ -25,8 +25,7 @@ def compute(data):
     def getval(v):
         return result[v] if v in result else np.uint16(v)
 
-    lines = data.splitlines()
-    lines = [line.partition(" -> ")[::2] for line in lines]
+    lines = [line.split(" -> ") for line in data.splitlines()]
 
     def process_line(line):
         left, right = line

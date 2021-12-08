@@ -17,7 +17,7 @@ def a2s(a):
 def parsed(data):
     rules = {}
     for line in data.splitlines():
-        a, _sep, b = line.partition(" => ")
+        a, b = line.split(" => ")
         a, b = s2a(a), s2a(b)
         for i in range(4):
             rules[a2s(a)] = rules[a2s(np.flipud(a))] = rules[a2s(np.fliplr(a))] = b

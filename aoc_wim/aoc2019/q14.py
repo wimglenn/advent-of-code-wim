@@ -11,7 +11,7 @@ import networkx as nx
 def parsed(data):
     digraph = nx.DiGraph()
     for line in data.splitlines():
-        sources, sep, dest = line.partition(" => ")
+        sources, dest = line.split(" => ")
         n0, elem0 = dest.split()
         for source in sources.split(", "):
             n1, elem1 = source.split()

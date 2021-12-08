@@ -15,7 +15,7 @@ for line in data.splitlines():
         Xi = [1 << i for i, v in enumerate(reversed(mask)) if v == "X"]
         nX = mask.count("X")
     else:
-        mem, _, val = line.partition(" = ")
+        mem, val = line.split(" = ")
         mem = int(mem.strip("mem[]"))
         val = int(val)
         da[mem] = (val | on) & off
