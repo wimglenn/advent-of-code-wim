@@ -102,10 +102,10 @@ def start():
         from aocd import data
         from aoc_wim.autoparse import parsed
         from collections import Counter, defaultdict, deque
-        d = autoparse(data)
+        d = parsed(data)
         if d != data:
             print(d)
-            print(f"{parsed.n_bytes} bytes/{parsed.n_lines} lines, parsed by {autoparse.parser}")
+            print(f"{parsed.n_bytes} bytes/{parsed.n_lines} lines, parsed by {parsed.parser}")
 
         # import numpy as np
         # import networkx as nx
