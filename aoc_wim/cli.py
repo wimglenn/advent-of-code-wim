@@ -70,7 +70,7 @@ def speedhack():
     print(puzzle.url)
     if examples:
         print(f"{len(examples)} example(s) to test...")
-        args = [sys.executable, "-m", "pytest", "-k", str(year)]
+        args = [sys.executable, "-m", "pytest", "-k", f"{year}/{day}"]
         subprocess.check_call(args)
     args = ["aoc", "-y", str(year), "-d", str(day), "-u", "github.wimglenn.119932", "-r", "--log-level", "DEBUG"]
     print("\n" + " ".join(args))

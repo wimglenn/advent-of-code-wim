@@ -25,7 +25,7 @@ jobs:
         run: |
           python -VV
           python -m pip install -U pip setuptools wheel
-          python -m pip install pytest pytest-socket --editable .
+          python -m pip install pytest>=7rc1 pytest-socket --editable .
           python -m pip freeze --all
       - name: "Run tests for ${{ matrix.python-version }} on ${{ matrix.os }}"
         run: python -m pytest -v --durations=10 --disable-socket
