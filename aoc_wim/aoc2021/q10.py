@@ -3,6 +3,7 @@
 https://adventofcode.com/2021/day/10
 """
 from aocd import data
+from statistics import median
 
 
 class ParserError(Exception):
@@ -49,7 +50,7 @@ class Parser:
         return result
 
 
-a = 0
+a = b = 0
 bs = []
 for line in data.splitlines():
     parser = Parser()
@@ -60,10 +61,8 @@ for line in data.splitlines():
     else:
         bs.append(parser.autocomplete_score)
 
-bs.sort()
-b = None
 if bs:
-    b = bs[len(bs)//2]
+    b = median(bs)
 
 print("part a:", a)
 print("part b:", b)
