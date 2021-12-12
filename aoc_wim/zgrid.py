@@ -57,7 +57,7 @@ class ZGrid:
     turn_left = turnL = -1j
     turn_around = -1
 
-    def __init__(self, initial_data=None, on="#", off="."):
+    def __init__(self, initial_data=None, on="#", off=".", transform=None):
         self.on = on
         self.off = off
         self.d = d = {}
@@ -67,6 +67,8 @@ class ZGrid:
             if isinstance(initial_data, str):
                 for row, line in enumerate(initial_data.splitlines()):
                     for col, char in enumerate(line):
+                        if transform is not None:
+                            char = transform(char)
                         d[col + row*1j] = char
             elif callable(initial_data):
                 self.d = ZDict(func=initial_data)
