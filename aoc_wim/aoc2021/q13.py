@@ -14,11 +14,11 @@ for line in points.splitlines():
 for i, fold in enumerate(folds.splitlines()):
     axis, n = fold.split("=")
     n = int(n)
-    for z, v in list(d.items()):
+    for z in [*d]:
         if axis[-1] == "y" and z.imag > n:
-            z_ = complex(z.real, n - (z.imag - n))
+            z_ = complex(z.real, 2 * n - z.imag)
         elif axis[-1] == "x" and z.real > n:
-            z_ = complex(n - (z.real - n), z.imag)
+            z_ = complex(2 * n - z.real, z.imag)
         else:
             continue
         d[z_] = "#"
