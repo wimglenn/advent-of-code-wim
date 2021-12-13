@@ -32,7 +32,7 @@ def test_example(input_file, monkeypatch, request):
     # the head of each example file is an input data
     # the last two lines are part a and part b correct answers
     # there may be trailing comments after the answers
-    lines = input_file.read_text().splitlines()
+    lines = input_file.read_text(encoding="utf-8").splitlines()
     remove_trailing_comments(lines)
     if len(lines) < 3:
         pytest.fail(f"test data {input_file} is malformed")
