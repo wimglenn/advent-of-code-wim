@@ -6,8 +6,8 @@ from aocd import data
 from aoc_wim.ocr import AOCR
 from ast import literal_eval
 
-points, folds = data.replace(",", "+").split("\n\n")
-d = {literal_eval(p + "j"): "#" for p in points.split()}
+zs, folds = data.replace(",", "+").split("\n\n")
+d = {literal_eval(z + "j"): "#" for z in zs.split()}
 
 for i, fold in enumerate(folds.splitlines()):
     axis, n = fold.split("=")
