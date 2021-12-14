@@ -7,7 +7,7 @@ from aocd import data
 
 def rotate(fish, n=1):
     for _ in range(n):
-        fish[:] = [*fish[1:], fish[0]]
+        fish[:] = fish[1:] + fish[:1]
         fish[6] += fish[-1]
     return sum(fish)
 
