@@ -64,7 +64,7 @@ class ZGrid:
         if initial_data is not None:
             if isinstance(initial_data, ZGrid):
                 self.d = initial_data.d.copy()
-            if isinstance(initial_data, str):
+            elif isinstance(initial_data, str):
                 for row, line in enumerate(initial_data.splitlines()):
                     for col, char in enumerate(line):
                         if transform is not None:
@@ -74,6 +74,14 @@ class ZGrid:
                 self.d = ZDict(func=initial_data)
             elif isinstance(initial_data, dict):
                 self.d = initial_data
+            elif isinstance(initial_data, np.ndarray) and initial_data.ndim == 2:
+                for row, r in enumerate(initial_data):
+                    for col, char in enumerate(r):
+                        if transform is not None:
+                            char = transform(char)
+                        d[col + row*1j] = char
+            else:
+                raise NotImplementedError(f"{type(initial_data)=}")
 
     def __setitem__(self, key, value):
         self.d[key] = value
