@@ -3,7 +3,8 @@
 https://adventofcode.com/2021/day/12
 """
 from aocd import data
-from collections import deque, defaultdict
+from collections import defaultdict
+from collections import deque
 
 
 caves = defaultdict(set)
