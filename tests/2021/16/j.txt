@@ -1,0 +1,3 @@
+880086C3E88112
+-
+7  # finds the minimum of 7, 8, and 9, resulting in the value 7.
