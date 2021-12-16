@@ -1,0 +1,3 @@
+CE00C43D881120
+-
+9  # finds the maximum of 7, 8, and 9, resulting in the value 9.
