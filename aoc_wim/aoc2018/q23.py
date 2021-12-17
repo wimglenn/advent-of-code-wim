@@ -20,37 +20,45 @@ def parsed(data):
     return xs, rs
 
 
+class Cell:
+    def __init__(self, x, s):
+        self.x = x  # 3d position of corner
+        self.s = s  # edge size
+        lo = np.maximum(self.x - xs, 0)
+        hi = np.maximum(xs - self.x - self.s, 0)
+        self.n_out = ((lo + hi).sum(axis=1) > rs).sum()  # count bots out of range
+        self.d = abs(self.x).sum()  # manhattan distance of corner from origin
+
+    def split(self):
+        # divide this 3D space into 8 evenly sized subspaces
+        # see https://en.wikipedia.org/wiki/Octree for inspiration
+        halfwidth = self.s // 2
+        dx = np.array(list(product([0, 1], repeat=3))) * halfwidth
+        for x in self.x + dx:
+            yield Cell(x, halfwidth)
+
+    def __lt__(self, other):
+        # key for heapq comparison - we will minimise over tuples of:
+        # (number of bots outside, cell edge size, distance of the corner from origin)
+        # maximize number in range = minimizing number out of range
+        return (self.n_out, self.s, self.d) < (other.n_out, other.s, other.d)
+
+
 xs, rs = parsed(data)
 i = rs.argmax()
 print("part a:", (abs(xs - xs[i]).sum(axis=1) <= rs[i]).sum())
 
-x0 = xs.min(axis=0)
-priority_queue = [(0, xs.ptp(axis=0).max(), abs(x0).sum(), *x0)]
-while priority_queue:
-    n_out_of_range, s, d, *x = heappop(priority_queue)
-    x = np.array(x)
-    s //= 2
-    if not s:
-        x0 = x
-        # return d
+cell = Cell(np.array([0, 0, 0]), 1)
+while cell.n_out:
+    cell = Cell(x=-np.array([1, 1, 1]) * cell.s, s=cell.s * 2)
+assert cell.n_out == 0, "initial cell must cover all bots"
+
+pq = [cell]
+while pq:
+    cell = heappop(pq)
+    print(f"qlen={len(pq)} s={cell.s} {len(xs) - cell.n_out} nanobots")
+    if not cell.s:
         break
-    dx = np.array(list(product([0, 1], repeat=3))) * s
-    # divide this 3D space into 8 evenly sized subspaces
-    # see https://en.wikipedia.org/wiki/Octree for inspiration
-    for row in x + dx:
-        # maximize number in range = minimizing number out of range
-        lo = np.clip(row - xs, 0, None)
-        hi = np.clip(xs - row - s + 1, 0, None)
-        n_out = ((lo + hi).sum(axis=1) > rs).sum()
-        if n_out < len(rs):
-            heappush(priority_queue, (n_out, s, abs(row).sum(), *row))
-
-# search around neighborhood of x0
-r = 8
-for dx in product(range(-r, r + 1), repeat=3):
-    dx = np.array(dx)
-    x = x0 + dx
-    n_out = (abs(xs - x).sum(axis=1) > rs).sum()
-    n_out_of_range, d = min((n_out_of_range, d), (n_out, abs(x).sum()))
-
-print("part b:", d)
+    for subcell in cell.split():
+        heappush(pq, subcell)
+print("part b:", cell.d)
