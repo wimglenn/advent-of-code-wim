@@ -28,10 +28,10 @@ x0, x1, y0, y1 = parse("target area: x={:d}..{:d}, y={:d}..{:d}", data).fixed
 target_area = {(x, y) for x in range(x0, x1 + 1) for y in range(y0, y1 + 1)}
 dx_min = 1
 while sum(range(dx_min + 1)) < x0:  # while target area is undershot horizontally
-    dx_min += 1  # anything less is too slow to reach the target horizontally
-dx_max = x1 + 1  # anything more overshooting horizontally on the first iteration
-dy_min = y0 - 1  # anything less undershooting vertically on the first iteration
-dy_max = 200     # this is a random guess  :(
+    dx_min += 1   # anything less is too slow to reach the target horizontally
+dx_max = x1 + 1   # anything more overshooting horizontally on the first iteration
+dy_min = y0 - 1   # anything less undershooting vertically on the first iteration
+dy_max = 1 - y0   # anything higher is coming down too hot
 
 a = b = 0
 for dx in range(dx_min, dx_max + 1):
