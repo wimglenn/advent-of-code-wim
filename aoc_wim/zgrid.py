@@ -166,7 +166,7 @@ class ZGrid:
                 z-1+1j, z+1j, z+1+1j,
             ]
 
-    def draw(self, overlay=None, window=None, clear=False, pretty=False, transform=None, title=""):
+    def draw(self, overlay=None, window=None, clear=False, pretty=False, transform=None, title="", flip=None):
         if window is None:
             d = self.d
         else:
@@ -175,7 +175,7 @@ class ZGrid:
             d = {z: self[z] for z in window}
         if overlay is not None:
             d = {**self.d, **overlay}
-        dump_grid(d, clear=clear, pretty=pretty, transform=transform, title=title)
+        dump_grid(d, clear=clear, pretty=pretty, transform=transform, title=title, flip=flip)
 
     # TODO:
     #  hexgrid compass overlay ✶
@@ -298,7 +298,7 @@ class ZGrid:
         return int(self.bottom_right.imag - self.top_left.imag) + 1
 
 
-def dump_grid(g, clear=False, pretty=True, transform=None, title=""):
+def dump_grid(g, clear=False, pretty=True, transform=None, title="", flip=None):
     if transform is None:
         transform = {
             "#": "⬛",
@@ -332,6 +332,10 @@ def dump_grid(g, clear=False, pretty=True, transform=None, title=""):
         print(" "*5 + "┌" + title.center(W, "─") + "┐")
     elif title:
         print(" "*5 + title.center(W))
+    if "x" in (flip or ""):
+        cols = cols[::-1]
+    if "y" in (flip or ""):
+        rows = rows[::-1]
     for row in rows:
         print(f"{row:>5d}", end="")
         line = []
