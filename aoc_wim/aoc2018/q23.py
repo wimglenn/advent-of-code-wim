@@ -6,6 +6,7 @@ from heapq import heappop
 from heapq import heappush
 from itertools import product
 
+import math
 import numpy as np
 from aocd import data
 from parse import parse
@@ -48,9 +49,8 @@ xs, rs = parsed(data)
 i = rs.argmax()
 print("part a:", (abs(xs - xs[i]).sum(axis=1) <= rs[i]).sum())
 
-cell = Cell(np.array([0, 0, 0]), 1)
-while cell.n_out:
-    cell = Cell(x=-np.array([1, 1, 1]) * cell.s, s=cell.s * 2)
+x0 = 2 ** math.ceil(math.log2(abs(xs).max()))
+cell = Cell(x=np.array([-x0, -x0, -x0]), s=x0 * 2)
 assert cell.n_out == 0, "initial cell must cover all bots"
 
 pq = [cell]
