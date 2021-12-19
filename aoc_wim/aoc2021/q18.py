@@ -3,7 +3,6 @@
 https://adventofcode.com/2021/day/18
 """
 from aocd import data
-from itertools import permutations
 import json
 
 
@@ -110,4 +109,4 @@ class SnailfishNumber:
 
 ns = [SnailfishNumber(line) for line in data.splitlines()]
 print("part a:", abs(sum(ns)))
-print("part b:", max([abs(n1 + n2) for n1, n2 in permutations(ns, 2)], default=0))
+print("part b:", max([abs(n1 + n2) for n1 in ns for n2 in ns], default=0))
