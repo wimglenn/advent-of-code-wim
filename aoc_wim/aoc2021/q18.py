@@ -65,39 +65,20 @@ class SnailfishNumber:
         # "split": grow new nodes at values >= 10
         while True:
             stack = [(self, 0)]
-            action = None
             leaf_nodes = []
-            explodable_nodes = []
-            splittable_nodes = []
+            explode = split = None
             while stack:
                 node, depth = stack.pop()
                 if node.leaf:
                     leaf_nodes.append(node)
                     if abs(node) >= 10:
-                        splittable_nodes.append(node)
+                        split = node
                 else:
                     stack.extend([(node.left, depth + 1), (node.right, depth + 1)])
                     if depth == 4 and node.left.leaf and node.right.leaf:
-                        explodable_nodes.append(node)
-            if not explodable_nodes and not splittable_nodes:
-                # reduction is finished
-                break
-
-            if explodable_nodes:
-                action = "explode"
-                node = explodable_nodes[-1]
-            else:
-                action = "split"
-                node = splittable_nodes[-1]
-
-            if action == "split":
-                assert node.leaf
-                n = abs(node)
-                assert n >= 10
-                node.left = SnailfishNumber(n // 2, parent=self)
-                node.right = SnailfishNumber((n + 1) // 2, parent=self)
-                # print("after split:   ", self)
-            elif action == "explode":
+                        explode = node
+            if explode:
+                node = explode
                 assert not node.leaf
                 # Exploding pairs will always consist of two regular numbers.
                 assert node.left.leaf and node.right.leaf
@@ -115,7 +96,15 @@ class SnailfishNumber:
                 node._magnitude = 0
                 node.left = node.right = None
                 # print("after explode: ", self)
-            if action is None:  # reduction finished
+            elif split:
+                node = split
+                assert node.leaf
+                n = abs(node)
+                assert n >= 10
+                node.left = SnailfishNumber(n // 2, parent=self)
+                node.right = SnailfishNumber((n + 1) // 2, parent=self)
+                # print("after split:   ", self)
+            else:  # reduction is finished
                 break
 
 
