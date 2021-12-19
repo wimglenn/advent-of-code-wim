@@ -8,6 +8,7 @@ import json
 
 class SnailfishNumber:
     """shh, it's really a binary tree"""
+
     def __init__(self, val, parent=None):
         self.parent = parent
         if isinstance(val, str):
@@ -31,9 +32,6 @@ class SnailfishNumber:
 
     def __add__(self, other):
         if not isinstance(other, SnailfishNumber):
-            if other == 0:
-                # this is to allow summing a list of SnailfishNumbers
-                return self
             return NotImplemented
         result = SnailfishNumber(f"[{self},{other}]")
         self.parent = other.parent = result
@@ -42,6 +40,7 @@ class SnailfishNumber:
 
     def __radd__(self, other):
         if other == 0:
+            # this is to allow summing a homogeneous list of SnailfishNumbers
             return self
         return NotImplemented
 
