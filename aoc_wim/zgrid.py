@@ -297,6 +297,21 @@ class ZGrid:
     def height(self):
         return int(self.bottom_right.imag - self.top_left.imag) + 1
 
+    def aabb(self, pad=0):
+        """axis aligned bounding box"""
+        x0 = min(z.real for z in self)
+        x1 = max(z.real for z in self)
+        y0 = min(z.imag for z in self)
+        y1 = max(z.imag for z in self)
+        top_left = complex(x0, y0)
+        bottom_right = complex(x1, y1)
+        return zrange(top_left - (1 + 1j)*pad, bottom_right + (1 + 1j)*(pad + 1))
+
+    def update(self, other):
+        if isinstance(other, ZGrid):
+            other = other.d
+        self.d.update(other)
+
 
 def dump_grid(g, clear=False, pretty=True, transform=None, title="", flip=None):
     if transform is None:
