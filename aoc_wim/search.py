@@ -14,7 +14,9 @@ class AStar:
         self.closed = set()
         self.came_from = {}
         inf = float("inf")
+        # optimistic estimate of cost to reach node
         self.fscore = defaultdict(lambda: inf, {target: self.heuristic(state0, target)})
+        # shortest cost to reach node found so far
         self.gscore = defaultdict(lambda: inf, {state0: 0})
         self.path_length = None
 
