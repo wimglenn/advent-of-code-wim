@@ -58,6 +58,10 @@ class ZGrid:
     turn_around = -1
 
     def __init__(self, initial_data=None, on="#", off=".", transform=None):
+        if isinstance(transform, dict):
+            t = transform.copy()
+            def transform(k):
+                return t.get(k, k)
         self.on = on
         self.off = off
         self.d = d = {}
