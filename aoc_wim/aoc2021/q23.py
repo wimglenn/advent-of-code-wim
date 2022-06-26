@@ -72,7 +72,7 @@ class Q23AStar(AStar):
             diff = s0 ^ s1
             if diff:
                 return manhattan_distance(*diff) * 10 ** "ABCD".index(g)
-        return float("inf")
+        return 0
 
 
 def render(state):
