@@ -54,7 +54,7 @@ class Q23AStar(AStar):
                         if h not in occupied:
                             if not self.obstructions[h, p].intersection(occupied):
                                 new_ps = ps - {p} | {h}
-                                yield (*state[:i], new_ps, *state[i + 1 :])
+                                yield *state[:i], new_ps, *state[i + 1 :]
                 else:
                     # amphipod is in hallway
                     # it can move into target room if unobstructed
@@ -63,7 +63,7 @@ class Q23AStar(AStar):
                             if ps.issuperset(target_rooms[j + 1 :]):
                                 if not self.obstructions[p, t].intersection(occupied):
                                     new_ps = ps - {p} | {t}
-                                    yield (*state[:i], new_ps, *state[i + 1 :])
+                                    yield *state[:i], new_ps, *state[i + 1 :]
                                     break
 
     def cost(self, current_state, next_state):
