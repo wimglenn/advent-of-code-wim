@@ -7,7 +7,6 @@ import parse
 
 
 class Comp:
-
     def __init__(self, code, inputs):
         self.lines = code.splitlines()
         self.reg = dict.fromkeys("wxyz", 0)
@@ -109,11 +108,15 @@ def solve(data, part="a"):
                 inputs.append(i)
                 z //= 26
         if z == 0:
-            result = sum(10 ** i * n for i, n in enumerate(reversed(inputs)))
+            result = sum(10**i * n for i, n in enumerate(reversed(inputs)))
             # verify the result actually works in the VM!
             comp = Comp(code=data, inputs=inputs)
             comp.run()
-            assert len(inputs) == 14 and all(1 <= i <= 9 for i in inputs) and comp.reg["z"] == 0
+            assert (
+                len(inputs) == 14
+                and all(1 <= i <= 9 for i in inputs)
+                and comp.reg["z"] == 0
+            )
             return result
 
 
