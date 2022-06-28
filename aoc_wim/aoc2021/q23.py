@@ -16,7 +16,7 @@ class Q23AStar(AStar):
         hall = self.hall = [z for z in graph if z.imag == 1]
         rooms = self.rooms = [z for z in graph if z.imag != 1]
         # Amphipods will never stop on the space immediately outside any room
-        hall[:] = [z for z in hall if z + 1j not in rooms]
+        hall[:] = [z for z in hall if z + ZGrid.down not in rooms]
         obstructions = self.obstructions = {}
         for r in rooms:
             for h in hall:
