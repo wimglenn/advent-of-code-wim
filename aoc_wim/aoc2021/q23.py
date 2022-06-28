@@ -7,7 +7,6 @@ from aoc_wim.search import AStar
 import networkx as nx
 from aoc_wim.zgrid import ZGrid
 from aoc_wim.zgrid import manhattan_distance
-import itertools as it
 
 
 class Q23AStar(AStar):
