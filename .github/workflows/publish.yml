@@ -23,16 +23,13 @@ jobs:
           script: |
             import sys
             sys.path.append(".")
-            import glob, aoc_wim, luddite, subprocess
+            import aoc_wim, luddite, subprocess
             v = aoc_wim.__version__
             vs = luddite.get_versions_pypi("advent-of-code-wim")
             if v in vs:
                 print(f"{v} already exists")
                 sys.exit(0)
-            cmd = "twine upload --disable-progress-bar -u __token__ -p ${{ secrets.PYPI_TOKEN }} dist/*"
+            cmd = "twine upload --disable-progress-bar -u __token__ -p ${{secrets.PYPI_TOKEN}} dist/*"
             subprocess.check_call(cmd.split())
-            fnames = glob.glob("dist/*")
-            print(f"uploaded {', '.join(fnames)}")
             subprocess.check_call(["git", "tag", v])
             subprocess.check_call(["git", "push", "--tags"])
-            print(f"tagged {v}")
