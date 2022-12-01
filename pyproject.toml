@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "advent-of-code-wim"
+dynamic = ["version"]
+description = "Wim's solutions for https://adventofcode.com/"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Topic :: Games/Entertainment :: Puzzle Games",
+]
+dependencies = [
+    "advent-of-code-data >= 1.2.3",
+    "anytree",
+    "bidict",
+    "numpy",
+    "parse",
+    "scipy",
+    "sympy",
+    "fields",
+    "networkx",
+    "wimpy",
+    "marshmallow",
+    "regex",
+]
+
+[[project.authors]]
+name = "Wim Glenn"
+email = "hey@wimglenn.com"
+
+[project.license]
+text = "WTFPL"
+
+[project.readme]
+file = "README.md"
+content-type = "text/markdown"
+
+[project.urls]
+Homepage = "https://github.com/wimglenn/advent-of-code"
+
+[project.scripts]
+aocw = "aoc_wim.cli:run_one"
+s = "aoc_wim.cli:speedhack"
+_set_docstrings = "aoc_wim.util:set_docstrings"
+aoc-init = "aoc_wim.util:start"
+
+[project.entry-points."adventofcode.user"]
+wim = "aoc_wim:plugin"
+
+[tool.setuptools.dynamic]
+version = {attr = "aoc_wim.__version__"}
