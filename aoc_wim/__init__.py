@@ -2,9 +2,21 @@
 import io
 import runpy
 import sys
+from pathlib import Path
 
 
-__version__ = "2021.25"
+def dynamic_version():
+    here = Path(__file__).parent
+    years = here.glob("aoc20??")
+    max_year = max(years)
+    days = max_year.glob("q??.py")
+    max_day = max(days)
+    year = int(max_year.name[-4:])
+    day = int(max_day.name[1:3])
+    return f"{year}.{day}"
+
+
+__version__ = dynamic_version()
 
 
 def plugin(year, day, data):
