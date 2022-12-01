@@ -32,7 +32,7 @@ jobs:
             cmd = "twine upload --disable-progress-bar -u __token__ -p ${{ secrets.PYPI_TOKEN }} dist/*"
             subprocess.check_call(cmd.split())
             fnames = glob.glob("dist/*")
-            print(f"uploaded {', '.join(fnames}")
+            print(f"uploaded {', '.join(fnames)}")
             subprocess.check_call(["git", "tag", v])
             subprocess.check_call(["git", "push", "--tags"])
             print(f"tagged {v}")
