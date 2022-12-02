@@ -16,7 +16,7 @@ jobs:
       - name: "Create release"
         run: |
           python -VV
-          python -m pip install -U wheel setuptools twine luddite build
+          python -m pip install -q -U wheel setuptools twine luddite build
           python -m build -n -x -C=--global-option=-q
       - uses: jannekem/run-python-script-action@v1
         with:
