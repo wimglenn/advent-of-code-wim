@@ -13,11 +13,11 @@ jobs:
         with:
           python-version: "3.11"
           architecture: x64
-      - name: "Install"
+      - name: "Create release"
         run: |
           python -VV
-          python -m pip install wheel twine luddite build
-          python -m build
+          python -m pip install -U wheel setuptools twine luddite build
+          python -m build -n -x -C=--global-option=-q
       - uses: jannekem/run-python-script-action@v1
         with:
           script: |
