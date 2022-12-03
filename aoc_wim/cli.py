@@ -62,12 +62,13 @@ def run_one():
         test_files = list(test_dir.glob("*.txt"))
         if not test_files:
             sys.exit(f"no test files found at {test_dir}")
-        for test_path in test_files:
-            print(f"(using data from {test_path})")
+        for test_path in sorted(test_files):
+            print(f"\n(using data from {test_path})")
             print(f"--- {args.year} Day {args.day}: {Puzzle(args.year, args.day).title} ---")
             aocd.data = "\n".join(test_path.read_text().splitlines()[:-2])
             runpy.run_module(mod_name, run_name="__main__")
-            return
+        print()
+        return
     print(f"--- {args.year} Day {args.day}: {Puzzle(args.year, args.day).title} ---")
     runpy.run_module(mod_name, run_name="__main__")
 
