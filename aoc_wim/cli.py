@@ -12,6 +12,9 @@ from aocd.models import Puzzle
 from aocd.utils import AOC_TZ
 
 
+here = Path(__file__).parent
+
+
 def run_one():
     parser = ArgumentParser(description=__doc__)
     aoc_now = datetime.now(tz=AOC_TZ)
@@ -31,7 +34,9 @@ def run_one():
         default=years[-1],
         help="2015-%(default)s (default: %(default)s)",
     )
-    parser.add_argument("-d", "--data", help="string or file to monkeypatch in aocd.data")
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("-d", "--data", help="string or file to monkeypatch in aocd.data")
+    group.add_argument("-t", "--test", help="use the example data (if any)", action="store_true")
     log_levels = "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"
     parser.add_argument("--log-level", type=str.upper, choices=log_levels)
     args = parser.parse_args()
@@ -52,6 +57,17 @@ def run_one():
                 else:
                     args.data = txt
         aocd.data = args.data
+    elif args.test:
+        test_dir = here.parent / "tests" / f"{args.year}" / f"{args.day:02d}"
+        test_files = list(test_dir.glob("*.txt"))
+        if not test_files:
+            sys.exit(f"no test files found at {test_dir}")
+        for test_path in test_files:
+            print(f"(using data from {test_path})")
+            print(f"--- {args.year} Day {args.day}: {Puzzle(args.year, args.day).title} ---")
+            aocd.data = "\n".join(test_path.read_text().splitlines()[:-2])
+            runpy.run_module(mod_name, run_name="__main__")
+            return
     print(f"--- {args.year} Day {args.day}: {Puzzle(args.year, args.day).title} ---")
     runpy.run_module(mod_name, run_name="__main__")
 
@@ -71,7 +87,7 @@ def speedhack():
     if examples:
         print(f"{len(examples)} example(s) to test...")
         args = [sys.executable, "-m", "pytest", "-k", f"{year}/{day:02d}"]
-        subprocess.check_call(args)
+        subprocess.check_call(args, cwd=Path("~/git/advent-of-code-wim").expanduser())
     args = ["aoc", "-y", str(year), "-d", str(day), "-u", "github.wimglenn.119932", "-r", "--log-level", "DEBUG", "--timeout", "600"]
     print("\n" + " ".join(args))
     subprocess.check_call(args)
