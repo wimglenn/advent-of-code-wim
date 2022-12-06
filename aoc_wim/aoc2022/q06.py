@@ -3,15 +3,17 @@
 https://adventofcode.com/2022/day/6
 """
 from aocd import data
-from collections import deque
+from collections import Counter
 
 
-def marker(data, s):
-    d = deque(maxlen=s)
-    for i, c in enumerate(data, 1):
-        d.append(c)
-        if len(set(d)) == s:
-            return i
+def marker(data, n):
+    counts = Counter(data[:n])
+    i = n
+    while len(counts) < n:
+        if data[i] != data[i - n]:
+            counts += {data[i]: 1, data[i - n]: -1}
+        i += 1
+    return i
 
 
 print("part a:", marker(data, 4))
