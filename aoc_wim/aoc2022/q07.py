@@ -12,23 +12,21 @@ cwd = "/"
 dirs = {"/": 0}  # map of dirs to their cumulative size
 parents = []  # cwd stack
 while q:
-    line = q.popleft()
-    if line.startswith("$ cd "):
-        _, _, name = line.split()
-        if name == "..":
+    match q.popleft().split():
+        case ["$", "cd", ".."]:
             cwd = parents.pop()
-        else:
+        case ["$", "cd", name]:
             parents.append(cwd)
             cwd += name + "/"
-    elif line == "$ ls":
-        while q and not q[0].startswith("$"):
-            s, name = q.popleft().split()
-            if s == "dir":
-                dirs[cwd + name + "/"] = 0
-            else:
-                size = int(s)
-                for d in parents + [cwd]:
-                    dirs[d] += size
+        case ["$", "ls"]:
+            while q and not q[0].startswith("$"):
+                match q.popleft().split():
+                    case ["dir", name]:
+                        dirs[cwd + name + "/"] = 0
+                    case [s, name]:
+                        size = int(s)
+                        for d in parents + [cwd]:
+                            dirs[d] += size
 
 total_space = 70_000_000
 df_target = 30_000_000
