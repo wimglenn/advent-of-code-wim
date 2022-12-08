@@ -18,11 +18,10 @@ for z0 in zrange(complex(1, 1), complex(w - 1, h - 1)):  # interior trees
         s = 0
         while True:
             z += dz
-            s += 1
             if z not in grid:
-                s -= 1
                 vis = True
                 break
+            s += 1
             if grid[z] >= n:
                 break
         ss *= s
