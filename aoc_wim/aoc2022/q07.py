@@ -3,31 +3,32 @@
 https://adventofcode.com/2022/day/7
 """
 from aocd import data
+from pathlib import Path
 
-lines = iter(data.splitlines())
-assert next(lines) == "$ cd /"
-cwd = "/"
-dirs = {"/": 0}  # map of dirs to their cumulative size
-parents = []  # cwd stack
-for line in lines:
+cwd = Path()
+dirs = {}
+
+for line in data.splitlines():
     match line.split():
+        case ["$", "cd", "/"]:
+            cwd = Path("/")
+            dirs[cwd] = 0
         case ["$", "cd", ".."]:
-            cwd = parents.pop()
+            cwd = cwd.parent
         case ["$", "cd", name]:
-            parents.append(cwd)
-            cwd += name + "/"
+            cwd /= name
         case ["$", "ls"]:
             pass
         case ["dir", name]:
-            dirs[cwd + name + "/"] = 0
+            dirs[cwd / name] = 0
         case [s, name]:
             size = int(s)
-            for d in parents + [cwd]:
-                dirs[d] += size
+            for p in [cwd, *cwd.parents]:
+                dirs[p] += size
 
 total_space = 70_000_000
 df_target = 30_000_000
-used_space = dirs["/"]
+used_space = dirs[Path("/")]
 df_actual = total_space - used_space
 del_needed = df_target - df_actual
 
