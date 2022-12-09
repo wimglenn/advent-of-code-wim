@@ -16,7 +16,7 @@ def T1(H, T0):
     return T0
 
 
-dHs = {"U": -1j, "D": 1j, "L": -1, "R": 1}
+dHs = dict(zip("UDLR", (-1j, 1j, -1, 1)))
 for part in "ab":
     L = 2 if part == "a" else 10
     Ts = [0] * L
