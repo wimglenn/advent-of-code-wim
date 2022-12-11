@@ -353,6 +353,16 @@ glyphs = {g: np.array(ZGrid(g)) == "#" for g in glyphs.strip().split("\n\n\n")}
 known = dict(zip(glyphs, "AABBCCEEFFGGHHHIIJJKKLLNOPPRRSUXZZ□"))
 known[""] = ""
 
+day10_2022_expected_example_render = """
+##..##..##..##..##..##..##..##..##..##..
+###...###...###...###...###...###...###.
+####....####....####....####....####....
+#####.....#####.....#####.....#####.....
+######......######......######......####
+#######.......#######.......#######.....
+"""
+known[day10_2022_expected_example_render.strip()] = "CRT"
+
 
 def autocrop(A):
     if A.dtype != int:

@@ -77,6 +77,11 @@ class ZGrid:
             elif callable(initial_data):
                 self.d = ZDict(func=initial_data)
             elif isinstance(initial_data, dict):
+                k, _ = _, initial_data[k] = initial_data.popitem()
+                if isinstance(k, tuple) and len(k) == 2:
+                    k0, k1 = k
+                    if isinstance(k0, int) and isinstance(k1, int):
+                        initial_data = {k[1] + 1j*k[0]: v for k, v in initial_data.items()}
                 self.d = initial_data
             elif isinstance(initial_data, np.ndarray) and initial_data.ndim == 2:
                 for row, r in enumerate(initial_data):
