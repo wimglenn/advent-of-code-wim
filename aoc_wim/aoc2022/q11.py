@@ -12,7 +12,7 @@ from math import prod
 template = """\
 Monkey {:d}:
   Starting items: {items}
-  Operation: new = {x1} {op} {x2}
+  Operation: new = {x} {op} {y}
   Test: divisible by {div:d}
     If true: throw to monkey {mt:d}
     If false: throw to monkey {mf:d}"""
@@ -20,11 +20,11 @@ Monkey {:d}:
 
 class Monkey:
 
-    def __init__(self, items, x1, op, x2, div, mt, mf):
+    def __init__(self, items, x, op, y, div, mt, mf):
         self.items = items
-        self.x1 = x1
+        self.x = x
         self.op = op
-        self.x2 = x2
+        self.y = y
         self.div = div
         self.mt = mt
         self.mf = mf
@@ -38,14 +38,14 @@ class Monkey:
 
     def inspect(self):
         while self.items:
-            item = self.items.popleft()
+            i = self.items.popleft()
+            x = i if self.x == "old" else int(self.x)
+            y = i if self.y == "old" else int(self.y)
+            i = x + y if self.op == "+" else x * y
+            i = i // 3 if part == "a" else i % denom
+            mnext = self.mf if i % self.div else self.mt
+            monkeys[mnext].items.append(i)
             self.inspected += 1
-            x1 = item if self.x1 == "old" else int(self.x1)
-            x2 = item if self.x2 == "old" else int(self.x2)
-            val = x1 + x2 if self.op == "+" else x1 * x2
-            val = val // 3 if part == "a" else val % denom
-            mnext = self.mf if val % self.div else self.mt
-            monkeys[mnext].items.append(val)
 
 
 for part, nrounds in zip("ab", (20, 10000)):
