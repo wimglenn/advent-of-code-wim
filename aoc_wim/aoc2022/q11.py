@@ -10,7 +10,7 @@ from math import prod
 
 
 template = """\
-Monkey {id:d}:
+Monkey {:d}:
   Starting items: {items}
   Operation: new = {x1} {op} {x2}
   Test: divisible by {div:d}
@@ -34,7 +34,6 @@ class Monkey:
     def fromchunk(cls, chunk):
         parsed = parse(template, chunk).named
         items = deque(map(int, parsed.pop("items").split(", ")))
-        parsed.pop("id")
         return cls(items, **parsed)
 
     def inspect(self):
