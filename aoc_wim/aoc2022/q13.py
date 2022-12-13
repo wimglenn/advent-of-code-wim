@@ -9,7 +9,7 @@ from functools import cmp_to_key
 
 def cmp(a, b):
     if isinstance(a, int) and isinstance(b, int):
-        return -1 if a < b else 0 if a == b else 1
+        return a - b
     if isinstance(a, list) and isinstance(b, list):
         for x, y in zip(a, b):
             if c := cmp(x, y):
@@ -17,7 +17,7 @@ def cmp(a, b):
         return cmp(len(a), len(b))
     if isinstance(a, list) and isinstance(b, int):
         return cmp(a, [b])
-    elif isinstance(a, int) and isinstance(b, list):
+    if isinstance(a, int) and isinstance(b, list):
         return cmp([a], b)
 
 
@@ -26,7 +26,7 @@ packets = []
 for i, chunk in enumerate(data.split("\n\n"), 1):
     first, second = map(literal_eval, chunk.splitlines())
     packets += [first, second]
-    if cmp(first, second) == -1:
+    if cmp(first, second) < 0:
         a += i
 
 packets += [[], [[2]], [[6]]]
