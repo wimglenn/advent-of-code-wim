@@ -3,7 +3,7 @@
 https://adventofcode.com/2022/day/13
 """
 from aocd import data
-from ast import literal_eval
+from json import loads
 from functools import cmp_to_key
 
 
@@ -25,7 +25,7 @@ def cmp(a, b):
 a = 0
 packets = []
 for i, chunk in enumerate(data.split("\n\n"), 1):
-    first, second = map(literal_eval, chunk.splitlines())
+    first, second = map(loads, chunk.splitlines())
     packets += [first, second]
     if cmp(first, second) < 0:
         a += i
