@@ -11,15 +11,20 @@ start = grid.z("S")
 end = grid.z("E")
 grid[start] = "a"
 grid[end] = "z"
-starts = grid.z("a", first=False)
 
 
-class Q12AStar(AStar):
+class AStarA(AStar):
     def adjacent(self, z0):
-        return [z for z in grid.near(z0) if ord(grid.get(z, "⛰")) <= ord(grid[z0]) + 1]
+        return [z for z in grid.near(z0) if ord(grid.get(z, "⛰")) - ord(grid[z0]) <= 1]
 
 
-a = len(Q12AStar(start, end).run()) - 1
-b = min(len(path) - 1 for s in starts if (path := Q12AStar(s, end).run()) is not None)
-print("part a:", a)
-print("part b:", b)
+class AStarB(AStar):
+    def adjacent(self, z0):
+        return [z for z in grid.near(z0) if ord(grid.get(z, "_")) - ord(grid[z0]) >= -1]
+
+    def target_reached(self, z, target):
+        return grid[z] == "a"
+
+
+print("part a:", len(AStarA(start, end).run()) - 1)
+print("part b:", len(AStarB(end, None).run()) - 1)
