@@ -15,7 +15,7 @@ grid[end] = "z"
 
 class A𖤐(AStar):
     def adjacent(self, z0):
-        return [z for z in grid.near(z0) if ord(grid.get(z, "_")) - ord(grid[z0]) >= -1]
+        return [z for z in grid.near(z0) if ord(grid[z0]) - ord(grid.get(z, "_")) <= 1]
 
     def target_reached(self, z, target):
         return z == target or grid[z] == target
