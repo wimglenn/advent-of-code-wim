@@ -13,18 +13,13 @@ grid[start] = "a"
 grid[end] = "z"
 
 
-class AStarA(AStar):
-    def adjacent(self, z0):
-        return [z for z in grid.near(z0) if ord(grid.get(z, "‾")) - ord(grid[z0]) <= 1]
-
-
-class AStarB(AStar):
+class A𖤐(AStar):
     def adjacent(self, z0):
         return [z for z in grid.near(z0) if ord(grid.get(z, "_")) - ord(grid[z0]) >= -1]
 
     def target_reached(self, z, target):
-        return grid[z] == target
+        return z == target or grid[z] == target
 
 
-print("part a:", len(AStarA(start, end).run()) - 1)
-print("part b:", len(AStarB(end, "a").run()) - 1)
+print("part a:", len(A𖤐(end, start).run()) - 1)
+print("part b:", len(A𖤐(end, "a").run()) - 1)
