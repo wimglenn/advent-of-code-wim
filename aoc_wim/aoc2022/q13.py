@@ -8,17 +8,18 @@ from functools import cmp_to_key
 
 
 def cmp(a, b):
-    if isinstance(a, int) and isinstance(b, int):
-        return a - b
-    if isinstance(a, list) and isinstance(b, list):
-        for x, y in zip(a, b):
-            if c := cmp(x, y):
-                return c
-        return cmp(len(a), len(b))
-    if isinstance(a, list) and isinstance(b, int):
-        return cmp(a, [b])
-    if isinstance(a, int) and isinstance(b, list):
-        return cmp([a], b)
+    match a, b:
+        case int(), int():
+            return a - b
+        case list(), list():
+            for x, y in zip(a, b):
+                if c := cmp(x, y):
+                    return c
+            return cmp(len(a), len(b))
+        case list(), int():
+            return cmp(a, [b])
+        case int(), list():
+            return cmp([a], b)
 
 
 a = 0
