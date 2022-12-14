@@ -22,22 +22,24 @@ for line in data.splitlines():
 
 
 def s1(s0):
-    # where will piece of sand at s0 fall to (if anywhere)
-    if s0.imag > ymax:
-        raise Exception("flowing into the void")
-    for dx in 0, -1, 1:
-        if grid.get(s0 + 1j + dx, ".") not in "o#":
-            return s1(s0 + 1j + dx)
-    if grid.get(s0) == "o":
-        raise Exception("flow is blocked")
-    return s0
+    # how will piece of sand at s0 come to rest (if anywhere)
+    path = [s0]
+    while path[-1].imag <= ymax:
+        for dx in 0, -1, 1:
+            if path[-1] + 1j + dx not in grid:
+                path.append(path[-1] + 1j + dx)
+                break
+        else:
+            break
+    return path
 
 
 def flow(render=os.environ.get("AOC_DEBUG")):
+    path = []
     while True:
-        try:
-            s = s1(z_source)
-        except Exception:
+        path = s1(path[-1] if path else z_source)
+        s = path.pop()
+        if s.imag > ymax or s in grid:  # flowing into void, or flow is blocked
             return
         grid[s] = "o"
         if render:
