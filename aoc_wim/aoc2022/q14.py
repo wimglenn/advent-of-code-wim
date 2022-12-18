@@ -5,6 +5,7 @@ https://adventofcode.com/2022/day/14
 import os
 from aocd import data
 from aoc_wim.zgrid import ZGrid
+from aoc_wim.search import BFS
 
 grid = ZGrid()
 for line in data.splitlines():
@@ -51,13 +52,17 @@ ymax = int(grid.bottom_right.imag)
 flow()
 a = grid.count("o")
 
-# add in a floor to the grid
-ymax += 2
-for x in range(-ymax, ymax + 1):
-    grid[z_source + x + ymax * 1j] = "#"
 
-flow()
-b = grid.count("o")
+def adj(z0):
+    for dx in 0, -1, 1:
+        z = z0 + dx + 1j
+        if grid.get(z) != "#" and z.imag < ymax + 2:
+            yield z
+
+
+bfs = BFS(adj)
+bfs(z_source)
+b = len(bfs.seen)
 
 print("part a:", a)
 print("part b:", b)

@@ -1,5 +1,6 @@
 import heapq
 from collections import defaultdict
+from collections import deque
 from itertools import count
 import logging
 
@@ -134,3 +135,29 @@ class Bisect:
         while self.hi - self.lo > 1:
             self.step()
         return self.lo
+
+
+class BFS:
+
+    def __init__(self, adj, max_depth=None):
+        self.adj = adj
+        self.seen = {}
+        self.max_depth = max_depth
+
+    def __call__(self, s0, target=None):
+        q = deque([(0, s0)])
+        maxd = self.max_depth or float("inf")
+        seen = self.seen
+        logged = False
+        while q:
+            # print(f"{len(seen)=} {len(q)=}")
+            depth, state = q.popleft()
+            if state in seen:
+                continue
+            seen[state] = depth
+            if depth > maxd:
+                if not logged:
+                    log.debug("max depth %d exceeded", maxd)
+                    logged = True
+                continue
+            q += [(depth + 1, s) for s in self.adj(state)]
