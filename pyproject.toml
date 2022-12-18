@@ -23,6 +23,7 @@ dependencies = [
     "wimpy",
     "marshmallow",
     "regex",
+    "intervaltree",
 ]
 
 [[project.authors]]
