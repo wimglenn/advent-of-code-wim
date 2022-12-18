@@ -622,3 +622,35 @@ def transform(z, orientation="V"):
     else:
         raise ValueError("Orientation must be 'V' or 'H'")
     return row, col
+
+
+def zline(p1, p2):
+    # points between p1 and p2 inclusive of both endpoints
+    match p1, p2:
+        case int(), int() if p1 <= p2:
+            return range(p1, p2 + 1)
+        case int(), int() if p1 > p2:
+            return range(p1, p2 - 1, -1)
+        case (int() | float() | complex()), (int() | float() | complex()):
+            for n in p1, p2:
+                if isinstance(n, (float, complex)):
+                    if not n.imag.is_integer() or not n.real.is_integer():
+                        raise NotImplementedError
+            d = p2 - p1
+            if d == 0:
+                return [p1]
+            if d.real == 0:
+                dz = -1j if d.imag < 0 else 1j
+            elif d.imag == 0:
+                dz = -1 if d.real < 0 else 1
+            elif abs(d.real) == abs(d.imag):
+                dz = d / abs(d.real)
+            else:
+                raise NotImplementedError
+            result = [p1]
+            while p1 != p2:
+                p1 += dz
+                result.append(p1)
+            return result
+        case _:
+            raise NotImplementedError

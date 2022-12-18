@@ -5,8 +5,8 @@ https://adventofcode.com/2022/day/14
 import os
 from aocd import data
 from aoc_wim.zgrid import ZGrid
+from aoc_wim.zgrid import zline
 from aoc_wim.search import BFS
-from aoc_wim.util import zline
 
 grid = ZGrid()
 for line in data.splitlines():
