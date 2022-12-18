@@ -6,20 +6,14 @@ import os
 from aocd import data
 from aoc_wim.zgrid import ZGrid
 from aoc_wim.search import BFS
+from aoc_wim.util import zline
 
 grid = ZGrid()
 for line in data.splitlines():
-    z0 = None
-    for xy in line.split(" -> "):
-        z1 = complex(*map(int, xy.split(",")))
-        if z0 is not None:
-            dz = z1 - z0
-            dz /= abs(dz)
-            while z0 != z1:
-                grid[z0] = "#"
-                z0 += dz
-        z0 = z1
-        grid[z1] = "#"
+    zs = [complex(*map(int, xy.split(","))) for xy in line.split(" -> ")]
+    for z0, z1 in zip(zs, zs[1:]):
+        for z in zline(z0, z1):
+            grid[z] = "#"
 
 
 def s1(s0):

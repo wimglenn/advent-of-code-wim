@@ -133,7 +133,7 @@ def start():
     webbrowser.open(puzzle.url)
 
 
-def line(p1, p2):
+def zline(p1, p2):
     # points between p1 and p2 inclusive of both endpoints
     match p1, p2:
         case int(), int() if p1 <= p2:
