@@ -92,6 +92,9 @@ class ZGrid:
             else:
                 raise NotImplementedError(f"{type(initial_data)=}")
 
+    def offset(self, dz):
+        self.d = {(z + dz): v for z, v in self.items()}
+
     def __setitem__(self, key, value):
         self.d[key] = value
 
@@ -300,10 +303,14 @@ class ZGrid:
 
     @property
     def width(self):
+        if not self.d:
+            return 0
         return int(self.right_top.real - self.left_bottom.real) + 1
 
     @property
     def height(self):
+        if not self.d:
+            return 0
         return int(self.bottom_right.imag - self.top_left.imag) + 1
 
     def aabb(self, pad=0):
