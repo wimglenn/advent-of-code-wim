@@ -89,6 +89,6 @@ def speedhack():
         print(f"{len(examples)} example(s) to test...")
         args = [sys.executable, "-m", "pytest", "-k", f"{year}/{day:02d}"]
         subprocess.check_call(args, cwd=Path("~/git/advent-of-code-wim").expanduser())
-    args = ["aoc", "-y", str(year), "-d", str(day), "-u", "github.wimglenn.119932", "-r", "--log-level", "DEBUG", "--timeout", "600"]
+    args = ["aoc", "-y", str(year), "-d", str(day), "-u", "github.wimglenn.119932", "-r", "--log-level", "DEBUG", "--timeout", "6000"]
     print("\n" + " ".join(args))
     subprocess.check_call(args)
