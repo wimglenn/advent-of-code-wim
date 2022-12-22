@@ -9,7 +9,7 @@ g, path = data.split("\n\n")
 distances = [int(n) for n in path.replace("L", "R").split("R")]
 turns = "".join(x for x in path if not x.isdigit())
 steps = [s for tup in zip(*[distances, turns]) for s in tup] + [distances[-1]]
-grid = ZGrid(g, off=" ")
+grid = ZGrid(g)
 
 z0 = grid.z(".")
 dz0 = 1
@@ -43,7 +43,7 @@ for step in steps:
             z = next_z
             path_overlay[z] = glyph[dz]
     path_overlay[z] = glyph[dz]
-grid.draw(overlay=path_overlay)
+grid.draw(overlay=path_overlay, empty_glyph=" ")
 a = passwd(z, dz)
 print("part a:", a)
 
@@ -175,6 +175,6 @@ for step in steps:
             dz = next_dz
         path_overlay[z] = glyph[dz]
 
-grid.draw(overlay=path_overlay)
+grid.draw(overlay=path_overlay, empty_glyph=" ")
 
 print("part b:", passwd(z, dz))
