@@ -13,8 +13,6 @@ grid = ZGrid(g, off=" ")
 
 z0 = grid.z(".")
 dz0 = 1
-
-
 facing = [1, 1j, -1, -1j]
 
 
@@ -32,7 +30,6 @@ for step in steps:
     elif step == "L":
         dz *= -1j
     else:
-        assert isinstance(step, int)
         for _ in range(step):
             next_z = z + dz
             if grid.get(next_z, " ") == " ":
@@ -48,11 +45,10 @@ for step in steps:
     path_overlay[z] = glyph[dz]
 grid.draw(overlay=path_overlay)
 a = passwd(z, dz)
-
 print("part a:", a)
 
-w = 50
 
+w = 50
 edges = {
     1: 10,
     2: 9,
@@ -62,8 +58,6 @@ edges = {
     11: 14,
     12: 13,
 }
-edges.update({v: k for k, v in edges.items()})
-
 rots = {
     1: 1j,
     2: 1,
@@ -73,8 +67,6 @@ rots = {
     11: -1,
     12: 1j,
 }
-
-
 offsets = {
     1: (-1, 3),
     2: (-2, 3),
@@ -84,8 +76,8 @@ offsets = {
     11: (1, -2),
     12: (1, -1),
 }
-
-
+offsets.update({edges[k]: (-v1, -v2) for k, (v1, v2) in offsets.items()})
+edges.update({v: k for k, v in edges.items()})
 path_overlay = {z0: glyph[dz0]}
 z = z0
 dz = dz0
@@ -150,10 +142,8 @@ for step in steps:
                         r = -1j
                     next_dz = dz * r
 
-                x = int(z.real)
-                y = int(z.imag)
-                x %= w
-                y %= w
+                x = int(z.real) % w
+                y = int(z.imag) % w
                 if edge in offsets:
                     ox, oy = offsets[edge]
                 else:
