@@ -73,7 +73,8 @@ class ZGrid:
                     for col, char in enumerate(line):
                         if transform is not None:
                             char = transform(char)
-                        d[col + row*1j] = char
+                        if char is not None:
+                            d[col + row*1j] = char
             elif callable(initial_data):
                 self.d = ZDict(func=initial_data)
             elif isinstance(initial_data, dict):
@@ -115,6 +116,9 @@ class ZGrid:
 
     def items(self):
         return self.d.items()
+
+    def keys(self):
+        return self.d.keys()
 
     def values(self):
         return self.d.values()
@@ -312,6 +316,10 @@ class ZGrid:
         if not self.d:
             return 0
         return int(self.bottom_right.imag - self.top_left.imag) + 1
+
+    @property
+    def area(self):
+        return self.height * self.width
 
     def aabb(self, pad=0):
         """axis aligned bounding box"""
