@@ -3,114 +3,44 @@
 https://adventofcode.com/2022/day/21
 """
 from aocd import data
-from aoc_wim.autoparse import parsed
-from collections import Counter, defaultdict, deque
-d = parsed(data)
-if d != data:
-    print(d)
-    print(f"{parsed.n_bytes} bytes/{parsed.n_lines} lines, parsed by {parsed.parser}")
+import operator as op
 
-# import numpy as np
-# import networkx as nx
-# from aoc_wim.zgrid import ZGrid
-# from aoc_wim import stuff
-
-# import logging; logging.basicConfig(level=logging.DEBUG)
+ops = {
+    "+": op.add,
+    "*": op.mul,
+    "-": op.sub,
+    "/": op.truediv,
+}
 
 
-m = {}
-for line in data.splitlines():
-    m1, rest = line.split(": ")
-    if rest.isdigit():
-        m[m1] = int(rest)
-        continue
-    a, op, b = rest.split()
-    assert op in "+-/*"
-    m[m1] = a, op, b
+def solve(eqns):
+    known = {}
+    unknown = eqns.copy()
+    while unknown:
+        for name, eqn in unknown.items():
+            if eqn in known or isinstance(eqn, complex) or eqn.isdigit():
+                known[name] = complex(known.get(eqn, eqn))
+                del unknown[name]
+                break
+            e1, o, e2 = eqn.split()
+            if e1 in known or e1.isdigit():
+                e1 = complex(known.get(e1, e1))
+            if e2 in known or e2.isdigit():
+                e2 = complex(known.get(e2, e2))
+            if type(e1) is type(e2) is complex:
+                known[name] = ops[o](e1, e2)
+                del unknown[name]
+                break
+    return known
 
 
-while not isinstance(m["root"], int):
-    changed = False
-    for mname, ops in m.items():
-        if isinstance(ops, int):
-            continue
-        a, op, b = ops
-        if isinstance(m[a], int) and isinstance(m[b], int):
-            if op == "+":
-                m[mname] = m[a] + m[b]
-            elif op == "/":
-                m[mname] = m[a] // m[b]
-            elif op == "-":
-                m[mname] = m[a] - m[b]
-            if op == "*":
-                m[mname] = m[a] * m[b]
-            changed = True
-            break
-    if not changed:
-        raise Exception
+eqns = dict(line.split(": ") for line in data.splitlines())
+known = solve(eqns)
+print("part a:", int(known["root"].real))
 
-
-print("part a:", m["root"])
-
-
-m = {}
-for line in data.splitlines():
-    m1, rest = line.split(": ")
-    if m1 == "humn":
-        continue
-    if rest.isdigit():
-        m[m1] = int(rest)
-        continue
-    a, op, b = rest.split()
-    if m1 == "root":
-        op = "="
-    else:
-        assert op in "+-/*"
-    m[m1] = [a, op, b]
-
-
-while True:
-    changed = False
-    for mname, ops in m.items():
-        if isinstance(ops, int):
-            continue
-        a, op, b = ops
-        if isinstance(m.get(a), int) and isinstance(m.get(b), int):
-            if op == "+":
-                m[mname] = m[a] + m[b]
-            elif op == "/":
-                m[mname] = m[a] // m[b]
-            elif op == "-":
-                m[mname] = m[a] - m[b]
-            if op == "*":
-                m[mname] = m[a] * m[b]
-            changed = True
-            break
-    if not changed:
-        break
-
-
-def fill_vals(r):
-    changed = False
-    for i in range(len(r)):
-        if isinstance(r[i], list):
-            changed = fill_vals(r[i])
-        elif r[i] in m:
-            r[i] = m.pop(r[i])
-            changed = True
-    return changed
-
-
-changed = True
-while changed:
-    changed = fill_vals(m["root"])
-
-import json
-eq = json.dumps(m["root"]).replace("[", "(").replace("]", ")").replace(", ", "").replace('"', "").replace("=", "==")
-print(eq)
-
-import sympy
-humn = sympy.Symbol("humn")
-sympy.solve(eq)
-
-print("part b:", )
+eqns["humn"] = 1j
+m1, _, m2 = eqns.pop("root").split()
+known = solve(eqns)
+c1 = known[m1]
+c2 = known[m2]
+print("part b:", int((c1.real - c2.real) / (c2.imag - c1.imag)))
