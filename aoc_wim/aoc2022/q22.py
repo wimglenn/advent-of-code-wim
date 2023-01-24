@@ -2,15 +2,16 @@
 --- Day 22: Monkey Map ---
 https://adventofcode.com/2022/day/22
 """
+import math
+import re
 from aocd import data
 from aoc_wim.zgrid import ZGrid
 
-g, path = data.split("\n\n")
-distances = [int(n) for n in path.replace("L", "R").split("R")]
-turns = "".join(x for x in path if not x.isdigit())
-steps = [s for tup in zip(*[distances, turns]) for s in tup] + [distances[-1]]
-grid = ZGrid(g)
+grid, steps = data.split("\n\n")
+grid = ZGrid(grid)
+steps = re.findall(r"\d+|R|L", steps)
 
+grid.remove(" ")
 z0 = grid.z(".")
 dz0 = 1
 facing = [1, 1j, -1, -1j]
@@ -30,25 +31,24 @@ for step in steps:
     elif step == "L":
         dz *= -1j
     else:
-        for _ in range(step):
+        for _ in range(int(step)):
             next_z = z + dz
-            if grid.get(next_z, " ") == " ":
+            if next_z not in grid:
                 next_z = z
-                while grid.get(next_z, " ") != " ":
+                while next_z in grid:
                     next_z -= dz
                 next_z += dz
-            assert next_z in grid
             if grid[next_z] == "#":
                 break
             z = next_z
             path_overlay[z] = glyph[dz]
     path_overlay[z] = glyph[dz]
-grid.draw(overlay=path_overlay, empty_glyph=" ")
+# grid.draw(overlay=path_overlay, empty_glyph=" ")
 a = passwd(z, dz)
 print("part a:", a)
 
 
-w = 50
+w = math.isqrt(len(grid) // 6)
 edges = {
     1: 10,
     2: 9,
@@ -87,11 +87,11 @@ for step in steps:
     elif step == "L":
         dz *= -1j
     else:
-        for _ in range(step):
+        for _ in range(int(step)):
             next_z = z + dz
             next_dz = dz
 
-            if grid.get(next_z, " ") == " ":
+            if next_z not in grid:
                 if dz == 1:
                     y = z.imag
                     if 0 <= y < w:
@@ -100,8 +100,7 @@ for step in steps:
                         edge = 5
                     elif w * 2 <= y < w * 3:
                         edge = 6
-                    else:
-                        assert w * 3 <= y < w * 4
+                    elif w * 3 <= y < w * 4:
                         edge = 8
                 elif dz == -1:
                     y = z.imag
@@ -111,8 +110,7 @@ for step in steps:
                         edge = 13
                     elif w * 2 <= y < w * 3:
                         edge = 11
-                    else:
-                        assert w * 3 <= y < w * 4
+                    elif w * 3 <= y < w * 4:
                         edge = 10
                 elif dz == 1j:
                     x = z.real
@@ -120,18 +118,15 @@ for step in steps:
                         edge = 9
                     elif w <= x < w * 2:
                         edge = 7
-                    else:
-                        assert w * 2 <= x < w * 3
+                    elif w * 2 <= x < w * 3:
                         edge = 4
-                else:
-                    assert dz == -1j
+                elif dz == -1j:
                     x = z.real
                     if 0 <= x < w:
                         edge = 12
                     elif w <= x < w * 2:
                         edge = 1
-                    else:
-                        assert w * 2 <= x < w * 3
+                    elif w * 2 <= x < w * 3:
                         edge = 2
                 other_edge = edges[edge]
                 if edge in rots:
@@ -149,32 +144,23 @@ for step in steps:
                 else:
                     o1, o2 = offsets[other_edge]
                     ox, oy = -o1, -o2
-                change_tile = ox*w + oy*1j*w
-                if edge == 2 or edge == 9:
-                    next_z = z + change_tile
-                    if edge == 2:
-                        next_z += (w - 1) * 1j
-                    else:
-                        assert edge == 9
-                        next_z -= (w - 1) * 1j
+                next_z = z + ox*w + oy*1j*w
+                if edge == 2:
+                    next_z += (w - 1) * 1j
+                elif edge == 9:
+                    next_z -= (w - 1) * 1j
                 elif edge in (6, 11, 3, 14):
-                    next_z = z + change_tile
-                    # flip thing
                     next_z = next_z.real + (int(next_z.imag) // w ) * w * 1j + (w - 1 - y) * 1j
                 else:
-                    assert edge in (1, 4, 7, 12) or edge in (10, 5, 8, 13)
-                    next_z = z + change_tile
                     next_z = (int(next_z.real) // w ) * w + (int(next_z.imag) // w) * w * 1j
                     next_z += y + x * 1j
-            assert next_z in grid
             if grid[next_z] == "#":
                 break
             path_overlay[next_z] = glyph[dz]
-
             z = next_z
             dz = next_dz
         path_overlay[z] = glyph[dz]
 
-grid.draw(overlay=path_overlay, empty_glyph=" ")
+# grid.draw(overlay=path_overlay, empty_glyph=" ")
 
 print("part b:", passwd(z, dz))

@@ -139,6 +139,13 @@ class ZGrid:
                 zs.append(k)
         return zs
 
+    def remove(self, val):
+        keep = {z: v for z, v in self.items() if v != val}
+        n_removed = len(self) - len(keep)
+        self.d.clear()
+        self.d.update(keep)
+        return n_removed
+
     @staticmethod
     def near(z, n=4):
         if n == 4:
