@@ -18,7 +18,7 @@ facing = [1, 1j, -1, -1j]
 
 
 def passwd(z, dz):
-    return int(1000*(z.imag+1) + 4*(z.real+1) + facing.index(dz))
+    return int(1000*(z.imag + 1) + 4*(z.real + 1) + facing.index(dz))
 
 
 glyph = dict(zip(facing, ">v<^"))
@@ -92,42 +92,42 @@ for step in steps:
             next_dz = dz
 
             if next_z not in grid:
+                X, x = divmod(z.real, w)
+                Y, y = divmod(z.imag, w)
+
                 if dz == 1:
-                    y = z.imag
-                    if 0 <= y < w:
+                    if 0 <= Y < 1:
                         edge = 3
-                    elif w <= y < w * 2:
+                    elif 1 <= Y < 2:
                         edge = 5
-                    elif w * 2 <= y < w * 3:
+                    elif 2 <= Y < 3:
                         edge = 6
-                    elif w * 3 <= y < w * 4:
+                    elif 3 <= Y < 4:
                         edge = 8
                 elif dz == -1:
-                    y = z.imag
-                    if 0 <= y < w:
+                    if 0 <= Y < 1:
                         edge = 14
-                    elif w <= y < w * 2:
+                    elif 1 <= Y < 2:
                         edge = 13
-                    elif w * 2 <= y < w * 3:
+                    elif 2 <= Y < 3:
                         edge = 11
-                    elif w * 3 <= y < w * 4:
+                    elif 3 <= Y < 4:
                         edge = 10
                 elif dz == 1j:
-                    x = z.real
-                    if 0 <= x < w:
+                    if 0 <= X < 1:
                         edge = 9
-                    elif w <= x < w * 2:
+                    elif 1 <= X < 2:
                         edge = 7
-                    elif w * 2 <= x < w * 3:
+                    elif 2 <= X < 3:
                         edge = 4
                 elif dz == -1j:
-                    x = z.real
-                    if 0 <= x < w:
+                    if 0 <= X < 1:
                         edge = 12
-                    elif w <= x < w * 2:
+                    elif 1 <= X < 2:
                         edge = 1
-                    elif w * 2 <= x < w * 3:
+                    elif 2 <= X < 3:
                         edge = 2
+
                 other_edge = edges[edge]
                 if edge in rots:
                     next_dz = dz * rots[edge]
@@ -137,24 +137,23 @@ for step in steps:
                         r = -1j
                     next_dz = dz * r
 
-                x = int(z.real) % w
-                y = int(z.imag) % w
                 if edge in offsets:
                     ox, oy = offsets[edge]
                 else:
                     o1, o2 = offsets[other_edge]
                     ox, oy = -o1, -o2
                 next_z = z + ox*w + oy*1j*w
+
                 if edge == 2:
                     next_z += (w - 1) * 1j
                 elif edge == 9:
                     next_z -= (w - 1) * 1j
                 elif edge in (6, 11, 3, 14):
-                    next_z = next_z.real + (int(next_z.imag) // w ) * w * 1j + (w - 1 - y) * 1j
+                    next_z = next_z.real + (next_z.imag//w) * w * 1j + (w - 1 - y) * 1j
                 else:
-                    next_z = (int(next_z.real) // w ) * w + (int(next_z.imag) // w) * w * 1j
+                    next_z = (next_z.real//w) * w + (next_z.imag//w) * w * 1j
                     next_z += y + x * 1j
-            if grid[next_z] == "#":
+            if grid.get(next_z) == "#":
                 break
             path_overlay[next_z] = glyph[dz]
             z = next_z
