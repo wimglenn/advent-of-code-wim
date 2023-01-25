@@ -55,8 +55,9 @@ def warp_b(z, dz):
         11: (1, -2),
         12: (1, -1),
     }
-    offsets.update({edges[k]: (-v1, -v2) for k, (v1, v2) in offsets.items()})
     edges.update({v: k for k, v in edges.items()})
+    offsets.update({edges[k]: (-v1, -v2) for k, (v1, v2) in offsets.items()})
+    rots.update({edges[k]: v.conjugate() for k, v in rots.items()})
 
     X, x = divmod(z.real, w)
     Y, y = divmod(z.imag, w)
@@ -94,20 +95,8 @@ def warp_b(z, dz):
         elif 2 <= X < 3:
             edge = 2
 
-    other_edge = edges[edge]
-    if edge in rots:
-        next_dz = dz * rots[edge]
-    else:
-        r = rots[other_edge]
-        if r == 1j:
-            r = -1j
-        next_dz = dz * r
-
-    if edge in offsets:
-        ox, oy = offsets[edge]
-    else:
-        o1, o2 = offsets[other_edge]
-        ox, oy = -o1, -o2
+    next_dz = dz * rots[edge]
+    ox, oy = offsets[edge]
     next_z = z + ox * w + oy * 1j * w
 
     if edge == 2:
