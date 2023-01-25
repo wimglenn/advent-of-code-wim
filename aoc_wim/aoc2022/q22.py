@@ -96,8 +96,8 @@ def warp_b(z, dz):
             edge = 2
 
     next_dz = dz * rots[edge]
-    ox, oy = offsets[edge]
-    next_z = z + ox * w + oy * 1j * w
+    o = complex(*offsets[edge]) * w
+    next_z = z + o
 
     if edge == 2:
         next_z += (w - 1) * 1j
