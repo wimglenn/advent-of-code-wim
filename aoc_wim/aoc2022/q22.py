@@ -9,7 +9,7 @@ from aoc_wim.zgrid import ZGrid
 
 grid, steps = data.split("\n\n")
 grid = ZGrid(grid)
-steps = re.findall(r"\d+|R|L", steps)
+steps = re.split("([LR])", steps)
 
 grid.remove(" ")
 facing = [1, 1j, -1, -1j]
