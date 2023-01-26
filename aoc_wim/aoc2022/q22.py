@@ -111,11 +111,10 @@ def walk_path(z, dz, warp, draw=False):
                 next_dz = dz
                 if next_z not in grid:
                     next_z, next_dz = warp(z, dz)
-                if grid[next_z] == "#":
-                    break
-                z = next_z
-                dz = next_dz
-                path_overlay[z] = glyph[dz]
+                if grid[next_z] == ".":
+                    z = next_z
+                    dz = next_dz
+                    path_overlay[z] = glyph[dz]
         path_overlay[z] = glyph[dz]
     if draw:
         grid.draw(overlay=path_overlay, empty_glyph=" ")
