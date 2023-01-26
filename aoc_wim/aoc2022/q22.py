@@ -84,18 +84,18 @@ def warp_b(z, dz):
         edge = dz_Y_edge[dz, Y]
     elif dz in (-1j, 1j):
         edge = dz_X_edge[dz, X]
-    next_z = z + offsets[edge] * w
-    next_dz = dz * rots[edge]
+    z += offsets[edge] * w
+    dz *= rots[edge]
     if edge == 2:
-        next_z += (w - 1) * 1j
+        z += (w - 1) * 1j
     elif edge == 9:
-        next_z -= (w - 1) * 1j
+        z -= (w - 1) * 1j
     elif edge in (6, 11, 3, 14):
-        next_z = next_z.real + (next_z.imag // w) * w * 1j + (w - 1 - y) * 1j
+        z = z.real + (z.imag // w) * w * 1j + (w - 1 - y) * 1j
     else:
-        next_z = (next_z.real // w) * w + (next_z.imag // w) * w * 1j
-        next_z += y + x * 1j
-    return next_z, next_dz
+        z = (z.real // w) * w + (z.imag // w) * w * 1j
+        z += y + x * 1j
+    return z, dz
 
 
 def walk_path(z, dz, warp, draw=False):
@@ -107,13 +107,13 @@ def walk_path(z, dz, warp, draw=False):
             dz *= -1j
         else:
             for _ in range(int(step)):
-                next_z = z + dz
-                next_dz = dz
-                if next_z not in grid:
-                    next_z, next_dz = warp(z, dz)
-                if grid[next_z] == ".":
-                    z = next_z
-                    dz = next_dz
+                n_ = z + dz
+                dz_ = dz
+                if n_ not in grid:
+                    n_, dz_ = warp(z, dz)
+                if grid[n_] == ".":
+                    z = n_
+                    dz = dz_
                     path_overlay[z] = glyph[dz]
         path_overlay[z] = glyph[dz]
     if draw:
