@@ -12,12 +12,12 @@ grid = ZGrid(grid)
 steps = re.split("([LR])", steps)
 
 grid.remove(" ")
-facing = [1, 1j, -1, -1j]
-glyph = dict(zip(facing, ">v<^"))
+dzs = [1, 1j, -1, -1j]
+glyph = dict(zip(dzs, ">v<^"))
 
 
 def passwd(z, dz):
-    return int(1000*(z.imag + 1) + 4*(z.real + 1) + facing.index(dz))
+    return int(1000*(z.imag + 1) + 4*(z.real + 1) + dzs.index(dz))
 
 
 def warp_a(z, dz):
