@@ -62,38 +62,28 @@ def warp_b(z, dz):
     X, x = divmod(z.real, w)
     Y, y = divmod(z.imag, w)
 
-    if dz == 1:
-        if 0 <= Y < 1:
-            edge = 3
-        elif 1 <= Y < 2:
-            edge = 5
-        elif 2 <= Y < 3:
-            edge = 6
-        elif 3 <= Y < 4:
-            edge = 8
-    elif dz == -1:
-        if 0 <= Y < 1:
-            edge = 14
-        elif 1 <= Y < 2:
-            edge = 13
-        elif 2 <= Y < 3:
-            edge = 11
-        elif 3 <= Y < 4:
-            edge = 10
-    elif dz == 1j:
-        if 0 <= X < 1:
-            edge = 9
-        elif 1 <= X < 2:
-            edge = 7
-        elif 2 <= X < 3:
-            edge = 4
-    elif dz == -1j:
-        if 0 <= X < 1:
-            edge = 12
-        elif 1 <= X < 2:
-            edge = 1
-        elif 2 <= X < 3:
-            edge = 2
+    dz_Y_edge = {
+        (1, 0): 3,
+        (1, 1): 5,
+        (1, 2): 6,
+        (1, 3): 8,
+        (-1, 0): 14,
+        (-1, 1): 13,
+        (-1, 2): 11,
+        (-1, 3): 10,
+    }
+    dz_X_edge = {
+        (1j, 0): 9,
+        (1j, 1): 7,
+        (1j, 2): 4,
+        (-1j, 0): 12,
+        (-1j, 1): 1,
+        (-1j, 2): 2,
+    }
+    if dz in (1, -1):
+        edge = dz_Y_edge[dz, Y]
+    elif dz in (-1j, 1j):
+        edge = dz_X_edge[dz, X]
 
     next_z = z + offsets[edge] * w
     next_dz = dz * rots[edge]
