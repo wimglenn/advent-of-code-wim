@@ -107,12 +107,12 @@ def walk_path(z, dz, warp, draw=False):
             dz *= -1j
         else:
             for _ in range(int(step)):
-                n_ = z + dz
+                z_ = z + dz
                 dz_ = dz
-                if n_ not in grid:
-                    n_, dz_ = warp(z, dz)
-                if grid[n_] == ".":
-                    z = n_
+                if z_ not in grid:
+                    z_, dz_ = warp(z, dz)
+                if grid[z_] == ".":
+                    z = z_
                     dz = dz_
                     path_overlay[z] = glyph[dz]
         path_overlay[z] = glyph[dz]
