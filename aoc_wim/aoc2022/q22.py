@@ -91,7 +91,7 @@ def wrap_b(z, dz):
         3333
     44445555
     44445555
-    44444555
+    44445555
     44445555
     6666
     6666
@@ -100,22 +100,21 @@ def wrap_b(z, dz):
     """
     X, x = divmod(z.real, w)
     Y, y = divmod(z.imag, w)
-    if dz in (1, -1):
-        edge = dz_Y_edge[dz, Y]
-    elif dz in (-1j, 1j):
-        edge = dz_X_edge[dz, X]
-    z += offsets[edge] * w
-    dz *= rots[edge]
-    if edge == 2:
-        z += (w - 1) * 1j
-    elif edge == 9:
-        z -= (w - 1) * 1j
-    elif edge in (6, 11, 3, 14):
-        z = z.real + (z.imag // w) * w * 1j + (w - 1 - y) * 1j
-    else:
-        z = (z.real // w) * w + (z.imag // w) * w * 1j
-        z += y + x * 1j
-    return z, dz
+    match X, Y, dz:
+        case _, 0,  -1: return  0, "# 1 -> 4"
+        case _, 1,  -1: return  1, "# 3 -> 4"
+        case _, 2,  -1: return  2, "# 4 -> 1"
+        case _, 3,  -1: return  3, "# 6 -> 1"
+        case _, 0,   1: return  4, "# 2 -> 5"
+        case _, 1,   1: return  5, "# 3 -> 2"
+        case _, 2,   1: return  6, "# 5 -> 2"
+        case _, 3,   1: return  7, "# 6 -> 5"
+        case 0, _, -1j: return  8, "# 4 -> 3"
+        case 1, _, -1j: return  9, "# 1 -> 6"
+        case 2, _, -1j: return 10, "# 2 -> 6"
+        case 0, _,  1j: return 11, "# 6 -> 2"
+        case 1, _,  1j: return 12, "# 5 -> 6"
+        case 2, _,  1j: return 13, "# 2 -> 3"
 
 
 def wrap_b_test(z, dz):
@@ -135,34 +134,11 @@ def wrap_b_test(z, dz):
     """
     X, x = divmod(z.real, w)
     Y, y = divmod(z.imag, w)
-    if (X, Y, dz) == (2, 1, 1):  # 4 -> 6
-        z += (1 + 1j) * w - y * (1 + 1j)
-        dz = 1j
-    elif (X, Y, dz) == (2, 2, 1j):  # 5 -> 2
-        z -= (2 + 1j) * w - (w - 1 - x) + x
-        dz = -1j
-    elif (X, Y, dz) == (1, 1, -1j):  # 3 -> 1
-        z -= (1j - 1) * w + (w - 1 - x) * (1 - 1j)
-        dz = 1
-    return z, dz
-
-    y_ = w - 1 - y
-    x_ = w - 1 - x
-    match X, Y, dz:
-        # case _, 0,   1: return z + (1+2j)*w + y_*1j, -1       # 1 -> 6
-        case _, 1,   1: return z + (1+1j)*w - y*(1+1j), 1j    # 4 -> 6
-        # case _, 2,   1: return z - (1+2j)*w + y_*1j, -1       # 6 -> 1
-        # case _, 0,  -1: return z - (1-1j)*w + y*(1-1j), 1j    # 1 -> 3
-        # case _, 1,  -1: return z + (3+1j)*w - y + y_*1j, -1j  # 2 -> 6
-        # case _, 2,  -1: return z - (1+1j)*w - y_*(1+1j), -1j  # 5 -> 3
-        # case 0, _,  1j: return z + (2+1j)*w + x_-x, -1j       # 2 -> 5
-        # case 1, _,  1j: return z + (1+1j)*w - x_*(1+1j), 1    # 3 -> 5
-        case 2, _,  1j: return z - (2+1j)*w + x_-x, -1j       # 5 -> 2
-        # case 3, _,  1j: return
-        # case 0, _, -1j: return
-        case 1, _, -1j: return z - (1j-1)*w - x_*(1-1j), 1    # 3 -> 1
-        # case 2, _, -1j: return
-        # case 3, _, -1j: return
+    match dz:
+        case 1: return z + (1+1j)*w - y*(1+1j), 1j         # 4 -> 6
+        case 1j: return z - (2+1j)*w + w-1-2*x, -1j        # 5 -> 2
+        case -1j: return z - (1j-1)*w - (w-1-x)*(1-1j), 1  # 3 -> 1
+        case _: raise NotImplementedError
 
 
 def walk_path(z, dz, wrap, draw=False):
@@ -178,13 +154,16 @@ def walk_path(z, dz, wrap, draw=False):
                 dz_ = dz
                 if z_ not in grid:
                     z_, dz_ = wrap(z, dz)
+                    if isinstance(dz_, str):
+                        print(z_, dz_)
+                        grid.draw(overlay=path_overlay, empty_glyph=" ")
+                        __import__("sys").exit(0)
                 if grid[z_] == "#":
                     break
                 z = z_
                 dz = dz_
                 path_overlay[z] = glyph[dz]
         path_overlay[z] = glyph[dz]
-        # grid.draw(overlay=path_overlay, empty_glyph=" ")
     if draw:
         grid.draw(overlay=path_overlay, empty_glyph=" ")
     return z, dz
