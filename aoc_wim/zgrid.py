@@ -139,6 +139,13 @@ class ZGrid:
                 zs.append(k)
         return zs
 
+    def remove(self, val):
+        keep = {z: v for z, v in self.items() if v != val}
+        n_removed = len(self) - len(keep)
+        self.d.clear()
+        self.d.update(keep)
+        return n_removed
+
     @staticmethod
     def near(z, n=4):
         if n == 4:
@@ -178,7 +185,7 @@ class ZGrid:
                 z-1+1j, z+1j, z+1+1j,
             ]
 
-    def draw(self, overlay=None, window=None, clear=False, pretty=False, transform=None, title="", flip=None):
+    def draw(self, overlay=None, window=None, clear=False, pretty=False, transform=None, title="", flip=None, empty_glyph=None):
         if window is None:
             d = self.d
         else:
@@ -187,7 +194,7 @@ class ZGrid:
             d = {z: self[z] for z in window}
         if overlay is not None:
             d = {**self.d, **overlay}
-        dump_grid(d, clear=clear, pretty=pretty, transform=transform, title=title, flip=flip)
+        dump_grid(d, clear=clear, pretty=pretty, transform=transform, title=title, flip=flip, empty_glyph=empty_glyph)
 
     # TODO:
     #  hexgrid compass overlay ✶
@@ -329,7 +336,7 @@ class ZGrid:
         self.d.update(other)
 
 
-def dump_grid(g, clear=False, pretty=True, transform=None, title="", flip=None):
+def dump_grid(g, clear=False, pretty=True, transform=None, title="", flip=None, empty_glyph=None):
     if transform is None:
         transform = {
             "#": "⬛",
@@ -345,10 +352,12 @@ def dump_grid(g, clear=False, pretty=True, transform=None, title="", flip=None):
             0: "  ",
             1: "⬛",
         }
-    empty = "."
     if pretty:
         transform.update({x: x + " " for x in string.ascii_letters if x not in transform})
-        empty = "  "
+        if empty_glyph is None:
+            empty_glyph = "  "
+    if empty_glyph is None:
+        empty_glyph = "."
     print()
     xs = [int(z.real) for z in g]
     ys = [int(z.imag) for z in g]
@@ -375,7 +384,7 @@ def dump_grid(g, clear=False, pretty=True, transform=None, title="", flip=None):
         else:
             line.append(" ")
         for col in cols:
-            glyph = g.get(col + row * 1j, empty)
+            glyph = g.get(col + row * 1j, empty_glyph)
             if pretty:
                 glyph = transform.get(glyph, glyph)
             line.append(str(glyph))
