@@ -3,41 +3,47 @@
 https://adventofcode.com/2022/day/23
 """
 from aocd import data
-from aoc_wim.zgrid import ZGrid
-from collections import defaultdict
-from collections import deque
 from itertools import count
+import numpy as np
+from scipy.signal import convolve2d
+from aoc_wim.ocr import autocrop
 
 
-grid = ZGrid(data, transform={".": None})
-edges = deque([
-    (-1j - 1, -1j, -1j + 1),
-    (+1j - 1, +1j, +1j + 1),
-    (-1j - 1,  -1, +1j - 1),
-    (-1j + 1,  +1, +1j + 1),
+A = np.array([[int(c == "#") for c in line] for line in data.splitlines()])
+mask = [1 << i for i in range(8)]
+mask.insert(4, 0)
+kernel = np.array(mask).reshape(3, 3)
+maskN = kernel[-1,:].sum()
+maskS = kernel[0,:].sum()
+maskW = kernel[:,-1].sum()
+maskE = kernel[:,0].sum()
+masks = np.array([[maskN, maskS, maskW, maskE]]).T
+offsets = np.array([
+    [-1, 0],
+    [1, 0],
+    [0, -1],
+    [0, 1],
 ])
-
-
-def movers():
-    d = defaultdict(list)  # dest: sources
-    for z0 in grid:
-        elves_nearby = {e[1]: sum(z0 + dz in grid for dz in e) for e in edges}
-        if sum(elves_nearby.values()):
-            for dz, n_nearby in elves_nearby.items():
-                if not n_nearby:
-                    d[z0 + dz].append(z0)
-                    break
-    return {z: zs[0] for z, zs in d.items() if len(zs) == 1}  # dest: source
-
-
-# grid.draw(title="== Initial State == ")
-for i in count(1):
-    z1_z0 = movers()
-    grid.d = dict.fromkeys(grid.keys() - z1_z0.values() | z1_z0.keys(), "#")
-    # grid.draw(title=f"== End of round {i} ==")
-    edges.rotate(-1)
-    if not z1_z0:  # nobody moved
-        print("part b:", i)
+for r in count(1):
+    A = np.pad(autocrop(A), pad_width=1)
+    C = convolve2d(A, kernel, mode="same")
+    w = np.argwhere(A)
+    dirs = C[*w.T] & masks
+    d0 = dirs==0
+    d = d0.argmax(axis=0)
+    stay = d0.all(axis=0) | (~d0).all(axis=0)
+    if stay.all():
+        print("part b:", r)
         break
-    if i == 10:
-        print("part a:", grid.area - len(grid))
+    w_ = w.copy()
+    for i in range(4):
+        w_[~stay & (d == i)] += offsets[i]
+    yx, i, u = np.unique(w_, axis=0, return_counts=True, return_index=True)
+    stay.fill(True)
+    stay[i[u==1]] = False
+    A.fill(0)
+    A[*np.where(stay[:,None], w, w_).T] = 1
+    offsets = np.roll(offsets, -1, axis=0)
+    masks = np.roll(masks, -1, axis=0)
+    if r == 10:
+        print("part a:", (autocrop(A)==0).sum())
