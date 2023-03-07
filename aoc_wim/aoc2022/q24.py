@@ -2,10 +2,8 @@
 --- Day 24: Blizzard Basin ---
 https://adventofcode.com/2022/day/24
 """
-import networkx as nx
 from aocd import data
 from aoc_wim.zgrid import ZGrid
-from itertools import count
 
 
 grid = ZGrid(data)
@@ -47,32 +45,18 @@ def bliz(t):
     return g
 
 
-def add_edges(i, g_prev, g):
-    graph.add_node((i, z_start))
-    graph.add_node((i, z_end))
-    for z0 in g.z(".", first=False):
-        for z in g_prev.near(z0, n=5):
-            if g_prev.get(z) == ".":
-                graph.add_edge((i - 1, z), (i, z0))
+def fill(z, targets):
+    zs = {z}
+    m = -1
+    while targets:
+        target = targets.pop()
+        while target not in zs:
+            m += 1
+            g = bliz(m)
+            zs = {z for z0 in zs for z in g.near(z0, n=5) if g.get(z) == "."}
+        zs = {target}
+    return m
 
 
-graph = nx.DiGraph()
-graph.add_node((0, z_start))
-g_prev = bliz(0)
-a = b0 = b = None
-for i in count(1):
-    g = bliz(i)
-    add_edges(i, g_prev, g)
-    g_prev = g
-    if i < min_depth:
-        continue
-    if a is None and nx.has_path(graph, (0, z_start), (i, z_end)):
-        a = i
-    if a and b0 is None and nx.has_path(graph, (a, z_end), (i, z_start)):
-        b0 = i - a
-    if a and b0 and nx.has_path(graph, (a + b0, z_start), (i, z_end)):
-        b = i
-        break
-
-print("part a:", a)
-print("part b:", b)
+print("part a:", fill(z=z_start, targets=[z_end]))
+print("part b:", fill(z=z_start, targets=[z_end, z_start, z_end]))
