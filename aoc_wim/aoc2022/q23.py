@@ -24,17 +24,19 @@ offsets = np.array([
     [0, -1],
     [0, 1],
 ])
-for r in count(1):
+a = b = None
+r = 0
+while a is None or b is None:
+    r += 1
     A = np.pad(autocrop(A), pad_width=1)
     C = convolve2d(A, kernel, mode="same")
     w = np.argwhere(A)
     dirs = C[*w.T] & masks
-    d0 = dirs==0
+    d0 = dirs == 0
     d = d0.argmax(axis=0)
     stay = d0.all(axis=0) | (~d0).all(axis=0)
-    if stay.all():
-        print("part b:", r)
-        break
+    if b is None and stay.all():
+        b = r
     w_ = w.copy()
     for i in range(4):
         w_[~stay & (d == i)] += offsets[i]
@@ -46,4 +48,7 @@ for r in count(1):
     offsets = np.roll(offsets, -1, axis=0)
     masks = np.roll(masks, -1, axis=0)
     if r == 10:
-        print("part a:", (autocrop(A)==0).sum())
+        a = (autocrop(A) == 0).sum()
+
+print("part a:", a)
+print("part b:", b)
