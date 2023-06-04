@@ -6,7 +6,6 @@ from aocd import data
 from aoc_wim.zgrid import ZGrid
 from collections import defaultdict
 from collections import deque
-from itertools import count
 
 
 grid = ZGrid(data, transform={".": None})

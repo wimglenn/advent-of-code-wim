@@ -3,7 +3,6 @@
 https://adventofcode.com/2022/day/23
 """
 from aocd import data
-from itertools import count
 import numpy as np
 from scipy.signal import convolve2d
 from aoc_wim.ocr import autocrop
