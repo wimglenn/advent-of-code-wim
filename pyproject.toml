@@ -18,6 +18,7 @@ dependencies = [
     "parse",
     "scipy",
     "sympy",
+    "termcolor",
     "fields",
     "networkx",
     "wimpy",

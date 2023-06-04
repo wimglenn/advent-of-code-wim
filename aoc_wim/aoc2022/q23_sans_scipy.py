@@ -31,13 +31,18 @@ def movers():
 
 
 # grid.draw(title="== Initial State == ")
-for i in count(1):
+i = 0
+a = b = None
+while a is None or b is None:
+    i += 1
     z1_z0 = movers()
     grid.d = dict.fromkeys(grid.keys() - z1_z0.values() | z1_z0.keys(), "#")
     # grid.draw(title=f"== End of round {i} ==")
     edges.rotate(-1)
-    if not z1_z0:  # nobody moved
-        print("part b:", i)
-        break
-    if i == 10:
-        print("part a:", grid.area - len(grid))
+    if b is None and not z1_z0:  # nobody moved
+        b = i
+    if a is None and i == 10:
+        a = grid.area - len(grid)
+
+print("part a:", a)
+print("part b:", b)
