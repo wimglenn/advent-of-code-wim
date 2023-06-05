@@ -7,7 +7,7 @@ import numpy as np
 from scipy.signal import convolve2d
 
 s, grid = data.split("\n\n")
-s = np.array([c == "#" for c in s])
+s = np.array([c == "#" for c in s.replace("\n", "")])
 im = np.array([[*r] for r in grid.splitlines()]) == "#"
 kernel = 2 ** np.arange(9).reshape(3, 3)
 for i in range(50):
