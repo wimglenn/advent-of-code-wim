@@ -24,7 +24,7 @@ lookup = {frozenset(v): str(k) for k, v in segments.items()}
 translations = [str.maketrans("".join(p), "abcdefg") for p in permutations("abcdefg", 7)]
 
 a = b = 0
-for line in data.splitlines():
+for line in data.replace("|\n", "| ").splitlines():
     patterns, code = line.split(" | ")
     for part in code.split():
         a += len(part) in {2, 3, 4, 7}
