@@ -16,13 +16,21 @@ class Q18AStar(AStar):
         grid = ZGrid(data, on=".", off="#")
         pos = ("@",)
         if part == "b":
-            [z0] = [z for z, v in grid.items() if v == "@"]
-            if grid.count_near(z0, val=".", n=8, default=".") == 8:
-                pos = ("@0", "@1", "@2", "@3")
-                for z in grid.near(z0, n=5):
-                    grid[z] = grid.off
-                for p, dz in zip(pos, [-1 - 1j, 1 - 1j,  1 + 1j, -1 + 1j]):
-                    grid[z0 + dz] = p
+            if grid.count("@") == 1:
+                z0 = grid.z("@")
+                if grid.count_near(z0, val=".", n=8, default=".") == 8:
+                    pos = ("@0", "@1", "@2", "@3")
+                    for z in grid.near(z0, n=5):
+                        grid[z] = grid.off
+                    for p, dz in zip(pos, [-1 - 1j, 1 - 1j, 1 + 1j, -1 + 1j]):
+                        grid[z0 + dz] = p
+            else:
+                pos = ()
+                for i, z in enumerate(grid.z("@", first=False)):
+                    glyph = f"@{i}"
+                    grid[z] = glyph
+                    pos += (glyph,)
+
         graph = grid.graph(extra=frozenset(string.ascii_letters).union(pos))
         self.all_keys = {k for k in graph.extra if k in string.ascii_lowercase}
 
@@ -35,18 +43,12 @@ class Q18AStar(AStar):
                 try:
                     path = nx.shortest_path(graph, graph.extra[p], graph.extra[k0])
                 except nx.NetworkXNoPath:
-                    pass
-                else:
-                    break
-            else:
-                raise Exception("nothing possible to do")
-            self.kdist[k0, p] = self.kdist[p, k0] = len(path) - 1
-            assert path[0] == graph.extra[p]
-            assert path[-1] == graph.extra[k0]
-            for p in path[1:-1]:
-                if p in graph.extra.values():
-                    k1 = grid[p].lower()
-                    self.obstructions[k0].add(k1)
+                    continue
+                self.kdist[k0, p] = self.kdist[p, k0] = len(path) - 1
+                for p in path[1:-1]:
+                    if p in graph.extra.values():
+                        k1 = grid[p].lower()
+                        self.obstructions[k0].add(k1)
 
         for k1, k2 in combinations(self.all_keys, 2):
             z1 = graph.extra[k1]
