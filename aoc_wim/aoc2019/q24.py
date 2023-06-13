@@ -5,13 +5,6 @@ https://adventofcode.com/2019/day/24
 from aocd import data
 from aoc_wim.zgrid import ZGrid
 
-test_data = """\
-....#
-#..#.
-#..##
-..#..
-#...."""
-
 
 def new_empty_grid():
     grid = ZGrid(".....\n" * 5)
