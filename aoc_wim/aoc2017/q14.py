@@ -4,7 +4,7 @@ https://adventofcode.com/2017/day/14
 """
 import numpy as np
 from aocd import data
-from scipy.ndimage.measurements import label
+from scipy.ndimage import label
 
 from aoc_wim.aoc2017.q10 import knot_hash
 
