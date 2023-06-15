@@ -19,7 +19,7 @@ class IntComputer:
     def __init__(self, reg0, inputs=()):
         self.ip = 0
         if reg0 and isinstance(reg0, str):
-            reg0 = [int(x) for x in reg0.split(",")]
+            reg0 = [int(x) for x in reg0.replace("\n", "").split(",")]
         self.offset = 0
         self.reg = defaultdict(int, dict(enumerate(reg0)))
         self.input = deque(inputs)
