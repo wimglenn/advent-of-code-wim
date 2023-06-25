@@ -19,8 +19,9 @@ class StaleMate(Exception):
 
 
 class System:
-    def __init__(self, name, text, boost=0):
-        self.name = name
+    def __init__(self, text, boost=0):
+        self.name, text = text.split(":\n")
+        text = text.replace("\n ", " ")
         self.groups = []
         for i, line in enumerate(text.splitlines(), start=1):
             self.groups.append(Group(id=i, text=line, system=self, boost=boost))
@@ -121,15 +122,12 @@ class Group:
 
 
 class Battle:
-    template = "{s1}:\n{txt1}\n\n{s2}:\n{txt2}"
 
     def __init__(self, data, immuno_boost=0):
         self.ticks = 0
-        result = parse(self.template, data)
-        name = result.named["s1"]
-        text = result.named["txt1"]
-        self.immune = System(name, text, boost=immuno_boost)
-        self.infection = System(name=result.named["s2"], text=result.named["txt2"])
+        immune, infection = data.split("\n\n")
+        self.immune = System(immune, boost=immuno_boost)
+        self.infection = System(infection)
 
     def target_selection_phase(self):
         self.infection.select_targets_from(self.immune)
