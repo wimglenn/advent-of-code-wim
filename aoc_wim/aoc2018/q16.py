@@ -82,9 +82,11 @@ After:  [{:d}, {:d}, {:d}, {:d}]"""
 
 def main():
     ops = all_ops()
-    samples, prog = data.split("\n" * 4)
+    samples, _sep, prog = data.partition("\n" * 4)
     samples = samples.split("\n" * 2)
     print("part a:", sum(len(choices(s)) >= 3 for s in samples))
+    if not prog:
+        return
     identified = {}
     while len(identified) < len(ops):
         for s in samples:
