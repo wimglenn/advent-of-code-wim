@@ -26,10 +26,16 @@ class Worker:
             return val
 
 
-def work(data, n_workers=4, delay=60):
+def work(data, part="a"):
     template = "Step {} must be finished before step {} can begin."
     pairs = [parse(template, s).fixed for s in data.splitlines()]
     remaining = {x for pair in pairs for x in pair}
+    n_workers = 1 if part == "a" else 5
+    delay = 60
+    if remaining == set("ABCDEF"):
+        # the smaller example data
+        n_workers = 1 if part == "a" else 2
+        delay = 0
     in_progress = set()
     done = set()
     text = ""
@@ -61,5 +67,5 @@ def work(data, n_workers=4, delay=60):
     return result
 
 
-print("part a:", work(data, n_workers=1).text)
-print("part b:", work(data).n_iterations)
+print("part a:", work(data).text)
+print("part b:", work(data, part="b").n_iterations)
