@@ -25,18 +25,18 @@ class MyNode(NodeMixin):
             return total
 
 
-data = [int(x) for x in data.split()]
+ns = [int(x) for x in data.split()]
 sum_all_metas = 0
 node = root = MyNode()
 try:
     i = 0
-    while data:
-        if data[i] == 0:
-            n_metas = data[i + 1]
-            metas = data[i + 2 : i + 2 + n_metas]
+    while ns:
+        if ns[i] == 0:
+            n_metas = ns[i + 1]
+            metas = ns[i + 2 : i + 2 + n_metas]
             sum_all_metas += sum(metas)
-            del data[i : i + 2 + n_metas]
-            data[i - 2] -= 1
+            del ns[i : i + 2 + n_metas]
+            ns[i - 2] -= 1
             i -= 2
             node.metas = metas
             node = node.parent
