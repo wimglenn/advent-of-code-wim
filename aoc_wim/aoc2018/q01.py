@@ -7,7 +7,7 @@ from itertools import cycle
 from aocd import data
 
 
-ns = [int(x) for x in data.split()]
+ns = [int(x) for x in data.replace(",", " ").split()]
 print("part a:", sum(ns))
 
 f = None
