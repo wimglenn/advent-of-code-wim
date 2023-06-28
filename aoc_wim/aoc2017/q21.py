@@ -45,5 +45,9 @@ def evolve(data, iterations):
 
 
 if __name__ == "__main__":
-    print(evolve(data, 5))
-    print(evolve(data, 18))
+    if len(data.splitlines()) == 2:
+        # example data
+        print(evolve(data, 2))
+    else:
+        print(evolve(data, 5))
+        print(evolve(data, 18))
