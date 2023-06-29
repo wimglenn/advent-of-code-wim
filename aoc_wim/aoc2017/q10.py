@@ -8,7 +8,8 @@ from operator import xor
 from aocd import data
 
 
-def munge(state, lengths, n=256, iterations=64):
+def munge(state, lengths, iterations=64):
+    n = len(state)
     skip_size = 0
     current_position = 0
     for i in range(iterations):
@@ -21,21 +22,17 @@ def munge(state, lengths, n=256, iterations=64):
             skip_size += 1
 
 
-def part_a(data, n=256):
+try:
     lengths = [int(x) for x in data.split(",")]
-    state = list(range(n))
-    munge(state, lengths=lengths, n=n, iterations=1)
-    return state[0] * state[1]
+except ValueError:
+    pass
+else:
+    state = list(range(5 if data == "3, 4, 1, 5" else 256))
+    munge(state, lengths, 1)
+    print("part a:", state[0] * state[1])
 
-
-def knot_hash(data, n=256):
-    state = list(range(n))
-    lengths = [ord(x) for x in data] + [17, 31, 73, 47, 23]
-    munge(state, lengths, n)
-    reduced = [reduce(xor, state[16 * i : 16 * (i + 1)]) for i in range(16)]
-    return bytes(reduced).hex()
-
-
-if __name__ == "__main__":
-    print("part a:", part_a(data))
-    print("part b:", knot_hash(data))
+state = list(range(256))
+lengths = [ord(x) for x in data] + [17, 31, 73, 47, 23]
+munge(state, lengths)
+reduced = [reduce(xor, state[16 * i : 16 * (i + 1)], 0) for i in range(16)]
+print("part b:", bytes(reduced).hex())
