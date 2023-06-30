@@ -7,7 +7,7 @@ from _md5 import md5
 from aocd import data
 
 
-def bfs(part="a"):
+def bfs(data, part="a"):
     z0 = 0
     target = 3 + 3j
     depth = 0
@@ -21,11 +21,11 @@ def bfs(part="a"):
                 return path
             longest_path_length = depth
         else:
-            queue.extend((x + (depth + 1,)) for x in adjacent(z, path))
+            queue.extend((x + (depth + 1,)) for x in adjacent(z, path, data))
     return longest_path_length
 
 
-def adjacent(z0, path):
+def adjacent(z0, path, data):
     dzs = {"U": -1j, "D": 1j, "L": -1, "R": 1}
     directions = zip(dzs.items(), md5((data + path).encode()).hexdigest())
     for (dpath, dz), s in directions:
@@ -35,5 +35,5 @@ def adjacent(z0, path):
                 yield z, path + dpath
 
 
-print("part a:", bfs(part="a"))
-print("part b:", bfs(part="b"))
+print("part a:", bfs(data, part="a"))
+print("part b:", bfs(data, part="b"))
