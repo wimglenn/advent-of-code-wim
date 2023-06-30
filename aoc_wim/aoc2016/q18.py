@@ -14,16 +14,9 @@ def generate_rows(row):
         row = "".join(["^."[row[i] == row[i + 2]] for i in idx])
 
 
-def make_grid(row0, nrows):
-    gen = generate_rows(row0)
-    return "".join([next(gen) + "\n" for i in range(nrows)])
-
-
-def n_safe_tiles(row0, nrows):
-    gen = generate_rows(row0)
-    return sum([next(gen).count(".") for i in range(nrows)])
-
-
-if __name__ == "__main__":
-    print(n_safe_tiles(data, nrows=40))
-    print(n_safe_tiles(data, nrows=400000))
+n_rows = 3 if len(data) == 5 else 10 if len(data) == 10 else 40
+gen = generate_rows(data)
+safe = sum(next(gen).count(".") for _ in range(n_rows))
+print("part a:", safe)
+safe += sum(next(gen).count(".") for _ in range(400000 - n_rows))
+print("part b:", safe)
