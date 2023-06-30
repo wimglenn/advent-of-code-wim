@@ -76,5 +76,6 @@ def descramble(data, scrambled):
             return "".join(original)
 
 
-print(scramble(data, "abcdefgh"))
+start = "abcde" if data.count("\n") < 10 else "abcdefgh"
+print(scramble(data, start))
 print(descramble(data, "fbgdceah"))
