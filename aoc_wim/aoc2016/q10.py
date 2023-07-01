@@ -30,36 +30,26 @@ class Bot(object):
             self.part_b = True
 
 
-def parsed(data, lh=(17, 61)):
-    receives = []
-    receivers = {}
-    for line in data.splitlines():
-        if line.startswith("value"):
-            tup = parse("value {:d} goes to {}", line).fixed
-            receives.append(tup)
-        else:
-            result = parse("{} gives low to {} and high to {}", line)
-            bot_name, low_to, high_to = result.fixed
-            bot = receivers.get(bot_name, Bot(bot_name, lh=lh))
-            bot.low_to = receivers.get(low_to, Bot(low_to))
-            bot.high_to = receivers.get(high_to, Bot(high_to))
-            for receiver in bot, bot.low_to, bot.high_to:
-                receivers[receiver.name] = receiver
-    return receives, receivers
+receives = []
+receivers = {}
+lines = data.splitlines()
+lh = (2, 5) if len(lines) == 6 else (17, 61)
+for line in lines:
+    if line.startswith("value"):
+        tup = parse("value {:d} goes to {}", line).fixed
+        receives.append(tup)
+    else:
+        result = parse("{} gives low to {} and high to {}", line)
+        bot_name, low_to, high_to = result.fixed
+        bot = receivers.get(bot_name, Bot(bot_name, lh=lh))
+        bot.low_to = receivers.get(low_to, Bot(low_to))
+        bot.high_to = receivers.get(high_to, Bot(high_to))
+        for receiver in bot, bot.low_to, bot.high_to:
+            receivers[receiver.name] = receiver
 
-
-def part_ab(data, lh=(17, 61)):
-    receives, receivers = parsed(data, lh=lh)
-    for n, bot_name in receives:
-        receivers[bot_name].receive(n)
-    outputs = [receivers[f"output {o}"].chips for o in (0, 1, 2)]
-    [bot_a] = [v for v in receivers.values() if v.part_b]
-    a = int(bot_a.name.lstrip("bot "))
-    b = prod([n for [n] in outputs])
-    return a, b
-
-
-if __name__ == "__main__":
-    a, b = part_ab(data)
-    print("part a:", a)
-    print("part b:", b)
+for n, bot_name in receives:
+    receivers[bot_name].receive(n)
+outputs = [receivers[f"output {o}"].chips for o in (0, 1, 2)]
+[bot_a] = [v for v in receivers.values() if v.part_b]
+print("part a:", int(bot_a.name.lstrip("bot ")))
+print("part b:", prod([n for [n] in outputs]))
