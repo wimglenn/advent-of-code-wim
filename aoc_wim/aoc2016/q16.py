@@ -22,10 +22,18 @@ def r_checksum(s):
     return s if len(s) % 2 else r_checksum(s)
 
 
-def f(data, n):
-    return r_checksum(pad(data, n))
+def f(data, length):
+    return r_checksum(pad(data, length))
+
+
+example_disk_lengths = {
+    "110010110100": 12,
+    "10000": 20,
+}
 
 
 if __name__ == "__main__":
-    print(f(data, n=272))
-    print(f(data, n=35651584))
+    length = example_disk_lengths.get(data, 272)
+    print("part a:", f(data, length))
+    if data not in example_disk_lengths:
+        print("part b:", f(data, 35651584))
