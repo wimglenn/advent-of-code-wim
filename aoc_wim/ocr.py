@@ -350,11 +350,16 @@ glyphs = """
 
 .#
 #.
+
+
+.#..#.#
+#.#....
+.#.....
 """
 
 
 glyphs = {g: np.array(ZGrid(g)) == "#" for g in glyphs.strip().split("\n\n\n")}
-known = dict(zip(glyphs, "AABBCCEEFFGGHHHIIJJKKLLNOPPRRSUXZZ□⟋"))
+known = dict(zip(glyphs, "AABBCCEEFFGGHHHIIJJKKLLNOPPRRSUXZZ□⟋📺"))
 known[""] = ""
 
 day10_2022_expected_example_render = """

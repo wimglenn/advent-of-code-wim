@@ -18,11 +18,10 @@ def animate(A, line):
     return A
 
 
-A = np.full((6, 50), ".")
-for line in data.splitlines():
+lines = data.splitlines()
+im = (3, 7) if len(lines) == 4 else (6, 50)
+A = np.full(im, ".")
+for line in lines:
     A = animate(A, line)
-
-
-if __name__ == "__main__":
-    print("part a:", (A == "#").sum())
-    print("part b:", AOCR[A])
+print("part a:", (A == "#").sum())
+print("part b:", AOCR[A])
