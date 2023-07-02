@@ -1,7 +1,0 @@
-(5x2))(2x1
-10  # len(")(2x1)(2x1")
-5  # len(")(2x1")
-
-# user example from reddit
-# https://www.reddit.com/r/adventofcode/comments/5xk7s1/2016_day_9_part_2_what_to_do_with_5x22x1/
-# this one is interesting because it reconstructs a broken marker

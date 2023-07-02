@@ -1,7 +1,6 @@
-(7x2)A(3x2)BCD
+AAA(4x3)BBB
 -
-12  # len("ABA(BABCDBCD") == 12
+12  # len("AAABBBBBBBBB")
 
 # this is an additional example verified by the AoC author on reddit (topaz2078)
 # https://www.reddit.com/r/adventofcode/comments/5hh56d/help_dont_understand_puzzle_9_part_b/db0aggl
-# The first marker is copying another marker which wants to access something outside of the first marker's reach
