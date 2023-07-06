@@ -1,8 +1,6 @@
 import pytest
 from parse import parse
 
-from aoc_wim.aoc2015 import q20
-
 
 expected = """\
 House 1 got 10 presents.
@@ -17,6 +15,7 @@ House 9 got 130 presents."""
 
 
 @pytest.mark.parametrize("line", expected.splitlines())
-def test_first_nine_houses_on_the_street(line):
+def test_first_nine_houses_on_the_street_slow(line):
+    from aoc_wim.aoc2015 import q20  # inline import because the module is slow to load
     i, n = parse("House {:d} got {:d} presents.", line).fixed
     assert q20.A[i] == n

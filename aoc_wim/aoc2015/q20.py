@@ -12,7 +12,5 @@ for i in range(1, 1000000):
     A[i::i] += i * 10
     B[i::i][:50] += i * 11
 
-
-if __name__ == "__main__":
-    print("part a:", np.argmax(A > int(data)))
-    print("part b:", np.argmax(B > int(data)))
+print("part a:", np.argmax(A > int(data or 0)))
+print("part b:", np.argmax(B > int(data or 0)))

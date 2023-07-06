@@ -7,14 +7,13 @@ from collections import defaultdict
 from aocd import data
 
 
-reactions, element = data.split("\n\n")
+reactions, sep, element = data.partition("\n\n")
 tr = defaultdict(list)
 tri = {}
 for line in reactions.splitlines():
     s, r = line.split(" => ")
     tr[s].append(r)
     tri[r] = s
-
 
 seen = set()
 for s, rs in tr.items():
@@ -25,22 +24,20 @@ for s, rs in tr.items():
             new[i : i + 2] = [left + r + right]
             new = s.join(new)
             seen.add(new)
-
-
-replacements = 0
-while element != "e":
-    pos = {}
-    for k, v in tri.items():
-        delta = len(k) - len(v)
-        if k in element:
-            if v != "e" or len(element) - delta == 1:
-                pos[k] = (element.rfind(k) + len(k), delta)
-    k = max(pos, key=pos.get)
-    v = tri[k]
-    # replace from right
-    element = element[::-1].replace(k[::-1], v[::-1], 1)[::-1]
-    replacements += 1
-
-
 print("part a:", len(seen))
-print("part b:", replacements)
+
+if "e => " in data:
+    replacements = 0
+    while element != "e":
+        pos = {}
+        for k, v in tri.items():
+            delta = len(k) - len(v)
+            if k in element:
+                if v != "e" or len(element) - delta == 1:
+                    pos[k] = (element.rfind(k) + len(k), delta)
+        k = max(pos, key=pos.get)
+        v = tri[k]
+        # replace from right
+        element = element[::-1].replace(k[::-1], v[::-1], 1)[::-1]
+        replacements += 1
+    print("part b:", replacements)
