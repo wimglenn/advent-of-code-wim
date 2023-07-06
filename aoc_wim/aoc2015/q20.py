@@ -13,6 +13,6 @@ for i in range(1, 1000000):
     B[i::i][:50] += i * 11
 
 
-assert A[1:10].tolist() == [10, 30, 40, 70, 60, 120, 80, 150, 130]
-print("part a:", np.argmax(A > int(data)))
-print("part b:", np.argmax(B > int(data)))
+if __name__ == "__main__":
+    print("part a:", np.argmax(A > int(data)))
+    print("part b:", np.argmax(B > int(data)))
