@@ -42,5 +42,5 @@ def find_sue(**kwargs):
             return int(sue.split()[1])
 
 
-print(find_sue())
-print(find_sue(cats=gt, trees=gt, pomeranians=lt, goldfish=lt))
+print("answer_a:", find_sue())
+print("answer_b:", find_sue(cats=gt, trees=gt, pomeranians=lt, goldfish=lt))

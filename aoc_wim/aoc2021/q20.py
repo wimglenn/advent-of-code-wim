@@ -13,5 +13,5 @@ kernel = 2 ** np.arange(9).reshape(3, 3)
 for i in range(50):
     im = s[convolve2d(im, kernel, fillvalue=s[0]*i % 2)]
     if i == 1:
-        print("part a:", im.sum())
-print("part b:", im.sum())
+        print("answer_a:", im.sum())
+print("answer_b:", im.sum())

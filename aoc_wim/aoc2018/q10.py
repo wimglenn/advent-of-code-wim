@@ -24,7 +24,7 @@ while True:
     if v > minv:
         ps = a[:2] - a[2:]  # back up one step
         g = ZGrid({complex(*p): 1 for p in ps.T})
-        print("part a:", AOCR[g])
-        print("part b:", t)
+        print("answer_a:", AOCR[g])
+        print("answer_b:", t)
         break
     t += 1

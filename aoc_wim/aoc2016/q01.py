@@ -20,5 +20,5 @@ for step in data.split(", "):
             b = manhattan_distance(z)
         seen.add(z)
 
-print("part a:", manhattan_distance(z))
-print("part b:", b)
+print("answer_a:", manhattan_distance(z))
+print("answer_b:", b)

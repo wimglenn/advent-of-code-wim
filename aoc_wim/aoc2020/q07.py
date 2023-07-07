@@ -16,7 +16,7 @@ for line in data.splitlines():
         n = 0 if n == "no" else int(n)
         g.add_edge(left, right, weight=n)
 
-print("part a:", sum(nx.has_path(g, b, "shiny gold bag") for b in g.nodes) - 1)
+print("answer_a:", sum(nx.has_path(g, b, "shiny gold bag") for b in g.nodes) - 1)
 
 b = -1
 q = deque([(1, "shiny gold bag")])
@@ -25,4 +25,4 @@ while q:
     b += w
     q.extend((w * g[b0][b1]["weight"], b1) for b1 in g[b0])
 
-print("part b:", b)
+print("answer_b:", b)

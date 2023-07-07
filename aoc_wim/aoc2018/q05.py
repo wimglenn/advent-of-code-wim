@@ -17,7 +17,7 @@ def react(data, remove=None):
     return "".join(result)
 
 
-print("part a:", len(react(data)))
+print("answer_a:", len(react(data)))
 
 
 def choices(data):
@@ -26,4 +26,4 @@ def choices(data):
     return results
 
 
-print("part b:", min([len(v) for v in choices(data).values()], default=0))
+print("answer_b:", min([len(v) for v in choices(data).values()], default=0))

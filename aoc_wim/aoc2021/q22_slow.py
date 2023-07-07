@@ -60,5 +60,5 @@ def total_volume(cuboids):
 cuboids = [Cuboid.from_line(x) for x in data.splitlines()]
 small_cuboids = [c for c in cuboids if c.small]
 
-print("part a:", total_volume(small_cuboids))
-print("part b:", total_volume(cuboids))
+print("answer_a:", total_volume(small_cuboids))
+print("answer_b:", total_volume(cuboids))

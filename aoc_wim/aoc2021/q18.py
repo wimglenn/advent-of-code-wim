@@ -107,5 +107,5 @@ class SnailfishNumber:
 
 
 ns = [SnailfishNumber(line) for line in data.splitlines()]
-print("part a:", abs(sum(ns)))
-print("part b:", max([abs(n1 + n2) for n1 in ns for n2 in ns], default=0))
+print("answer_a:", abs(sum(ns)))
+print("answer_b:", max([abs(n1 + n2) for n1 in ns for n2 in ns], default=0))

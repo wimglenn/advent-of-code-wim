@@ -19,6 +19,6 @@ if __name__ == "__main__":
         print(len(look_and_say(data, 1)))
     else:
         a = look_and_say(data, n=40)
-        print("part a:", len(a))
+        print("answer_a:", len(a))
         b = look_and_say(a, n=50 - 40)
-        print("part b:", len(b))
+        print("answer_b:", len(b))

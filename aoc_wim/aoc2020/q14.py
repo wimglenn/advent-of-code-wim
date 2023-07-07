@@ -29,5 +29,5 @@ for line in data.splitlines():
                     memb ^= bit
                 db[memb] = val
 
-print("part a:", sum(da.values()))
-print("part b:", sum(db.values()))
+print("answer_a:", sum(da.values()))
+print("answer_b:", sum(db.values()))

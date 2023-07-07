@@ -69,5 +69,5 @@ for z in sorted(g.nodes, key=manhattan_distance, reverse=True):
     for length, z in enumerate(path):
         distances[z] = length
 
-print("part a:", max(distances.values()))
-print("part b:", sum(d >= 1000 for d in distances.values()))
+print("answer_a:", max(distances.values()))
+print("answer_b:", sum(d >= 1000 for d in distances.values()))

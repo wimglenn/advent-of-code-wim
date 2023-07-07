@@ -55,9 +55,9 @@ labels = []
 while cup is not cup1:
     labels.append(str(cup.label))
     cup = cup.r
-print("part a:", "".join(labels))
+print("answer_a:", "".join(labels))
 
 game = CupGame(data, n=1000000)
 game.play(iterations=10000000)
 cup1 = game.cups[0]
-print("part b:", cup1.r.label * cup1.r.r.label)
+print("answer_b:", cup1.r.label * cup1.r.r.label)

@@ -176,7 +176,7 @@ class Battle:
         return winner.n
 
 
-print("part a:", Battle(data).part_a())
+print("answer_a:", Battle(data).part_a())
 
 boost = 0
 while True:
@@ -189,4 +189,4 @@ while True:
         break
     boost += 1
 
-print("part b:", battle.immune.n)
+print("answer_b:", battle.immune.n)

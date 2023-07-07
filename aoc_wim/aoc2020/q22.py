@@ -44,9 +44,9 @@ if __name__ == "__main__":
     p1a = deque(cards1)
     p2a = deque(cards2)
     play(p1a, p2a)
-    print("part a:", score(p1a or p2a))
+    print("answer_a:", score(p1a or p2a))
 
     p1b = deque(cards1)
     p2b = deque(cards2)
     play(p1b, p2b, part="b")
-    print("part b:", score(p1b or p2b))
+    print("answer_b:", score(p1b or p2b))

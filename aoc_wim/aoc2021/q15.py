@@ -21,7 +21,7 @@ class Q15AStar(AStar):
 
 grid = zgrid.ZGrid(data, transform=int)
 path = Q15AStar(state0=grid.top_left, target=grid.bottom_right).run()
-print("part a:", sum(grid[z] for z in path) - grid[grid.top_left])
+print("answer_a:", sum(grid[z] for z in path) - grid[grid.top_left])
 
 h, w = grid.height, grid.width
 for z in zgrid.zrange(5 * (grid.bottom_right + 1 + 1j)):
@@ -30,4 +30,4 @@ for z in zgrid.zrange(5 * (grid.bottom_right + 1 + 1j)):
     grid[z] = (grid[complex(rr, ri)] + int(qr) + int(qi) - 1) % 9 + 1
 
 path = Q15AStar(state0=grid.top_left, target=grid.bottom_right).run()
-print("part b:", sum(grid[z] for z in path) - grid[grid.top_left])
+print("answer_b:", sum(grid[z] for z in path) - grid[grid.top_left])

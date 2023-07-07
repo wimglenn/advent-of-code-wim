@@ -9,5 +9,5 @@ cals = []
 for chunk in data.split("\n\n"):
     cals.append(sum(map(int, chunk.split())))
 
-print("part a:", max(cals))
-print("part b:", sum(nlargest(3, cals)))
+print("answer_a:", max(cals))
+print("answer_b:", sum(nlargest(3, cals)))

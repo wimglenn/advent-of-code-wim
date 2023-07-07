@@ -20,5 +20,5 @@ for txt in data.splitlines():
     a += not has_dupe(txt)
     b += not has_anagram(txt)
 
-print("part a:", a)
-print("part b:", b)
+print("answer_a:", a)
+print("answer_b:", b)

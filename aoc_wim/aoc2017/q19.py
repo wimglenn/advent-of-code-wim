@@ -25,5 +25,5 @@ while True:
     elif a == " ":
         break
 
-print("part a:", letters)
-print("part b:", n_steps)
+print("answer_a:", letters)
+print("answer_b:", n_steps)

@@ -100,5 +100,5 @@ class Packet:
 
 stream = io.StringIO("".join([f"{int(x, 16):04b}" for x in data]))
 packet0 = Packet(stream)
-print("part a:", Packet.version_sum)
-print("part b:", packet0.value)
+print("answer_a:", Packet.version_sum)
+print("answer_b:", packet0.value)

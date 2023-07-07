@@ -23,5 +23,5 @@ for c in data:
         score += nesting
         nesting -= 1
 
-print("part a:", score)
-print("part b:", n_removed)
+print("answer_a:", score)
+print("answer_b:", n_removed)

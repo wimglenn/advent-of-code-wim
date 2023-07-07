@@ -34,5 +34,5 @@ for line in data.replace("|\n", "| ").splitlines():
     code = "".join([lookup[frozenset(n.translate(t))] for n in code.split()])
     b += int(code)
 
-print("part a:", a)
-print("part b:", b)
+print("answer_a:", a)
+print("answer_b:", b)

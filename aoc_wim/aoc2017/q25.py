@@ -44,4 +44,4 @@ for i in range(prog["n"]):
     direction, tape[cursor], state = instructions[val]
     cursor += direction
 
-print(sum(tape.values()))
+print("answer_a:", sum(tape.values()))

@@ -42,5 +42,5 @@ def play_quantum(p1, p2):
 
 
 p1, p2 = [int(line.split()[-1]) for line in data.splitlines()]
-print("part a:", play_deterministic(p1, p2))
-print("part b:", play_quantum(p1, p2))
+print("answer_a:", play_deterministic(p1, p2))
+print("answer_b:", play_quantum(p1, p2))

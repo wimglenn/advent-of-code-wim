@@ -34,6 +34,6 @@ example_disk_lengths = {
 
 if __name__ == "__main__":
     length = example_disk_lengths.get(data, 272)
-    print("part a:", f(data, length))
+    print("answer_a:", f(data, length))
     if data not in example_disk_lengths:
-        print("part b:", f(data, 35651584))
+        print("answer_b:", f(data, 35651584))

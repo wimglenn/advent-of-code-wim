@@ -16,7 +16,7 @@ for i, line in enumerate(data.splitlines()):
     z = sum([zgrid.hexH[s] for s in steps])
     grid[z] = 1 - grid.get(z, 0)
     # grid.draw_hex(glyph=0, orientation="H", clear=True, title=f" flip {i} ")
-print("part a:", grid.count(1))
+print("answer_a:", grid.count(1))
 
 # conway's game of life on a hexgrid
 A = np.array(grid)
@@ -30,4 +30,4 @@ for day in range(1, 101):
         print(f"Day {day}:", A.sum())
     if day == 10:
         print()
-print("part b:", A.sum())
+print("answer_b:", A.sum())

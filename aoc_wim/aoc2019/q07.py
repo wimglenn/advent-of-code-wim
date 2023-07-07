@@ -23,5 +23,5 @@ class Amp:
                     return self.comps[-1].output[-1]
 
 
-print("part a:", max(Amp(data, p).run() for p in permutations(range(5))))
-print("part b:", max(Amp(data, p).run() for p in permutations(range(5, 10))))
+print("answer_a:", max(Amp(data, p).run() for p in permutations(range(5))))
+print("answer_b:", max(Amp(data, p).run() for p in permutations(range(5, 10))))

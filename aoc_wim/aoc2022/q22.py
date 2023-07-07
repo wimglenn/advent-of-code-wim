@@ -125,7 +125,7 @@ if w == 4:
     draw = True
 
 z, dz = walk_path(z0, dz0, wrap=wrap_a, draw=draw)
-print("part a:", passwd(z, dz))
+print("answer_a:", passwd(z, dz))
 
 z, dz = walk_path(z0, dz0, wrap=wrap_b, draw=draw)
-print("part b:", passwd(z, dz))
+print("answer_b:", passwd(z, dz))

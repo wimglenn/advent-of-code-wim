@@ -25,5 +25,5 @@ for line in data.splitlines():
         za += n * dza
         zb += n * dzb
 
-print("part a:", manhattan_distance(za))
-print("part b:", manhattan_distance(zb))
+print("answer_a:", manhattan_distance(za))
+print("answer_b:", manhattan_distance(zb))

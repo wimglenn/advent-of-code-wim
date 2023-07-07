@@ -61,8 +61,8 @@ class Q20AStar(AStar):
 
 astar = Q20AStar(part="a")
 astar.run()
-print(astar.path_length)
+print("answer_a:", astar.path_length)
 
 astar = Q20AStar(part="b")
 astar.run()
-print(astar.path_length)
+print("answer_b:", astar.path_length)

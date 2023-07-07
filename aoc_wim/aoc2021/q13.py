@@ -24,5 +24,5 @@ for i, fold in enumerate(folds.splitlines()):
     if i == 0:
         a = len(d)
 
-print("part a:", a)
-print("part b:", AOCR[d])
+print("answer_a:", a)
+print("answer_b:", AOCR[d])

@@ -19,7 +19,7 @@ while True:
     if comp.line in seen:
         break
     seen[comp.line] = comp.a
-print("part a:", comp.a)
+print("answer_a:", comp.a)
 
 comps = []
 flipper = {"nop": "jmp", "jmp": "nop"}
@@ -37,4 +37,4 @@ while not done:
         if comp.line == len(ops):
             done = True
             break
-print("part b:", comp.a)
+print("answer_b:", comp.a)

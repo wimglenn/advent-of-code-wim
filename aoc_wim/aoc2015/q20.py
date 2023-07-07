@@ -12,5 +12,5 @@ for i in range(1, 1000000):
     A[i::i] += i * 10
     B[i::i][:50] += i * 11
 
-print("part a:", np.argmax(A > int(data or 0)))
-print("part b:", np.argmax(B > int(data or 0)))
+print("answer_a:", np.argmax(A > int(data or 0)))
+print("answer_b:", np.argmax(B > int(data or 0)))

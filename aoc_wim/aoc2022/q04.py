@@ -13,5 +13,5 @@ for line in data.splitlines():
     a += r2 <= r1
     b += r1 >= l2
 
-print("part a:", a)
-print("part b:", b)
+print("answer_a:", a)
+print("answer_b:", b)

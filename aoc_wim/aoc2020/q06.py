@@ -10,5 +10,5 @@ for block in data.split("\n\n"):
     a += len(s)
     b += len(s.intersection(*block.splitlines()))
 
-print(a)
-print(b)
+print("answer_a:", a)
+print("answer_b:", b)

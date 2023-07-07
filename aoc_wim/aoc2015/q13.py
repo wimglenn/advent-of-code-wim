@@ -38,5 +38,5 @@ def get_best_plan(data, extra_name=None):
     return max(happiness.values())
 
 
-print(get_best_plan(data))
-print(get_best_plan(data, extra_name="wim"))
+print("answer_a:", get_best_plan(data))
+print("answer_b:", get_best_plan(data, extra_name="wim"))

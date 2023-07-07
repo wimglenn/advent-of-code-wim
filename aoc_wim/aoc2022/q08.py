@@ -28,5 +28,5 @@ for z0 in zrange(complex(1, 1), complex(w - 1, h - 1)):  # interior trees
     a += vis
     b = max(b, ss)
 
-print("part a:", a)
-print("part b:", b)
+print("answer_a:", a)
+print("answer_b:", b)

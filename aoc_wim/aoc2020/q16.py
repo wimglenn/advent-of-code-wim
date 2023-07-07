@@ -52,7 +52,7 @@ def get_valid_tickets(fields, nearby_tickets):
             else:
                 invalid.add(i)
                 a += n
-    print("part a:", a)
+    print("answer_a:", a)
     valid_tickets = [nn for i, nn in enumerate(nearby_tickets) if i not in invalid]
     return valid_tickets
 
@@ -67,4 +67,4 @@ if __name__ == "__main__":
     known = identify_fields(fields, valid_tickets)
     my_ticket_dict = translate_my_ticket(known, my_ticket)
     b = prod(v for k, v in my_ticket_dict.items() if k.startswith("departure"))
-    print("part b:", b)
+    print("answer_b:", b)

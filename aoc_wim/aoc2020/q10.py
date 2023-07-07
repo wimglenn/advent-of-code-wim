@@ -10,7 +10,7 @@ numbers.append(0)  # outlet
 numbers.sort()
 Δ = [y - x for x, y in zip(numbers, numbers[1:])]
 Δ.append(3)  # device
-print("part a:", Δ.count(1) * Δ.count(3))
+print("answer_a:", Δ.count(1) * Δ.count(3))
 
 tri = Tribonacci()
 Π = 1
@@ -21,4 +21,4 @@ for d in Δ:
         continue
     Π *= tri[ones + 2] or 1  # streak broken, cash in
     ones = 0
-print("part b:", Π)
+print("answer_b:", Π)

@@ -14,5 +14,5 @@ for step in data.split(","):
     grid[z] = 1
     # grid.draw_hex(glyph=0, orientation="V", title=f" {d=}, {dmax=}")
 
-print("part a:", d)
-print("part b:", dmax)
+print("answer_a:", d)
+print("answer_b:", dmax)

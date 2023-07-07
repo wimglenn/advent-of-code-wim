@@ -36,9 +36,9 @@ class Network:
                     if any(c.output or c.input for c in self.comps):
                         continue
                     if not self.y0:
-                        print("part a", y)
+                        print("answer_a:", y)
                     if y in self.y0:
-                        print("part b", y)
+                        print("answer_b:", y)
                         nic.done = True
                     dest = 0
                     self.y0.add(y)

@@ -30,5 +30,5 @@ def animate(data, part="a"):
     return A.sum()
 
 
-print("part a:", animate(data, part="a"))
-print("part b:", animate(data, part="b"))
+print("answer_a:", animate(data, part="a"))
+print("answer_b:", animate(data, part="b"))

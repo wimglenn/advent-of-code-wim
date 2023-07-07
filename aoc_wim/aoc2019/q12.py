@@ -49,5 +49,5 @@ test100 = """\
 
 
 n = 10 if data == test10 else 100 if data == test100 else 1000
-print("part a:", simulate(data, n))
-print("part b:", simulate(data))
+print("answer_a:", simulate(data, n))
+print("answer_b:", simulate(data))

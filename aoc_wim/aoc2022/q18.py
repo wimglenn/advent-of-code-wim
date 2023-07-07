@@ -33,5 +33,5 @@ for c0 in graph:
 
 water = max(nx.connected_components(graph), key=len)
 
-print("part a:", sum([c1 not in cubes for c0 in cubes for c1 in adj6(*c0)]))
-print("part b:", sum([c in cubes for w in water for c in adj6(*w)]))
+print("answer_a:", sum([c1 not in cubes for c0 in cubes for c1 in adj6(*c0)]))
+print("answer_b:", sum([c in cubes for w in water for c in adj6(*w)]))

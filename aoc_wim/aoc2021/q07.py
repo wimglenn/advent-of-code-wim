@@ -12,5 +12,5 @@ for n in range(A.min(), A.max()):
     a = min(a, d.sum())
     b = min(b, (d * (d + 1) // 2).sum())
 
-print("part a:", a)
-print("part b:", b)
+print("answer_a:", a)
+print("answer_b:", b)

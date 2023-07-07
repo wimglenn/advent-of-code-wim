@@ -41,5 +41,5 @@ def search(data, stretch):
 
 
 if __name__ == "__main__":
-    print("part a:", search(data, stretch=False))
-    print("part b:", search(data, stretch=True))
+    print("answer_a:", search(data, stretch=False))
+    print("answer_b:", search(data, stretch=True))

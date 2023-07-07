@@ -116,8 +116,8 @@ def unzip_fast(data, part="a"):
 
 
 if safe_to_use_fast_algo(data):
-    print("part a:", unzip_fast(data, part="a"))
-    print("part b:", unzip_fast(data, part="b"))
+    print("answer_a:", unzip_fast(data, part="a"))
+    print("answer_b:", unzip_fast(data, part="b"))
 else:
-    print("part a:", unzip_slow(data, part="a"))
-    print("part b:", unzip_slow(data, part="b"))
+    print("answer_a:", unzip_slow(data, part="a"))
+    print("answer_b:", unzip_slow(data, part="b"))

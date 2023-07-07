@@ -62,5 +62,5 @@ while True:
     r3 = r5 | 0x10000
     r5 = parsed.named["bignum"]
 
-print(part_a)
-print(part_b)
+print("answer_a:", part_a)
+print("answer_b:", part_b)

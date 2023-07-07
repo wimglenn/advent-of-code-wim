@@ -14,5 +14,5 @@ for i, c in enumerate(data, 1):
         basement = i
 
 
-print("part a:", floor)
-print("part b:", basement)
+print("answer_a:", floor)
+print("answer_b:", basement)

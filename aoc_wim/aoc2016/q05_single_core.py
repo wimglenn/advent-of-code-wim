@@ -32,5 +32,5 @@ code1 = "".join(code1[:8])
 code2 = "".join(code2)
 
 
-print("part a:", code1)
-print("part b:", code2)
+print("answer_a:", code1)
+print("answer_b:", code2)

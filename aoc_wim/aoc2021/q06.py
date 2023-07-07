@@ -13,5 +13,5 @@ def rotate(fish, n=1):
 
 
 fish = [data.count(f) for f in "012345678"]
-print("part a:", rotate(fish, n=80))
-print("part b:", rotate(fish, n=256-80))
+print("answer_a:", rotate(fish, n=80))
+print("answer_b:", rotate(fish, n=256-80))

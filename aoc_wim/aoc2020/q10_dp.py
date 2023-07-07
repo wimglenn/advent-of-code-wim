@@ -11,10 +11,10 @@ for n in numbers:
     d3 += n - prev == 3
     prev = n
 d3 += 1  # extra hop to device
-print("part a:", d1 * d3)
+print("answer_a:", d1 * d3)
 
 memo = {0: 1}
 for n in numbers:
     memo[n] = sum(memo.get(n - i, 0) for i in range(4))
 
-print("part b:", memo[n])
+print("answer_b:", memo[n])

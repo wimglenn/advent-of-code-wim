@@ -24,5 +24,5 @@ for line in data.splitlines():
         seen_a.add(zs[1])
         seen_b.add(zs[-1])
 
-print("part a:", len(seen_a))
-print("part b:", len(seen_b))
+print("answer_a:", len(seen_a))
+print("answer_b:", len(seen_b))

@@ -18,5 +18,5 @@ ties = d != n - 1 - np.fliplr(ds).argmin(axis=1)
 d[ties] = -1
 border = {*d[:w], *d[-w:], *d[::h], *d[::-h]}
 areas = [(d == c).sum() for c in range(n) if c not in border]
-print("part a:", max(areas))
-print("part b:", (ds.sum(axis=1) < d_max).sum())
+print("answer_a:", max(areas))
+print("answer_b:", (ds.sum(axis=1) < d_max).sum())

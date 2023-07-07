@@ -29,5 +29,5 @@ for line in data.splitlines():
     length += shortest_perimeter(w, h, l) + box_volume(w, h, l)
 
 
-print("part a:", area)
-print("part b:", length)
+print("answer_a:", area)
+print("answer_b:", length)

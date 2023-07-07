@@ -20,6 +20,6 @@ def mine(data, difficulty, start=0):
 
 
 a = mine(data, difficulty=5)
-print("part a:", a)
+print("answer_a:", a)
 b = mine(data, difficulty=6, start=a - 1)
-print("part b:", b)
+print("answer_b:", b)

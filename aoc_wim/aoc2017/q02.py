@@ -18,5 +18,5 @@ for line in data.splitlines():
             result += quotient
             break
 
-print("part a:", checksum)
-print("part b:", result)
+print("answer_a:", checksum)
+print("answer_b:", result)

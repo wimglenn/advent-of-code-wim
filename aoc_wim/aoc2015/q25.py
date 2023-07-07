@@ -22,4 +22,4 @@ code = 20151125
 for _ in range(1, i):
     code = m * code % d
 
-print(code)
+print("answer_a:", code)

@@ -11,6 +11,6 @@ total = 0
 while A.any():
     A = (A // 3 - 2).clip(0)
     if not total:
-        print("part a:", A.sum())
+        print("answer_a:", A.sum())
     total += A.sum()
-print("part b:", total)
+print("answer_b:", total)

@@ -22,5 +22,5 @@ rmbytes = dirs[root] - 70_000_000 + 30_000_000
 a = sum(v for v in dirs.values() if v <= 100_000)
 b = min(v for v in dirs.values() if v >= rmbytes)
 
-print("part a:", a)
-print("part b:", b)
+print("answer_a:", a)
+print("answer_b:", b)

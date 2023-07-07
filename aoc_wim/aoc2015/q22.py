@@ -197,8 +197,8 @@ class Q22AStar(AStar):
 
 astar = Q22AStar(part="a")
 astar.run()
-print("part a:", GameState.unfreeze(astar.target).spent)
+print("answer_a:", GameState.unfreeze(astar.target).spent)
 
 astar = Q22AStar(part="b")
 astar.run()
-print("part b:", GameState.unfreeze(astar.target).spent)
+print("answer_b:", GameState.unfreeze(astar.target).spent)

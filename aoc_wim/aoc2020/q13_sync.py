@@ -8,7 +8,7 @@ t0, table = data.splitlines()
 t0 = int(t0)
 buses = [(i, int(b)) for i, b in enumerate(table.split(",")) if b != "x"]
 wait, bus = min([(-t0 % b, b) for _, b in buses])
-print("part a:", wait * bus)
+print("answer_a:", wait * bus)
 
 timestamp = 0
 increment = 1
@@ -20,4 +20,4 @@ while len(synced) < len(buses):
             if (timestamp + phase) % bus == 0:
                 increment *= bus
                 synced[bus] = timestamp
-print("part b:", timestamp)
+print("answer_b:", timestamp)

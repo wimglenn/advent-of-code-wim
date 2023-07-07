@@ -23,4 +23,4 @@ for part in "ab":
         cols[p1] = cols[p0][:n][::step] + cols[p1]
         cols[p0] = cols[p0][n:]
     result = "".join([v0 for v0, *_ in cols.values()])
-    print(f"part {part}:", result)
+    print(f"answer_{part}:", result)

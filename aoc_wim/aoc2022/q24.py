@@ -58,5 +58,5 @@ def fill(z, targets):
     return m
 
 
-print("part a:", fill(z=z_start, targets=[z_end]))
-print("part b:", fill(z=z_start, targets=[z_end, z_start, z_end]))
+print("answer_a:", fill(z=z_start, targets=[z_end]))
+print("answer_b:", fill(z=z_start, targets=[z_end, z_start, z_end]))

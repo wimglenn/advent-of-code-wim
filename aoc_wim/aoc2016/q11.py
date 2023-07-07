@@ -76,8 +76,8 @@ class Q11AStar(AStar):
 
 a = Q11AStar(data, part="a")
 a.run()
-print("part a:", a.path_length)
+print("answer_a:", a.path_length)
 
 b = Q11AStar(data, part="b")
 b.run()
-print("part b:", b.path_length)
+print("answer_b:", b.path_length)

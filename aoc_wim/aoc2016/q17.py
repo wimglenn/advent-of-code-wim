@@ -35,5 +35,5 @@ def adjacent(z0, path, data):
                 yield z, path + dpath
 
 
-print("part a:", bfs(data, part="a"))
-print("part b:", bfs(data, part="b"))
+print("answer_a:", bfs(data, part="a"))
+print("answer_b:", bfs(data, part="b"))

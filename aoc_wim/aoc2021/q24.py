@@ -120,5 +120,5 @@ def solve(data, part="a"):
             return result
 
 
-print("part a:", solve(data, part="a"))
-print("part b:", solve(data, part="b"))
+print("answer_a:", solve(data, part="a"))
+print("answer_b:", solve(data, part="b"))

@@ -108,5 +108,5 @@ wet(grid, ymax)
 s = "".join(grid.values())
 b = s.count("~")
 a = s.count("|") + b - ymin + 1
-print("part a:", a)
-print("part b:", b)
+print("answer_a:", a)
+print("answer_b:", b)

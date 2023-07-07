@@ -92,9 +92,17 @@ def evolve_b(grids):
     grids.update(new_grids)
 
 
+example = """\
+....#
+#..#.
+#..##
+..#..
+#...."""
+
+
 def part_b(data):
     zgrid = ZGrid(data)
-    t = 10 if zgrid.height == 5 else 200  # example data has fewer iterations
+    t = 10 if data == example else 200  # example data has fewer iterations
     del zgrid[2 + 2j]
     grids = {0: zgrid}
     for i in range(t):
@@ -108,5 +116,5 @@ def part_b(data):
 
 
 if __name__ == "__main__":
-    print("part a:", part_a(data))
-    print("part b:", part_b(data))
+    print("answer_a:", part_a(data))
+    print("answer_b:", part_b(data))

@@ -98,5 +98,5 @@ def part_ab(data, target=200):
 
 if __name__ == "__main__":
     a, b = part_ab(data)
-    print("part a:", a)
-    print("part b:", b)
+    print("answer_a:", a)
+    print("answer_b:", b)

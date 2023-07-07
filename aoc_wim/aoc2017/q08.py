@@ -32,5 +32,5 @@ for line in data.splitlines():
     b = max(b, d[r.x])
 
 
-print("part a:", max(d.values()))
-print("part b:", b)
+print("answer_a:", max(d.values()))
+print("answer_b:", b)

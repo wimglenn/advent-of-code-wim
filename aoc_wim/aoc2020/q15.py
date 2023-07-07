@@ -18,5 +18,5 @@ def local(n):
 
 
 ns = [int(x) for x in data.split(",")]
-print("part a:", local(2020))
-print("part b:", local(30000000))
+print("answer_a:", local(2020))
+print("answer_b:", local(30000000))

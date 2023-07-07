@@ -33,5 +33,5 @@ while True:
     if n == len(g):
         break
 
-print("part a:", a)
-print("part b:", b)
+print("answer_a:", a)
+print("answer_b:", b)

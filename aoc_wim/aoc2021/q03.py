@@ -11,7 +11,7 @@ h2 = len(rows) // 2
 n = "".join("10"[c.count("1") >= h2] for c in cols)
 𝛾 = int(n, 2)
 ε = 𝛾 ^ 2 ** len(n) - 1
-print("part a:", 𝛾 * ε)
+print("answer_a:", 𝛾 * ε)
 
 life_support = 1
 s = "01"
@@ -26,4 +26,4 @@ for _ in s:
     [n] = ns
     life_support *= int(n, 2)
     s = s[::-1]
-print("part b:", life_support)
+print("answer_b:", life_support)

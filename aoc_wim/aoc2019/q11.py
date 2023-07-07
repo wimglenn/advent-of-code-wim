@@ -35,9 +35,9 @@ class Robot:
 
 robot = Robot(data)
 robot.paint_until_halt()
-print("part a:", len(robot.painted))
+print("answer_a:", len(robot.painted))
 
 robot = Robot(data, 1)
 robot.paint_until_halt()
 rego = AOCR[robot.painted]
-print("part b:", rego)
+print("answer_b:", rego)

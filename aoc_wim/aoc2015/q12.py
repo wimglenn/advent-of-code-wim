@@ -22,5 +22,5 @@ def rsum(data):
         case _: return 0
 
 
-print(sum(map(int, numbers(data))))
-print(rsum(json.loads(data)))
+print("answer_a:", sum(map(int, numbers(data))))
+print("answer_b:", rsum(json.loads(data)))

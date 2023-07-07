@@ -64,7 +64,7 @@ if __name__ == "__main__":
             if on and not val:
                 break
 
-    print("part a", sum(grid.values()))
+    print("answer_a:", sum(grid.values()))
     grid.translate({0: ".", 1: "#"})
     grid.draw()
 
@@ -75,4 +75,4 @@ if __name__ == "__main__":
     print(m)
 
     z = locate_square(beam, width=100, gradient_estimate=m)
-    print("part b", int(z.real)*10000 + int(z.imag))
+    print("answer_b:", int(z.real)*10000 + int(z.imag))

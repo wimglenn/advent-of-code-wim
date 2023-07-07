@@ -86,11 +86,11 @@ def total_energy(data):
     return astar.gscore[astar.target]
 
 
-print("part a:", total_energy(data))
+print("answer_a:", total_energy(data))
 extra = """\
   #D#C#B#A#
   #D#B#A#C#
 """
 lines = data.splitlines()
 data = "\n".join(lines[:-2] + extra.splitlines() + lines[-2:])
-print("part b:", total_energy(data))
+print("answer_b:", total_energy(data))

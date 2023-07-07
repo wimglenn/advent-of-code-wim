@@ -45,5 +45,5 @@ def best_score(data, cal_target=None):
     return best
 
 
-print(best_score(data))
-print(best_score(data, cal_target=500))
+print("answer_a:", best_score(data))
+print("answer_b:", best_score(data, cal_target=500))

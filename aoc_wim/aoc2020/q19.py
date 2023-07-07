@@ -36,7 +36,7 @@ def simplify(rules):
 
 solved, unsolved = simplify(rules)
 r0a = re.compile("^" + solved["0"].replace(" ", "") + "$")
-print("part a:", sum(r0a.match(m) is not None for m in messages))
+print("answer_a:", sum(r0a.match(m) is not None for m in messages))
 
 if {"8", "11"} < rules.keys():
     rules["8"] += " | 42 8"
@@ -47,4 +47,4 @@ if {"8", "11"} < rules.keys():
     r8 = "(" + r42 + ")+"
     r11 = "(" + r42 + "(?2)?" + r31 + ")"
     r0b = re.compile("^" + r8 + r11 + "$")
-    print("part b:", sum(r0b.match(m) is not None for m in messages))
+    print("answer_b:", sum(r0b.match(m) is not None for m in messages))
