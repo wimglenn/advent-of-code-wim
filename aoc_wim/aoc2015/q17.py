@@ -2,12 +2,8 @@
 --- Day 17: No Such Thing as Too Much ---
 https://adventofcode.com/2015/day/17
 """
-from collections import Counter
-
 from aocd import data
-
 from aoc_wim.stuff import subset_sum
-
 
 vals = [int(n) for n in data.splitlines()]
 liters = 25 if len(vals) == 5 else 150
