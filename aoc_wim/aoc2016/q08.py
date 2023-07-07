@@ -23,5 +23,5 @@ im = (3, 7) if len(lines) == 4 else (6, 50)
 A = np.full(im, ".")
 for line in lines:
     A = animate(A, line)
-print("part a:", (A == "#").sum())
-print("part b:", AOCR[A])
+print("answer_a:", (A == "#").sum())
+print("answer_b:", AOCR[A])

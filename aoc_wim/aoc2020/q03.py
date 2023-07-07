@@ -15,5 +15,5 @@ for dz in dzs:
         dzs[dz] += grid[complex(z.real % w, z.imag)] == "#"
         z += dz
 
-print("part a:", dzs[3 + 1j])
-print("part b:", prod(dzs.values()))
+print("answer_a:", dzs[3 + 1j])
+print("answer_b:", prod(dzs.values()))

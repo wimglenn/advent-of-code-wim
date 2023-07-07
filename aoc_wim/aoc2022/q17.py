@@ -89,5 +89,5 @@ while i < Tb:
     i += 1
 
 
-print("part a:", a)
-print("part b:", top)
+print("answer_a:", a)
+print("answer_b:", top)

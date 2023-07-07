@@ -113,10 +113,10 @@ class Q22AStar(AStar):
 
 
 grid = parsed(data)
-print("part a:", sum(grid.t(z) for z in zrange(0, grid.target + 1 + 1j)))
+print("answer_a:", sum(grid.t(z) for z in zrange(0, grid.target + 1 + 1j)))
 
 state0 = (grid.pos, "🔦")
 target = (grid.target, "🔦")
 a_star = Q22AStar(state0=state0, target=target, grid=grid)
 a_star.run()
-print("part b:", a_star.gscore[target])
+print("answer_b:", a_star.gscore[target])

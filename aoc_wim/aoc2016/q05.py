@@ -29,8 +29,8 @@ def main():
                 break
             futures.append(pool.submit(md5_miner_q05, *next(blocks)))
 
-    print("part a:", "".join(code1[:8]))
-    print("part b:", "".join(code2))
+    print("answer_a:", "".join(code1[:8]))
+    print("answer_b:", "".join(code2))
 
 
 if __name__ == "__main__":

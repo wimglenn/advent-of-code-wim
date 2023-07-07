@@ -19,5 +19,5 @@ for s1, s2, s3 in chunks(data.splitlines()):
     b += c.isupper() * 26
     b += ord(c.lower()) - ord("a") + 1
 
-print("part a:", a)
-print("part b:", b)
+print("answer_a:", a)
+print("answer_b:", b)

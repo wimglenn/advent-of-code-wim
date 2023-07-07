@@ -67,5 +67,5 @@ def work(data, part="a"):
     return result
 
 
-print("part a:", work(data).text)
-print("part b:", work(data, part="b").n_iterations)
+print("answer_a:", work(data).text)
+print("answer_b:", work(data, part="b").n_iterations)

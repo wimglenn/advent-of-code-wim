@@ -77,5 +77,5 @@ def descramble(data, scrambled):
 
 
 start = "abcde" if data.count("\n") < 10 else "abcdefgh"
-print("part a:", scramble(data, start))
-print("part b:", descramble(data, "fbgdceah"))
+print("answer_a:", scramble(data, start))
+print("answer_b:", descramble(data, "fbgdceah"))

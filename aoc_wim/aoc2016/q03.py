@@ -14,4 +14,4 @@ for part, A in zip("ab", [R, C]):
     T = A[0] + A[1] > A[2]
     T &= A[0] + A[2] > A[1]
     T &= A[1] + A[2] > A[0]
-    print(f"part {part}:", T.sum())
+    print(f"answer_{part}:", T.sum())

@@ -25,4 +25,4 @@ for dimension, part in enumerate("ab", start=3):
     A = A0.copy()[(...,) + (None,) * (dimension - A0.ndim)]
     for _ in range(6):
         A = evolve(A)
-    print("part", part, A.sum())
+    print(f"answer_{part}:", A.sum())

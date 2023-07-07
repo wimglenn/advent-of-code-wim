@@ -47,7 +47,7 @@ class Cell:
 
 xs, rs = parsed(data)
 i = rs.argmax()
-print("part a:", (abs(xs - xs[i]).sum(axis=1) <= rs[i]).sum())
+print("answer_a:", (abs(xs - xs[i]).sum(axis=1) <= rs[i]).sum())
 
 x0 = 2 ** math.ceil(math.log2(abs(xs).max()))
 cell = Cell(x=np.array([-x0, -x0, -x0]), s=x0 * 2)
@@ -61,4 +61,4 @@ while pq:
         break
     for subcell in cell.split():
         heappush(pq, subcell)
-print("part b:", cell.d)
+print("answer_b:", cell.d)

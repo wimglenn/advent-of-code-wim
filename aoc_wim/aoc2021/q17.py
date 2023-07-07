@@ -43,5 +43,5 @@ for dx in range(dx_min, dx_max + 1):
                 a = y
                 dxy_best = dx, dy
 
-print("part a:", a)
-print("part b:", b)
+print("answer_a:", a)
+print("answer_b:", b)

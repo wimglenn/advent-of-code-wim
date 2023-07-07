@@ -58,5 +58,5 @@ bfs = BFS(adj)
 bfs(z_source)
 b = len(bfs.seen)
 
-print("part a:", a)
-print("part b:", b)
+print("answer_a:", a)
+print("answer_b:", b)

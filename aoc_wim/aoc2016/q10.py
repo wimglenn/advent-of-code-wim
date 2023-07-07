@@ -51,5 +51,5 @@ for n, bot_name in receives:
     receivers[bot_name].receive(n)
 outputs = [receivers[f"output {o}"].chips for o in (0, 1, 2)]
 [bot_a] = [v for v in receivers.values() if v.part_b]
-print("part a:", int(bot_a.name.lstrip("bot ")))
-print("part b:", prod([n for [n] in outputs]))
+print("answer_a:", int(bot_a.name.lstrip("bot ")))
+print("answer_b:", prod([n for [n] in outputs]))

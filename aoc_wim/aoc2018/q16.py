@@ -84,7 +84,7 @@ def main():
     ops = all_ops()
     samples, _sep, prog = data.partition("\n" * 4)
     samples = samples.split("\n" * 2)
-    print("part a:", sum(len(choices(s)) >= 3 for s in samples))
+    print("answer_a:", sum(len(choices(s)) >= 3 for s in samples))
     if not prog:
         return
     identified = {}
@@ -101,7 +101,7 @@ def main():
         opnum, a, b, c = [int(x) for x in line.split()]
         op = ops[opnum]
         op(R, a, b, c)
-    print("part b:", R[0])
+    print("answer_b:", R[0])
 
 
 if __name__ == "__main__":

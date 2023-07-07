@@ -87,7 +87,7 @@ for t0, t1 in combinations(tiles.values(), 2):
 
 corners = {t.id for t in tiles.values() if len(list(g.neighbors(t))) == 2}
 a = math.prod(corners)
-print("part a:", a)
+print("answer_a:", a)
 
 # start joining from any old corner
 corner_id = corners.pop()
@@ -146,4 +146,4 @@ while n_monsters <= 0:
             if (sea_monster * section).sum() == n:
                 n_monsters += 1
 
-print("part b:", big_tile.data.sum() - n_monsters * sea_monster.sum())
+print("answer_b:", big_tile.data.sum() - n_monsters * sea_monster.sum())

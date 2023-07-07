@@ -46,5 +46,5 @@ try:
 except IndexError:
     assert node is root
     root.metas = metas
-    print("part a:", sum_all_metas)
-    print("part b:", node.val)
+    print("answer_a:", sum_all_metas)
+    print("answer_b:", node.val)

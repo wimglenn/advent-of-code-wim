@@ -33,5 +33,5 @@ def ok(n, part="a"):
 lo, hi = data.split("-")
 ns = range(int(lo), int(hi) + 1)
 
-print("part a:", sum(ok(n, part="a") for n in ns))
-print("part b:", sum(ok(n, part="b") for n in ns))
+print("answer_a:", sum(ok(n, part="a") for n in ns))
+print("answer_b:", sum(ok(n, part="b") for n in ns))

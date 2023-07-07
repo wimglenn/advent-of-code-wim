@@ -55,5 +55,5 @@ for line in data.splitlines():
     a += score(elf, me, part="a")
     b += score(elf, me, part="b")
 
-print("part a:", a)
-print("part b:", b)
+print("answer_a:", a)
+print("answer_b:", b)

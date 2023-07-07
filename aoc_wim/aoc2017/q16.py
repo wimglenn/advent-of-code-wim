@@ -51,8 +51,8 @@ def dance(data, d, n=1):
 
 if len(data) == 12:
     # example data
-    print("part a:", dance(data, [*"abcde"]))
-    print("part b:", dance(data, [*"abcde"], n=2))
+    print("answer_a:", dance(data, [*"abcde"]))
+    print("answer_b:", dance(data, [*"abcde"], n=2))
 else:
-    print("part a:", dance(data, [*"abcdefghijklmnop"]))
-    print("part b:", dance(data, [*"abcdefghijklmnop"], n=1000000000 - 1))
+    print("answer_a:", dance(data, [*"abcdefghijklmnop"]))
+    print("answer_b:", dance(data, [*"abcdefghijklmnop"], n=1000000000 - 1))

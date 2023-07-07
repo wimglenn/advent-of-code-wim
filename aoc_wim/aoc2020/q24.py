@@ -14,7 +14,7 @@ for i, line in enumerate(data.splitlines()):
     z = sum([zgrid.hexH[s] for s in steps])
     grid[z] = not grid.get(z)
     # grid.draw_hex(glyph=0, orientation="H", clear=True, title=f" flip {i} ")
-print("part a:", grid.count(1))
+print("answer_a:", grid.count(1))
 
 
 for day in range(1, 101):
@@ -32,4 +32,4 @@ for day in range(1, 101):
         print(f"Day {day}:", grid.count(1))
     if day == 10:
         print()
-print("part b:", grid.count(1))
+print("answer_b:", grid.count(1))

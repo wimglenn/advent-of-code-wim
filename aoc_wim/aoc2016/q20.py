@@ -24,10 +24,10 @@ while True:
     else:
         break
 
-print("part a:", intervals[0][1] + 1)
+print("answer_a:", intervals[0][1] + 1)
 
 b = 4294967296 if len(intervals) > 3 else 10
 for lo, high in intervals:
     b -= high - lo + 1
 
-print("part b:", b)
+print("answer_b:", b)

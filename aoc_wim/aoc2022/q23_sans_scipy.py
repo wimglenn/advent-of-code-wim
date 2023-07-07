@@ -43,5 +43,5 @@ while a is None or b is None:
     if a is None and i == 10:
         a = grid.area - len(grid)
 
-print("part a:", a)
-print("part b:", b)
+print("answer_a:", a)
+print("answer_b:", b)

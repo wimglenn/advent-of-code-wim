@@ -35,7 +35,7 @@ def max_power(grid, kernels=(3,)):
 grid = gen_grid(data)
 
 _, x, y, _ = max_power(grid)
-print("part a:", f"{x},{y}")
+print("answer_a:", f"{x},{y}")
 
 _, x, y, k = max_power(grid, kernels=range(1, 20))
-print("part b:", f"{x},{y},{k}")
+print("answer_b:", f"{x},{y},{k}")

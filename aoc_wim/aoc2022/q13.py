@@ -34,5 +34,5 @@ packets += [[], [[2]], [[6]]]
 packets.sort(key=cmp_to_key(cmp))
 b = packets.index([[2]]) * packets.index([[6]])
 
-print("part a:", a)
-print("part b:", b)
+print("answer_a:", a)
+print("answer_b:", b)

@@ -33,5 +33,5 @@ def search(data, stretch):
     return sorted(keys)[63]
 
 
-print("part a:", search(data, stretch=1))
-print("part b:", search(data, stretch=2017))
+print("answer_a:", search(data, stretch=1))
+print("answer_b:", search(data, stretch=2017))

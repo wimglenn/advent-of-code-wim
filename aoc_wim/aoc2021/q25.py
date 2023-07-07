@@ -31,4 +31,4 @@ n = 0
 while evolve(grid):
     n += 1
 
-print("part a:", n + 1)
+print("answer_a:", n + 1)

@@ -17,6 +17,6 @@ def generate_rows(row):
 n_rows = 3 if len(data) == 5 else 10 if len(data) == 10 else 40
 gen = generate_rows(data)
 safe = sum(next(gen).count(".") for _ in range(n_rows))
-print("part a:", safe)
+print("answer_a:", safe)
 safe += sum(next(gen).count(".") for _ in range(400000 - n_rows))
-print("part b:", safe)
+print("answer_b:", safe)

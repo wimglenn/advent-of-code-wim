@@ -55,5 +55,5 @@ def duel(a, b):
 template = "Generator A starts with {:d}\nGenerator B starts with {:d}"
 a0, b0 = parse(template, data).fixed
 a, b = duel(a0, b0)
-print("part a:", a)
-print("part b:", b)
+print("answer_a:", a)
+print("answer_b:", b)

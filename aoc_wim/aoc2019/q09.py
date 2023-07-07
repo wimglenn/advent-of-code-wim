@@ -14,5 +14,5 @@ def compute(data, inputs=()):
 
 
 if __name__ == "__main__":
-    print("part a:", compute(data, inputs=[1]))
-    print("part b:", compute(data, inputs=[2]))
+    print("answer_a:", compute(data, inputs=[1]))
+    print("answer_b:", compute(data, inputs=[2]))

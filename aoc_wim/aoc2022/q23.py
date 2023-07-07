@@ -49,5 +49,5 @@ while a is None or b is None:
     if r == 10:
         a = (autocrop(A) == 0).sum()
 
-print("part a:", a)
-print("part b:", b)
+print("answer_a:", a)
+print("answer_b:", b)

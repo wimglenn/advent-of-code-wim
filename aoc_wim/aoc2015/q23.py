@@ -55,9 +55,9 @@ if __name__ == "__main__":
 
     computer.reset(instructions=data)
     computer.compute()
-    print("part a:", computer.registers["b"])
+    print("answer_a:", computer.registers["b"])
 
     computer.reset(instructions=data)
     computer.registers["a"] = 1
     computer.compute()
-    print("part b:", computer.registers["b"])
+    print("answer_b:", computer.registers["b"])

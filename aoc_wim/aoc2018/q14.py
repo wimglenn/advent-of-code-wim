@@ -38,11 +38,11 @@ recipes = RecipeList()
 k = int(data)
 if k < 10**6:
     recipes.grow(k + 10)
-    print("part a:", "".join(str(n) for n in recipes.scores[k:k + 10]))
+    print("answer_a:", "".join(str(n) for n in recipes.scores[k:k + 10]))
 
 chunk = 2_000_000
 i = -1
 while i == -1:
     recipes.grow(min_length=len(recipes.scores) + chunk)
     i = recipes.scores_str.find(data, -chunk - len(data))
-print("part b:", i)
+print("answer_b:", i)

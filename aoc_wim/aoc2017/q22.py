@@ -36,5 +36,5 @@ def mutate(data, n_iterations, part="a"):
 
 
 if __name__ == "__main__":
-    print("part a:", mutate(data, n_iterations=10000, part="a"))
-    print("part b:", mutate(data, n_iterations=10000000, part="b"))
+    print("answer_a:", mutate(data, n_iterations=10000, part="a"))
+    print("answer_b:", mutate(data, n_iterations=10000000, part="b"))

@@ -19,5 +19,5 @@ def evolve(A, n=6):
 
 
 A0 = (np.array([[*r] for r in data.splitlines()]) == "#").astype(int)
-print("part a:", evolve(A0[..., None]).sum())
-print("part b:", evolve(A0[..., None, None]).sum())
+print("answer_a:", evolve(A0[..., None]).sum())
+print("answer_b:", evolve(A0[..., None, None]).sum())

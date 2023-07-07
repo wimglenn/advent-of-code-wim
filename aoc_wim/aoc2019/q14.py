@@ -39,5 +39,5 @@ def part_b(data):
     return bisect.run()
 
 
-print("part a:", part_a(data))
-print("part b:", part_b(data))
+print("answer_a:", part_a(data))
+print("answer_b:", part_b(data))

@@ -99,5 +99,5 @@ for i, scanner in scanners.items():
     global_beacons.update({tuple(b) for b in beacons})
     scanner.t0 = t0
 
-print("part a:", len(global_beacons))
-print("part b:", max(abs(s0.t0 - s1.t0).sum() for s0, s1 in combinations(scanners.values(), 2)))
+print("answer_a:", len(global_beacons))
+print("answer_b:", max(abs(s0.t0 - s1.t0).sum() for s0, s1 in combinations(scanners.values(), 2)))

@@ -64,5 +64,5 @@ for line in data.splitlines():
 if bs:
     b = median(bs)
 
-print("part a:", a)
-print("part b:", b)
+print("answer_a:", a)
+print("answer_b:", b)

@@ -43,5 +43,5 @@ def is_nice_b(s):
 
 
 words = data.splitlines()
-print("part a:", len([w for w in words if is_nice_a(w)]))
-print("part b:", len([w for w in words if is_nice_b(w)]))
+print("answer_a:", len([w for w in words if is_nice_a(w)]))
+print("answer_b:", len([w for w in words if is_nice_b(w)]))

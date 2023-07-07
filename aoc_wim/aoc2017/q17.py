@@ -11,7 +11,7 @@ pos = 0
 for i in range(1, 2017 + 1):
     pos = 1 + (pos + n) % i
     L.insert(pos, i)
-print("part a:", L[pos + 1])
+print("answer_a:", L[pos + 1])
 
 pos = 0
 i = b = 1
@@ -25,4 +25,4 @@ while i <= 50000000:
     inci = (i - pos) // (n + 1) or 1
     pos += (n + 1) * (inci - 1)
     i += inci
-print("part b:", b)
+print("answer_b:", b)

@@ -25,5 +25,5 @@ strengths = [sum(x + y for x, y in b) for b in bridges]
 longest = max(lengths)
 long_indices = [i for i, length in enumerate(lengths) if length == longest]
 
-print("part a:", max(strengths))
-print("part b:", max([strengths[i] for i in long_indices]))
+print("answer_a:", max(strengths))
+print("answer_b:", max([strengths[i] for i in long_indices]))

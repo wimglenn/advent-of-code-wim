@@ -6,6 +6,6 @@ from aocd import data
 
 tr = str.maketrans("FBLR", "0101")
 ids = {int(x.translate(tr), 2) for x in data.splitlines()}
-print("part a:", max(ids))
+print("answer_a:", max(ids))
 missing = set(range(min(ids), max(ids))) - ids
-print("part b:", *missing)
+print("answer_b:", *missing)

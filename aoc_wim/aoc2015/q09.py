@@ -27,5 +27,5 @@ def get_routes(data):
 
 
 routes = get_routes(data)
-print("part a:", min(routes.values()))
-print("part b:", max(routes.values()))
+print("answer_a:", min(routes.values()))
+print("answer_b:", max(routes.values()))

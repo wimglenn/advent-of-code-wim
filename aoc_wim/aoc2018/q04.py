@@ -62,7 +62,7 @@ for line in sorted(data.splitlines()):
     guard.event(line)
 
 g = max(guards.values(), key=attrgetter("total_sleep_time"))
-print("part a:", g.id * g.sleepiest_minute)
+print("answer_a:", g.id * g.sleepiest_minute)
 
 g = max(guards.values(), key=attrgetter("sleepiest_minute_count"))
-print("part b:", g.id * g.sleepiest_minute)
+print("answer_b:", g.id * g.sleepiest_minute)

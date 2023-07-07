@@ -38,5 +38,5 @@ def evaluate(d, part="a"):
 
 
 lines = data.replace(" ", "").splitlines()
-print("part a:", sum([evaluate(deque(line), part="a") for line in lines]))
-print("part b:", sum([evaluate(deque(line), part="b") for line in lines]))
+print("answer_a:", sum([evaluate(deque(line), part="a") for line in lines]))
+print("answer_b:", sum([evaluate(deque(line), part="b") for line in lines]))

@@ -34,5 +34,5 @@ for line in data.splitlines():
         northpole_room = sector_id
 
 
-print("part a:", sector_id_sum)
-print("part b:", northpole_room)
+print("answer_a:", sector_id_sum)
+print("answer_b:", northpole_room)

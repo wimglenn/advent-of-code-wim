@@ -58,5 +58,5 @@ def divisors(n):
     return divs
 
 
-print("part a:", compute(data, r0=0, hack=True))
-print("part b:", compute(data, r0=1, hack=True))
+print("answer_a:", compute(data, r0=0, hack=True))
+print("answer_b:", compute(data, r0=1, hack=True))

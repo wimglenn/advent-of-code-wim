@@ -29,5 +29,5 @@ for i in range(W * H):
     crt[row, col] = ".#"[abs(col - x) <= 1]
 
 
-print("part a:", a)
-print("part b:", AOCR[crt])
+print("answer_a:", a)
+print("answer_b:", AOCR[crt])

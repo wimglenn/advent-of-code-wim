@@ -23,7 +23,7 @@ def winner_score(draw, boards):
                     return sum(remaining_numbers) * n
 
 
-print("part a:", winner_score(draw, boards))
+print("answer_a:", winner_score(draw, boards))
 while boards:
     b = winner_score(draw, boards)
-print("part b:", b)
+print("answer_b:", b)

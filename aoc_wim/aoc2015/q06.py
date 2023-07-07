@@ -25,5 +25,5 @@ for line in data.splitlines():
         B[t] -= 1
         B = B.clip(min=0)
 
-print("part a:", A.sum())
-print("part b:", B.sum())
+print("answer_a:", A.sum())
+print("answer_b:", B.sum())

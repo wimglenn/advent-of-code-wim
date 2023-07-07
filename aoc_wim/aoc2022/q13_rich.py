@@ -59,5 +59,5 @@ for i, chunk in enumerate(data.split("\n\n"), 1):
         elif packet < Packet([[6]]):
             i6 += 1
 
-print("part a:", a)
-print("part b:", i2 * i6)
+print("answer_a:", a)
+print("answer_b:", i2 * i6)

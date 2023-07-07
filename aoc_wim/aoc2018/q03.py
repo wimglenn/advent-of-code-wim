@@ -17,9 +17,9 @@ A = np.zeros((H, W, len(claims)), dtype=int)
 
 for c in claims:
     A[c.row : c.row + c.h, c.col : c.col + c.w, c.id - 1] = 1
-print("part a:", (A.sum(axis=2) > 1).sum())
+print("answer_a:", (A.sum(axis=2) > 1).sum())
 
 for c in claims:
     if A[c.row : c.row + c.h, c.col : c.col + c.w, :].sum() == c.w * c.h:
-        print("part b:", c.id)
+        print("answer_b:", c.id)
         break

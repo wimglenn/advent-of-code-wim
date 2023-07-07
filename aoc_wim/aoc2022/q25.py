@@ -28,4 +28,4 @@ def dec2snafu(n):
     return "".join(map(str, reversed(result)))
 
 
-print("part a:", dec2snafu(sum(snafu2dec(n) for n in data.split())))
+print("answer_a:", dec2snafu(sum(snafu2dec(n) for n in data.split())))

@@ -86,8 +86,8 @@ class Q18AStar(AStar):
 
 astar = Q18AStar(data, part="a")
 path_a = astar.run()
-print("part a:", astar.gscore[astar.target])
+print("answer_a:", astar.gscore[astar.target])
 
 astar = Q18AStar(data, part="b")
 path_b = astar.run()
-print("part b:", astar.gscore[astar.target])
+print("answer_b:", astar.gscore[astar.target])

@@ -24,8 +24,8 @@ for k, v in rules.items():
     if v not in "ab":
         rules[k] = [t.split() for t in v.split("|")]
 
-print("part a:", sum(match(m, ["0"]) for m in messages))
+print("answer_a:", sum(match(m, ["0"]) for m in messages))
 
 rules["8"].append(["42", "8"])
 rules["11"].append(["42", "11", "31"])
-print("part b:", sum(match(m, ["0"]) for m in messages))
+print("answer_b:", sum(match(m, ["0"]) for m in messages))

@@ -26,5 +26,5 @@ def shortest_path(part="a"):
     return min(paths.values())
 
 
-print("part a:", shortest_path(part="a"))
-print("part b:", shortest_path(part="b"))
+print("answer_a:", shortest_path(part="a"))
+print("answer_b:", shortest_path(part="b"))

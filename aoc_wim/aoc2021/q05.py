@@ -24,5 +24,5 @@ for line in data.splitlines():
         for x, y in zip(xrange, yrange):
             db[x, y] += 1
 
-print("part a:", sum(v > 1 for v in da.values()))
-print("part b:", sum(v > 1 for v in (da + db).values()))
+print("answer_a:", sum(v > 1 for v in da.values()))
+print("answer_b:", sum(v > 1 for v in (da + db).values()))

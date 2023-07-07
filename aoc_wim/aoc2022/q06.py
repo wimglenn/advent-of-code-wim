@@ -16,5 +16,5 @@ def marker(data, n):
     return i
 
 
-print("part a:", marker(data, 4))
-print("part b:", marker(data, 14))
+print("answer_a:", marker(data, 4))
+print("answer_b:", marker(data, 14))

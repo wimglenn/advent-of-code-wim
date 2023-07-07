@@ -7,6 +7,6 @@ from aocd import data
 
 
 graph = nx.Graph(x.split(")") for x in data.splitlines())
-print("part a:", sum(nx.shortest_path_length(graph, x, "COM") for x in graph))
+print("answer_a:", sum(nx.shortest_path_length(graph, x, "COM") for x in graph))
 if "YOU" in graph:
-    print("part b:", nx.shortest_path_length(graph, "YOU", "SAN") - 2)
+    print("answer_b:", nx.shortest_path_length(graph, "YOU", "SAN") - 2)

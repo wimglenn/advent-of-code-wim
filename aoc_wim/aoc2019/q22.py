@@ -73,5 +73,5 @@ def part_b(data, N=119315717514047, n_shuffles=101741582076661, card=2020):
     return result
 
 
-print("part a:", part_a(data))
-print("part b:", part_b(data))
+print("answer_a:", part_a(data))
+print("answer_b:", part_b(data))

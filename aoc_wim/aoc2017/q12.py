@@ -16,5 +16,5 @@ for line in data.replace(" <->", ",").splitlines():
 [a] = [len(g) for g in nx.connected_components(graph) if 0 in g]
 b = nx.number_connected_components(graph)
 
-print("part a:", a)
-print("part b:", b)
+print("answer_a:", a)
+print("answer_b:", b)

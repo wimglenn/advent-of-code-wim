@@ -38,5 +38,5 @@ def get_high_score(n_players, n_marbles):
 
 template = "{:d} players; last marble is worth {:d} points"
 n_players, n_marbles = parse(template, data)
-print("part a:", get_high_score(n_players, n_marbles))
-print("part b:", get_high_score(n_players, n_marbles * 100))
+print("answer_a:", get_high_score(n_players, n_marbles))
+print("answer_b:", get_high_score(n_players, n_marbles * 100))

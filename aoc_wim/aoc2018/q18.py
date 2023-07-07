@@ -51,5 +51,5 @@ def evolve(data, minutes=10):
     return (A == 1).sum() * (A == 1j).sum()
 
 
-print("part a:", evolve(data, minutes=10))
-print("part b:", evolve(data, minutes=1000000000))
+print("answer_a:", evolve(data, minutes=10))
+print("answer_b:", evolve(data, minutes=1000000000))

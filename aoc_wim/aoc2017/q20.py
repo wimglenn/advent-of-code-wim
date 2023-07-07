@@ -33,7 +33,7 @@ particles = [list(parse(template, line).fixed) for line in data.splitlines()]
 p_min = min(particles, key=key)
 a_min = abs_accel(p_min)
 d = {i: pos(p, 1000) for i, p in enumerate(particles) if abs_accel(p) == a_min}
-print("part a:", min(d, key=d.get))
+print("answer_a:", min(d, key=d.get))
 
 for _ in range(100):
     d = defaultdict(list)
@@ -54,4 +54,4 @@ for _ in range(100):
         p[0] += p[3]
         p[1] += p[4]
         p[2] += p[5]
-print("part b:", len(particles))
+print("answer_b:", len(particles))

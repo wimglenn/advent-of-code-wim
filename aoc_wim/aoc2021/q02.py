@@ -16,5 +16,5 @@ for line in data.splitlines():
     else:
         aim += dz
 
-print("part a:", int(za.real) * int(za.imag))
-print("part b:", int(zb.real) * int(zb.imag))
+print("answer_a:", int(za.real) * int(za.imag))
+print("answer_b:", int(zb.real) * int(zb.imag))

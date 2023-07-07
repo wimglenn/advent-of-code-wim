@@ -39,5 +39,5 @@ detour = (col0 - (w_min - 1)) * 2 if has_detour else 0
 move_data = 5 * (goal_col - 1)
 part_b = dist_0_goal + detour + move_data
 
-print("part a:", part_a)
-print("part b:", part_b)
+print("answer_a:", part_a)
+print("answer_b:", part_b)

@@ -49,7 +49,7 @@ def find_paths():
 
 
 paths = find_paths()
-print("part a:", max(s for v, s in paths))
+print("answer_a:", max(s for v, s in paths))
 
 scores = {}
 for path, _old_score in paths:
@@ -75,4 +75,4 @@ for i in range(len(visited)):
         # short-circuit because we can not possibly do any better now
         break
 
-print("part b:", b)
+print("answer_b:", b)

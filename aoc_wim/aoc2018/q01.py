@@ -8,7 +8,7 @@ from aocd import data
 
 
 ns = [int(x) for x in data.replace(",", " ").split()]
-print("part a:", sum(ns))
+print("answer_a:", sum(ns))
 
 f = None
 if len({n > 0 for n in ns}) == 2:
@@ -19,4 +19,4 @@ if len({n > 0 for n in ns}) == 2:
         if f in seen:
             break
         seen.add(f)
-print("part b:", f)
+print("answer_b:", f)

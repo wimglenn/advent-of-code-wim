@@ -30,7 +30,7 @@ target = 7 + 4j if data == "10" else 31 + 39j
 if __name__ == "__main__":
     grid = make_grid(data)
     depths = grid.bfs(target=target, z0=z0)
-    print("part a:", depths[target])
+    print("answer_a:", depths[target])
     depths = grid.bfs(z0=z0, max_depth=50)
-    print("part b:", len(depths))
+    print("answer_b:", len(depths))
     grid.draw_path(z=target, z0=z0)

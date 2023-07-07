@@ -39,5 +39,5 @@ for _ in range(t):
         if deer.distance == max_distance:
             deer.points += 1
 
-print("part a:", max([d.distance for d in deers]))
-print("part b:", max([d.points for d in deers]))
+print("answer_a:", max([d.distance for d in deers]))
+print("answer_b:", max([d.points for d in deers]))

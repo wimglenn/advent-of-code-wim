@@ -52,5 +52,5 @@ def search(stack, blueprint):
 
 
 s0 = 0, 0, 0, 0, 0, 0, 0, 1
-print("part a:", sum(bp[0] * search([(2, *s0, 24), (3, *s0, 24)], bp) for bp in bps))
-print("part b:", math.prod(search([(2, *s0, 32), (3, *s0, 32)], bp) for bp in bps[:3]))
+print("answer_a:", sum(bp[0] * search([(2, *s0, 24), (3, *s0, 24)], bp) for bp in bps))
+print("answer_b:", math.prod(search([(2, *s0, 32), (3, *s0, 32)], bp) for bp in bps[:3]))

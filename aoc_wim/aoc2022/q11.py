@@ -54,4 +54,4 @@ for part, nrounds in zip("ab", (20, 10000)):
     for round in range(nrounds):
         for monkey in monkeys:
             monkey.inspect()
-    print(f"part {part}:", prod(nlargest(2, [m.inspected for m in monkeys])))
+    print(f"answer_{part}:", prod(nlargest(2, [m.inspected for m in monkeys])))

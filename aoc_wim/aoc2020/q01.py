@@ -9,7 +9,7 @@ from aoc_wim.aoc2020 import find_pair
 
 counter = Counter(int(x) for x in data.splitlines())
 x, y = find_pair(counter)
-print(f"part a: {x} * {y} == {x * y}")
+print(f"answer_a: {x} * {y} == {x * y}")
 
 for z in list(counter):
     counter[z] -= 1
@@ -19,5 +19,5 @@ for z in list(counter):
         counter[z] += 1
     else:
         assert x + y + z == 2020
-        print(f"part b: {x} * {y} * {z} == {x * y * z}")
+        print(f"answer_b: {x} * {y} * {z} == {x * y * z}")
         break

@@ -12,4 +12,4 @@ graph.add_nodes_from(nodes)
 for node1, node2 in combinations(nodes, 2):
     if sum(abs(x - y) for x, y in zip(node1, node2)) <= 3:
         graph.add_edge(node1, node2)
-print("part a:", nx.number_connected_components(graph))
+print("answer_a:", nx.number_connected_components(graph))

@@ -30,5 +30,5 @@ while d:
     for ingredients in d.values():
         ingredients -= {ingredient}
 
-print("part a:", sum(i not in identified.inv for i in all_ingredients))
-print("part b:", ",".join(sorted(identified.inv, key=identified.inv.get)))
+print("answer_a:", sum(i not in identified.inv for i in all_ingredients))
+print("answer_b:", ",".join(sorted(identified.inv, key=identified.inv.get)))

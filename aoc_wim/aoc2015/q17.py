@@ -8,6 +8,6 @@ from aoc_wim.stuff import subset_sum
 vals = [int(n) for n in data.splitlines()]
 liters = 25 if len(vals) == 5 else 150
 subsets = list(subset_sum(vals, liters))
-print("part a:", len(subsets))
+print("answer_a:", len(subsets))
 fewest = min(subsets, key=len)
-print("part b:", sum(len(s) == len(fewest) for s in subsets))
+print("answer_b:", sum(len(s) == len(fewest) for s in subsets))

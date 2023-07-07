@@ -21,5 +21,5 @@ class A𖤐(AStar):
         return z == target or grid[z] == target
 
 
-print("part a:", len(A𖤐(end, start).run()) - 1)
-print("part b:", len(A𖤐(end, "a").run()) - 1)
+print("answer_a:", len(A𖤐(end, start).run()) - 1)
+print("answer_b:", len(A𖤐(end, "a").run()) - 1)

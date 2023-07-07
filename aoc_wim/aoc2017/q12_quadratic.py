@@ -23,5 +23,5 @@ while True:
         break  # no match for any key - we are done!
 
 [set0] = [v for v in d.values() if 0 in v]
-print("part a:", len(set0))
-print("part b:", len(d))
+print("answer_a:", len(set0))
+print("answer_b:", len(d))

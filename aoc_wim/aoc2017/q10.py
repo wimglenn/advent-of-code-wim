@@ -42,5 +42,5 @@ else:
 
 
 if __name__ == "__main__":
-    print("part a:", a)
-    print("part b:", knot_hash(data))
+    print("answer_a:", a)
+    print("answer_b:", knot_hash(data))

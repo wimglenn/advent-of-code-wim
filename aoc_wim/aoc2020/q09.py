@@ -13,7 +13,7 @@ if len(numbers) < n:
 
 for *pre, target in chunks(numbers, chunk_size=n + 1, overlap=n):
     if find_pair(set(pre), target) is None:
-        print("part a:", target)
+        print("answer_a:", target)
         break
 
 start = 0
@@ -29,4 +29,4 @@ while total != target or start == stop - 1:
 chunk = numbers[start:stop]
 assert sum(chunk) == target, "the chunk must sum to the target value"
 assert len(chunk) >= 2, "the chunk must be a contiguous set of at least two numbers"
-print("part b:", min(chunk) + max(chunk))
+print("answer_b:", min(chunk) + max(chunk))

@@ -35,5 +35,5 @@ def decode(keypad):
     return code
 
 
-print("part a:", decode(keypad_a))
-print("part b:", decode(keypad_b))
+print("answer_a:", decode(keypad_a))
+print("answer_b:", decode(keypad_b))

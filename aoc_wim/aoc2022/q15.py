@@ -52,7 +52,7 @@ tree.merge_overlaps()
 a = sum(i.length() for i in tree)
 # discount any beacons actually on the line
 a -= len({int(s.b.real) for s in sensors if int(s.b.imag) == y})
-print("part a:", a)
+print("answer_a:", a)
 
 
 # the point we're looking for should be just beyond the perimeter of 4 different scanners
@@ -100,4 +100,4 @@ def unique_point_out_of_range():
 
 z = unique_point_out_of_range()
 b = tuning_frequency(z)
-print("part b:", b)
+print("answer_b:", b)

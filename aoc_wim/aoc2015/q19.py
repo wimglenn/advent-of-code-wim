@@ -24,7 +24,7 @@ for s, rs in tr.items():
             new[i : i + 2] = [left + r + right]
             new = s.join(new)
             seen.add(new)
-print("part a:", len(seen))
+print("answer_a:", len(seen))
 
 if "e => " in data:
     replacements = 0
@@ -40,4 +40,4 @@ if "e => " in data:
         # replace from right
         element = element[::-1].replace(k[::-1], v[::-1], 1)[::-1]
         replacements += 1
-    print("part b:", replacements)
+    print("answer_b:", replacements)

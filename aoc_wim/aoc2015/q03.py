@@ -19,7 +19,7 @@ for c in data:
     z += step[c]
     seen |= {z}
 
-print("part a:", len(seen))
+print("answer_a:", len(seen))
 
 
 z = 0
@@ -33,4 +33,4 @@ for c in data[1::2]:  # robo-santa
     z += step[c]
     seen |= {z}
 
-print("part b:", len(seen))
+print("answer_b:", len(seen))

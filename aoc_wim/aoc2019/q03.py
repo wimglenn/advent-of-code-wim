@@ -21,5 +21,5 @@ for i, wire in enumerate(wires):
                 seen[-1][z] = d
 
 crossings = seen[0].keys() & seen[1].keys()
-print("part a:", min([manhattan_distance(z) for z in crossings]))
-print("part b:", min([seen[0][z] + seen[1][z] for z in crossings]))
+print("answer_a:", min([manhattan_distance(z) for z in crossings]))
+print("answer_b:", min([seen[0][z] + seen[1][z] for z in crossings]))

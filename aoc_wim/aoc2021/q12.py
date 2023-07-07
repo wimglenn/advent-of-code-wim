@@ -40,5 +40,5 @@ def n_paths(part):
     return result
 
 
-print("part a:", n_paths("a"))
-print("part b:", n_paths("b"))
+print("answer_a:", n_paths("a"))
+print("answer_b:", n_paths("b"))
