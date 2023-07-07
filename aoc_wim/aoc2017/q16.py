@@ -55,4 +55,4 @@ if len(data) == 12:
     print("answer_b:", dance(data, [*"abcde"], n=2))
 else:
     print("answer_a:", dance(data, [*"abcdefghijklmnop"]))
-    print("answer_b:", dance(data, [*"abcdefghijklmnop"], n=1000000000 - 1))
+    print("answer_b:", dance(data, [*"abcdefghijklmnop"], n=1000000000))
