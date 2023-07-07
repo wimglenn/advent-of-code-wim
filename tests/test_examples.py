@@ -28,7 +28,6 @@ def test_example(input_file, monkeypatch, request):
     *pre, year, day, fname = input_file.parts
     year = int(year)
     day = int(day)
-
     # the head of each example file is an input data
     # the last two lines are part a and part b correct answers
     # there may be trailing comments after the answers
@@ -36,18 +35,15 @@ def test_example(input_file, monkeypatch, request):
     remove_trailing_comments(lines)
     if len(lines) < 3:
         pytest.fail(f"test data {input_file} is malformed")
-    *lines, part_a_answer, part_b_answer = lines
+    *lines, expected_answer_a, expected_answer_b = lines
     input_data = "\n".join(lines).rstrip()
-
     # patch out aocd
     monkeypatch.setattr("aocd.data", input_data)
-
     # invoke the entrypoint with a controlled input
-    part_a, part_b = plugin(year, day, input_data)
-
+    actual_answer_a, actual_answer_b = plugin(year, day, input_data)
     # verify correct answers returned. sometimes a dash (-) may be used to indicate
     # an example input where the answer was provided for only one of the two parts
-    if part_a_answer != "-":
-        assert part_a == part_a_answer
-    if part_b_answer != "-" and not request.config.getoption("--part-a-only"):
-        assert part_b == part_b_answer
+    if expected_answer_a != "-":
+        assert actual_answer_a == expected_answer_a, f"{actual_answer_a=} {expected_answer_a=}"
+    if expected_answer_b != "-" and not request.config.getoption("--part-a-only"):
+        assert actual_answer_b == expected_answer_b, f"{actual_answer_b=} {expected_answer_b=}"
