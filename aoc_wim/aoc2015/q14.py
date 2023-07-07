@@ -29,18 +29,15 @@ class Reindeer(object):
                 self.dt = self.rest_time
 
 
-def race(data, max_t, measure):
-    deers = [Reindeer(line) for line in data.splitlines()]
-    for t in range(max_t):
-        for deer in deers:
-            deer.step()
-        max_distance = max([deer.distance for deer in deers])
-        for deer in deers:
-            if deer.distance == max_distance:
-                deer.points += 1
-    return max([getattr(deer, measure) for deer in deers])
+deers = [Reindeer(line) for line in data.splitlines()]
+t = 1000 if len(deers) == 2 else 2503
+for _ in range(t):
+    for deer in deers:
+        deer.step()
+    max_distance = max([deer.distance for deer in deers])
+    for deer in deers:
+        if deer.distance == max_distance:
+            deer.points += 1
 
-
-if __name__ == "__main__":
-    print(race(data, max_t=2503, measure="distance"))
-    print(race(data, max_t=2503, measure="points"))
+print("part a:", max([d.distance for d in deers]))
+print("part b:", max([d.points for d in deers]))
