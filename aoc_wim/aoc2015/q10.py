@@ -14,7 +14,11 @@ def look_and_say(s, n=1):
 
 
 if __name__ == "__main__":
-    a = look_and_say(data, n=40)
-    print("part a:", len(a))
-    b = look_and_say(a, n=50 - 40)
-    print("part b:", len(b))
+    if len(data) <= 6:
+        # examples
+        print(len(look_and_say(data, 1)))
+    else:
+        a = look_and_say(data, n=40)
+        print("part a:", len(a))
+        b = look_and_say(a, n=50 - 40)
+        print("part b:", len(b))
