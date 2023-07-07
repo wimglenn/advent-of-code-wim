@@ -55,10 +55,9 @@ def compute(data):
     return result
 
 
-if __name__ == "__main__":
-    result = compute(data)
-    result_a = result["a"]
-    print("part a:", result_a)
+result = compute(data)
+result_a = result["a"]
+print("part a:", result_a)
 
-    new_data = re.sub(r"\n([0-9]+) -> b\n", "\n{} -> b\n".format(result_a), data)
-    print("part b:", compute(new_data)["a"])
+new_data = re.sub(r"\n([0-9]+) -> b\n", "\n{} -> b\n".format(result_a), data)
+print("part b:", compute(new_data)["a"])
