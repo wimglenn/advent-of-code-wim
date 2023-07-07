@@ -11,5 +11,5 @@ for line in data.splitlines():
     a += x <= passwd.count(char) <= y
     b += (passwd[x - 1] + passwd[y - 1]).count(char) == 1
 
-print(a)
-print(b)
+print("part a:", a)
+print("part b:", b)

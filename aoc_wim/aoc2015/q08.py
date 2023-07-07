@@ -38,5 +38,5 @@ def encoded_diff(data):
     return sum(len("".join(encoder(line))) - len(line) for line in data.splitlines())
 
 
-print(length_diff(data))
-print(encoded_diff(data))
+print("part a:", length_diff(data))
+print("part b:", encoded_diff(data))

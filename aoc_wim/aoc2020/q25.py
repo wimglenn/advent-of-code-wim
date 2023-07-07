@@ -18,4 +18,4 @@ def crack(pk_card, pk_door, subject_number=7, modulus=20201227):
 
 
 pk_card, pk_door = data.split()
-print(crack(int(pk_card), int(pk_door)))
+print("part a:", crack(int(pk_card), int(pk_door)))

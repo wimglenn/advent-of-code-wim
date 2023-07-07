@@ -60,5 +60,5 @@ for line in data.splitlines():
     tls += support_tls(line)
     ssl += support_ssl(line)
 
-print(tls)
-print(ssl)
+print("part a:", tls)
+print("part b:", ssl)

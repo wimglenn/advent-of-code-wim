@@ -75,5 +75,5 @@ def next_password(s):
 
 if __name__ == "__main__":
     first = next_password(data)
-    print(first)
-    print(next_password(first))
+    print("part a:", first)
+    print("part b:", next_password(first))

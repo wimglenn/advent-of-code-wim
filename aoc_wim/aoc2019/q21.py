@@ -45,4 +45,4 @@ for part, prog in zip("ab", [prog_a, prog_b]):
     comp.run()
     val = comp.output.popleft()
     print(*[chr(x) for x in reversed(comp.output)], sep="")
-    print("part", part, val)
+    print(f"part {part}:", val)

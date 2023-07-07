@@ -33,6 +33,6 @@ def find_time(data):
             disc.rotate(1)
 
 
-print(find_time(data))
+print("part a:", find_time(data))
 data += "\nBonus disc has 11 positions; at time=0, it is at position 0."
-print(find_time(data))
+print("part b:", find_time(data))

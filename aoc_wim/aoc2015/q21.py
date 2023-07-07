@@ -107,5 +107,5 @@ def play(data, shop):
 
 if __name__ == "__main__":
     min_cost_to_win, max_cost_to_lose = play(data, shop)
-    print(min_cost_to_win)
-    print(max_cost_to_lose)
+    print("part a:", min_cost_to_win)
+    print("part b:", max_cost_to_lose)

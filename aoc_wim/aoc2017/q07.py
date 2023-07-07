@@ -64,5 +64,5 @@ def find_bad_node_correct_weight(tree):
 
 nodes = {}
 tree = make_tree(data)
-print(tree.name)
-print(find_bad_node_correct_weight(tree))
+print("part a:", tree.name)
+print("part b:", find_bad_node_correct_weight(tree))

@@ -25,5 +25,5 @@ def part_b(data):
                 return 100 * r1 + r2
 
 
-print(part_a(data, r1=12, r2=2))
-print(part_b(data))
+print("part a:", part_a(data, r1=12, r2=2))
+print("part b:", part_b(data))

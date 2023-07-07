@@ -126,11 +126,11 @@ def compress(path, mem=20):
 
 if __name__ == "__main__":
     grid = parsed(data)
-    print("part a", calibration(grid))
+    print("part a:", calibration(grid))
 
     comp = IntComputer(data)
     comp.reg[0] = 2
     path = get_path(grid)
     comp.input_text(path)
     comp.run()
-    print("part b", comp.output[0])
+    print("part b:", comp.output[0])

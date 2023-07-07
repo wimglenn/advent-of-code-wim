@@ -38,4 +38,4 @@ for p in "ab":
         if grid1.d == grid0.d:
             break
         grid0 = grid1
-    print("part", p, grid0.count("#"))
+    print(f"part {p}:", grid0.count("#"))

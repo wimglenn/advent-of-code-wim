@@ -62,5 +62,5 @@ def solve(data, n_groups):
         return prod(group1)
 
 
-print(solve(data, n_groups=3))
-print(solve(data, n_groups=4))
+print("part a:", solve(data, n_groups=3))
+print("part b:", solve(data, n_groups=4))

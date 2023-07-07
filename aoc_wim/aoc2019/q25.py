@@ -278,7 +278,7 @@ class Game:
             log.warning("should be done but: %r", txt)
             raise Exception
         [code] = [word for word in txt.split() if word.isdigit()]
-        print("part a", code)
+        print("part a:", code)
 
 
 # traps .. don't pick up this crap

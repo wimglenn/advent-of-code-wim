@@ -59,7 +59,7 @@ class Q15AStar(AStar):
 
 search = Q15AStar(data)
 path = search.run()
-print("part a", search.path_length)
+print("part a:", search.path_length)
 search.draw()
 
 s0 = search.freezer[search.target]
@@ -72,5 +72,5 @@ search.gscore[search.state0] = 0
 search.came_from.clear()
 search.closed.clear()
 search.run()
-print("part b", max(search.gscore.values()))
+print("part b:", max(search.gscore.values()))
 search.draw()
