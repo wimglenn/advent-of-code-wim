@@ -8,22 +8,19 @@ import re
 from aocd import data
 
 
-def sum_of_numbers_in_text(s):
-    return sum(int(n) for n in re.findall(r"-?\d+", s))
+def numbers(s):
+    return re.findall(r"-?\d+", s)
 
 
 def rsum(data):
-    if isinstance(data, int):
-        return data
-    elif isinstance(data, dict):
-        if "red" in data.values():
-            return 0
-        return rsum(list(data.values()))
-    elif isinstance(data, list):
-        return sum(rsum(n) for n in data)
-    else:
-        return 0
+    match data:
+        case int(): return data
+        case list(): return sum(rsum(x) for x in data)
+        case dict():
+            vals = list(data.values())
+            return 0 if "red" in vals else rsum(vals)
+        case _: return 0
 
 
-print(sum_of_numbers_in_text(data))
+print(sum(map(int, numbers(data))))
 print(rsum(json.loads(data)))
