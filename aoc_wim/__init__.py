@@ -25,9 +25,12 @@ def plugin(year, day, data):
     old_stdout = sys.stdout
     sys.stdout = out = io.StringIO()
     try:
+        import aocd
+        aocd.data = data
         runpy.run_module(mod_name, run_name="__main__")
     finally:
         sys.stdout = old_stdout
+        del aocd.data
     lines = [x for x in out.getvalue().splitlines() if x]
     answer_a = answer_b = None
     for line in lines:
