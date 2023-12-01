@@ -132,6 +132,11 @@ def start():
     print(data)
     set_docstrings([src])
     puzzle = Puzzle(year, day)
+    [example] = puzzle.examples
     if test.read_text() == "\n-\n-\n":
-        test.write_text("{}\n-\n-\n".format(puzzle.example_data))
+        test.write_text(dedent(f"""\
+        {example.input_data}
+        {example.answer_a or "-"}
+        {example.answer_b or "-"}
+        """))
     webbrowser.open(puzzle.url)
