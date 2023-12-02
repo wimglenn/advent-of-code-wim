@@ -3,26 +3,19 @@
 https://adventofcode.com/2023/day/2
 """
 from aocd import data
+from math import prod
+from collections import Counter
 
-bag = dict(zip("rgb", [12, 13, 14]))
+bag = Counter("rgb"*12 + "g" + "bb")
 a = b = 0
-for line in data.splitlines():
-    maxs = dict.fromkeys("rgb", 0)
-    g, line = line.split(": ")
-    g = int(g.removeprefix("Game "))
-    handfuls = line.split("; ")
-    game_possible = True
-    for handful in handfuls:
-        counts = dict.fromkeys("rgb", 0)
-        for n_c in handful.split(", "):
-            n, c = n_c.split()
-            counts[c[0]] += int(n)
-        for c in "rgb":
-            maxs[c] = max(maxs[c], counts[c])
-        if any(counts[c] > bag[c] for c in "rgb"):
-            game_possible = False
-    a += g * game_possible
-    b += maxs["r"] * maxs["g"] * maxs["b"]
+for line in data.replace(";", ",").splitlines():
+    g, line = line.removeprefix("Game").split(":")
+    d = Counter()
+    for n_c in line.split(","):
+        n, c = n_c.split()
+        d[c[0]] = max(d[c[0]], int(n))
+    a += int(g) * (d <= bag)
+    b += prod(d.values())
 
 print("answer_a:", a)
 print("answer_b:", b)
