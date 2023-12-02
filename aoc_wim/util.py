@@ -117,10 +117,10 @@ def start():
 
 
 
-
-
         print("answer_a:", )
         print("answer_b:", )
+
+        # from aocd import submit; submit(a)
     '''))
     test = here.parent / "tests" / str(year) / str(day).zfill(2) / "a.txt"
     if not test.exists():
@@ -135,8 +135,8 @@ def start():
     [example] = puzzle.examples
     if test.read_text() == "\n-\n-\n":
         test.write_text(dedent(f"""\
-        {example.input_data}
-        {example.answer_a or "-"}
-        {example.answer_b or "-"}
+            {example.input_data}
+            {example.answer_a or "-"}
+            {example.answer_b or "-"}
         """))
     webbrowser.open(puzzle.url)
