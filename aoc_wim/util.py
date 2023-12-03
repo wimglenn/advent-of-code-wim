@@ -122,7 +122,7 @@ def start():
 
         # from aocd import submit; submit(a)
     '''))
-    test = here.parent / "tests" / str(year) / str(day).zfill(2) / "a.txt"
+    test = here.parent / "tests" / str(year) / str(day).zfill(2) / "0.txt"
     if not test.exists():
         test.parent.mkdir(parents=True, exist_ok=True)
         test.write_text("\n-\n-\n")
