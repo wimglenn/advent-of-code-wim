@@ -111,6 +111,10 @@ class ZGrid:
     def __iter__(self):
         return iter(self.d)
 
+    def scan(self):
+        for k in sorted(self.keys(), key=lambda v: (v.imag, v.real)):
+            yield k, self.d[k]
+
     def __len__(self):
         return len(self.d)
 
