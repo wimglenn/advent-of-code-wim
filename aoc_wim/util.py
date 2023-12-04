@@ -98,30 +98,35 @@ def start():
     if day == 1 and not src.parent.is_dir():
         src.parent.mkdir()
         src.parent.joinpath("__init__.py").touch()
-    src.write_text(dedent('''\
-        from aocd import data
-        from aoc_wim.autoparse import parsed
-        from collections import Counter, defaultdict, deque
-        d = parsed(data)
-        if d != data:
-            print(d)
-            print(f"{parsed.n_bytes} bytes/{parsed.n_lines} lines, parsed by {parsed.parser}")
+    src.write_text(
+        dedent(
+            """\
+            from aocd import data
+            from aoc_wim.autoparse import parsed
+            from collections import Counter, defaultdict, deque
+            d = parsed(data)
+            if d != data:
+                print(d)
+                print(f"{parsed.n_bytes} bytes/{parsed.n_lines} lines, parsed by {parsed.parser}")
 
-        # import numpy as np
-        # import networkx as nx
-        # from aoc_wim.zgrid import ZGrid
-        # from aoc_wim import stuff
+            # import numpy as np
+            # import networkx as nx
+            # from aoc_wim.zgrid import ZGrid
+            # from aoc_wim import stuff
 
-        # import logging; logging.basicConfig(level=logging.DEBUG)
-
-
+            # import logging; logging.basicConfig(level=logging.DEBUG)
 
 
-        print("answer_a:", )
-        print("answer_b:", )
 
-        # from aocd import submit; submit(a)
-    '''))
+
+
+            print("answer_a:", )
+            print("answer_b:", )
+
+            # from aocd import submit; submit(a)
+            """
+        )
+    )
     test = here.parent / "tests" / str(year) / str(day).zfill(2) / "0.txt"
     if not test.exists():
         test.parent.mkdir(parents=True, exist_ok=True)
@@ -134,9 +139,9 @@ def start():
     puzzle = Puzzle(year, day)
     [example] = puzzle.examples
     if test.read_text() == "\n-\n-\n":
-        test.write_text(dedent(f"""\
-            {example.input_data}
-            {example.answer_a or "-"}
-            {example.answer_b or "-"}
-        """))
+        test.write_text(
+            f"{example.input_data}\n"
+            f"{example.answer_a or '-'}\n"
+            f"{example.answer_b or '-'}\n"
+        )
     webbrowser.open(puzzle.url)
