@@ -6,21 +6,14 @@ from aocd import data
 
 lines = data.splitlines()
 n = len(lines)
-L = [1] * n
-a = b = 0
+cards = [1] * n
+a = 0
 for i, line in enumerate(lines):
-    _, lr = line.split(": ")
-    l, r = lr.split(" | ")
-    winners = {int(x) for x in l.split()}
-    w = sum(1 for i in map(int, r.split()) if i in winners)
-    if w:
-        a += 2 ** (w - 1)
-    b += L[i]
-    for j in range(i + 1, i + 1 + w):
-        try:
-            L[j] += L[i]
-        except IndexError:
-            break
+    L, R = line.split("|")
+    w = {*L.split()} & {*R.split()}
+    a += int(2 ** (len(w) - 1))
+    for j in range(min(len(w), n)):
+        cards[i + 1 + j] += cards[i]
 
 print("answer_a:", a)
-print("answer_b:", b)
+print("answer_b:", sum(cards))
