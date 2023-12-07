@@ -4,3 +4,4 @@
 .......15.....
 40
 442
+# https://www.reddit.com/r/adventofcode/comments/189q9wv/comment/kbsrno0/
