@@ -1,0 +1,5 @@
+333.3
+...*.
+336
+999
+# https://www.reddit.com/r/adventofcode/comments/189q9wv/comment/kbszvpr/

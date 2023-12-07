@@ -1,0 +1,6 @@
+........
+.24..4..
+......*.
+4
+0
+# https://www.reddit.com/r/adventofcode/comments/189q9wv/comment/kbt0vh8/

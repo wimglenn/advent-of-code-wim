@@ -1,0 +1,5 @@
+100
+200
+0
+0
+# https://www.reddit.com/r/adventofcode/comments/189q9wv/comment/kbt6ez9/

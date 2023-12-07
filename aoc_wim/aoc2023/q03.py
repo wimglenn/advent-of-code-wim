@@ -7,9 +7,10 @@ from aoc_wim.zgrid import ZGrid
 
 g = ZGrid(data)
 n = []
-part = gear = None
+part = None
 part_numbers = []
-gears = {}
+gear = []
+gears = {z: [] for z in g.z("*", first=False)}
 for z0, glyph in g.scan():
     if glyph.isdigit():
         n.append(glyph)
@@ -18,16 +19,16 @@ for z0, glyph in g.scan():
             if not c.isdigit() and c != ".":
                 part = True
                 if c == "*":
-                    gear = z
-                    if gear not in gears:
-                        gears[gear] = []
+                    gear.append(z)
         if not g.get(z0 + 1, ".").isdigit():
             if part:
                 part_number = int("".join(n))
                 part_numbers.append(part_number)
                 if gear:
-                    gears[gear].append(part_number)
-                part = gear = None
+                    for z in set(gear):
+                        gears[z].append(part_number)
+                part = None
+                gear.clear()
             n.clear()
 
 print("answer_a:", sum(part_numbers))
