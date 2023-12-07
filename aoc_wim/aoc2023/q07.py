@@ -14,9 +14,8 @@ def key_a(hand):
 
 
 def key_b(hand):
-    h = hand.replace("J", "")
-    best = hand.replace("J", max(h, key=h.count, default="J"))
-    k0, _ = key_a(best)
+    [(best, _)] = Counter(hand.replace("J", "") or "J").most_common(1)
+    k0, _ = key_a(hand.replace("J", best))
     return k0, hand.translate(tr).replace("J", "0")
 
 
