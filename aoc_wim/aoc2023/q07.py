@@ -4,7 +4,6 @@ https://adventofcode.com/2023/day/7
 """
 from aocd import data
 from collections import Counter
-from itertools import combinations_with_replacement
 
 
 tr = str.maketrans("TQKA", "IKLM")
@@ -15,12 +14,9 @@ def key_a(hand):
 
 
 def key_b(hand):
-    hands = [hand]
-    for comb in combinations_with_replacement("AKQT98765432", hand.count("J")):
-        it = iter(comb)
-        hands.append("".join([next(it) if h == "J" else h for h in hand]))
-        assert next(it, None) is None
-    k0, _k1 = max(key_a(c) for c in hands)
+    h = hand.replace("J", "")
+    best = hand.replace("J", max(h, key=h.count, default="J"))
+    k0, _ = key_a(best)
     return k0, hand.translate(tr).replace("J", "0")
 
 
