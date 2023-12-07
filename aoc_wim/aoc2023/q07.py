@@ -7,7 +7,6 @@ from collections import Counter
 from itertools import combinations_with_replacement
 
 
-cards = "AKQJT98765432"
 tr = str.maketrans("TQKA", "IKLM")
 
 
@@ -17,7 +16,7 @@ def key_a(hand):
 
 def key_b(hand):
     hands = [hand]
-    for comb in combinations_with_replacement(cards, hand.count("J")):
+    for comb in combinations_with_replacement("AKQT98765432", hand.count("J")):
         it = iter(comb)
         hands.append("".join([next(it) if h == "J" else h for h in hand]))
         assert next(it, None) is None
