@@ -9,16 +9,16 @@ from collections import Counter
 tr = str.maketrans("TQKA", "IKLM")
 
 
-def key_a(hand):
-    return sorted(Counter(hand).values(), reverse=True), hand.translate(tr)
+def key_a(h):
+    return sorted(Counter(h[0]).values(), reverse=True), h[0].translate(tr)
 
 
-def key_b(hand):
-    c = Counter(hand.replace("J", "") or "J")
-    k0, _ = key_a(hand.replace("J", max(c, key=c.get)))
-    return k0, hand.translate(tr).replace("J", "0")
+def key_b(h):
+    c = Counter(h[0].replace("J", "") or "J")
+    k0, _ = key_a([h[0].replace("J", max(c, key=c.get))])
+    return k0, h[0].translate(tr).replace("J", "0")
 
 
-d = dict(h.split() for h in data.splitlines())
-print("answer_a", sum(i * int(d[k]) for i, k in enumerate(sorted(d, key=key_a), 1)))
-print("answer_b", sum(i * int(d[k]) for i, k in enumerate(sorted(d, key=key_b), 1)))
+d = [h.split() for h in data.splitlines()]
+print("answer_a", sum(i * int(b) for i, (h, b) in enumerate(sorted(d, key=key_a), 1)))
+print("answer_b", sum(i * int(b) for i, (h, b) in enumerate(sorted(d, key=key_b), 1)))
