@@ -3,7 +3,6 @@
 https://adventofcode.com/2020/day/9
 """
 from aocd import data
-from wimpy import chunks
 from aoc_wim.aoc2020 import find_pair
 
 numbers = [int(x) for x in data.splitlines()]
@@ -11,10 +10,14 @@ n = 25
 if len(numbers) < n:
     n = 5  # hackish - lower "preamble" for the example test to work
 
-for *pre, target in chunks(numbers, chunk_size=n + 1, overlap=n):
-    if find_pair(set(pre), target) is None:
+pre = set(numbers[:n])
+for i in range(n, len(numbers)):
+    target = numbers[i]
+    if find_pair(pre, target) is None:
         print("answer_a:", target)
         break
+    pre.remove(numbers[i - n])
+    pre.add(target)
 
 start = 0
 stop = 2

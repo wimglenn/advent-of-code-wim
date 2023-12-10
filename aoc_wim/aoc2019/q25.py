@@ -8,7 +8,7 @@ import anytree
 from aocd import data
 from aoc_wim.aoc2019 import IntComputer
 from itertools import combinations
-from wimpy.util import cached_property
+from functools import cached_property
 
 
 log = logging.getLogger(__name__)

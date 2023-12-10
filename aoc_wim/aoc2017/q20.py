@@ -6,11 +6,11 @@ from collections import defaultdict
 
 from aocd import data
 from parse import parse
-from wimpy import chunks
+from itertools import batched
 
 
 def key(p):
-    return [abs(x) + abs(y) + abs(z) for x, y, z in chunks(reversed(p), 3)]
+    return [abs(x) + abs(y) + abs(z) for x, y, z in batched(reversed(p), 3)]
 
 
 def abs_accel(p):

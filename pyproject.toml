@@ -21,7 +21,6 @@ dependencies = [
     "termcolor",
     "fields",
     "networkx",
-    "wimpy",
     "marshmallow",
     "regex",
     "intervaltree",
