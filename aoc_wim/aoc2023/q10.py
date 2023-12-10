@@ -7,17 +7,17 @@ from aocd import data
 
 from aoc_wim.zgrid import ZGrid
 
-data = data.translate(str.maketrans("-|F7LJ", "─│┌┐└┘"))
+data = data.translate(str.maketrans("-|F7LJ", "─│╭╮╰╯"))
 grid = ZGrid(data)
 s = grid.z("S")
 graph = nx.Graph()
 graph.add_nodes_from(grid)
 horizontals = """\
-── ─┘ ─┐ └─ └┘ └┐ ┌─ ┌┘ ┌┐
+── ─╯ ─╮ ╰─ ╰╯ ╰╮ ╭─ ╭╯ ╭╮
 """
 verticals = """\
-│ │ │ ┐ ┐ ┐ ┌ ┌ ┌ 
-│ ┘ └ │ ┘ └ │ ┘ └ 
+│ │ │ ╮ ╮ ╮ ╭ ╭ ╭
+│ ╯ ╰ │ ╯ ╰ │ ╯ ╰
 """
 verticals = [a + b for a, b in zip(*verticals.splitlines())][::2]
 
@@ -29,18 +29,18 @@ for z, v in grid.scan():
     if v + vd in verticals:
         graph.add_edge(z, z + 1j)
 
-dz_L = zip((-1j, 1, 1j, -1), "│┌┐ ─┐┘ │└┘ ─┌└".split())
+dz_L = zip((-1j, 1, 1j, -1), "│╭╮ ─╮╯ │╰╯ ─╭╰".split())
 s_join = {dz: grid.get(s + dz, ".") in L for dz, L in dz_L}
 for dz, join in s_join.items():
     if join:
         graph.add_edge(s, s + dz)
 match *s_join.values(),:
-    case 0, 0, 1, 1: grid[s] = "┐"
+    case 0, 0, 1, 1: grid[s] = "╮"
     case 0, 1, 0, 1: grid[s] = "─"
-    case 0, 1, 1, 0: grid[s] = "┌"
-    case 1, 0, 0, 1: grid[s] = "┘"
+    case 0, 1, 1, 0: grid[s] = "╭"
+    case 1, 0, 0, 1: grid[s] = "╯"
     case 1, 0, 1, 0: grid[s] = "│"
-    case 1, 1, 0, 0: grid[s] = "└"
+    case 1, 1, 0, 0: grid[s] = "╰"
 
 [loop] = [c for c in nx.connected_components(graph) if s in c]
 print("answer_a:", len(loop) // 2)
@@ -50,11 +50,11 @@ h = ""
 n_crossings = 0
 for z, v in grid.scan():
     if z in loop:
-        if v == "│" or h + v in ("┌┘", "└┐"):
+        if v == "│" or h + v in ("╭╯", "╰╮"):
             n_crossings += 1
-        if v in "┌└":
+        if v in "╭╰":
             h = v
-        elif v in "┘┐":
+        elif v in "╯╮":
             h = ""
     elif n_crossings % 2:
         interior.append(z)
@@ -65,4 +65,4 @@ print("answer_b:", len(interior))
 # o = {z: colored(grid[z], "red") for z in loop}
 # o[s] = colored("S", "blue")
 # o |= {z: colored(grid[z], "green") for z in interior}
-# grid.draw(overlay=o)
+# grid.draw(overlay=o, hide_ax=True)

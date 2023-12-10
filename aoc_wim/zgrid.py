@@ -194,7 +194,7 @@ class ZGrid:
                 z-1+1j, z+1j, z+1+1j,
             ]
 
-    def draw(self, overlay=None, window=None, clear=False, pretty=False, transform=None, title="", flip=None, empty_glyph=None):
+    def draw(self, overlay=None, window=None, clear=False, pretty=False, transform=None, title="", flip=None, empty_glyph=None, hide_ax=False):
         if window is None:
             d = self.d
         else:
@@ -203,7 +203,7 @@ class ZGrid:
             d = {z: self[z] for z in window}
         if overlay is not None:
             d = {**self.d, **overlay}
-        dump_grid(d, clear=clear, pretty=pretty, transform=transform, title=title, flip=flip, empty_glyph=empty_glyph)
+        dump_grid(d, clear=clear, pretty=pretty, transform=transform, title=title, flip=flip, empty_glyph=empty_glyph, hide_ax=hide_ax)
 
     # TODO:
     #  hexgrid compass overlay ✶
@@ -349,7 +349,7 @@ class ZGrid:
         self.d.update(other)
 
 
-def dump_grid(g, clear=False, pretty=True, transform=None, title="", flip=None, empty_glyph=None):
+def dump_grid(g, clear=False, pretty=True, transform=None, title="", flip=None, empty_glyph=None, hide_ax=False):
     if transform is None:
         transform = {
             "#": "⬛",
@@ -390,7 +390,8 @@ def dump_grid(g, clear=False, pretty=True, transform=None, title="", flip=None, 
     if "y" in (flip or ""):
         rows = rows[::-1]
     for row in rows:
-        print(f"{row:>5d}", end="")
+        if not hide_ax:
+            print(f"{row:>5d}", end="")
         line = []
         if pretty:
             line.append("│")
@@ -406,14 +407,15 @@ def dump_grid(g, clear=False, pretty=True, transform=None, title="", flip=None, 
         print("".join(line))
     if pretty:
         print(" "*5 + "└" + "─"*W + "┘")
-    footer_left = f"{cols[0]}".ljust(W)
-    footer_center = f"{cols[len(cols)//2]}".center(W)
-    footer_right = f"{cols[-1]}".rjust(W)
-    zf = zip(footer_left, footer_center, footer_right)
-    footer = [next((x for x in iter([l, c, r]) if x != " "), " ") for (l, c, r) in zf]
-    footer = "".join(footer)
-    print(" " * 6 + footer)
-    print()
+    if not hide_ax:
+        footer_left = f"{cols[0]}".ljust(W)
+        footer_center = f"{cols[len(cols)//2]}".center(W)
+        footer_right = f"{cols[-1]}".rjust(W)
+        zf = zip(footer_left, footer_center, footer_right)
+        footer = [next((x for x in iter([l, c, r]) if x != " "), " ") for (l, c, r) in zf]
+        footer = "".join(footer)
+        print(" " * 6 + footer)
+        print()
 
 
 def array2txt(a):
