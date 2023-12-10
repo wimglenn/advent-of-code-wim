@@ -3,6 +3,7 @@
 https://adventofcode.com/2018/day/18
 """
 import time
+
 import numpy as np
 from aocd import data
 from scipy.signal import convolve2d

@@ -2,11 +2,13 @@
 --- Day 24: Air Duct Spelunking ---
 https://adventofcode.com/2016/day/24
 """
-from aoc_wim.zgrid import ZGrid
 from itertools import combinations
 from itertools import permutations
+
 import networkx as nx
 from aocd import data
+
+from aoc_wim.zgrid import ZGrid
 
 grid = ZGrid(data, on=".", off="#")
 graph = grid.graph(extra="0123456789")

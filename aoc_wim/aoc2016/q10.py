@@ -3,6 +3,7 @@
 https://adventofcode.com/2016/day/10
 """
 from math import prod
+
 from aocd import data
 from parse import parse
 

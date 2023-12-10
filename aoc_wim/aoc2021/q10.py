@@ -2,8 +2,9 @@
 --- Day 10: Syntax Scoring ---
 https://adventofcode.com/2021/day/10
 """
-from aocd import data
 from statistics import median
+
+from aocd import data
 
 
 class ParserError(Exception):

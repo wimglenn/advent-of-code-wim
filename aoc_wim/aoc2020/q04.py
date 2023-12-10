@@ -10,8 +10,8 @@ from marshmallow.fields import String
 from marshmallow.validate import OneOf
 from marshmallow.validate import Range
 from marshmallow.validate import Regexp
-from marshmallow.validate import Validator
 from marshmallow.validate import ValidationError
+from marshmallow.validate import Validator
 
 
 class Height(Validator):

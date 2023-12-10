@@ -3,7 +3,9 @@
 https://adventofcode.com/2020/day/3
 """
 from math import prod
+
 from aocd import data
+
 from aoc_wim.zgrid import ZGrid
 
 grid = ZGrid(data)

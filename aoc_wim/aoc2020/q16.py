@@ -2,8 +2,9 @@
 --- Day 16: Ticket Translation ---
 https://adventofcode.com/2020/day/16
 """
-from aocd import data
 from math import prod
+
+from aocd import data
 
 
 def parsed(data):

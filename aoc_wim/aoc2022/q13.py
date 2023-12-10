@@ -2,9 +2,10 @@
 --- Day 13: Distress Signal ---
 https://adventofcode.com/2022/day/13
 """
-from aocd import data
-from json import loads
 from functools import cmp_to_key
+from json import loads
+
+from aocd import data
 
 
 def cmp(a, b):

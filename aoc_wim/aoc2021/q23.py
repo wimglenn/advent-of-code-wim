@@ -2,11 +2,12 @@
 --- Day 23: Amphipod ---
 https://adventofcode.com/2021/day/23
 """
-from aocd import data
-from aoc_wim.search import AStar
 import networkx as nx
-from aoc_wim.zgrid import ZGrid
+from aocd import data
+
+from aoc_wim.search import AStar
 from aoc_wim.zgrid import manhattan_distance
+from aoc_wim.zgrid import ZGrid
 
 
 class Q23AStar(AStar):

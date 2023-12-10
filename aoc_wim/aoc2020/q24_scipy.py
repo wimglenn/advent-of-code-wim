@@ -2,11 +2,13 @@
 --- Day 24: Lobby Layout ---
 https://adventofcode.com/2020/day/24
 """
-from aocd import data
 import re
-from aoc_wim import zgrid
+
 import numpy as np
+from aocd import data
 from scipy.signal import convolve2d
+
+from aoc_wim import zgrid
 
 
 pat = r"(se|sw|ne|nw|e|w)"

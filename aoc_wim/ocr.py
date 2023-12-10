@@ -1,7 +1,8 @@
 import numpy as np
 from termcolor import cprint
-from aoc_wim.zgrid import ZGrid
+
 from aoc_wim.zgrid import array2txt
+from aoc_wim.zgrid import ZGrid
 
 
 glyphs = """

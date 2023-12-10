@@ -2,9 +2,10 @@
 --- Day 2: Cube Conundrum ---
 https://adventofcode.com/2023/day/2
 """
-from aocd import data
-from math import prod
 from collections import Counter
+from math import prod
+
+from aocd import data
 
 bag = Counter("rgb"*12 + "g" + "bb")
 a = b = 0

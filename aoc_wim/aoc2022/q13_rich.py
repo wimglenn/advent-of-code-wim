@@ -2,8 +2,9 @@
 --- Day 13: Distress Signal ---
 https://adventofcode.com/2022/day/13
 """
-from aocd import data
 from json import loads
+
+from aocd import data
 
 
 class Packet:

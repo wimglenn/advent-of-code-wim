@@ -6,7 +6,6 @@ from collections import Counter
 from collections import deque
 
 from aocd import data
-from wimpy import cached_property
 
 
 class Node:
@@ -16,7 +15,7 @@ class Node:
         self.parent = None
         self.children = []
 
-    @cached_property
+    @property
     def rweight(self):
         return self.weight + sum(x.rweight for x in self.children)
 

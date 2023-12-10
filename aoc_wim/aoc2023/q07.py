@@ -2,8 +2,9 @@
 --- Day 7: Camel Cards ---
 https://adventofcode.com/2023/day/7
 """
-from aocd import data
 from collections import Counter
+
+from aocd import data
 
 
 tr = str.maketrans("TQKA", "IKLM")

@@ -3,6 +3,7 @@
 https://adventofcode.com/2019/day/22
 """
 from math import prod
+
 from aocd import data
 
 

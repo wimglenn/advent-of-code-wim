@@ -2,8 +2,9 @@
 --- Day 14: Docking Data ---
 https://adventofcode.com/2020/day/14
 """
-from aocd import data
 from itertools import combinations
+
+from aocd import data
 
 da = {}
 db = {}

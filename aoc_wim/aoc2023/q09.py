@@ -2,8 +2,8 @@
 --- Day 9: Mirage Maintenance ---
 https://adventofcode.com/2023/day/9
 """
-from aocd import data
 import numpy as np
+from aocd import data
 
 
 n = len(data.splitlines())

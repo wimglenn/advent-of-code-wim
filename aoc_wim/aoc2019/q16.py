@@ -2,9 +2,10 @@
 --- Day 16: Flawed Frequency Transmission ---
 https://adventofcode.com/2019/day/16
 """
-from aocd import data
 from itertools import cycle
+
 import numpy as np
+from aocd import data
 
 
 def square_wave(w=1):

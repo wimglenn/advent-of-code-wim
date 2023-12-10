@@ -6,11 +6,13 @@ import os
 import re
 from collections import defaultdict
 from collections import deque
-from aocd import data
-from aoc_wim.aoc2016 import md5_miner_q14a
-from aoc_wim.aoc2016 import md5_miner_q14b
 from concurrent.futures import ProcessPoolExecutor
 from itertools import count
+
+from aocd import data
+
+from aoc_wim.aoc2016 import md5_miner_q14a
+from aoc_wim.aoc2016 import md5_miner_q14b
 
 
 def search(data, stretch):

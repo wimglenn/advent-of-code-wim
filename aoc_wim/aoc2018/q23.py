@@ -2,11 +2,11 @@
 --- Day 23: Experimental Emergency Teleportation ---
 https://adventofcode.com/2018/day/23
 """
+import math
 from heapq import heappop
 from heapq import heappush
 from itertools import product
 
-import math
 import numpy as np
 from aocd import data
 from parse import parse

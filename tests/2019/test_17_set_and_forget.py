@@ -1,4 +1,5 @@
 import pytest
+
 from aoc_wim.aoc2019 import q17
 from aoc_wim.zgrid import ZGrid
 

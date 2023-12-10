@@ -2,9 +2,10 @@
 --- Day 7: Handy Haversacks ---
 https://adventofcode.com/2020/day/7
 """
-from aocd import data
 from collections import deque
+
 import networkx as nx
+from aocd import data
 
 g = nx.DiGraph()
 for line in data.splitlines():

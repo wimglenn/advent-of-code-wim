@@ -2,11 +2,12 @@
 --- Day 12: The N-Body Problem ---
 https://adventofcode.com/2019/day/12
 """
-from aocd import data
+import re
 from itertools import count
 from math import lcm
+
 import numpy as np
-import re
+from aocd import data
 
 
 def simulate(data, n=0):

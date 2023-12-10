@@ -3,9 +3,10 @@
 https://adventofcode.com/2016/day/14
 """
 import re
-from collections import defaultdict
-from aocd import data
 from _md5 import md5
+from collections import defaultdict
+
+from aocd import data
 
 
 def search(data, stretch):

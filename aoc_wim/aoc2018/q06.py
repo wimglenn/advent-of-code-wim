@@ -3,6 +3,7 @@
 https://adventofcode.com/2018/day/6
 """
 from io import StringIO
+
 import numpy as np
 from aocd import data
 

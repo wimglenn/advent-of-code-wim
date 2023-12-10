@@ -1,4 +1,5 @@
 import pytest
+
 from aoc_wim.aoc2017.q22 import mutate
 
 

@@ -3,6 +3,7 @@
 https://adventofcode.com/2016/day/6
 """
 from collections import Counter
+
 from aocd import data
 
 counters = [Counter(x) for x in zip(*data.splitlines())]

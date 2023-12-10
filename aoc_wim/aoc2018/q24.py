@@ -7,7 +7,6 @@ from operator import attrgetter
 
 from aocd import data
 from parse import parse
-from wimpy import strip_prefix
 
 
 log = logging.getLogger(__name__)
@@ -60,14 +59,10 @@ class Group:
         self.weak = []
         self.immune = []
         for prop in props.strip(" ()").split("; "):
-            if not prop:
-                continue
             if prop.startswith("immune to "):
-                prop = strip_prefix(prop, "immune to ", strict=True)
-                self.immune.extend(prop.split(", "))
-            else:
-                prop = strip_prefix(prop, "weak to ", strict=True)
-                self.weak.extend(prop.split(", "))
+                self.immune += prop.removeprefix("immune to ").split(", ")
+            elif prop.startswith("weak to "):
+                self.weak += prop.removeprefix("weak to ").split(", ")
         self.target = None
 
     @property

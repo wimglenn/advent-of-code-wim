@@ -2,11 +2,13 @@
 --- Day 15: Beacon Exclusion Zone ---
 https://adventofcode.com/2022/day/15
 """
-from aocd import data
-from parse import parse
-from aoc_wim.zgrid import manhattan_distance
-from intervaltree import IntervalTree
 from itertools import combinations
+
+from aocd import data
+from intervaltree import IntervalTree
+from parse import parse
+
+from aoc_wim.zgrid import manhattan_distance
 
 
 class Sensor:

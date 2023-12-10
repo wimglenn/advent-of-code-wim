@@ -3,7 +3,9 @@
 https://adventofcode.com/2020/day/1
 """
 from collections import Counter
+
 from aocd import data
+
 from aoc_wim.aoc2020 import find_pair
 
 

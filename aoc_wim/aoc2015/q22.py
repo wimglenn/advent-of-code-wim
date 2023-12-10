@@ -4,6 +4,7 @@ https://adventofcode.com/2015/day/22
 """
 from aocd import data
 from fields import Fields
+
 from aoc_wim.search import AStar
 
 

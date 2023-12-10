@@ -2,7 +2,9 @@
 --- Day 6: Wait For It ---
 https://adventofcode.com/2023/day/6
 """
-from math import prod, sqrt
+from math import prod
+from math import sqrt
+
 from aocd import data
 
 

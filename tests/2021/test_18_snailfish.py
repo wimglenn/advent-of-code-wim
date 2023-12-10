@@ -1,4 +1,5 @@
 import json
+
 import pytest
 
 from aoc_wim.aoc2021.q18 import SnailfishNumber

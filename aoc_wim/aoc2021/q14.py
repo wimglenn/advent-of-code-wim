@@ -3,6 +3,7 @@
 https://adventofcode.com/2021/day/14
 """
 from collections import Counter
+
 from aocd import data
 
 polymer, rules = data.split("\n\n")

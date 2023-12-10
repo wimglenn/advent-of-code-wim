@@ -4,10 +4,12 @@ https://adventofcode.com/2019/day/18
 """
 import string
 from itertools import combinations
-from aocd import data
-from aoc_wim.zgrid import ZGrid
-from aoc_wim.search import AStar
+
 import networkx as nx
+from aocd import data
+
+from aoc_wim.search import AStar
+from aoc_wim.zgrid import ZGrid
 
 
 class Q18AStar(AStar):

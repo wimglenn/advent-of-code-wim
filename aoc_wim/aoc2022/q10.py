@@ -3,6 +3,7 @@
 https://adventofcode.com/2022/day/10
 """
 from aocd import data
+
 from aoc_wim.ocr import AOCR
 
 

@@ -1,7 +1,8 @@
 import datetime
 import re
-import pytest
 import sys
+
+import pytest
 
 Module = type(sys)
 mock_aocd = Module("aocd")

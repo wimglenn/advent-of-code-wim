@@ -3,6 +3,7 @@
 https://adventofcode.com/2019/day/21
 """
 from aocd import data
+
 from aoc_wim.aoc2019 import IntComputer
 
 # Jump if (there's a hole 1 space away (not A)

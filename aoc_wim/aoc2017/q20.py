@@ -3,14 +3,14 @@
 https://adventofcode.com/2017/day/20
 """
 from collections import defaultdict
+from itertools import batched
 
 from aocd import data
 from parse import parse
-from wimpy import chunks
 
 
 def key(p):
-    return [abs(x) + abs(y) + abs(z) for x, y, z in chunks(reversed(p), 3)]
+    return [abs(x) + abs(y) + abs(z) for x, y, z in batched(reversed(p), 3)]
 
 
 def abs_accel(p):

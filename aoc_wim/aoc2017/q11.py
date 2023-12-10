@@ -2,8 +2,9 @@
 --- Day 11: Hex Ed ---
 https://adventofcode.com/2017/day/11
 """
-from aoc_wim import zgrid
 from aocd import data
+
+from aoc_wim import zgrid
 
 z = d = dmax = 0
 grid = zgrid.ZGrid({z: 1})

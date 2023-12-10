@@ -2,11 +2,13 @@
 --- Day 19: Tractor Beam ---
 https://adventofcode.com/2019/day/19
 """
-from aocd import data
-from aoc_wim.aoc2019 import IntComputer
-from aoc_wim.zgrid import ZGrid
-from aoc_wim.search import Bisect
 import functools
+
+from aocd import data
+
+from aoc_wim.aoc2019 import IntComputer
+from aoc_wim.search import Bisect
+from aoc_wim.zgrid import ZGrid
 
 
 @functools.lru_cache(maxsize=100**2)

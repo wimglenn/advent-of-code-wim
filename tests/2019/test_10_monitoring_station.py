@@ -1,5 +1,7 @@
 import logging
+
 import pytest
+
 from aoc_wim.aoc2019 import q10
 
 

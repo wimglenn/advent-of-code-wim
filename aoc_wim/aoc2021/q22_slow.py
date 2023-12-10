@@ -2,9 +2,10 @@
 --- Day 22: Reactor Reboot ---
 https://adventofcode.com/2021/day/22
 """
+from dataclasses import dataclass
+
 from aocd import data
 from parse import parse
-from dataclasses import dataclass
 
 
 @dataclass

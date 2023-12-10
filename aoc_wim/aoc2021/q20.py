@@ -2,8 +2,8 @@
 --- Day 20: Trench Map ---
 https://adventofcode.com/2021/day/20
 """
-from aocd import data
 import numpy as np
+from aocd import data
 from scipy.signal import convolve2d
 
 s, grid = data.split("\n\n")

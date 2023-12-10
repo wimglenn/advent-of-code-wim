@@ -2,8 +2,9 @@
 --- Day 3: Rucksack Reorganization ---
 https://adventofcode.com/2022/day/3
 """
+from itertools import batched
+
 from aocd import data
-from wimpy import chunks
 
 a = 0
 for line in data.splitlines():
@@ -14,7 +15,7 @@ for line in data.splitlines():
     a += ord(c.lower()) - ord("a") + 1
 
 b = 0
-for s1, s2, s3 in chunks(data.splitlines()):
+for s1, s2, s3 in batched(data.splitlines(), 3):
     [c] = set(s1).intersection(s2, s3)
     b += c.isupper() * 26
     b += ord(c.lower()) - ord("a") + 1

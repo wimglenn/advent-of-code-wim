@@ -3,6 +3,7 @@
 https://adventofcode.com/2020/day/8
 """
 from aocd import data
+
 from aoc_wim.aoc2020 import Comp
 
 # import logging; logging.basicConfig(format="%(message)s", level=logging.DEBUG)

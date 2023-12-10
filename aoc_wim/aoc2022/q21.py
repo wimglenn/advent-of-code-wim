@@ -2,8 +2,9 @@
 --- Day 21: Monkey Math ---
 https://adventofcode.com/2022/day/21
 """
-from aocd import data
 import operator as op
+
+from aocd import data
 
 ops = {
     "+": op.add,
