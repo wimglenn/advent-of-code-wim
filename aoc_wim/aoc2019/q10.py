@@ -3,10 +3,12 @@
 https://adventofcode.com/2019/day/10
 """
 import logging
-from aocd import data
-from fractions import Fraction
 from collections import defaultdict
+from fractions import Fraction
 from operator import itemgetter
+
+from aocd import data
+
 from aoc_wim.zgrid import ZGrid
 
 

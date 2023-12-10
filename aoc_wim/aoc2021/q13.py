@@ -2,9 +2,11 @@
 --- Day 13: Transparent Origami ---
 https://adventofcode.com/2021/day/13
 """
-from aocd import data
-from aoc_wim.ocr import AOCR
 from ast import literal_eval
+
+from aocd import data
+
+from aoc_wim.ocr import AOCR
 
 zs, folds = data.replace(",", "+").split("\n\n")
 d = {literal_eval(z + "j"): "#" for z in zs.split()}

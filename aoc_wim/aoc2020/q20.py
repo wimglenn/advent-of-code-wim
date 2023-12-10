@@ -3,12 +3,14 @@
 https://adventofcode.com/2020/day/20
 """
 import math
-from aocd import data
-from aoc_wim.zgrid import ZGrid
+from itertools import combinations
+
 import networkx as nx
 import numpy as np
+from aocd import data
 from parse import parse
-from itertools import combinations
+
+from aoc_wim.zgrid import ZGrid
 
 
 class Tile:

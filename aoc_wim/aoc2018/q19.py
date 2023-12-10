@@ -3,7 +3,9 @@
 https://adventofcode.com/2018/day/19
 """
 import math
+
 from aocd import data
+
 from aoc_wim.aoc2018.q16 import all_ops
 
 

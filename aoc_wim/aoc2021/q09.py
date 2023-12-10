@@ -2,8 +2,9 @@
 --- Day 9: Smoke Basin ---
 https://adventofcode.com/2021/day/9
 """
-from aocd import data
 import networkx as nx
+from aocd import data
+
 from aoc_wim.zgrid import ZGrid
 
 g = ZGrid(data)

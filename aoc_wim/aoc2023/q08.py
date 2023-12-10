@@ -3,6 +3,7 @@
 https://adventofcode.com/2023/day/8
 """
 from math import lcm
+
 from aocd import data
 
 path, graph = data.split("\n\n")

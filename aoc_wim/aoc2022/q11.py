@@ -2,11 +2,12 @@
 --- Day 11: Monkey in the Middle ---
 https://adventofcode.com/2022/day/11
 """
-from aocd import data
-from parse import parse
 from collections import deque
 from heapq import nlargest
 from math import prod
+
+from aocd import data
+from parse import parse
 
 
 template = """\

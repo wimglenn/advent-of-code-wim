@@ -2,10 +2,12 @@
 --- Day 23: Unstable Diffusion ---
 https://adventofcode.com/2022/day/23
 """
-from aocd import data
-from aoc_wim.zgrid import ZGrid
 from collections import defaultdict
 from collections import deque
+
+from aocd import data
+
+from aoc_wim.zgrid import ZGrid
 
 
 grid = ZGrid(data, transform={".": None})

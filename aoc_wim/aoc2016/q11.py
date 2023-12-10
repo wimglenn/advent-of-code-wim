@@ -6,6 +6,7 @@ from itertools import combinations
 from itertools import product
 
 from aocd import data
+
 from aoc_wim.search import AStar
 
 

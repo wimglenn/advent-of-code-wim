@@ -2,8 +2,8 @@
 --- Day 17: Conway Cubes ---
 https://adventofcode.com/2020/day/17
 """
-from aocd import data
 import numpy as np
+from aocd import data
 from scipy.signal import convolve
 
 

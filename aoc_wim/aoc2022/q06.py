@@ -2,8 +2,9 @@
 --- Day 6: Tuning Trouble ---
 https://adventofcode.com/2022/day/6
 """
-from aocd import data
 from collections import Counter
+
+from aocd import data
 
 
 def marker(data, n):

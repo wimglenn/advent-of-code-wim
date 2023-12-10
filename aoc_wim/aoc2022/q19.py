@@ -2,9 +2,10 @@
 --- Day 19: Not Enough Minerals ---
 https://adventofcode.com/2022/day/19
 """
-from aocd import data
 import math
 import re
+
+from aocd import data
 
 
 lines = data.split("\n\n") if "\n\n" in data else data.splitlines()

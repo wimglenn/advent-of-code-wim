@@ -2,8 +2,10 @@
 --- Day 18: Duet ---
 https://adventofcode.com/2017/day/18
 """
-from aocd import data
 from collections import deque
+
+from aocd import data
+
 from aoc_wim.aoc2017 import Comp
 
 # import logging; logging.basicConfig(format="%(message)s", level=logging.DEBUG)

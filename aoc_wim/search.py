@@ -1,8 +1,8 @@
 import heapq
+import logging
 from collections import defaultdict
 from collections import deque
 from itertools import count
-import logging
 
 
 log = logging.getLogger(__name__)

@@ -4,9 +4,10 @@ https://adventofcode.com/2018/day/22
 """
 from aocd import data
 from parse import parse
+
 from aoc_wim.search import AStar
-from aoc_wim.zgrid import zrange
 from aoc_wim.zgrid import manhattan_distance
+from aoc_wim.zgrid import zrange
 
 
 # TODO: use zgrid

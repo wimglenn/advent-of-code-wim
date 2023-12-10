@@ -1,5 +1,6 @@
-import pytest
 import re
+
+import pytest
 
 from aoc_wim.aoc2021 import q10
 

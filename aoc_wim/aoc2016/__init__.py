@@ -1,8 +1,8 @@
 import logging
-from multiprocessing import current_process
+import re
 from _md5 import md5
 from functools import partial
-import re
+from multiprocessing import current_process
 
 
 log = logging.getLogger(__name__)

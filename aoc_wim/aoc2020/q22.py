@@ -2,9 +2,10 @@
 --- Day 22: Crab Combat ---
 https://adventofcode.com/2020/day/22
 """
-from aocd import data
 from collections import deque
 from itertools import islice
+
+from aocd import data
 
 
 def play(p1, p2, part="a"):

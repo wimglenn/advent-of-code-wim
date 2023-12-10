@@ -2,8 +2,9 @@
 --- Day 2: 1202 Program Alarm ---
 https://adventofcode.com/2019/day/2
 """
-from aoc_wim.aoc2019 import IntComputer
 from aocd import data
+
+from aoc_wim.aoc2019 import IntComputer
 
 
 def part_a(data, r1=None, r2=None):

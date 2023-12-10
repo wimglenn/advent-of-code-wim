@@ -1,6 +1,6 @@
-from aoc_wim.zgrid import zrange
-from aoc_wim.zgrid import ZGrid
 from aoc_wim.aoc2019 import q19
+from aoc_wim.zgrid import ZGrid
+from aoc_wim.zgrid import zrange
 
 
 minibeam = """\

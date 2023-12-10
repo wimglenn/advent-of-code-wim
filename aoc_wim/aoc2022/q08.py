@@ -3,7 +3,9 @@
 https://adventofcode.com/2022/day/8
 """
 from aocd import data
-from aoc_wim.zgrid import ZGrid, zrange
+
+from aoc_wim.zgrid import ZGrid
+from aoc_wim.zgrid import zrange
 
 grid = ZGrid(data, transform=int)
 h, w = grid.height, grid.width

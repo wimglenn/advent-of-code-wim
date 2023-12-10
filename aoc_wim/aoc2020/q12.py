@@ -3,8 +3,9 @@
 https://adventofcode.com/2020/day/12
 """
 from aocd import data
-from aoc_wim.zgrid import ZGrid
+
 from aoc_wim.zgrid import manhattan_distance
+from aoc_wim.zgrid import ZGrid
 
 za = zb = 0                          # ferry
 dza = ZGrid.east                     # direction (part a)

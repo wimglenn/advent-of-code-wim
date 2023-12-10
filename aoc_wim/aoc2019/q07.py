@@ -3,7 +3,9 @@
 https://adventofcode.com/2019/day/7
 """
 from itertools import permutations
+
 from aocd import data
+
 from aoc_wim.aoc2019 import IntComputer
 
 

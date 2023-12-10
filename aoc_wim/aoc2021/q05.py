@@ -2,8 +2,9 @@
 --- Day 5: Hydrothermal Venture ---
 https://adventofcode.com/2021/day/5
 """
-from aocd import data
 from collections import Counter
+
+from aocd import data
 from parse import parse
 
 da = Counter()

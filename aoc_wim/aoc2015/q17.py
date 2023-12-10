@@ -3,6 +3,7 @@
 https://adventofcode.com/2015/day/17
 """
 from aocd import data
+
 from aoc_wim.stuff import subset_sum
 
 vals = [int(n) for n in data.splitlines()]

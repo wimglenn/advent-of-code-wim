@@ -4,8 +4,8 @@ import shutil
 import sys
 import tempfile
 import webbrowser
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
 from textwrap import dedent
 
 from aocd import get_data

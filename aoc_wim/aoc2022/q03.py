@@ -2,8 +2,9 @@
 --- Day 3: Rucksack Reorganization ---
 https://adventofcode.com/2022/day/3
 """
-from aocd import data
 from itertools import batched
+
+from aocd import data
 
 a = 0
 for line in data.splitlines():

@@ -2,9 +2,10 @@
 --- Day 12: Passage Pathing ---
 https://adventofcode.com/2021/day/12
 """
-from aocd import data
 from collections import defaultdict
 from collections import deque
+
+from aocd import data
 
 
 caves = defaultdict(set)

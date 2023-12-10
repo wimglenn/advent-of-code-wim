@@ -2,10 +2,11 @@
 --- Day 16: Proboscidea Volcanium ---
 https://adventofcode.com/2022/day/16
 """
-from aocd import data
+import itertools
 from collections import defaultdict
 from collections import deque
-import itertools
+
+from aocd import data
 from parse import parse
 
 

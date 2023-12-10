@@ -3,6 +3,7 @@
 https://adventofcode.com/2020/day/9
 """
 from aocd import data
+
 from aoc_wim.aoc2020 import find_pair
 
 numbers = [int(x) for x in data.splitlines()]

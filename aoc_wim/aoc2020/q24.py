@@ -2,8 +2,10 @@
 --- Day 24: Lobby Layout ---
 https://adventofcode.com/2020/day/24
 """
-from aocd import data
 import re
+
+from aocd import data
+
 from aoc_wim import zgrid
 
 

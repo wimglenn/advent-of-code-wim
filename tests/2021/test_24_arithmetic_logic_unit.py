@@ -1,4 +1,5 @@
 import pytest
+
 from aoc_wim.aoc2021.q24 import Comp
 
 

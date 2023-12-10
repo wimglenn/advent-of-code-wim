@@ -2,8 +2,9 @@
 --- Day 18: Snailfish ---
 https://adventofcode.com/2021/day/18
 """
-from aocd import data
 import json
+
+from aocd import data
 
 
 class SnailfishNumber:

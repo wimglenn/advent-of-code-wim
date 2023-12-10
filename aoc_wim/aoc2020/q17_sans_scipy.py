@@ -2,9 +2,10 @@
 --- Day 17: Conway Cubes ---
 https://adventofcode.com/2020/day/17
 """
-from aocd import data
 from itertools import product
+
 import numpy as np
+from aocd import data
 
 
 def evolve(A):

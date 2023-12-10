@@ -1,5 +1,6 @@
-from aoc_wim.aoc2020 import q22
 from collections import deque
+
+from aoc_wim.aoc2020 import q22
 
 # Here is an example of a small game that would loop forever without the
 # infinite game prevention rule:

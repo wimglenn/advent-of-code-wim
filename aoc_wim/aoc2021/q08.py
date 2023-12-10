@@ -2,8 +2,9 @@
 --- Day 8: Seven Segment Search ---
 https://adventofcode.com/2021/day/8
 """
-from aocd import data
 from itertools import permutations
+
+from aocd import data
 
 segments = {
     1: "cf",

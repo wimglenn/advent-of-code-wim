@@ -3,6 +3,7 @@
 https://adventofcode.com/2016/day/1
 """
 from aocd import data
+
 from aoc_wim.zgrid import manhattan_distance
 
 

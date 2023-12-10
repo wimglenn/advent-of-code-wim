@@ -2,12 +2,13 @@
 --- Day 19: Beacon Scanner ---
 https://adventofcode.com/2021/day/19
 """
+import heapq
+from itertools import combinations
+
+import networkx as nx
+import numpy as np
 from aocd import data
 from parse import parse
-import numpy as np
-from itertools import combinations
-import heapq
-import networkx as nx
 from scipy.spatial.transform import Rotation as R
 
 Rx = R.from_rotvec([np.pi/2, 0, 0]).as_matrix().astype(int)

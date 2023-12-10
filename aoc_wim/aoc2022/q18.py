@@ -2,9 +2,10 @@
 --- Day 18: Boiling Boulders ---
 https://adventofcode.com/2022/day/18
 """
-from aocd import data
-import networkx as nx
 from itertools import product
+
+import networkx as nx
+from aocd import data
 
 
 def adj6(x, y, z):

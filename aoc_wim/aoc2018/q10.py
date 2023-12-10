@@ -3,8 +3,10 @@
 https://adventofcode.com/2018/day/10
 """
 import re
+
 import numpy as np
 from aocd import data
+
 from aoc_wim.ocr import AOCR
 from aoc_wim.zgrid import ZGrid
 

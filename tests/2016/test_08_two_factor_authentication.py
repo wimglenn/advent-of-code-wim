@@ -1,6 +1,7 @@
+import numpy as np
+
 from aoc_wim.aoc2016 import q08
 from aoc_wim.zgrid import ZGrid
-import numpy as np
 
 
 frames = """\

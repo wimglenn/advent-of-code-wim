@@ -5,8 +5,8 @@ https://adventofcode.com/2015/day/7
 import operator
 import re
 
-from aocd import data
 import numpy as np
+from aocd import data
 
 
 # TODO: change to use topological sort

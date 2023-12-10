@@ -2,8 +2,9 @@
 --- Day 8: Space Image Format ---
 https://adventofcode.com/2019/day/8
 """
-from aocd import data
 import numpy as np
+from aocd import data
+
 from aoc_wim.ocr import AOCR
 
 hw = {16: (2, 2), 12: (2, 3)}

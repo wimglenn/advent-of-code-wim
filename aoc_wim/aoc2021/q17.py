@@ -4,6 +4,7 @@ https://adventofcode.com/2021/day/17
 """
 from aocd import data
 from parse import parse
+
 from aoc_wim.zgrid import ZGrid
 
 

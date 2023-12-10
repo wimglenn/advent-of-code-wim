@@ -2,12 +2,14 @@
 --- Day 20: Donut Maze ---
 https://adventofcode.com/2019/day/20
 """
-from aocd import data
-from aoc_wim.zgrid import ZGrid
-from aoc_wim.search import AStar
-from bidict import bidict
 import string
+
 import numpy as np
+from aocd import data
+from bidict import bidict
+
+from aoc_wim.search import AStar
+from aoc_wim.zgrid import ZGrid
 
 grid = ZGrid(data, on=".", off="#")
 h, w = np.array(grid).shape

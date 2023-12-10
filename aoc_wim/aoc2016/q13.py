@@ -2,9 +2,11 @@
 --- Day 13: A Maze of Twisty Little Cubicles ---
 https://adventofcode.com/2016/day/13
 """
-from aoc_wim.zgrid import ZGrid
-from aocd import data
 from functools import partial
+
+from aocd import data
+
+from aoc_wim.zgrid import ZGrid
 
 
 def wall(z, fav_number):

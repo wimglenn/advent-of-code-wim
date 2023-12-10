@@ -2,8 +2,8 @@
 --- Day 24: Arithmetic Logic Unit ---
 https://adventofcode.com/2021/day/24
 """
-from aocd import data
 import parse
+from aocd import data
 
 
 class Comp:

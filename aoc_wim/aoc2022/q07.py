@@ -2,9 +2,10 @@
 --- Day 7: No Space Left On Device ---
 https://adventofcode.com/2022/day/7
 """
-from aocd import data
-from pathlib import Path
 from collections import Counter
+from pathlib import Path
+
+from aocd import data
 
 cwd = root = Path("/")
 dirs = Counter()

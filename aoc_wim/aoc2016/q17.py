@@ -2,8 +2,9 @@
 --- Day 17: Two Steps Forward ---
 https://adventofcode.com/2016/day/17
 """
-from collections import deque
 from _md5 import md5
+from collections import deque
+
 from aocd import data
 
 

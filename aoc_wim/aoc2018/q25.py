@@ -3,6 +3,7 @@
 https://adventofcode.com/2018/day/25
 """
 from itertools import combinations
+
 import networkx as nx
 from aocd import data
 

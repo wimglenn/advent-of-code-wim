@@ -4,7 +4,9 @@ https://adventofcode.com/2022/day/22
 """
 import math
 import re
+
 from aocd import data
+
 from aoc_wim.zgrid import ZGrid
 
 

@@ -3,6 +3,7 @@
 https://adventofcode.com/2020/day/13
 """
 import math
+
 from aocd import data
 
 t0, table = data.splitlines()

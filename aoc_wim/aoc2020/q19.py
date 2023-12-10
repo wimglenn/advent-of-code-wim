@@ -2,8 +2,8 @@
 --- Day 19: Monster Messages ---
 https://adventofcode.com/2020/day/19
 """
-from aocd import data
 import regex as re
+from aocd import data
 
 
 rules_raw, messages = data.replace('"', "").split("\n\n")

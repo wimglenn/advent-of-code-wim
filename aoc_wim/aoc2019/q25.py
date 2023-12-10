@@ -4,11 +4,13 @@ https://adventofcode.com/2019/day/25
 """
 import logging
 from collections import deque
+from functools import cached_property
+from itertools import combinations
+
 import anytree
 from aocd import data
+
 from aoc_wim.aoc2019 import IntComputer
-from itertools import combinations
-from functools import cached_property
 
 
 log = logging.getLogger(__name__)

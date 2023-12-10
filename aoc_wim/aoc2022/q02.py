@@ -2,10 +2,11 @@
 --- Day 2: Rock Paper Scissors ---
 https://adventofcode.com/2022/day/2
 """
-from aocd import data
 from enum import Enum
-from bidict import bidict
 from functools import cached_property
+
+from aocd import data
+from bidict import bidict
 
 
 class Shape(Enum):

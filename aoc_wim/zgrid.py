@@ -2,8 +2,9 @@ import logging
 import string
 from collections import ChainMap
 from collections import deque
-import numpy as np
+
 import networkx as nx
+import numpy as np
 
 
 log = logging.getLogger(__name__)

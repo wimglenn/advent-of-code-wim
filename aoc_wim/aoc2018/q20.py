@@ -4,6 +4,7 @@ https://adventofcode.com/2018/day/20
 """
 import networkx as nx
 from aocd import data
+
 from aoc_wim.zgrid import manhattan_distance
 from aoc_wim.zgrid import ZGrid
 

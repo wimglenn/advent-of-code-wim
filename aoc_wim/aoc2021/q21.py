@@ -2,8 +2,9 @@
 --- Day 21: Dirac Dice ---
 https://adventofcode.com/2021/day/21
 """
-from aocd import data
 from collections import Counter
+
+from aocd import data
 
 
 def play_deterministic(p1, p2):

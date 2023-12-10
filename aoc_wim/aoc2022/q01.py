@@ -2,8 +2,9 @@
 --- Day 1: Calorie Counting ---
 https://adventofcode.com/2022/day/1
 """
-from aocd import data
 from heapq import nlargest
+
+from aocd import data
 
 cals = []
 for chunk in data.split("\n\n"):

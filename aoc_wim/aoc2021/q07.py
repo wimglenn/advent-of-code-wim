@@ -2,8 +2,8 @@
 --- Day 7: The Treachery of Whales ---
 https://adventofcode.com/2021/day/7
 """
-from aocd import data
 import numpy as np
+from aocd import data
 
 A = np.array([int(n) for n in data.split(",")])
 a = b = np.inf

@@ -2,12 +2,14 @@
 --- Day 5: How About a Nice Game of Chess? ---
 https://adventofcode.com/2016/day/5
 """
-from aocd import data
 import os
 from collections import deque
 from concurrent.futures import ProcessPoolExecutor
-from aoc_wim.aoc2016 import md5_miner_q05
 from itertools import count
+
+from aocd import data
+
+from aoc_wim.aoc2016 import md5_miner_q05
 
 
 def main():

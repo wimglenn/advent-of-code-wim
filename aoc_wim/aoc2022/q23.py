@@ -2,9 +2,10 @@
 --- Day 23: Unstable Diffusion ---
 https://adventofcode.com/2022/day/23
 """
-from aocd import data
 import numpy as np
+from aocd import data
 from scipy.signal import convolve2d
+
 from aoc_wim.ocr import autocrop
 
 

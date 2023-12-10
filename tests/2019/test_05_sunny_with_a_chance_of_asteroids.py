@@ -1,4 +1,5 @@
 import random
+
 from aoc_wim.aoc2019.q05 import compute
 
 
