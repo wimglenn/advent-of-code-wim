@@ -46,11 +46,11 @@ match *s_join.values(),:
 print("answer_a:", len(loop) // 2)
 
 interior = []
-n_crossings = 0
+inside = False
 for z, v in grid.scan():
     if z in loop and v in "│╭╮":
-        n_crossings += 1
-    elif n_crossings % 2:
+        inside = not inside
+    if z not in loop and inside:
         interior.append(z)
 
 print("answer_b:", len(interior))
