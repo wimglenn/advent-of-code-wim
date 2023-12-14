@@ -6,33 +6,34 @@ from aocd import data
 from functools import cache
 
 
-def fits(template, counts, n_free):
-    if n_free == 0:
-        actual = [len(s) for s in template.replace("?", ".").split(".") if s]
-        return actual == counts
-    if "?" not in template:
+@cache
+def fits(ss, cs, h=0):
+    if not any(cs):
+        return "#" not in ss
+    if not ss:
         return 0
-    new1 = template.replace("?", ".", 1)
-    new2 = template.replace("?", "#", 1)
-    return fits(new1, counts, n_free) + fits(new2, counts, n_free - 1)
+    c, cs = cs[-1], cs[:-1]
+    s, ss = ss[-1], ss[:-1]
+    if not c:
+        return (s != "#") and fits(ss, cs, 0)
+    if h:
+        return (s != ".") and fits(ss, (*cs, c-1), 1)
+    if s == "#":
+        return fits(ss, (*cs, c - 1), 1)
+    if s == ".":
+        return fits(ss, (*cs, c), 0)
+    if s == "?":
+        return fits(ss, (*cs, c), 0) + fits(ss, (*cs, c - 1), 1)
 
 
 a = b = 0
 for line in data.splitlines():
-    template, counts = line.split()
-    template_b = "?".join([template]*5)
-    counts = [int(x) for x in counts.split(",")]
-    counts_b = counts*5
-    n_free = sum(counts) - template.count("#")
-    n_free_b = n_free * 5 + 4
-    da = fits(template, counts, n_free)
-    a += da
-    # print(line)
-    # db = fits(template_b, counts_b, n_free_b)
-    # b += db
-
+    template_a, counts = line.split()
+    counts_a = *map(int, counts.split(",")),
+    template_b = "?".join([template_a]*5)
+    counts_b = counts_a*5
+    a += fits(template_a, counts_a)
+    b += fits(template_b, counts_b)
 
 print("answer_a:", a)
 print("answer_b:", b)
-
-# from aocd import submit; submit(a)
