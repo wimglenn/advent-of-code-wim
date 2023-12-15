@@ -2,10 +2,12 @@
 --- Day 11: Cosmic Expansion ---
 https://adventofcode.com/2023/day/11
 """
-from aocd import data
 from itertools import combinations
-from aoc_wim.zgrid import ZGrid
+
+from aocd import data
+
 from aoc_wim.zgrid import manhattan_distance
+from aoc_wim.zgrid import ZGrid
 
 grid = ZGrid(data)
 h, w = grid.height, grid.width

@@ -2,8 +2,8 @@
 --- Day 13: Point of Incidence ---
 https://adventofcode.com/2023/day/13
 """
-from aocd import data
 import numpy as np
+from aocd import data
 
 a = b = 0
 for chunk in data.split("\n\n"):
