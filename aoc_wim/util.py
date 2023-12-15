@@ -111,7 +111,7 @@ def start():
 
             # import numpy as np
             # import networkx as nx
-            # from aoc_wim.zgrid import ZGrid
+            # from aoc_wim.zgrid import ZGrid; g = ZGrid(data)
             # from aoc_wim import stuff
 
             # import logging; logging.basicConfig(level=logging.DEBUG)

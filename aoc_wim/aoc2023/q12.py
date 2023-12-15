@@ -34,6 +34,7 @@ for line in data.splitlines():
     counts_b = counts_a*5
     a += fits(template_a, counts_a)
     b += fits(template_b, counts_b)
+    fits.cache_clear()
 
 print("answer_a:", a)
 print("answer_b:", b)
