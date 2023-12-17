@@ -1,0 +1,8 @@
+11199
+12199
+99199
+99131
+99111
+9
+40
+# User example from reddit https://www.reddit.com/r/adventofcode/comments/18khohi/comment/kdr7o7r/
