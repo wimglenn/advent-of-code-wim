@@ -16,7 +16,7 @@ def test_render(capsys):
     4 .##..#..#.
     5 ..##....#.
     6 #...##.###
-      0   5    9"""
+      0    5   9"""
     assert out.rstrip() == expected1
 
     grid.draw_path(z=target, z0=z0, pretty=False)
@@ -29,5 +29,5 @@ def test_render(capsys):
     4 .##xx#xT#.
     5 ..##xxx.#.
     6 #...##.###
-      0   5    9"""
+      0    5   9"""
     assert out.rstrip() == expected2
