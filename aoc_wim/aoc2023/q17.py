@@ -43,6 +43,6 @@ astar = Q17AStar(s0, min_tail=0, max_tail=3)
 astar.run()
 print("answer_a:", astar.gscore[astar.target])
 
-bstar = Q17AStar((0, 1, 0), min_tail=4, max_tail=10)
+bstar = Q17AStar(s0, min_tail=4, max_tail=10)
 bstar.run()
 print("answer_b:", bstar.gscore[bstar.target])
