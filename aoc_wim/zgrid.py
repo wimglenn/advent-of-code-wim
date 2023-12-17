@@ -409,7 +409,7 @@ def dump_grid(g, clear=False, pretty=True, transform=None, title="", flip=None, 
         print(" "*5 + "└" + "─"*W + "┘")
     if not hide_ax:
         footer_left = f"{cols[0]}".ljust(W)
-        footer_center = f"{cols[len(cols)//2]}".center(W)
+        footer_center = f"{cols[len(cols)//2]}".center(W+1)
         footer_right = f"{cols[-1]}".rjust(W)
         zf = zip(footer_left, footer_center, footer_right)
         footer = [next((x for x in iter([l, c, r]) if x != " "), " ") for (l, c, r) in zf]
