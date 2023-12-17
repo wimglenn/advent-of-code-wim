@@ -1,0 +1,9 @@
+55599
+57599
+99599
+99599
+99555
+99955
+47
+65
+# from https://www.reddit.com/r/adventofcode/comments/18kewly/comment/kdr2dku/
