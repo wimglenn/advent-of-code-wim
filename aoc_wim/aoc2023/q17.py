@@ -18,17 +18,16 @@ class Q17AStar(AStar):
         return grid[next_state[-1]]
 
     def adjacent(self, state0):
-        tail, dz, z = state0
-        adj = []
-        if tail < self.max_tail and z + dz in grid:
-            adj.append((tail + 1, dz, z+dz))
-        if self.min_tail <= tail and z + dz * 1j in grid:
-            adj.append((1, dz * 1j, z + dz * 1j,))
-        if self.min_tail <= tail and z + dz * -1j in grid:
-            adj.append((1, dz * -1j, z + dz * -1j,))
-        if z == 0 and self.min_tail:
-            adj.append((1, 1j, z + 1j))
-        return adj
+        tail, dz, z0 = state0
+        if tail < self.max_tail and z0 + dz in grid:
+            yield tail + 1, dz, z0 + dz
+        if self.min_tail <= tail:
+            for turn in grid.turn_left, grid.turn_right:
+                z = z0 + dz * turn
+                if z in grid:
+                    yield 1, dz * turn, z
+        if z0 == 0 and self.min_tail:
+            yield 1, 1j, z0 + 1j
 
     def target_reached(self, current_state, target):
         tail, dz, z = current_state
