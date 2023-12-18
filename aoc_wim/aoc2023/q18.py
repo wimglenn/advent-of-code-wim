@@ -4,35 +4,26 @@ https://adventofcode.com/2023/day/18
 """
 from aocd import data
 
-dzs = dict(zip("RDLU", (1, 1j, -1, -1j)))
-dzs.update(dict(zip("0123", (1, 1j, -1, -1j))))
+dzs = dict(zip("RDLU0123", (1, 1j, -1, -1j)*2))
 za = zb = 0
-pa = pb = 0
 zas = [za]
 zbs = [zb]
 for line in data.splitlines():
-    d, n, c = line.split()
-    c = c.strip("#()")
-    dza = dzs[d]
-    dzb = dzs[c[-1]]
-    na = int(n)
-    nb = int(c[:-1], 16)
-    za += dza * na
-    zb += dzb * nb
-    pa += na
-    pb += nb
+    d, n, c = line.replace("(#", "0x").rstrip(")").split()
+    za += dzs[d] * int(n)
+    zb += dzs[c[-1]] * int(c[:-1], 0)
     zas.append(za)
     zbs.append(zb)
 
 
-def shoelace(zs):
-    area = 0
-    j = len(zs) - 1
-    for i in range(len(zs)):
-        area += (zs[j].real + zs[i].real) * (zs[j].imag - zs[i].imag)
-        j = i
-    return int(abs(area / 2))
+def area(zs):
+    # Shoelace formula + Pick's theorem
+    a = p = 0
+    for z0, z1 in zip(zs, zs[1:] + [zs[0]]):
+        a += (z1.real + z0.real) * (z1.imag - z0.imag)
+        p += abs(z1 - z0)
+    return int(a/2 + p/2 + 1)
 
 
-print("answer_a:", shoelace(zas) + pa//2 + 1)
-print("answer_b:", shoelace(zbs) + pb//2 + 1)
+print("answer_a:", area(zas))
+print("answer_b:", area(zbs))
