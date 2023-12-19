@@ -91,10 +91,6 @@ while stack:
     *rules, else_dst = workflows[node]
     for ax, op, val, dst in rules:
         xt, x = x.split(ax, op, val)
-        if xt.volume:
-            stack.append((xt, dst))
-        if not x.volume:
-            break
-    else:
-        stack.append((x, else_dst))
+        stack.append((xt, dst))
+    stack.append((x, else_dst))
 print("answer_b:", b)
