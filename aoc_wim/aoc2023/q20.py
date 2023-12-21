@@ -24,6 +24,7 @@ class Module:
         self._state = 0
         self._n_sent = [0, 0]
         self._recv = []
+        self.disabled = False
 
     def connect(self, dst):
         self.dsts.append(dst)
@@ -31,6 +32,9 @@ class Module:
             dst.register(self)
 
     def send(self):
+        if self.disabled:
+            log.debug("%s is disabled - not sending", self.pk)
+            return
         for dst in self.dsts:
             log.debug("%s -%s-> %s", self.pk, 'high' if self._state else 'low', dst.pk)
             net.append((self.pk, self._state, dst.pk))
@@ -52,6 +56,8 @@ class FlipFlop(Module):
         self._n_flips = 0
 
     def recv(self, pulse, sender_id):
+        if self.disabled:
+            return
         if pulse:
             return
         self._state = 1 - self._state
@@ -68,6 +74,8 @@ class Conjunction(Module):
         self.memory[src.pk] = 0
 
     def recv(self, pulse, sender_id):
+        if self.disabled:
+            return
         self.memory[sender_id] = pulse
         self.send()
 
@@ -131,11 +139,18 @@ def serialize_state(i=0):
     result.insert(-14*2, "|")
     result.insert(-14*1, "|")
     print(f"{i: 4d}:", *result)
-    return result
+    return tuple(result)
+
+
+# dsts of broadcaster
+branches = list(nx.neighbors(g, "broadcaster"))
+for branch in branches:
+    if branch != branches[1]:
+        modules[branch].disabled = True
 
 
 initial_state = serialize_state()
-# seen = {initial_state: 0}
+seen = {initial_state: 0}
 i = 0
 period = None
 while period is None:
@@ -145,8 +160,11 @@ while period is None:
         modules[dst_pk].recv(pulse, src_pk)
     i += 1
     state = serialize_state(i)
-    # if state not in seen:
-    #     seen[state] = i
+    if state not in seen:
+        seen[state] = i
+    else:
+        print(f"{len(seen)=}")
+        break
     if state == initial_state:
         period = i
 
