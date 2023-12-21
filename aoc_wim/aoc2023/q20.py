@@ -5,6 +5,7 @@ https://adventofcode.com/2023/day/20
 from aocd import data
 from collections import deque
 import logging
+import networkx as nx
 
 
 # logging.basicConfig(format="%(message)s", level=logging.DEBUG)
@@ -36,7 +37,7 @@ class Module:
             self._n_sent[self._state] += 1
 
     def recv(self, pulse, sender_id):
-        if self.pk == "output":
+        if self.pk == "output" or self.pk == "rx":
             self._recv.append((pulse, sender_id))
         elif self.pk == "broadcaster":
             self.send()
@@ -79,7 +80,6 @@ class Conjunction(Module):
         return
 
 
-# modules = dict.fromkeys(["gx", "mg", "cb", "mt", "ng", "hd", "vh", "pb", "lt", "zn", "vj", "xg", "xz", "gb", "pp", "kx", "fl", "gk", "tr", "qx", "lj", "cn", "lq", "bc", "vn", "vx", "vl", "vf", "zr", "cd", "kk", "zt", "lz", "qn", "rr", "hq", "sb", "xv", "rl", "bf", "qm", "jg", "gc", "tv", "tx", "hk", "jr", "qz"])
 modules = {}
 module_types = {
     "%": FlipFlop,
@@ -87,9 +87,10 @@ module_types = {
 }
 
 
+g = nx.DiGraph()
 lines = sorted(data.splitlines(), key=lambda line: (line[0], len(line)))
 for line in lines:
-    src, _ = line.split(" -> ")
+    src, _dsts = line.split(" -> ")
     ModuleType = module_types.get(src[0], Module)
     pk = src.lstrip("%&")
     modules[pk] = ModuleType(pk)
@@ -99,19 +100,42 @@ for line in lines:
     for dst in dsts.split(", "):
         if dst not in modules:
             modules[dst] = Module(dst)
+        g.add_edge(src.pk, dst)
         src.connect(modules[dst])
 button = modules["button"] = Module("button")
 button.dsts.append(modules["broadcaster"])
+g.add_edge("button", "broadcaster")
+
+groups = [{*nx.descendants(g, n), n} - {"dt", "rx"} for n in nx.neighbors(g, 'broadcaster')]
+
+def module_sort_key(item):
+    pk, mod = item
+    t1 = type(mod).__name__.replace("M", "A")
+    for t0, group in enumerate(groups, 1):
+        if pk in group:
+            break
+    else:
+        t0 = 0
+    t2 = -nx.shortest_path_length(g, 'button', pk)
+    t3 = nx.shortest_path_length(g, pk, 'rx')
+    return t0, t1, t2, t3
+
+
+modules = dict(sorted(modules.items(), key=module_sort_key))
 
 
 def serialize_state(i=0):
-    result = tuple(m._state for m in modules.values())
-    print(f"{i}:", *result)
+    result = [m._state for m in modules.values()]
+    result.insert(-14*4, "|")
+    result.insert(-14*3, "|")
+    result.insert(-14*2, "|")
+    result.insert(-14*1, "|")
+    print(f"{i: 4d}:", *result)
     return result
 
 
 initial_state = serialize_state()
-seen = {initial_state: 0}
+# seen = {initial_state: 0}
 i = 0
 period = None
 while period is None:
@@ -121,12 +145,12 @@ while period is None:
         modules[dst_pk].recv(pulse, src_pk)
     i += 1
     state = serialize_state(i)
-    if state not in seen:
-        seen[state] = i
-        print(f"{len(seen)=}")
+    # if state not in seen:
+    #     seen[state] = i
     if state == initial_state:
         period = i
 
+print(period)
 f = 1000 // period
 n_low_sent = sum(m._n_sent[0] for m in modules.values())
 n_high_sent = sum(m._n_sent[1] for m in modules.values())
