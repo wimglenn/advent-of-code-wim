@@ -228,8 +228,10 @@ class ZGrid:
             if self.d[z] in table:
                 self.d[z] = table[self.d[z]]
 
-    def __array__(self):
+    def __array__(self, dtype=None, copy=True):
         """makes np.array(zgrid) work"""
+        if not copy:
+            raise NotImplementedError
         zs = np.array(list(self.d))
         xs = zs.real.astype(int)
         ys = zs.imag.astype(int)
@@ -239,6 +241,8 @@ class ZGrid:
         fill = "." if vs.dtype == "U1" else 0
         full = np.full((h, w), fill_value=fill, dtype=vs.dtype)
         full[ys - ys.min(), xs - xs.min()] = vs
+        if dtype is not None:
+            full = full.astype(dtype)
         return full
 
     def graph(self, extra=()):
