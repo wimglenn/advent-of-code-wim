@@ -1,0 +1,62 @@
+name: Tag new versions
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  version-check:
+    name: Check dynamic version
+    outputs:
+      v: ${{ steps.get_version.outputs.v }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          cache-dependency-glob: pyproject.toml
+
+      - name: Install Python 3.13
+        run: uv python install 3.13
+
+      - name: Get version string
+        id: get_version
+        run: |
+          uv run --no-project - <<EOF
+          import os
+          import subprocess
+          from pathlib import Path
+          from aoc_wim import __version__
+
+          rc = subprocess.run(["git", "tag", "-l", __version__], check=True, capture_output=True)
+          if rc.stdout:
+              print(f"version {__version__} is already tagged")
+          else:
+              print(f"version {__version__} is new")
+              path = Path(os.environ["GITHUB_OUTPUT"])
+              path.write_text(f"v={__version__}\n")
+          EOF
+
+  version-tag:
+    name: Tag new versions
+    runs-on: ubuntu-latest
+    needs: version-check
+    if: needs.version-check.outputs.v
+    steps:
+      - name: Create tag ${{ needs.version-check.outputs.v }}
+        uses: actions/github-script@v5
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/${{ needs.version-check.outputs.v }}',
+              sha: context.sha
+            })

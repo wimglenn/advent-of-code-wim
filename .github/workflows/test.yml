@@ -1,0 +1,39 @@
+name: Run tests
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  PY_COLORS: 1
+
+jobs:
+  tests:
+    name: Python ${{ matrix.py-version }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        py-version: ["3.13"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          cache-dependency-glob: pyproject.toml
+
+      - name: Install Python ${{ matrix.py-version }}
+        run: uv python install ${{ matrix.py-version }}
+
+      - name: Install
+        run: |
+          uv venv
+          uv pip install pytest pytest-socket --editable .
+
+      - name: Run pytest
+        run: uv run pytest

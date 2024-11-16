@@ -1,37 +1,36 @@
-name: Publish to PyPI
-
+name: Upload to PyPI
 on:
   push:
-    branches: [main]
+    tags:
+      - "[0-9]+.[0-9]+"
 
 jobs:
-  publish:
+  pypi-publish:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+    name: Upload release to PyPI
     runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/advent-of-code-wim
+    permissions:
+      id-token: write
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
         with:
-          python-version: "3.13"
-          architecture: x64
-          cache: pip
-          cache-dependency-path: pyproject.toml
-      - name: Create release
+          enable-cache: true
+          cache-dependency-glob: pyproject.toml
+
+      - name: Install Python 3.13
+        run: uv python install 3.13
+
+      - name: Build package
         run: |
-          python -VV
-          python -m pip install -q -U wheel setuptools twine luddite build
-          python -m build -n -x -C=--global-option=-q
-      - uses: jannekem/run-python-script-action@v1
-        with:
-          script: |
-            import sys
-            sys.path.append(".")
-            import aoc_wim, luddite, subprocess
-            v = aoc_wim.__version__
-            vs = luddite.get_versions_pypi("advent-of-code-wim")
-            if v in vs:
-                print(f"{v} already exists")
-                sys.exit(0)
-            cmd = "twine upload --disable-progress-bar -u __token__ -p ${{secrets.PYPI_TOKEN}} dist/*"
-            subprocess.check_call(cmd.split())
-            subprocess.check_call(["git", "tag", v])
-            subprocess.check_call(["git", "push", "--tags"])
+          uv venv
+          uv pip install build
+          pyproject-build
+
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
