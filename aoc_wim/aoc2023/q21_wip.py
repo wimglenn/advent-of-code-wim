@@ -60,9 +60,10 @@ for n_steps in range(1, 26501365):
     bfs(state0)
     parity = n_steps % 2
     a = sum(v % 2 == parity for (z, Z), v in bfs.seen.items() if Z == 0)
-    if n_steps == 64:
+    if n_steps <= 10 or (64 <= n_steps <= 148):
         o = {z: "O" for (z, Z), v in bfs.seen.items() if v % 2 == parity and Z == 0}
         o[z0] = "S"
         grid.draw(overlay=o, clear=1)
         input(f"answer_a {n_steps=}: {a}")
-        break
+        if n_steps == 148:
+            break
