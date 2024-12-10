@@ -46,26 +46,46 @@ def n_garden_plots(n_steps):
     return result
 
 
-a = n_garden_plots(64)
-print("answer_a:", a)
 
+overlay = {}
 
-def n_garden_plots_b(n_steps):
+def n_garden_plots_out(n_steps):
     parity = n_steps % 2
     result = 0
     for z, g in grid.items():
         d = manhattan_distance(z, z0)
-        result += d <= n_steps and g == "." and d % 2 == parity
+        result += d > n_steps and g == "." and d % 2 == parity
+        if d > n_steps and g == "." and d % 2 == parity:
+            overlay[z] = "O"
     return result
 
 
+a = n_garden_plots(64)
+print("answer_a:", a)
+
+p_even = n_garden_plots(d0)     # 130: 7424
+p_odd = n_garden_plots(d0 - 1)  # 129: 7388
+
+n_steps = 26501365
+n, rem = divmod(n_steps, grid.height)
+
+p = p_even + p_odd
+assert p == grid.count(".")
 
 
-# p_even = n_garden_plots(d0)     # 130: 7424
-# p_odd = n_garden_plots(d0 - 1)  # 129: 7388
-# p = p_even + p_odd
-# assert p == grid.count(".")
-#
+def c4(n):
+    # https://en.wikipedia.org/wiki/Centered_square_number
+    return (n + 1)**2 + n**2
+
+
+t = n_garden_plots_out(63)
+d = c4(n)
+b = d * a + (d - 1) * t
+print("answer_b:", b)
+
+# from aocd import submit; submit(b)
+
+
 # b0 = n_garden_plots(65)
 #
 # # for n_steps in (6, 10, 50, 100, 500, 1000, 5000):
@@ -85,8 +105,3 @@ def n_garden_plots_b(n_steps):
 #             b += p_odd * 4 * (i - 1)
 #
 #     print(f"answer_b ({n_steps}):", b)
-
-
-def c4(n):
-    # https://en.wikipedia.org/wiki/Centered_square_number
-    return n**2 + (n - 1)**2
