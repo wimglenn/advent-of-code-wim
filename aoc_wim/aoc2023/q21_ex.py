@@ -3,6 +3,7 @@
 https://adventofcode.com/2023/day/21
 """
 import json
+import math
 import os
 from aocd import data
 from aoc_wim.zgrid import ZGrid
@@ -23,7 +24,7 @@ data = """\
 ..........."""
 
 
-def explode(data, n=3):
+def explode(data, n=999):
     lines = [x*n for x in data.replace("S", ".").splitlines()] * n
     m = len(lines)//2
     lines[m] = lines[m][:m] + "S" + lines[m][m+1:]
@@ -31,12 +32,11 @@ def explode(data, n=3):
     return result
 
 
-data = explode(data, n=5)
+data = explode(data)
 grid = ZGrid(data)
-z0 = grid.z("S")
+c = math.isqrt(len(grid.d))//2
+z0 = c + c*1j
 grid[z0] = "."
-h = grid.height
-w = grid.width
 
 
 def adj(z0):
@@ -45,12 +45,12 @@ def adj(z0):
             yield z
 
 
-grid.draw(overlay={z0: "S"}, clear=True)
-input("initial")
-for n_steps_a in range(1, 64):
+# grid.draw(overlay={z0: "S"}, clear=True)
+# input("initial")
+for n_steps_a in [6, 10, 50, 100, 500, 1000, 5000]:
     bfs = BFS(adj,  max_depth=n_steps_a)
     bfs(z0)
     parity = n_steps_a % 2
     overlay = {z: "S" for z, depth in bfs.seen.items() if depth % 2 == parity}
-    grid.draw(overlay=overlay, clear=True)
-    input(f"answer_a ({n_steps_a}): {len(overlay)}")
+    # grid.draw(overlay=overlay, clear=True)
+    print(f"answer_a ({n_steps_a}): {len(overlay)}")
