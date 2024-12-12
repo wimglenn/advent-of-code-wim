@@ -1,3 +1,4 @@
+import ast
 import json
 import pathlib
 
@@ -41,14 +42,12 @@ def parse_extra_context(extra):
                 k = k.strip()
                 v = v.strip()
                 try:
-                    v = int(v)
+                    v = ast.literal_eval(v)
                 except ValueError:
                     pass
                 if k in result:
                     raise NotImplementedError(f"Duplicate key {k!r}")
                 result[k] = v
-        else:
-            raise NotImplementedError(f"Unexpected {line=}")
     return result
 
 
