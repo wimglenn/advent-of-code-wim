@@ -30,7 +30,7 @@ jobs:
         run: |
           uv venv
           uv pip install build
-          pyproject-build
+          .venv/bin/pyproject-build
 
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
