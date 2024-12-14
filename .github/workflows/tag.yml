@@ -16,6 +16,8 @@ jobs:
         with:
           fetch-depth: 0
           fetch-tags: true
+          token: ${{ secrets.AOCW_PAT }}
+          # use a personal access token so that pushed tags can trigger publish.yml workflow
 
       - name: Install uv
         uses: astral-sh/setup-uv@v3
