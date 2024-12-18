@@ -15,12 +15,16 @@ zs = [complex(*map(int, x.split(","))) for x in data.split()]
 
 grid.update({z: "#" for z in zs[:n_bytes]})
 graph = grid.graph()
-a = nx.shortest_path_length(graph, 0, complex(w-1, w-1))
-print("answer_a:", a)
+path = nx.shortest_path(graph, 0, complex(w-1, w-1))
+print("answer_a:", len(path) - 1)
 
 for z in zs[n_bytes:]:
     grid[z] = "#"
+    if z not in path:
+        continue
     graph = grid.graph()
-    if not nx.has_path(graph, 0, complex(w-1, w-1)):
+    try:
+        path = nx.shortest_path(graph, 0, complex(w-1, w-1))
+    except nx.NetworkXNoPath:
         print("answer_b:", f"{int(z.real)},{int(z.imag)}")
         break
