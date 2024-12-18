@@ -129,7 +129,7 @@ for i, digit in enumerate(reversed(prog)):
         A = int("".join(map(str, digits + [Ai])), 8)
         comp.reset(A=A, prog=prog)
         comp.run()
-        if comp.output[-1] == digit:
+        if comp.output[0] == digit:
             choices.append(A)
     if len(choices) == 1:
         digits.append(choices[0])
