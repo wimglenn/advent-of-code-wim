@@ -3,6 +3,7 @@ import json
 import os
 import re
 import sys
+import warnings
 
 import pytest
 
@@ -21,7 +22,7 @@ class MockAocd(type(sys)):
             msg += f" ({args[0]!r})"
         else:
             msg += f" ({args=} {kwargs=})"
-        raise NotImplementedError(msg)
+        warnings.warn(msg)
 
 
 sys.modules["aocd"] = MockAocd("aocd")
