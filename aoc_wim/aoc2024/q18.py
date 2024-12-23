@@ -8,7 +8,7 @@ from aoc_wim.zgrid import ZGrid
 import networkx as nx
 
 
-w = extra.get("w", 71)
+w = extra.get("width", 71)
 n_bytes = extra.get("n_bytes", 1024)
 grid = ZGrid.fromempty(w, w, glyph=".")
 zs = [complex(*map(int, x.split(","))) for x in data.split()]
