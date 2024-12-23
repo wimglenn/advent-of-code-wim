@@ -22,11 +22,11 @@ def walk():
 grid = ZGrid(data)
 z0, dz0 = grid.z("^"), -1j
 seen, _ = walk()
-path = list(dict(seen))
+path = dict(seen)
 print("answer_a:", len(path))
 
 b = 0
-seen.remove((z0, dz0))
+path.pop(z0)
 for z in path:
     grid[z] = "#"
     b += walk()[1]

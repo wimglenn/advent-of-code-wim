@@ -6,5 +6,5 @@ x LSHIFT 2 -> f
 y RSHIFT 2 -> g
 NOT x -> h
 NOT y -> i
-507
+507  # wire=e
 -
