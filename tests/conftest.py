@@ -1,13 +1,31 @@
 import datetime
+import json
+import os
 import re
 import sys
+import warnings
 
 import pytest
 
-Module = type(sys)
-mock_aocd = Module("aocd")
-mock_aocd.data = ""
-sys.modules["aocd"] = mock_aocd
+
+class MockAocd(type(sys)):
+    def __getattr__(self, name):
+        if name == "extra":
+            return json.loads(os.environ.get("AOCD_EXTRA", "{}"))
+        if name == "data":
+            return ""
+        raise AttributeError(name)
+
+    def submit(self, *args, **kwargs):
+        msg = f"Submission is disabled during test"
+        if len(args) == 1 and not kwargs:
+            msg += f" ({args[0]!r})"
+        else:
+            msg += f" ({args=} {kwargs=})"
+        warnings.warn(msg)
+
+
+sys.modules["aocd"] = MockAocd("aocd")
 
 
 def pytest_addoption(parser):
