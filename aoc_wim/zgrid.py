@@ -94,6 +94,10 @@ class ZGrid:
             else:
                 raise NotImplementedError(f"{type(initial_data)=}")
 
+    @classmethod
+    def fromempty(cls, width, height, glyph="."):
+        return cls({z: glyph for z in zrange(0, complex(width, height))}, on=glyph)
+
     def offset(self, dz):
         self.d = {(z + dz): v for z, v in self.items()}
 

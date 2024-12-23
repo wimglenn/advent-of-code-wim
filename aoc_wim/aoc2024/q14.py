@@ -11,8 +11,8 @@ import parse
 import statistics
 
 
-w = extra.get("w", 101)
-h = extra.get("h", 103)
+w = extra.get("width", 101)
+h = extra.get("height", 103)
 
 
 @dataclass
