@@ -15,6 +15,22 @@ def manhattan_distance(z1, z0=0):
     return abs(int(dz.real)) + abs(int(dz.imag))
 
 
+def manhattan_ball(r=1, z0=0, full=False):
+    x_left, *xs, x_right = range(-r, r + 1)
+    result = [z0 + complex(x_left, 0)]
+    for x in xs:
+        y_max = r - abs(x)
+        y_min = abs(x) - r
+        if full:
+            for y in range(y_min, y_max + 1):
+                result.append(complex(x, y) + z0)
+        else:
+            result.append(complex(x, y_max) + z0)
+            result.append(complex(x, y_min) + z0)
+    result.append(z0 + complex(x_right, 0))
+    return result
+
+
 def hexagonal_distance(z1, z0=0):
     dz = z1 - z0
     return int(max(abs(dz.real), abs(dz.imag), abs(dz.real - dz.imag)))
