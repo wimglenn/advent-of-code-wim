@@ -24,6 +24,7 @@ dependencies = [
     "marshmallow",
     "regex",
     "intervaltree",
+    "z3-solver",
 ]
 
 [[project.authors]]
