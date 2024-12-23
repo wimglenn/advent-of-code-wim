@@ -245,15 +245,17 @@ class ZGrid:
             full = full.astype(dtype)
         return full
 
-    def graph(self, extra=()):
+    def graph(self, on=None, extra=()):
         """connected components"""
-        node_glyphs = {self.on}.union(extra)
+        if on is None:
+            on = self.on
+        node_glyphs = {on}.union(extra)
         g = nx.Graph()
         g.extra = {}
         for pos, glyph in self.d.items():
             if glyph in node_glyphs:
                 g.add_node(pos)
-                if glyph != self.on:
+                if glyph != on:
                     g.extra[glyph] = pos
                 right = pos + 1
                 down = pos + 1j

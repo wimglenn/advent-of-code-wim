@@ -10,7 +10,7 @@ import itertools as it
 grid = ZGrid(data)
 d = defaultdict(list)
 for z, g in grid.items():
-    if g != ".":
+    if g not in ".#":
         d[g].append(z)
 
 a = set()
