@@ -9,4 +9,4 @@
 .......#..
 #...#.....
 374
-8410  # expansion factor 100
+8410  # expansion_factor=100

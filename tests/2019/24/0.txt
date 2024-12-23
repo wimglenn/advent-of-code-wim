@@ -4,4 +4,4 @@
 ..#..
 #....
 2129920
-99  # after 10 minutes
+99  # iterations=10
