@@ -52,3 +52,6 @@ wim = "aoc_wim:plugin"
 
 [tool.setuptools.dynamic]
 version = {attr = "aoc_wim.__version__"}
+
+[tool.pytest.ini_options]
+addopts = "--durations=10 --disable-socket"

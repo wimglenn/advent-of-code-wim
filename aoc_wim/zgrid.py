@@ -15,6 +15,7 @@ def manhattan_distance(z1, z0=0):
     return abs(int(dz.real)) + abs(int(dz.imag))
 
 
+# TODO: make this nicer
 def manhattan_ball(r=1, z0=0, full=False):
     x_left, *xs, x_right = range(-r, r + 1)
     result = [z0 + complex(x_left, 0)]
@@ -79,8 +80,8 @@ class ZGrid:
             t = transform.copy()
             def transform(k):
                 return t.get(k, k)
-        self.on = on
-        self.off = off
+        self.on = on  # TODO: invert this?
+        self.off = off  # TODO: remove this
         self.d = d = {}
         if initial_data is not None:
             if isinstance(initial_data, ZGrid):
