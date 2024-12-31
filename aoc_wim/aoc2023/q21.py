@@ -5,12 +5,13 @@ https://adventofcode.com/2023/day/21
 import json
 import os
 from aocd import data
+from aocd import extra
 from aoc_wim.search import BFS
 from aoc_wim.zgrid import manhattan_distance
 from aoc_wim.zgrid import ZGrid
 
 
-grid = ZGrid(data, on=".", off="#")
+grid = ZGrid(data)
 z0 = grid.z("S")
 grid[z0] = "."
 plots = set(grid.bfs(z0=z0))
@@ -42,20 +43,18 @@ def adj(state, h=grid.height, w=grid.width):
             yield z, Z
 
 
-if "AOCD_EXTRA" not in os.environ:
-    a, _ = step(64)
-    print("answer_a:", a)
-    N, rem = divmod(26501365, grid.width)
-    r, f = step(rem)
-    b = N*N*len(plots) + (2*N + 1)*r + N*f
-    print("answer_b:", b)
-else:
-    extra = json.loads(os.environ["AOCD_EXTRA"])
-    n_steps = extra["n_steps"]
+if n_steps := extra.get("n_steps"):
     state0 = z0, 0
     bfs = BFS(adj,  max_depth=n_steps)
     bfs(state0)
     parity = n_steps % 2
     a = b = sum(v % 2 == parity for v in bfs.seen.values())
     print("answer_a:", a)
+    print("answer_b:", b)
+else:
+    a, _ = step(64)
+    print("answer_a:", a)
+    N, rem = divmod(26501365, grid.width)
+    r, f = step(rem)
+    b = N * N * len(plots) + (2 * N + 1) * r + N * f
     print("answer_b:", b)
