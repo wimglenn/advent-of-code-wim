@@ -15,20 +15,23 @@ def manhattan_distance(z1, z0=0):
     return abs(int(dz.real)) + abs(int(dz.imag))
 
 
-# TODO: make this nicer
 def manhattan_ball(r=1, z0=0, full=False):
-    x_left, *xs, x_right = range(-r, r + 1)
-    result = [z0 + complex(x_left, 0)]
-    for x in xs:
-        y_max = r - abs(x)
-        y_min = abs(x) - r
-        if full:
-            for y in range(y_min, y_max + 1):
-                result.append(complex(x, y) + z0)
-        else:
-            result.append(complex(x, y_max) + z0)
-            result.append(complex(x, y_min) + z0)
-    result.append(z0 + complex(x_right, 0))
+    result = []
+    if full:
+        result.append(0)
+        rs = range(1, r + 1)
+    else:
+        rs = [r]
+    for r in rs:
+        for x in range(r):
+            result.append(complex(x, x - r))
+        for y in range(r):
+            result.append(complex(r - y, y))
+        for x in range(r):
+            result.append(complex(-x, r - x))
+        for y in range(r):
+            result.append(complex(y - r, -y))
+    result = [z + z0 for z in result]
     return result
 
 
