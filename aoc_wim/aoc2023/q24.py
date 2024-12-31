@@ -18,9 +18,8 @@ class Hailstone:
     dy: int
     dz: int
 
-    # TODO: from_line fromline naming consistency
     @classmethod
-    def from_line(cls, line):
+    def fromline(cls, line):
         return cls(*map(int, line.replace("@", ",").split(",")))
 
 
@@ -38,7 +37,7 @@ def intersect2d(h0, h1):
 test_area_min = extra.get("test_area_min", 200_000_000_000_000)
 test_area_max = extra.get("test_area_max", 400_000_000_000_000)
 a = 0
-hailstones = [Hailstone.from_line(line) for line in data.splitlines()]
+hailstones = [Hailstone.fromline(line) for line in data.splitlines()]
 for h0, h1 in it.combinations(hailstones, 2):
     px, py = intersect2d(h0, h1)
     if test_area_min <= px <= test_area_max and test_area_min <= py <= test_area_max:

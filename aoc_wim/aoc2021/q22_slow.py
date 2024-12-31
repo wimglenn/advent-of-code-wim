@@ -25,7 +25,7 @@ class Cuboid:
     small: bool = False
 
     @classmethod
-    def from_line(cls, line):
+    def fromline(cls, line):
         template = "{} x={:d}..{:d},y={:d}..{:d},z={:d}..{:d}"
         val, x0, x1, y0, y1, z0, z1 = parse(template, line).fixed
         small = all(abs(v) <= 50 for v in (x0, x1, y0, y1, z0, z1))
@@ -58,7 +58,7 @@ def total_volume(cuboids):
     return result
 
 
-cuboids = [Cuboid.from_line(x) for x in data.splitlines()]
+cuboids = [Cuboid.fromline(x) for x in data.splitlines()]
 small_cuboids = [c for c in cuboids if c.small]
 
 print("answer_a:", total_volume(small_cuboids))

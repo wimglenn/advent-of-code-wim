@@ -24,7 +24,7 @@ class Cuboid:
     val: int
 
     @classmethod
-    def from_line(cls, line):
+    def fromline(cls, line):
         template = "{} x={:d}..{:d},y={:d}..{:d},z={:d}..{:d}"
         v, x0, x1, y0, y1, z0, z1 = parse(template, line).fixed
         return cls(x0, x1, y0, y1, z0, z1, 1 if v == "on" else -1)
@@ -55,6 +55,6 @@ def total_volume(cuboids, part="a"):
     return sum((c.x1 - c.x0 + 1) * (c.y1 - c.y0 + 1) * (c.z1 - c.z0 + 1) * c.val for c in cs)
 
 
-cuboids = [Cuboid.from_line(x) for x in data.splitlines()]
+cuboids = [Cuboid.fromline(x) for x in data.splitlines()]
 print("answer_a:", total_volume(cuboids, part="a"))
 print("answer_b:", total_volume(cuboids, part="b"))

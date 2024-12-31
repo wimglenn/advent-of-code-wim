@@ -22,7 +22,7 @@ class Guard:
         self.minutes_asleep = []
 
     @classmethod
-    def from_line(cls, line):
+    def fromline(cls, line):
         parsed = parse(cls.template, line)
         return Guard(id=parsed["id"], began_shift=parsed["t"])
 
@@ -55,7 +55,7 @@ class Guard:
 guards = {}
 for line in sorted(data.splitlines()):
     if "Guard" in line:
-        guard = Guard.from_line(line)
+        guard = Guard.fromline(line)
         guard = guards.get(guard.id) or guard
         guards[guard.id] = guard
         continue

@@ -29,7 +29,7 @@ class Module:
         self.disabled = False
 
     @classmethod
-    def from_str(cls, s):
+    def fromstr(cls, s):
         s0, pk = s[:1], s[1:]
         if s0 == "%":
             return FlipFlop(pk)
@@ -100,7 +100,7 @@ modules = {}
 lines = sorted(data.splitlines(), key=lambda line: (line[0], len(line)))
 for line in lines:
     src, _dsts = line.split(" -> ")
-    mod = Module.from_str(src)
+    mod = Module.fromstr(src)
     modules[mod.pk] = mod
 for line in lines:
     src, dsts = line.split(" -> ")
