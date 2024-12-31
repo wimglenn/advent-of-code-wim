@@ -12,7 +12,7 @@ from aoc_wim.zgrid import ZGrid
 
 class Q23AStar(AStar):
     def __init__(self, data):
-        grid = ZGrid(data, on=".", off="#")
+        grid = ZGrid(data)
         graph = grid.graph(extra="ABCD")
         hall = self.hall = [z for z in graph if z.imag == 1]
         rooms = self.rooms = [z for z in graph if z.imag != 1]

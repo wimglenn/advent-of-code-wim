@@ -404,7 +404,7 @@ class DebugDict(dict):
             item = txt  # trigger fallthrough to __missing__
         if isinstance(item, (dict, ZGrid)):
             grid = ZGrid(item)
-            grid.translate({grid.off: 0, grid.on: 1})
+            grid.translate({".": 0, "#": 1})
             full = np.array(grid)
             full = autocrop(full)
             return self.__getitem__(full)

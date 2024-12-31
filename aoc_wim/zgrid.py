@@ -78,13 +78,11 @@ class ZGrid:
     turn_left = turnL = -1j
     turn_around = -1
 
-    def __init__(self, initial_data=None, on="#", off=".", transform=None):
+    def __init__(self, initial_data=None, transform=None):
         if isinstance(transform, dict):
             t = transform.copy()
             def transform(k):
                 return t.get(k, k)
-        self.on = on  # TODO: invert this?
-        self.off = off  # TODO: remove this
         self.d = d = {}
         if initial_data is not None:
             if isinstance(initial_data, ZGrid):
@@ -116,7 +114,7 @@ class ZGrid:
 
     @classmethod
     def fromempty(cls, width, height, glyph="."):
-        return cls({z: glyph for z in zrange(0, complex(width, height))}, on=glyph)
+        return cls({z: glyph for z in zrange(0, complex(width, height))})
 
     def offset(self, dz):
         self.d = {(z + dz): v for z, v in self.items()}
@@ -269,10 +267,8 @@ class ZGrid:
             full = full.astype(dtype)
         return full
 
-    def graph(self, on=None, extra=()):
+    def graph(self, on=".", extra=()):
         """connected components"""
-        if on is None:
-            on = self.on
         node_glyphs = {on}.union(extra)
         g = nx.Graph()
         g.extra = {}
@@ -304,11 +300,11 @@ class ZGrid:
         overlay[path[-1]] = "T"
         self.draw(overlay=overlay, clear=clear, pretty=pretty)
 
-    def bfs(self, target=None, z0=0, max_depth=None):
+    def bfs(self, target=None, z0=0, max_depth=None, on="."):
         """returns a dict of connected nodes vs depth up to max_depth"""
         g0 = self[z0]
-        if g0 != self.on:
-            log.error("Expected initial glyph %r, got %r", self.on, g0)
+        if g0 != on:
+            log.error("Expected initial glyph %r, got %r", on, g0)
             raise NotImplementedError
         seen = {}
         queue = deque([(z0, 0)])
@@ -327,7 +323,7 @@ class ZGrid:
                         g = self[z]
                     except KeyError:
                         continue
-                    if g == self.on:
+                    if g == on:
                         queue.append((z, depth + 1))
         return seen
 

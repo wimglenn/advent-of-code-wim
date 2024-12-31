@@ -10,7 +10,7 @@ from aocd import data
 
 from aoc_wim.zgrid import ZGrid
 
-grid = ZGrid(data, on=".", off="#")
+grid = ZGrid(data)
 graph = grid.graph(extra="0123456789")
 distances = {}
 for a, b in combinations(graph.extra, 2):

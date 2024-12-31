@@ -21,7 +21,7 @@ def wall(z, fav_number):
 
 def make_grid(data):
     func = partial(wall, fav_number=int(data))
-    grid = ZGrid(func, on=".", off="#")
+    grid = ZGrid(func)
     return grid
 
 

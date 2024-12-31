@@ -11,7 +11,7 @@ from bidict import bidict
 from aoc_wim.search import AStar
 from aoc_wim.zgrid import ZGrid
 
-grid = ZGrid(data, on=".", off="#")
+grid = ZGrid(data)
 h, w = np.array(grid).shape
 dzs = [-1j, 1, 1j, -1]
 

@@ -15,7 +15,7 @@ from aoc_wim.zgrid import ZGrid
 class Q18AStar(AStar):
 
     def __init__(self, data, part="a"):
-        grid = ZGrid(data, on=".", off="#")
+        grid = ZGrid(data)
         pos = ("@",)
         if part == "b":
             if grid.count("@") == 1:
@@ -23,7 +23,7 @@ class Q18AStar(AStar):
                 if grid.count_near(z0, val=".", n=8, default=".") == 8:
                     pos = ("@0", "@1", "@2", "@3")
                     for z in grid.near(z0, n=5):
-                        grid[z] = grid.off
+                        grid[z] = "#"
                     for p, dz in zip(pos, [-1 - 1j, 1 - 1j, 1 + 1j, -1 + 1j]):
                         grid[z0 + dz] = p
             else:

@@ -10,7 +10,7 @@ import networkx as nx
 
 w = extra.get("width", 71)
 n_bytes = extra.get("n_bytes", 1024)
-grid = ZGrid.fromempty(w, w, glyph=".")
+grid = ZGrid.fromempty(w, w)
 zs = [complex(*map(int, x.split(","))) for x in data.split()]
 
 grid.update({z: "#" for z in zs[:n_bytes]})
