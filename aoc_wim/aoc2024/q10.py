@@ -2,8 +2,9 @@
 --- Day 10: Hoof It ---
 https://adventofcode.com/2024/day/10
 """
-from aocd import data
 import networkx as nx
+from aocd import data
+
 from aoc_wim.zgrid import ZGrid
 
 grid = ZGrid(data, transform=int)

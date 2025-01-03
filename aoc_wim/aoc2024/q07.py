@@ -2,9 +2,10 @@
 --- Day 7: Bridge Repair ---
 https://adventofcode.com/2024/day/7
 """
-from aocd import data
-import operator as op
 import itertools as it
+import operator as op
+
+from aocd import data
 
 
 def concat(n1, n2):

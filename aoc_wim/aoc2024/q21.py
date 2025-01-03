@@ -2,10 +2,12 @@
 --- Day 21: Keypad Conundrum ---
 https://adventofcode.com/2024/day/21
 """
-from aocd import data
-from aoc_wim.zgrid import ZGrid
-import networkx as nx
 from collections import Counter
+
+import networkx as nx
+from aocd import data
+
+from aoc_wim.zgrid import ZGrid
 
 
 keypad_numeric = """\

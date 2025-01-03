@@ -2,10 +2,11 @@
 --- Day 18: RAM Run ---
 https://adventofcode.com/2024/day/18
 """
+import networkx as nx
 from aocd import data
 from aocd import extra
+
 from aoc_wim.zgrid import ZGrid
-import networkx as nx
 
 
 w = extra.get("width", 71)

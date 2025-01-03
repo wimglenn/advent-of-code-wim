@@ -2,9 +2,10 @@
 --- Day 22: Monkey Market ---
 https://adventofcode.com/2024/day/22
 """
-from aocd import data
 from collections import Counter
+
 import numpy as np
+from aocd import data
 
 
 n = np.array([*map(int, data.split())])

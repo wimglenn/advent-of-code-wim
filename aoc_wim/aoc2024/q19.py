@@ -2,8 +2,9 @@
 --- Day 19: Linen Layout ---
 https://adventofcode.com/2024/day/19
 """
-from aocd import data
 from functools import cache
+
+from aocd import data
 
 
 @cache

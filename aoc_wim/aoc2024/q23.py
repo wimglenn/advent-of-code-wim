@@ -2,9 +2,10 @@
 --- Day 23: LAN Party ---
 https://adventofcode.com/2024/day/23
 """
-from aocd import data
-import networkx as nx
 import itertools as it
+
+import networkx as nx
+from aocd import data
 
 
 graph = nx.Graph(x.split("-") for x in data.split())

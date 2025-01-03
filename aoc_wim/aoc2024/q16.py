@@ -2,10 +2,12 @@
 --- Day 16: Reindeer Maze ---
 https://adventofcode.com/2024/day/16
 """
-from aocd import data
-from aoc_wim.zgrid import ZGrid
-from queue import PriorityQueue
 import itertools as it
+from queue import PriorityQueue
+
+from aocd import data
+
+from aoc_wim.zgrid import ZGrid
 
 
 grid = ZGrid(data)

@@ -2,8 +2,8 @@
 --- Day 13: Claw Contraption ---
 https://adventofcode.com/2024/day/13
 """
-from aocd import data
 import parse
+from aocd import data
 
 template = """\
 Button A: X+{:d}, Y+{:d}

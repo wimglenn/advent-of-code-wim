@@ -2,9 +2,10 @@
 --- Day 22: Sand Slabs ---
 https://adventofcode.com/2023/day/22
 """
-from aocd import data
-from dataclasses import dataclass
 import operator as op
+from dataclasses import dataclass
+
+from aocd import data
 
 
 @dataclass

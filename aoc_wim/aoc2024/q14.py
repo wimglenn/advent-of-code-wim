@@ -2,13 +2,14 @@
 --- Day 14: Restroom Redoubt ---
 https://adventofcode.com/2024/day/14
 """
-from aocd import data
-from aocd import extra
+import math
+import statistics
 from collections import Counter
 from dataclasses import dataclass
-import math
+
 import parse
-import statistics
+from aocd import data
+from aocd import extra
 
 
 w = extra.get("width", 101)

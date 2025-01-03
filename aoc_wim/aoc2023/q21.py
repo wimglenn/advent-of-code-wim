@@ -4,8 +4,10 @@ https://adventofcode.com/2023/day/21
 """
 import json
 import os
+
 from aocd import data
 from aocd import extra
+
 from aoc_wim.search import BFS
 from aoc_wim.zgrid import manhattan_distance
 from aoc_wim.zgrid import ZGrid

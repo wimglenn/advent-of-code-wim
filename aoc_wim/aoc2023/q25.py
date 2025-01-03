@@ -2,8 +2,8 @@
 --- Day 25: Snowverload ---
 https://adventofcode.com/2023/day/25
 """
-from aocd import data
 import networkx as nx
+from aocd import data
 
 
 graph = nx.Graph()

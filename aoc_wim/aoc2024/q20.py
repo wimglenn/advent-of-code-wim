@@ -2,8 +2,11 @@
 --- Day 20: Race Condition ---
 https://adventofcode.com/2024/day/20
 """
-from aocd import data, extra
-from aoc_wim.zgrid import ZGrid, manhattan_ball
+from aocd import data
+from aocd import extra
+
+from aoc_wim.zgrid import manhattan_ball
+from aoc_wim.zgrid import ZGrid
 
 
 grid = ZGrid(data)

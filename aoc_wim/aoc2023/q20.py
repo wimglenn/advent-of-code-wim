@@ -3,10 +3,11 @@
 https://adventofcode.com/2023/day/20
 """
 
-from aocd import data
-from collections import deque
 import logging
 import math
+from collections import deque
+
+from aocd import data
 
 
 # logging.basicConfig(format="%(message)s", level=logging.DEBUG)

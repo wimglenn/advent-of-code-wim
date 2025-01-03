@@ -2,9 +2,10 @@
 --- Day 5: Print Queue ---
 https://adventofcode.com/2024/day/5
 """
-from aocd import data
 from collections import defaultdict
 from functools import cmp_to_key
+
+from aocd import data
 
 
 rules, updates = data.split("\n\n")

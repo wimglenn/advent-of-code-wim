@@ -3,6 +3,7 @@
 https://adventofcode.com/2024/day/25
 """
 from aocd import data
+
 from aoc_wim.zgrid import ZGrid
 
 

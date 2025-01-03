@@ -2,8 +2,9 @@
 --- Day 17: Chronospatial Computer ---
 https://adventofcode.com/2024/day/17
 """
-from aocd import data
 import re
+
+from aocd import data
 
 
 class Comp:

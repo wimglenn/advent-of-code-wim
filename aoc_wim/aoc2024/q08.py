@@ -2,10 +2,12 @@
 --- Day 8: Resonant Collinearity ---
 https://adventofcode.com/2024/day/8
 """
-from aocd import data
-from aoc_wim.zgrid import ZGrid
-from collections import defaultdict
 import itertools as it
+from collections import defaultdict
+
+from aocd import data
+
+from aoc_wim.zgrid import ZGrid
 
 grid = ZGrid(data)
 d = defaultdict(list)

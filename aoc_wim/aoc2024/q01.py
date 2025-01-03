@@ -2,8 +2,9 @@
 --- Day 1: Historian Hysteria ---
 https://adventofcode.com/2024/day/1
 """
-from aocd import data
 from collections import Counter
+
+from aocd import data
 
 ns = [int(n) for n in data.split()]
 xs = sorted(ns[0::2])

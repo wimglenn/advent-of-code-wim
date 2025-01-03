@@ -2,11 +2,12 @@
 --- Day 24: Never Tell Me The Odds ---
 https://adventofcode.com/2023/day/24
 """
+import itertools as it
+from dataclasses import dataclass
+
+import z3
 from aocd import data
 from aocd import extra
-from dataclasses import dataclass
-import itertools as it
-import z3
 
 
 @dataclass

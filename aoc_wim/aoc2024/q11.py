@@ -2,8 +2,9 @@
 --- Day 11: Plutonian Pebbles ---
 https://adventofcode.com/2024/day/11
 """
-from aocd import data
 from collections import Counter
+
+from aocd import data
 
 
 def blink(d):
