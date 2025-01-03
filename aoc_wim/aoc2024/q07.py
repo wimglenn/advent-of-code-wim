@@ -3,7 +3,6 @@
 https://adventofcode.com/2024/day/7
 """
 import itertools as it
-import operator as op
 
 from aocd import data
 
@@ -15,7 +14,7 @@ def concat(n1, n2):
 a = b = 0
 for line in data.replace(":", "").splitlines():
     result, *ns = map(int, line.split())
-    for ops in it.product((op.add, op.mul), repeat=len(ns)-1):
+    for ops in it.product((int.__add__, int.__mul__), repeat=len(ns)-1):
         val = ns[0]
         for i, f in enumerate(ops, 1):
             val = f(val, ns[i])
@@ -24,7 +23,7 @@ for line in data.replace(":", "").splitlines():
             b += result
             break
     else:
-        for ops in it.product((op.add, op.mul, concat), repeat=len(ns) - 1):
+        for ops in it.product((int.__add__, int.__mul__, concat), repeat=len(ns) - 1):
             val = ns[0]
             for i, f in enumerate(ops, 1):
                 val = f(val, ns[i])

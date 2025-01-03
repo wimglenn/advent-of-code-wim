@@ -2,8 +2,8 @@
 --- Day 22: Sand Slabs ---
 https://adventofcode.com/2023/day/22
 """
-import operator as op
 from dataclasses import dataclass
+from operator import attrgetter
 
 from aocd import data
 
@@ -57,7 +57,7 @@ tdata = """1,0,1~1,2,1
 # data = tdata
 
 bricks = [Brick.fromline(x) for x in data.splitlines()]
-bricks.sort(key=op.attrgetter("z0"))
+bricks.sort(key=attrgetter("z0"))
 space = {}
 for i, brick in enumerate(bricks):
     brick.id = i

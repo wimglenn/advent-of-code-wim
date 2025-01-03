@@ -2,15 +2,14 @@
 --- Day 21: Monkey Math ---
 https://adventofcode.com/2022/day/21
 """
-import operator as op
-
 from aocd import data
 
+
 ops = {
-    "+": op.add,
-    "*": op.mul,
-    "-": op.sub,
-    "/": op.truediv,
+    "+": complex.__add__,
+    "*": complex.__mul__,
+    "-": complex.__sub__,
+    "/": complex.__truediv__,
 }
 
 

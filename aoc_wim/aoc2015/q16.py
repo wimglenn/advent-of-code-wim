@@ -2,11 +2,6 @@
 --- Day 16: Aunt Sue ---
 https://adventofcode.com/2015/day/16
 """
-from collections import defaultdict
-from operator import eq
-from operator import gt
-from operator import lt
-
 from aocd import data
 
 
@@ -34,13 +29,19 @@ for line in data.splitlines():
 
 
 def find_sue(**kwargs):
-    opmap = defaultdict(lambda: eq)
-    opmap.update(kwargs)
     for sue, stats in sues.items():
         common_keys = d_message.keys() & stats.keys()
-        if all(opmap[k](stats[k], d_message[k]) for k in common_keys):
+        if all(kwargs.get(k, int.__eq__)(stats[k], d_message[k]) for k in common_keys):
             return int(sue.split()[1])
 
 
-print("answer_a:", find_sue())
-print("answer_b:", find_sue(cats=gt, trees=gt, pomeranians=lt, goldfish=lt))
+a = find_sue()
+b = find_sue(
+    cats=int.__gt__,
+    trees=int.__gt__,
+    pomeranians=int.__lt__,
+    goldfish=int.__lt__,
+)
+
+print("answer_a:", a)
+print("answer_b:", b)
