@@ -3,15 +3,11 @@
 https://adventofcode.com/2016/day/20
 """
 from aocd import data
+from aocd import extra
 
 
-intervals = []
-for line in data.splitlines():
-    left, right = line.split("-")
-    interval = int(left), int(right)
-    intervals.append(interval)
-intervals.sort()
-
+ns = [*map(int, data.replace("-", " ").split())]
+intervals = sorted(zip(ns[0::2], ns[1::2]))
 while True:
     n = len(intervals)
     for i in range(n - 1):
@@ -26,8 +22,7 @@ while True:
 
 print("answer_a:", intervals[0][1] + 1)
 
-b = 4294967296 if len(intervals) > 3 else 10
+b = extra.get("max_val", 4294967295) + 1
 for lo, high in intervals:
     b -= high - lo + 1
-
 print("answer_b:", b)

@@ -5,6 +5,7 @@ https://adventofcode.com/2016/day/21
 from itertools import permutations
 
 from aocd import data
+from aocd import extra
 
 
 def swap_position(list_, words):
@@ -76,6 +77,6 @@ def descramble(data, scrambled):
             return "".join(original)
 
 
-start = "abcde" if data.count("\n") < 10 else "abcdefgh"
+start = extra.get("start", "abcdefgh")
 print("answer_a:", scramble(data, start))
 print("answer_b:", descramble(data, "fbgdceah"))

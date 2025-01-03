@@ -3,6 +3,7 @@
 https://adventofcode.com/2015/day/14
 """
 from aocd import data
+from aocd import extra
 
 
 class Reindeer:
@@ -30,7 +31,7 @@ class Reindeer:
 
 
 deers = [Reindeer(line) for line in data.splitlines()]
-t = 1000 if len(deers) == 2 else 2503
+t = extra.get("t", 2503)
 for _ in range(t):
     for deer in deers:
         deer.step()

@@ -3,9 +3,9 @@
 https://adventofcode.com/2017/day/10
 """
 from functools import reduce
-from operator import xor
 
 from aocd import data
+from aocd import extra
 
 
 def munge(state, lengths, iterations=64, n=None):
@@ -24,10 +24,10 @@ def munge(state, lengths, iterations=64, n=None):
 
 
 def knot_hash(data, n=256):
-    state = list(range(n))
+    state = [*range(n)]
     lengths = [ord(x) for x in data] + [17, 31, 73, 47, 23]
     munge(state, lengths, n=n)
-    reduced = [reduce(xor, state[16 * i : 16 * (i + 1)]) for i in range(16)]
+    reduced = [reduce(int.__xor__, state[16 * i : 16 * (i + 1)]) for i in range(16)]
     return bytes(reduced).hex()
 
 
@@ -36,7 +36,8 @@ try:
 except ValueError:
     a = None
 else:
-    state = list(range(5 if data == "3, 4, 1, 5" else 256))
+    n = extra.get("n", 256)
+    state = [*range(n)]
     munge(state, lengths, iterations=1)
     a = state[0] * state[1]
 

@@ -4,6 +4,7 @@ https://adventofcode.com/2016/day/8
 """
 import numpy as np
 from aocd import data
+from aocd import extra
 
 from aoc_wim.ocr import AOCR
 
@@ -20,8 +21,9 @@ def animate(A, line):
 
 
 lines = data.splitlines()
-im = (3, 7) if len(lines) == 4 else (6, 50)
-A = np.full(im, ".")
+w = extra.get("screen_width", 50)
+h = extra.get("screen_height", 6)
+A = np.full((h, w), ".")
 for line in lines:
     A = animate(A, line)
 print("answer_a:", (A == "#").sum())
