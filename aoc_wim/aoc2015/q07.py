@@ -59,5 +59,5 @@ result = compute(data)
 result_a = result["a"]
 print("answer_a:", result_a)
 
-new_data = re.sub(r"\n([0-9]+) -> b\n", "\n{} -> b\n".format(result_a), data)
+new_data = re.sub(r"\n([0-9]+) -> b\n", f"\n{result_a} -> b\n", data)
 print("answer_b:", compute(new_data)["a"])

@@ -415,7 +415,7 @@ class DebugDict(dict):
     def __missing__(self, key):
         cprint("AOCR does not understand this item:", color="red")
         print(key)
-        cprint("Identify it and add to {}".format(__file__), color="red")
+        cprint(f"Identify it and add to {__file__}", color="red")
         raise KeyError(key)
 
 

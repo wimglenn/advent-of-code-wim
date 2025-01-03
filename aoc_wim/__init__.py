@@ -20,7 +20,7 @@ __version__ = dynamic_version()
 
 
 def plugin(year, day, data):
-    mod_name = "aoc_wim.aoc{}.q{:02d}".format(year, day)
+    mod_name = f"aoc_wim.aoc{year}.q{day:02d}"
     sys.modules.pop(mod_name, None)
     old_stdout = sys.stdout
     sys.stdout = out = io.StringIO()

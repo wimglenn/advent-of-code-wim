@@ -23,7 +23,7 @@ class Computer:
             args = [x if x in self.registers else int(x) for x in args]
             f = getattr(self, op)
             if verbose:
-                registers = ["{}:{}".format(k, v) for k, v in self.registers.items()]
+                registers = [f"{k}:{v}" for k, v in self.registers.items()]
                 state = ",".join(registers)
                 print(state, f"L{i}", op, *args)
             f(*args)
