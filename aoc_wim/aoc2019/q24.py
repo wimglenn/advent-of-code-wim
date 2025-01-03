@@ -3,6 +3,7 @@
 https://adventofcode.com/2019/day/24
 """
 from aocd import data
+from aocd import extra
 
 from aoc_wim.zgrid import ZGrid
 
@@ -93,17 +94,9 @@ def evolve_b(grids):
     grids.update(new_grids)
 
 
-example = """\
-....#
-#..#.
-#..##
-..#..
-#...."""
-
-
 def part_b(data):
     zgrid = ZGrid(data)
-    t = 10 if data == example else 200  # example data has fewer iterations
+    t = extra.get("iterations", 200)
     del zgrid[2 + 2j]
     grids = {0: zgrid}
     for i in range(t):

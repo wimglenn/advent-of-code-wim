@@ -3,6 +3,7 @@
 https://adventofcode.com/2017/day/16
 """
 from aocd import data
+from aocd import extra
 
 
 def parsed(data, mod=16):
@@ -49,10 +50,8 @@ def dance(data, d, n=1):
     return "".join(d)
 
 
-if len(data) == 12:
-    # example data
-    print("answer_a:", dance(data, [*"abcde"]))
-    print("answer_b:", dance(data, [*"abcde"], n=2))
-else:
-    print("answer_a:", dance(data, [*"abcdefghijklmnop"]))
-    print("answer_b:", dance(data, [*"abcdefghijklmnop"], n=1000000000))
+iterations = extra.get("iterations", 1000000000)
+s0 = "abcdefghijklmnop"[:extra.get("n_programs")]
+
+print("answer_a:", dance(data, list(s0)))
+print("answer_b:", dance(data, list(s0), n=iterations))

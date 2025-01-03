@@ -8,6 +8,7 @@ from math import lcm
 
 import numpy as np
 from aocd import data
+from aocd import extra
 
 
 def simulate(data, n=0):
@@ -36,19 +37,6 @@ def simulate(data, n=0):
     return e
 
 
-test10 = """\
-<x=-1, y=0, z=2>
-<x=2, y=-10, z=-7>
-<x=4, y=-8, z=8>
-<x=3, y=5, z=-1>"""
-
-test100 = """\
-<x=-8, y=-10, z=0>
-<x=5, y=5, z=10>
-<x=2, y=-7, z=3>
-<x=9, y=-8, z=-3>"""
-
-
-n = 10 if data == test10 else 100 if data == test100 else 1000
+n = extra.get("iterations", 1000)
 print("answer_a:", simulate(data, n))
 print("answer_b:", simulate(data))
