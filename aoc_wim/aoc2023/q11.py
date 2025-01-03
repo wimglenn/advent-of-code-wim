@@ -5,6 +5,7 @@ https://adventofcode.com/2023/day/11
 from itertools import combinations
 
 from aocd import data
+from aocd import extra
 
 from aoc_wim.zgrid import manhattan_distance
 from aoc_wim.zgrid import ZGrid
@@ -17,13 +18,7 @@ g_rows = {g.imag for g in gs}
 empty_cols = [i for i in range(w) if i not in g_cols]
 empty_rows = [i for i in range(h) if i not in g_rows]
 
-# expansion factor for part b
-f = 1_000_000
-if len(gs) == 9:
-    # 9 galaxies for the example data
-    # use a smaller expansion factor
-    f = 100
-
+f = extra.get("expansion_factor", 1_000_000)
 a = b = 0
 for g0, g1 in combinations(gs, 2):
     d = manhattan_distance(g0, g1)

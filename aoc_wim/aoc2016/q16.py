@@ -3,6 +3,7 @@
 https://adventofcode.com/2016/day/16
 """
 from aocd import data
+from aocd import extra
 
 
 def dragon(a):
@@ -26,14 +27,8 @@ def f(data, length):
     return r_checksum(pad(data, length))
 
 
-example_disk_lengths = {
-    "110010110100": 12,
-    "10000": 20,
-}
-
-
 if __name__ == "__main__":
-    length = example_disk_lengths.get(data, 272)
-    print("answer_a:", f(data, length))
-    if data not in example_disk_lengths:
+    disk_length = extra.get("disk_length", 272)
+    print("answer_a:", f(data, disk_length))
+    if not extra:
         print("answer_b:", f(data, 35651584))

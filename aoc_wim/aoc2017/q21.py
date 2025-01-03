@@ -4,6 +4,7 @@ https://adventofcode.com/2017/day/21
 """
 import numpy as np
 from aocd import data
+from aocd import extra
 
 
 def s2a(s):
@@ -44,10 +45,7 @@ def evolve(data, iterations):
     return grid.sum()
 
 
-if __name__ == "__main__":
-    if len(data.splitlines()) == 2:
-        # example data
-        print("answer_a:", evolve(data, 2))
-    else:
-        print("answer_a:", evolve(data, 5))
-        print("answer_b:", evolve(data, 18))
+n = extra.get("iterations", 5)
+print("answer_a:", evolve(data, n))
+if not extra:
+    print("answer_b:", evolve(data, 18))

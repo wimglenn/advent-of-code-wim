@@ -5,6 +5,7 @@ https://adventofcode.com/2022/day/15
 from itertools import combinations
 
 from aocd import data
+from aocd import extra
 from intervaltree import IntervalTree
 from parse import parse
 
@@ -40,11 +41,8 @@ class Sensor:
 template = "Sensor at x={:d}, y={:d}: closest beacon is at x={:d}, y={:d}"
 sensors = [Sensor.fromline(x) for x in data.splitlines()]
 
-y = 2000000
-maxd = 4000000
-if len(sensors) == 14:  # example data - smaller bounds are specified in the prose
-    y = 10
-    maxd = 20
+y = extra.get("y", 2000000)
+maxd = extra.get("maxd", 4000000)
 
 tree = IntervalTree()
 for sensor in sensors:

@@ -6,6 +6,7 @@ import logging
 from types import SimpleNamespace
 
 from aocd import data
+from aocd import extra
 from parse import parse
 
 
@@ -30,17 +31,13 @@ def work(data, part="a"):
     template = "Step {} must be finished before step {} can begin."
     pairs = [parse(template, s).fixed for s in data.splitlines()]
     remaining = {x for pair in pairs for x in pair}
-    n_workers = 1 if part == "a" else 5
-    delay = 60
-    if remaining == set("ABCDEF"):
-        # the smaller example data
-        n_workers = 1 if part == "a" else 2
-        delay = 0
+    n_workers = 1 if part == "a" else extra.get("n_workers", 5)
+    delay = extra.get("delay", 60)
     in_progress = set()
     done = set()
     text = ""
     t = -1
-    workers = [Worker() for i in range(n_workers)]
+    workers = [Worker() for _ in range(n_workers)]
     while remaining or in_progress:
         for w in workers:
             x = w.tick()

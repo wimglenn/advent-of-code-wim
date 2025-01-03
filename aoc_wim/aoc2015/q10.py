@@ -5,6 +5,7 @@ https://adventofcode.com/2015/day/10
 from itertools import groupby
 
 from aocd import data
+from aocd import extra
 
 
 def look_and_say(s, n=1):
@@ -13,12 +14,9 @@ def look_and_say(s, n=1):
     return s
 
 
-if __name__ == "__main__":
-    if len(data) <= 6:
-        # examples
-        print(len(look_and_say(data, 1)))
-    else:
-        a = look_and_say(data, n=40)
-        print("answer_a:", len(a))
-        b = look_and_say(a, n=50 - 40)
-        print("answer_b:", len(b))
+n = extra.get("iterations", 40)
+a = look_and_say(data, n=n)
+print("answer_a:", len(a))
+if not extra:
+    b = look_and_say(a, n=50 - n)
+    print("answer_b:", len(b))
