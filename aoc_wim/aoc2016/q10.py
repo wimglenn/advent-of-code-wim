@@ -8,7 +8,7 @@ from aocd import data
 from parse import parse
 
 
-class Bot(object):
+class Bot:
     def __init__(self, name, low_to=None, high_to=None, lh=(17, 61)):
         self.name = name
         self.low_to = low_to

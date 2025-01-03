@@ -5,7 +5,7 @@ https://adventofcode.com/2015/day/14
 from aocd import data
 
 
-class Reindeer(object):
+class Reindeer:
     def __init__(self, line):
         words = line.split()
         self.name = words[0]

@@ -410,7 +410,7 @@ class DebugDict(dict):
             return self.__getitem__(full)
         if isinstance(item, np.ndarray):
             self.__missing__(array2txt(item))
-        return super(DebugDict, self).__getitem__(item)
+        return super().__getitem__(item)
 
     def __missing__(self, key):
         cprint("AOCR does not understand this item:", color="red")
