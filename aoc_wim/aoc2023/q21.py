@@ -2,9 +2,6 @@
 --- Day 21: Step Counter ---
 https://adventofcode.com/2023/day/21
 """
-import json
-import os
-
 from aocd import data
 from aocd import extra
 
