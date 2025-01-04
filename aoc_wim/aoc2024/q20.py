@@ -5,7 +5,6 @@ https://adventofcode.com/2024/day/20
 from aocd import data
 from aocd import extra
 
-from aoc_wim.zgrid import manhattan_ball
 from aoc_wim.zgrid import ZGrid
 
 
@@ -28,7 +27,7 @@ def n_cheats(t_cheat, dt_min):
     result = 0
     for z0, d in path.items():
         for r in range(1, t_cheat + 1):
-            for z in manhattan_ball(r, z0):
+            for z in grid.zball(z0, r):
                 if z in path:
                     result += d - r - path[z] >= dt_min
     return result

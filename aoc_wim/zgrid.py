@@ -15,7 +15,8 @@ def manhattan_distance(z1, z0=0):
     return abs(int(dz.real)) + abs(int(dz.imag))
 
 
-def manhattan_ball(r=1, z0=0, full=False):
+def manhattan_ball(z0=0, r=1, full=False):
+    """circle/ball centered on z0 with radius r (using manhattan distance)"""
     result = []
     if full:
         result.append(0)
@@ -176,6 +177,8 @@ class ZGrid:
         self.d.clear()
         self.d.update(keep)
         return n_removed
+
+    zball = staticmethod(manhattan_ball)
 
     @staticmethod
     def near(z, n=4):
