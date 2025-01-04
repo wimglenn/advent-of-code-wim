@@ -18,7 +18,7 @@ def manhattan_distance(z1, z0=0):
 def manhattan_ball(z0=0, r=1, full=False):
     """circle/ball centered on z0 with radius r (using manhattan distance)"""
     result = []
-    if full:
+    if full or r == 0:
         result.append(0)
         rs = range(1, r + 1)
     else:
