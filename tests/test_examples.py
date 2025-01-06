@@ -12,7 +12,9 @@ input_files = sorted(here.glob("20*/*/*.txt"))
 
 
 def path2id(input_file):
-    return str(input_file.relative_to(here))
+    rel_path = input_file.relative_to(here)
+    title = pytest.puzzle_titles[str(rel_path.parent)]
+    return f"{rel_path} : {title}"
 
 
 def split_trailing_comments(lines):

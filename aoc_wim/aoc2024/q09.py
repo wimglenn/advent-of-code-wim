@@ -2,60 +2,80 @@
 --- Day 9: Disk Fragmenter ---
 https://adventofcode.com/2024/day/9
 """
+from collections import defaultdict
+from collections import deque
+from dataclasses import dataclass
+from heapq import heappop
+from heapq import heappush
+
 from aocd import data
 
 
-disk = [*map(int, data)]
-offset = disk.pop(0)  # ignore file 0, it can't move and I want to use id 0 for space
-for i, val in enumerate(disk):
-    f_id = (i + 1) // 2 if i % 2 else 0
-    disk[i] = f_id, val
-max_f_id = f_id
+@dataclass
+class Mem:
+    id: int
+    pos: int
+    size: int
+
+    @property
+    def checksum(self):
+        return self.id * (2 * self.pos + self.size - 1) * self.size // 2
+
+    def __lt__(self, other):
+        if not isinstance(other, Mem):
+            return NotImplemented
+        return self.pos < other.pos
 
 
-def checksum(disk):
-    i = offset
-    result = 0
-    for f_id, size in disk:
-        result += sum(f_id * (i + j) for j in range(size))
-        i += size
-    return result
-
-
-def defrag_a(disk):
-    disk = disk.copy()
-    while True:
-        for i, (f, space) in enumerate(disk):
-            if f:
-                continue
-            f_id, size = disk.pop()
-            if f_id == 0:
-                break
-            if size <= space:
-                disk[i:i+1] = (f_id, size), (0, space - size)
-                break
-            else:
-                disk[i] = f_id, space
-                disk.append((f_id, size - space))
-                break
-        else:
-            return disk
-
-
-def defrag_b(disk):
-    disk = disk.copy()
-    for f_id in range(max_f_id, 0, -1):
-        for i, (f, size) in enumerate(reversed(disk)):
-            if f == f_id:
-                i = len(disk) - 1 - i
-                break
-        for j, (f, space) in enumerate(disk):
-            if not f and space >= size and j < i:
-                disk[i] = 0, size
-                disk[j:j+1] = (f_id, size), (0, space - size)
-                break
+def parsed(data):
+    disk = deque(), deque()
+    pos = 0
+    for i, size in enumerate(map(int, data)):
+        fid, i = divmod(i, 2)
+        if size:
+            disk[i].append(Mem(fid, pos, size))
+        pos += size
     return disk
 
 
-print("answer_a:", checksum(defrag_a(disk)))
-print("answer_b:", checksum(defrag_b(disk)))
+def defrag_a(data):
+    files, free = parsed(data)
+    while free[0].pos <= files[-1].pos:
+        s = free.popleft()
+        f = files.pop()
+        if f.size <= s.size:
+            f.pos = s.pos
+            files.appendleft(f)
+            s.size -= f.size
+            s.pos += f.size
+            if s.size:
+                free.appendleft(s)
+        else:
+            files.append(Mem(f.id, f.pos, f.size - s.size))
+            f.pos = s.pos
+            f.size = s.size
+            files.appendleft(f)
+    return sum(f.checksum for f in files)
+
+
+def defrag_b(data):
+    files, free = parsed(data)
+    heaps = defaultdict(list)
+    for f in free:
+        heappush(heaps[f.size], Mem(0, f.pos, f.size))
+
+    for f in reversed(files):
+        slots = [h for s, h in heaps.items() if s >= f.size and h and h[0].pos < f.pos]
+        if not slots:
+            continue
+        heap = min(slots, key=lambda h: h[0].pos)
+        s = heappop(heap)
+        f.pos = s.pos
+        s.size -= f.size
+        s.pos += f.size
+        heappush(heaps[s.size], s)
+    return sum(f.checksum for f in files)
+
+
+print("answer_a:", defrag_a(data))
+print("answer_b:", defrag_b(data))

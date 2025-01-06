@@ -6,6 +6,7 @@ import sys
 import warnings
 
 import pytest
+from aocd.models import Puzzle
 
 
 class MockAocd(type(sys)):
@@ -42,6 +43,7 @@ def pytest_configure(config):
     for day in range(1, 26):
         msg = f"d{day:02d}: https://adventofcode.com/*/day/{day:02d}"
         config.addinivalue_line("markers", msg)
+    pytest.puzzle_titles = {f"{p.year}/{p.day:02d}": p.title for p in Puzzle.all()}
 
 
 def pytest_collection_modifyitems(config, items):
