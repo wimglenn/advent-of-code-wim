@@ -51,10 +51,11 @@ class Scanner:
             for other_beacon in other_beacons:
                 for self_beacon in self.beacons:
                     dt = self_beacon - other_beacon
-                    n = len({tuple(b) for b in self.beacons} & {tuple(b) for b in (other_beacons + dt)})
-                    assert n >= 1
+                    b0 = self.beacons.reshape(1, -1, 3)
+                    b1 = (other_beacons + dt).reshape(-1, 1, 3)
+                    n = np.all(b0 == b1, axis=2).sum()
                     if n >= 12:
-                        print(f"scanner {self.id} & {other.id}: {n} common beacons, offset={dt.tolist()}, pose={Ts[i].tolist()}")
+                        # print(f"scanner {self.id} & {other.id}: {n} common beacons, offset={dt.tolist()}, pose={Ts[i].tolist()}")
                         self.transforms[other.id] = Ts[i], np.dot(Ts[i], -dt)
                         other.transforms[self.id] = np.linalg.inv(Ts[i]).astype(int), dt
                         Scanner.graph.add_edge(self.id, other.id)
@@ -90,7 +91,6 @@ for i, scanner in scanners.items():
     # transform beacons from this scanner into coordinate system of scanner0
     # note: t0 will also represent this scanner position relative to scanner0
     path = nx.shortest_path(Scanner.graph, scanner.id, 0)
-    assert path[0] == i and path[-1] == 0
     beacons = scanner.beacons
     t0 = np.array([0, 0, 0])
     for id0, id1 in zip(path, path[1:]):
