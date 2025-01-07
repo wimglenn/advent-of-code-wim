@@ -36,13 +36,14 @@ for z0, branches in nodes.items():
             branches[dz0] = z1, dist
             nodes[z1][dz1] = z0, dist
 perimeter = {z for z, branches in nodes.items() if len(branches) < 4}
+node_mask = {z: 1 << i for i, z in enumerate(nodes)}
 
 
 
 def longest_path(part="a"):
     grid[start + 1j] = "v"
     dists = []
-    stack = [(start, {start}, 0)]
+    stack = [(start, node_mask[start], 0)]
     while stack:
         z0, visited, d0 = stack.pop()
         if z0 == end:
@@ -51,12 +52,12 @@ def longest_path(part="a"):
         for g, dz in dzs.items():
             if dz in branches:
                 z1, dist = branches[dz]
-                if z1 in visited:
+                if node_mask[z1] & visited:
                     continue
                 if grid[z0 + dz] != g:
                     if part == "a" or {z0, z1} <= perimeter:
                         continue
-                stack.append((z1, visited.union([z1]), d0 + dist))
+                stack.append((z1, visited | node_mask[z1], d0 + dist))
     return max(dists)
 
 
