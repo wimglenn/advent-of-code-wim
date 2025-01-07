@@ -48,6 +48,7 @@ for h0, h1 in it.combinations(hailstones, 2):
 print("answer_a:", a)
 
 
+# https://www.reddit.com/r/adventofcode/comments/18pnycy/comment/kepu26z/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button ?
 x, y, z, dx, dy, dz = z3.Ints("x y z dx dy dz")
 ts = z3.Ints("t0 t1 t2")
 s = z3.Solver()

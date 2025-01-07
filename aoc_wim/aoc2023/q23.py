@@ -8,9 +8,6 @@ from aoc_wim.zgrid import ZGrid
 
 
 grid = ZGrid(data)
-start = 1
-end = grid.bottom_right - 1
-
 nodes = {}
 dzs = dict(zip("^>v<", [-1j, 1, 1j, -1]))
 for z in grid.z(".", first=False):
@@ -26,8 +23,11 @@ def find_next_node(z0, dz0):
     return path[-1], path[-2] - path[-1], len(path) - 1
 
 
-nodes[start] = {1j: find_next_node(start, 1j)}
-nodes[end] = {-1j: find_next_node(end, -1j)}
+start, dzS, dS = find_next_node(1, 1j)
+grid[start + dzS] = "#"
+end, dzE, dE = find_next_node(grid.bottom_right - 1, -1j)
+grid[end + dzE] = "#"
+
 for z0, branches in nodes.items():
     for dz0 in dzs.values():
         g = grid.get(z0 + dz0)
@@ -39,9 +39,7 @@ perimeter = {z for z, branches in nodes.items() if len(branches) < 4}
 node_mask = {z: 1 << i for i, z in enumerate(nodes)}
 
 
-
 def longest_path(part="a"):
-    grid[start + 1j] = "v"
     dists = []
     stack = [(start, node_mask[start], 0)]
     while stack:
@@ -58,7 +56,7 @@ def longest_path(part="a"):
                     if part == "a" or {z0, z1} <= perimeter:
                         continue
                 stack.append((z1, visited | node_mask[z1], d0 + dist))
-    return max(dists)
+    return dS + max(dists) + dE
 
 
 print("answer_a:", longest_path(part="a"))
