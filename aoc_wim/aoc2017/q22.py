@@ -3,6 +3,7 @@
 https://adventofcode.com/2017/day/22
 """
 from aocd import data
+from aocd import extra
 
 
 def parsed(data):
@@ -15,7 +16,7 @@ def parsed(data):
     return grid
 
 
-def mutate(data, n_iterations, part="a"):
+def mutate(data, n, part="a"):
     mutations = {
         "a": {"#": ".", ".": "#"},
         "b": {"#": "F", "F": ".", ".": "W", "W": "#"},
@@ -25,7 +26,7 @@ def mutate(data, n_iterations, part="a"):
     grid = parsed(data)
     p, v = 0, 1j
     n_infected = 0
-    for i in range(n_iterations):
+    for i in range(n):
         s = grid.get(p, ".")
         v *= factors[s]
         grid[p] = mutation[s]
@@ -36,5 +37,5 @@ def mutate(data, n_iterations, part="a"):
 
 
 if __name__ == "__main__":
-    print("answer_a:", mutate(data, n_iterations=10000, part="a"))
-    print("answer_b:", mutate(data, n_iterations=10000000, part="b"))
+    print("answer_a:", mutate(data, n=extra.get("iterations", 10000), part="a"))
+    print("answer_b:", mutate(data, n=extra.get("iterations", 10000000), part="b"))
