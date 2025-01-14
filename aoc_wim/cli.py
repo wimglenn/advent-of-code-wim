@@ -1,5 +1,7 @@
 """Wim's solutions for https://adventofcode.com/"""
+import json
 import logging
+import os
 import runpy
 import subprocess
 import sys
@@ -10,6 +12,9 @@ from pathlib import Path
 import aocd
 from aocd.models import Puzzle
 from aocd.utils import AOC_TZ
+
+from aoc_wim.util import parse_extra_context
+from aoc_wim.util import split_trailing_comments
 
 
 here = Path(__file__).parent
@@ -34,6 +39,7 @@ def run_one():
         default=years[-1],
         help="2015-%(default)s (default: %(default)s)",
     )
+    parser.add_argument("-u", "--user", choices=["github", "twitter", "reddit", "google"])
     group = parser.add_mutually_exclusive_group()
     group.add_argument("-d", "--data", help="string or file to monkeypatch in aocd.data")
     group.add_argument("-t", "--test", help="use the example data (if any)", action="store_true")
@@ -47,6 +53,10 @@ def run_one():
         logging.basicConfig(format="%(message)s", level=level_int)
     mod_name = f"aoc_wim.aoc{args.year}.q{args.day:02d}"
     sys.modules.pop(mod_name, None)
+    if args.user is not None:
+        users = json.loads(Path("~/.config/aocd/tokens.json").expanduser().read_text())
+        [token] = [v for k, v in users.items() if k.startswith(args.user)]
+        os.environ["AOC_SESSION"] = token
     if args.data is not None:
         if args.data.endswith("txt"):
             path = Path(args.data)
@@ -65,11 +75,14 @@ def run_one():
         for test_path in sorted(test_files):
             print(f"\n(using data from {test_path})")
             print(f"--- {args.year} Day {args.day}: {Puzzle(args.year, args.day).title} ---")
-            aocd.data = "\n".join(test_path.read_text().splitlines()[:-2])
+            lines = test_path.read_text().splitlines()
+            aocd.data = "\n".join(lines[:-2])
+            aocd.extra = parse_extra_context(split_trailing_comments(lines))
             runpy.run_module(mod_name, run_name="__main__")
         print()
         return
-    print(f"--- {args.year} Day {args.day}: {Puzzle(args.year, args.day).title} ---")
+    puzzle = Puzzle(args.year, args.day)
+    print(f"--- {args.year} Day {args.day}: {puzzle.title} ---")
     runpy.run_module(mod_name, run_name="__main__")
 
 

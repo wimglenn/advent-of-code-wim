@@ -1,10 +1,11 @@
-import ast
 import json
 import pathlib
 
 import pytest
 
 from aoc_wim import plugin
+from aoc_wim.util import parse_extra_context
+from aoc_wim.util import split_trailing_comments
 
 
 here = pathlib.Path(__file__).parent
@@ -15,42 +16,6 @@ def path2id(input_file):
     rel_path = input_file.relative_to(here)
     title = pytest.puzzle_titles[str(rel_path.parent)]
     return f"{rel_path} : {title}"
-
-
-def split_trailing_comments(lines):
-    extra = []
-    while lines and (not lines[-1].strip() or lines[-1].startswith("#")):
-        extra.append(lines.pop())
-    if len(lines) and "#" in lines[-1]:
-        line, comment = lines[-1].split("#", 1)
-        lines[-1] = line.strip()
-        extra.append(comment.strip())
-    if len(lines) > 1 and "#" in lines[-2]:
-        line, comment = lines[-2].split("#", 1)
-        lines[-2] = line.strip()
-        extra.append(comment.strip())
-    extra = [x.strip() for x in extra if x.strip()]
-    return extra
-
-
-def parse_extra_context(extra):
-    result = {}
-    for line in extra:
-        equals = line.count("=")
-        commas = line.count(",")
-        if equals and equals == commas + 1:
-            for part in line.split(","):
-                k, v = part.strip().split("=")
-                k = k.strip()
-                v = v.strip()
-                try:
-                    v = ast.literal_eval(v)
-                except ValueError:
-                    pass
-                if k in result:
-                    raise NotImplementedError(f"Duplicate key {k!r}")
-                result[k] = v
-    return result
 
 
 @pytest.mark.parametrize("input_file", input_files, ids=path2id)

@@ -8,7 +8,7 @@ from datetime import datetime
 from pathlib import Path
 from textwrap import dedent
 
-from aocd import get_data
+import aocd
 from aocd.models import Puzzle
 from aocd.utils import AOC_TZ
 from aocd.utils import blocker
@@ -46,6 +46,42 @@ def set_docstrings(files=()):
         docstring = f"--- Day {day}: {puzzle.title} ---\n"
         docstring += puzzle.url
         set_module_docstring(file, docstring)
+
+
+def split_trailing_comments(lines):
+    extra = []
+    while lines and (not lines[-1].strip() or lines[-1].startswith("#")):
+        extra.append(lines.pop())
+    if len(lines) and "#" in lines[-1]:
+        line, comment = lines[-1].split("#", 1)
+        lines[-1] = line.strip()
+        extra.append(comment.strip())
+    if len(lines) > 1 and "#" in lines[-2]:
+        line, comment = lines[-2].split("#", 1)
+        lines[-2] = line.strip()
+        extra.append(comment.strip())
+    extra = [x.strip() for x in extra if x.strip()]
+    return extra
+
+
+def parse_extra_context(extra):
+    result = {}
+    for line in extra:
+        equals = line.count("=")
+        commas = line.count(",")
+        if equals and equals == commas + 1:
+            for part in line.split(","):
+                k, v = part.strip().split("=")
+                k = k.strip()
+                v = v.strip()
+                try:
+                    v = ast.literal_eval(v)
+                except ValueError:
+                    pass
+                if k in result:
+                    raise NotImplementedError(f"Duplicate key {k!r}")
+                result[k] = v
+    return result
 
 
 def start():
@@ -133,7 +169,7 @@ def start():
         test.write_text("\n-\n-\n")
     if block:
         blocker()
-    data = get_data(day=day, year=year, block=True)
+    data = aocd.get_data(day=day, year=year, block=True)
     print(data)
     set_docstrings([src])
     puzzle = Puzzle(year, day)
