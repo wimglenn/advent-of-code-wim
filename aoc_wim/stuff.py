@@ -1,3 +1,4 @@
+import itertools as it
 from collections import Counter
 from functools import lru_cache
 from math import sqrt
@@ -95,3 +96,18 @@ def extended_euclidean(a, b):
     if t_prev < 0:
         t_prev += b
     return s_prev, t_prev
+
+
+def groupings(L, n=2):
+    if len(L) % n:
+        raise NotImplementedError
+    if len(L) == n:
+        yield [tuple(sorted(L))]
+    for combo in it.combinations(range(len(L)), n):
+        group = tuple(sorted(L[i] for i in combo))
+        remaining = tuple(L[i] for i in range((len(L))) if i not in combo)
+        yield from [[group] + g for g in groupings(remaining, n)]
+
+
+def unique_groupings(L, n=2):
+    return list({}.fromkeys(frozenset(g) for g in groupings(L, n)))
