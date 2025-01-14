@@ -91,9 +91,30 @@ for i0, op, i1, out in ops:
     elif i0[0] == "x" and i1[0] == "y" and op == "XOR" and out not in and_operands:
         swapped.append(out)
 
+candidates = []
+
 for swaps in unique_groupings(swapped, 2):
     wires, ops = parsed(data, swaps)
     if compute(wires, ops) == z_expected:
         for s1, s2 in sorted(swaps):
             print(s1, "<->", s2)
+        candidates.append(swaps)
         print("answer_b:", ",".join(sorted(swapped)))
+
+
+def add(x, y, swaps):
+    assert 0 <= x < 2**45
+    assert 0 <= y < 2**45
+    wires = []
+    for i, bit in enumerate(format(x, "045b")[::-1]):
+        wires.append(f"x{i:02d}: {bit}")
+    for i, bit in enumerate(format(y, "045b")[::-1]):
+        wires.append(f"y{i:02d}: {bit}")
+    patched_data = "\n".join(wires) + "\n\n" + data.split("\n\n")[1]
+    wires, ops = parsed(patched_data, swaps)
+    z = compute(wires, ops)
+    print(f"x: {x:046b}")
+    print(f"y: {y:046b}")
+    print(f"z: {z:046b}")
+    print(x + y == z)
+    return z
