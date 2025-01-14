@@ -14,8 +14,12 @@ input_files = sorted(here.glob("20*/*/*.txt"))
 
 def path2id(input_file):
     rel_path = input_file.relative_to(here)
-    title = pytest.puzzle_titles[str(rel_path.parent)]
-    return f"{rel_path} : {title}"
+    result = str(rel_path)
+    titles = getattr(pytest, "puzzle_titles", {})
+    title = titles.get(str(rel_path.parent))
+    if title:
+        result += f" : {title}"
+    return result
 
 
 @pytest.mark.parametrize("input_file", input_files, ids=path2id)
