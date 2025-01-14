@@ -2,7 +2,6 @@
 --- Day 24: Crossed Wires ---
 https://adventofcode.com/2024/day/24
 """
-import itertools as it
 from collections import deque
 
 from aocd import data
