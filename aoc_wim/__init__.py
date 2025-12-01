@@ -10,7 +10,7 @@ def dynamic_version():
     years = here.glob("aoc20??")
     max_year = max(years)
     days = max_year.glob("q??.py")
-    max_day = max(days)
+    max_day = max(days, default=Path("q01.py"))
     year = int(max_year.name[-4:])
     day = int(max_day.name[1:3])
     return f"{year}.{day}"
