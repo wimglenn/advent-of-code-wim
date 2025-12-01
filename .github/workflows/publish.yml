@@ -12,7 +12,7 @@ jobs:
       v: ${{ steps.get_version.outputs.v }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
           fetch-tags: true
@@ -51,7 +51,7 @@ jobs:
     if: needs.version-check.outputs.v
     steps:
       - name: Create tag ${{ needs.version-check.outputs.v }}
-        uses: actions/github-script@v5
+        uses: actions/github-script@v8
         with:
           script: |
             github.rest.git.createRef({
@@ -72,7 +72,7 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Install uv
         uses: astral-sh/setup-uv@v3
