@@ -10,7 +10,7 @@ def max_jolts(line, d=2):
     s = []
     i = 0
     while d:
-        m = max(line[i : len(line) - d + 1])
+        m = max(line[i : 1 - d or None])
         s.append(m)
         i = line.index(m, i) + 1
         d -= 1
