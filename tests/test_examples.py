@@ -26,6 +26,8 @@ def path2id(input_file):
 def test_example(input_file, monkeypatch, request):
     # example input files are in ./YYYY/dd/fname.txt
     *pre, year, day, fname = input_file.parts
+    if ".xfail." in fname:
+        pytest.xfail(reason=fname)
     year = int(year)
     day = int(day)
     # the head of each example file is an input data

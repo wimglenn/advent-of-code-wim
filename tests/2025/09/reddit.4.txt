@@ -1,0 +1,19 @@
+0,0
+0,1
+1,1
+1,2
+0,2
+0,3
+3,3
+3,2
+2,2
+2,1
+3,1
+3,0
+16
+16
+# 🟥🟩🟩🟥
+# 🟥🟥🟥🟥
+# 🟥🟥🟥🟥
+# 🟥🟩🟩🟥
+# https://www.reddit.com/r/adventofcode/comments/1piet8x/2025_day_9_part_2_a_simple_cursed_input/

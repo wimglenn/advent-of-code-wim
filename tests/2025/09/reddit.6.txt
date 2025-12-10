@@ -1,0 +1,9 @@
+0,0
+0,10
+1,10
+1,1
+9,1
+9,0
+-
+22
+# https://www.reddit.com/r/adventofcode/comments/1pigllq/2025_day_09_part_2_im_not_in_prison_everybody/

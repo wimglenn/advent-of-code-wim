@@ -1,0 +1,11 @@
+1,1
+1,5
+3,5
+3,3
+5,3
+5,5
+7,5
+7,1
+35
+15
+# https://www.reddit.com/r/adventofcode/comments/1piqgc2/2025_day_9_check_your_code_with_this_test_input/
