@@ -1,0 +1,25 @@
+1,0
+3,0
+3,6
+16,6
+16,0
+18,0
+18,9
+13,9
+13,7
+6,7
+6,9
+1,9
+-
+30
+# .#X#............#X#.
+# .XXX............XXX.
+# .XXX............XXX.
+# .XXX............XXX.
+# .XXX............XXX.
+# .XXX............XXX.
+# .XX#XXXXXXXXXXXX#XX.
+# .XXXXX#XXXXXX#XXXXX.
+# .XXXXXX......XXXXXX.
+# .#XXXX#......#XXXX#.
+# https://www.reddit.com/r/adventofcode/comments/1pi5rqn/2025_day_9_part_2_check_your_solution_with_this/

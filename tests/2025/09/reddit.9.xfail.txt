@@ -1,0 +1,19 @@
+1,5
+3,5
+3,8
+7,8
+7,5
+9,5
+9,10
+11,10
+11,3
+6,3
+6,7
+4,7
+4,1
+13,1
+13,12
+1,12
+-
+72
+# https://www.reddit.com/r/adventofcode/comments/1pi5rqn/2025_day_9_part_2_check_your_solution_with_this/
