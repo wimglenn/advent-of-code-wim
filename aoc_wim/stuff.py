@@ -101,7 +101,7 @@ def extended_euclidean(a, b):
 def _get_change_making_matrix(set_of_coins, r):
     m = [[0 for _ in range(r + 1)] for _ in range(len(set_of_coins) + 1)]
     for i in range(1, r + 1):
-        m[0][i] = float("inf")  # By default there is no way of making change
+        m[0][i] = float("inf")  # By default, there is no way of making change
     return m
 
 
