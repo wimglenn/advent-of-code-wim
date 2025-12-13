@@ -59,7 +59,7 @@ print("answer_a:", part_a(z0=-1, dz0=1))
 w, h = grid.width, grid.height
 bs = []
 for col in range(w):
-    bs.append(part_a(z0=complex(col, -1j), dz0=grid.down))
+    bs.append(part_a(z0=complex(col, -1), dz0=grid.down))
     bs.append(part_a(z0=complex(col, h), dz0=grid.up))
 for row in range(h):
     bs.append(part_a(z0=complex(-1, row), dz0=grid.right))
