@@ -51,7 +51,7 @@ jobs:
     if: needs.version-check.outputs.v
     steps:
       - name: Create tag ${{ needs.version-check.outputs.v }}
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             github.rest.git.createRef({
